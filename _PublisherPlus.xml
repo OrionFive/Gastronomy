@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <Excluded>
+    <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Restaurant\.git</exclude>
+    <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Restaurant\Source\.vs</exclude>
+    <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Restaurant\Source\packages</exclude>
+  </Excluded>
+</Configuration>
