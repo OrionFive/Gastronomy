@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+	<!-- Cash register -->
+	<MustPlaceOnTable>Must be placed on a table.</MustPlaceOnTable>
+	<MustPlaceOnFreeSurface>Must be placed on clear surface.</MustPlaceOnFreeSurface>
+	
+	<!-- Dining -->
+	<CommandToggleDining>Dining</CommandToggleDining>
+	<CommandToggleDiningDesc>When enabled, this location can be used for dining.</CommandToggleDiningDesc>
+
+</LanguageData>
