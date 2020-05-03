@@ -19,8 +19,7 @@
 			<li>Restaurant.TableTops.PlaceWorker_OnTable</li>
 			<li>PlaceWorker_PreventInteractionSpotOverlap</li>
 		</placeWorkers>
-		<uiIconScale>1</uiIconScale>
-		<uiIconOffset>(0,0.35)</uiIconOffset>
+		<uiIconScale>0.8</uiIconScale>
 		<rotatable>true</rotatable>
 		<altitudeLayer>BuildingOnTop</altitudeLayer>
 		<passability>PassThroughOnly</passability>

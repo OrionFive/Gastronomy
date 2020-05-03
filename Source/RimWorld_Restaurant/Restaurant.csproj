@@ -62,9 +62,11 @@
   <ItemGroup>
     <Compile Include="Dining\CompCanDineAt.cs" />
     <Compile Include="Dining\CompProperties_CanDineAt.cs" />
+    <Compile Include="Dining\DiningSpot.cs" />
+    <Compile Include="Harmony\ThingDef_Patch.cs" />
+    <Compile Include="Patching\ThingWithComps.cs" />
     <Compile Include="Harmony\DesignationManager_Patch.cs" />
     <Compile Include="TableTops\CashRegister.cs" />
-    <Compile Include="Harmony\Old_RaidStrategyWorker_ImmediateAttackSappers_Patch.cs" />
     <Compile Include="Harmony\GenGrid_Patch.cs" />
     <Compile Include="ModBaseRestaurant.cs" />
     <Compile Include="TableTops\PlaceWorker_OnTable.cs" />
@@ -74,7 +76,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Utilities\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

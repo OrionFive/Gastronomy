@@ -8,6 +8,8 @@ namespace Restaurant.Dining
     public class CompCanDineAt : ThingComp
     {
         private bool allowDining;
+        private List<DiningSpot> diningSpots = new List<DiningSpot>();
+
         public CompProperties_CanDineAt Props => props as CompProperties_CanDineAt;
 
         public bool CanDineAt => allowDining;
@@ -15,7 +17,8 @@ namespace Restaurant.Dining
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref allowDining, "switchOn", false);
+            Scribe_Values.Look(ref allowDining, "switchOn");
+            Scribe_Collections.Look(ref diningSpots, "diningSpots", LookMode.Reference);
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -34,10 +37,37 @@ namespace Restaurant.Dining
                     defaultLabel = "CommandToggleDining".Translate(),
                     defaultDesc = "CommandToggleDiningDesc".Translate(),
                     isActive = (() => allowDining),
-                    toggleAction = delegate { allowDining = !allowDining; }
+                    toggleAction = ToggleDining
                 };
                 yield return command_Toggle;
             }
+        }
+
+        private void ToggleDining()
+        {
+            allowDining = !allowDining;
+            if (allowDining)
+            {
+                foreach (var pos in parent.OccupiedRect())
+                {
+                    var diningSpot = (DiningSpot) GenSpawn.Spawn(DefDatabase<ThingDef>.GetNamed("DiningSpot"), pos, parent.Map);
+                    diningSpots.Add(diningSpot);
+                }
+            }
+            else
+            {
+                foreach (var diningSpot in diningSpots)
+                {
+                    diningSpot?.Destroy();
+                }
+                diningSpots.Clear();
+            }
+        }
+
+        public override void PostDeSpawn(Map map)
+        {
+            Log.Message($"Despawned {parent?.Label}.");
+            if (allowDining) ToggleDining();
         }
     }
 }

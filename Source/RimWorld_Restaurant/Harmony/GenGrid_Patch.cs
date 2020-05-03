@@ -15,9 +15,8 @@ namespace Restaurant.Harmony
             internal static void Postfix(IntVec3 c, Map map, ref bool __result)
             {
                 if (!__result) return;
-                var tabletop = c.GetFirstThing<TableTop>(map);
-                Log.Message($"{c}: Has tabletop? {tabletop != null}");
-                if (tabletop != null) __result = false;
+
+                if (c.GetFirstThing<TableTop>(map) != null) __result = false;
             }
         }
     }

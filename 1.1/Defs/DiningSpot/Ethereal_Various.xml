@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThingDef ParentName="EtherealThingBase">
+    <defName>DiningSpot</defName>
+    <label>dining spot</label>
+    <thingClass>Restaurant.Dining.DiningSpot</thingClass>
+    <drawerType>MapMeshOnly</drawerType>
+    <tickerType>Long</tickerType>
+    <graphicData>
+      <texPath>Things/Plant/Blight</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPlant</shaderType>
+    </graphicData>
+  </ThingDef>
+  
+</Defs>
