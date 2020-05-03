@@ -13,7 +13,6 @@ namespace Restaurant
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
-            Log.Message($"Spawned table top item at {Position}");
             table = map.thingGrid.ThingsAt(Position).OfType<Building>().FirstOrDefault(b => b.def.surfaceType == SurfaceType.Eat);
         }
 

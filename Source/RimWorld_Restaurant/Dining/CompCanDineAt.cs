@@ -66,7 +66,6 @@ namespace Restaurant.Dining
 
         public override void PostDeSpawn(Map map)
         {
-            Log.Message($"Despawned {parent?.Label}.");
             if (allowDining) ToggleDining();
         }
     }
