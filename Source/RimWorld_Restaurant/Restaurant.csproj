@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="Dining\CompCanDineAt.cs" />
     <Compile Include="Dining\CompProperties_CanDineAt.cs" />
+    <Compile Include="Harmony\DesignationManager_Patch.cs" />
     <Compile Include="TableTops\CashRegister.cs" />
     <Compile Include="Harmony\Old_RaidStrategyWorker_ImmediateAttackSappers_Patch.cs" />
     <Compile Include="Harmony\GenGrid_Patch.cs" />
