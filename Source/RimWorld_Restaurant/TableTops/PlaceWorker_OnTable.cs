@@ -32,6 +32,11 @@ namespace Restaurant.TableTops
         public override bool ForceAllowPlaceOver(BuildableDef otherDef)
         {
             return otherDef is ThingDef thingDef && thingDef.surfaceType == SurfaceType.Eat;
-        }        
+        }
+
+        public static bool NotOccupied(IntVec3 pos, Map map)
+        {
+            return pos.GetFirstThing<TableTop>(map) == null;
+        }
     }
 }

@@ -1,17 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
+  <!-- Warning: This is a building (Nutrient Dispenser). So this def might be read by scripts expecting a building. -->
   <ThingDef ParentName="EtherealThingBase">
     <defName>DiningSpot</defName>
     <label>dining spot</label>
     <thingClass>Restaurant.Dining.DiningSpot</thingClass>
     <drawerType>MapMeshOnly</drawerType>
-    <tickerType>Long</tickerType>
     <graphicData>
       <texPath>Things/Plant/Blight</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>TransparentPlant</shaderType>
     </graphicData>
+	<building>
+		<!-- Must be there so code that checks buildings doesn't break -->
+	</building>
   </ThingDef>
   
 </Defs>

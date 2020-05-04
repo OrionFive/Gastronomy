@@ -1,12 +1,12 @@
 using HarmonyLib;
 using Verse;
 
-namespace Restaurant.Harmony
+namespace Restaurant.TableTops
 {
     /// <summary>
     /// So pawns won't eat where the register is placed
     /// </summary>
-    internal static class GenGrid_Patch
+    internal static class _Harmony_GenGrid_Patch
     {
         [HarmonyPatch(typeof(GenGrid), "HasEatSurface")]
         public class HasEatSurface

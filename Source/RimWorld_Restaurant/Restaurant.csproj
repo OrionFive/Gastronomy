@@ -63,11 +63,12 @@
     <Compile Include="Dining\CompCanDineAt.cs" />
     <Compile Include="Dining\CompProperties_CanDineAt.cs" />
     <Compile Include="Dining\DiningSpot.cs" />
-    <Compile Include="Harmony\ThingDef_Patch.cs" />
+    <Compile Include="Dining\DiningUtility.cs" />
+    <Compile Include="Dining\_Harmony_ThingDef_Patch.cs" />
     <Compile Include="Patching\ThingWithComps.cs" />
-    <Compile Include="Harmony\DesignationManager_Patch.cs" />
+    <Compile Include="TableTops\_Harmony_AvoidGrid_Patch.cs" />
     <Compile Include="TableTops\CashRegister.cs" />
-    <Compile Include="Harmony\GenGrid_Patch.cs" />
+    <Compile Include="TableTops\_Harmony_GenGrid_Patch.cs" />
     <Compile Include="ModBaseRestaurant.cs" />
     <Compile Include="TableTops\PlaceWorker_OnTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +78,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Harmony\" />
     <Folder Include="Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

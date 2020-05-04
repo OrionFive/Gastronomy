@@ -1,23 +1,46 @@
 using RimWorld;
 using Verse;
+using ThingWithComps = Restaurant.Patching.ThingWithComps;
 
 namespace Restaurant.Dining
 {
+    /// <summary>
+    /// This is currently a NutrientPasteDispenser... but maybe that's not needed at all
+    /// </summary>
     public class DiningSpot : Building_NutrientPasteDispenser
     {
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            Patching.ThingWithComps.SpawnSetup.Base(this, map, respawningAfterLoad);
+            ThingWithComps.SpawnSetup.Base(this, map, respawningAfterLoad);
         }
-        
+
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
-            Patching.ThingWithComps.DeSpawn.Base(this, mode);
+            ThingWithComps.DeSpawn.Base(this, mode);
         }
 
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
-            Patching.ThingWithComps.Destroy.Base(this, mode);
+            ThingWithComps.Destroy.Base(this, mode);
+        }
+
+        #region NutrientPasteDispenser overrides
+
+        public override bool HasEnoughFeedstockInHoppers()
+        {
+            return true;
+        }
+
+        public override Building AdjacentReachableHopper(Pawn pawn)
+        {
+            return null;
+        }
+
+        #endregion
+
+        public Thing GetBestMealFor(Pawn pawn)
+        {
+            return null;
         }
     }
 }

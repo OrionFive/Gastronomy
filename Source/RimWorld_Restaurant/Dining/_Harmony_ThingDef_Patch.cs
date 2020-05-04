@@ -1,12 +1,12 @@
 using HarmonyLib;
-using Restaurant.Dining;
 using Verse;
 
-namespace Restaurant.Harmony {
+namespace Restaurant.Dining
+{
     /// <summary>
     /// So DiningSpot is not checked by Nutrient Paste Dispenser alerts
     /// </summary>
-    internal static class ThingDef_Patch
+    internal static class _Harmony_ThingDef_Patch
     {
         [HarmonyPatch(typeof(ThingDef), "get_IsFoodDispenser")]
         public class IsFoodDispenser

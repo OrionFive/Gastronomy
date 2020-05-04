@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Restaurant.TableTops;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -50,14 +51,19 @@ namespace Restaurant.Dining
             {
                 foreach (var pos in parent.OccupiedRect())
                 {
-                    var diningSpot = (DiningSpot) GenSpawn.Spawn(DefDatabase<ThingDef>.GetNamed("DiningSpot"), pos, parent.Map);
-                    diningSpots.Add(diningSpot);
+                    var map = parent.Map;
+                    if (PlaceWorker_OnTable.NotOccupied(pos, map))
+                    {
+                        var diningSpot = (DiningSpot) GenSpawn.Spawn(DefDatabase<ThingDef>.GetNamed("DiningSpot"), pos, map);
+                        diningSpots.Add(diningSpot);
+                    }
                 }
             }
             else
             {
                 foreach (var diningSpot in diningSpots)
                 {
+                    if (diningSpot.Destroyed) continue;
                     diningSpot?.Destroy();
                 }
                 diningSpots.Clear();
