@@ -1,21 +1,75 @@
+using System;
 using System.Linq;
 using JetBrains.Annotations;
+using Restaurant.Dining;
 using Verse;
 
 namespace Restaurant.TableTops
 {
     public static class RegisterUtility
     {
-        public static ThingDef cashRegisterDef = ThingDef.Named("Restaurant_CashRegister");
+        public static readonly ThingDef cashRegisterDef = ThingDef.Named("Restaurant_CashRegister");
 
         private static Building_CashRegister GetFirstRegister([NotNull] Map map)
         {
-            return map.listerThings.ThingsOfDef(cashRegisterDef)?.OfType<Building_CashRegister>().FirstOrDefault();
+            return map.listerThings.ThingsOfDef(cashRegisterDef).OfType<Building_CashRegister>().FirstOrDefault();
         }
 
-        public static RestaurantSettings GetSettings([NotNull] Map map)
+        public static RestaurantSettings GetSettings([NotNull]this Map map)
         {
-            return GetFirstRegister(map)?.settings ?? new RestaurantSettings();
+            return map.GetComponent<RestaurantSettings>();
+        }
+
+        public static void OnDiningSpotCreated([NotNull]DiningSpot diningSpot)
+        {
+            diningSpot.Map.GetSettings().diningSpots.Add(diningSpot);
+        }
+
+        public static void OnDiningSpotRemoved([NotNull]DiningSpot diningSpot)
+        {
+            diningSpot.Map.GetSettings().diningSpots.Remove(diningSpot);
+        }
+
+        public static void OnBuildingDespawned(Building building, Map map)
+        {
+            if (building == null) return;
+            if (building.def.surfaceType == SurfaceType.Eat || building is Building_TableTop)
+            {
+                foreach (var pos in building.OccupiedRect())
+                {
+                    NotifyDespawnedAtPosition(building, map, pos);
+                }
+            }
+        }
+
+        private static void NotifyDespawnedAtPosition(Building building, Map map, IntVec3 pos)
+        {
+            foreach (var thing in pos.GetThingList(map).ToArray())
+            {
+                // Notify potential dining spots
+                if (DiningUtility.CanPossiblyDineAt(thing.def)) thing.TryGetComp<CompCanDineAt>()?.Notify_BuildingDespawned(building, map);
+                // Notify table top
+                if (thing is Building_TableTop t) t.Notify_BuildingDespawned(building);
+                // Remove blueprints
+                else if (thing.def.IsBlueprint && thing.def.entityDefToBuild is ThingDef td && typeof(Building_TableTop).IsAssignableFrom(td.thingClass))
+                {
+                    thing.Destroy(DestroyMode.Cancel);
+                }
+            }
+        }
+
+        public static void OnBuildingSpawned(Building building, Map map)
+        {
+            if (building == null) return;
+
+            if (!(building is Building_TableTop)) return;
+            foreach (var thing in building.Position.GetThingList(map).ToArray())
+            {
+                if (thing is DiningSpot)
+                {
+                    thing.Destroy(DestroyMode.Cancel);
+                }
+            }
         }
     }
 }

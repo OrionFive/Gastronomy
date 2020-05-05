@@ -1,6 +1,7 @@
 using System.Linq;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace Restaurant.TableTops
 {
@@ -26,6 +27,14 @@ namespace Restaurant.TableTops
         {
             base.PostMapInit();
             InitTable(Map);
+        }
+
+        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+        {
+            var map = Map;
+            base.DeSpawn(mode);
+            if(map == null) Log.Message("Lost map");
+            RegisterUtility.OnBuildingDespawned(this, map);
         }
 
         public virtual void Notify_BuildingDespawned(Thing thing)

@@ -15,13 +15,17 @@ namespace Restaurant.Dining
 
         public bool CanDineAt => allowDining;
 
-        public Building_CashRegister Register { get; }
-
         public override void PostExposeData()
         {
             base.PostExposeData();
             Scribe_Values.Look(ref allowDining, "switchOn");
             Scribe_Collections.Look(ref diningSpots, "diningSpots", LookMode.Reference);
+        }
+
+        public override void Initialize(CompProperties props)
+        {
+            base.Initialize(props);
+            DiningUtility.RegisterDiningSpotHolder(parent);
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -40,8 +44,6 @@ namespace Restaurant.Dining
                     defaultLabel = "CommandToggleDining".Translate(),
                     defaultDesc = "CommandToggleDiningDesc".Translate(),
                     isActive = () => allowDining,
-                    disabled = Register == null,
-                    disabledReason = "DiningHasNoRegister".Translate(),
                     toggleAction = ToggleDining
                 };
                 yield return command_Toggle;
@@ -53,31 +55,53 @@ namespace Restaurant.Dining
             allowDining = !allowDining;
             if (allowDining)
             {
-                foreach (var pos in parent.OccupiedRect())
-                {
-                    var map = parent.Map;
-                    if (PlaceWorker_OnTable.NotOccupied(pos, map))
-                    {
-                        var diningSpot = (DiningSpot) GenSpawn.Spawn(DefDatabase<ThingDef>.GetNamed("DiningSpot"), pos, map);
-                        diningSpots.Add(diningSpot);
-                    }
-                }
+                TrySpawnDiningSpots();
             }
             else
             {
-                foreach (var diningSpot in diningSpots)
-                {
-                    if (diningSpot.Destroyed) continue;
-                    diningSpot?.Destroy();
-                }
+                TryRemoveDiningSpots();
+            }
+        }
 
-                diningSpots.Clear();
+        private void TryRemoveDiningSpots()
+        {
+            foreach (var diningSpot in diningSpots)
+            {
+                if (diningSpot.Destroyed) continue;
+                diningSpot?.Destroy();
+            }
+            diningSpots.Clear();
+        }
+
+        private void TrySpawnDiningSpots()
+        {
+            foreach (var pos in parent.OccupiedRect())
+            {
+                // In case there already are dining spots
+                if (diningSpots.Any(s => s.Position == pos)) continue;
+
+                var map = parent.Map;
+                if (PlaceWorker_OnTable.NotOccupied(pos, map))
+                {
+                    var diningSpot = (DiningSpot) GenSpawn.Spawn(DiningUtility.diningSpotDef, pos, map);
+                    diningSpots.Add(diningSpot);
+                }
             }
         }
 
         public override void PostDeSpawn(Map map)
         {
             if (allowDining) ToggleDining();
+        }
+
+        public void Notify_BuildingDespawned(Building building, Map map)
+        {
+            // Map is required separately, because building.Map is not valid for despawned objects
+            // A building was despawned at my current position
+            if (building != parent && allowDining)
+            {
+                TrySpawnDiningSpots();
+            }
         }
     }
 }

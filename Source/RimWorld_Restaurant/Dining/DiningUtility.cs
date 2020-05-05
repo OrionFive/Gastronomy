@@ -1,4 +1,5 @@
-using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -7,7 +8,13 @@ namespace Restaurant.Dining
 {
     public static class DiningUtility
     {
-        public static ThingDef diningSpotDef = ThingDef.Named("Restaurant_DiningSpot");
+        public static readonly ThingDef diningSpotDef = ThingDef.Named("Restaurant_DiningSpot");
+        public static readonly HashSet<ThingDef> thingsWithCompCanDineAt = new HashSet<ThingDef>();
+
+        public static IEnumerable<DiningSpot> GetAllDiningSpots([NotNull]Map map)
+        {
+            return map.listerBuildings.AllBuildingsColonistOfClass<DiningSpot>();
+        }
 
         public static DiningSpot FindDiningSpotFor(Pawn pawn, out Thing foodDef)
         {
@@ -29,6 +36,16 @@ namespace Restaurant.Dining
 
             foodDef = diningSpot.register.GetBestFoodFor(pawn);
             return foodDef == null ? null : diningSpot;
+        }
+
+        public static void RegisterDiningSpotHolder(ThingWithComps thing)
+        {
+            thingsWithCompCanDineAt.Add(thing.def);
+        }
+
+        public static bool CanPossiblyDineAt(ThingDef def)
+        {
+            return thingsWithCompCanDineAt.Contains(def);
         }
     }
 }

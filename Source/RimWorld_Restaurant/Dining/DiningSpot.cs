@@ -15,10 +15,13 @@ namespace Restaurant.Dining
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             ThingWithComps.SpawnSetup.Base(this, map, respawningAfterLoad);
+
+            if (!respawningAfterLoad) RegisterUtility.OnDiningSpotCreated(this);
         }
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
+            RegisterUtility.OnDiningSpotRemoved(this);
             ThingWithComps.DeSpawn.Base(this, mode);
         }
 

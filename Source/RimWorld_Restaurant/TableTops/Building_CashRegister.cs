@@ -9,7 +9,7 @@ namespace Restaurant.TableTops
 {
     public class Building_CashRegister : Building_TableTop
     {
-        [NotNull] private List<DiningSpot> diningSpots = new List<DiningSpot>();
+        [NotNull] private readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
         public float radius;
         public RestaurantSettings settings;
 
@@ -20,13 +20,12 @@ namespace Restaurant.TableTops
         {
             base.ExposeData();
             Scribe_Values.Look(ref radius, "radius", 20);
-            Scribe_Deep.Look(ref settings, "settings");
         }
 
         public override void PostMapInit()
         {
             base.PostMapInit();
-            TakeOrMakeSettings();
+            settings = Map.GetSettings();
             ScanDiningSpots();
         }
 
@@ -35,12 +34,7 @@ namespace Restaurant.TableTops
             base.SpawnSetup(map, respawningAfterLoad);
 
             // Created fresh
-            if (!respawningAfterLoad) TakeOrMakeSettings();
-        }
-
-        private void TakeOrMakeSettings()
-        {
-            settings = RegisterUtility.GetSettings(Map);
+            if (!respawningAfterLoad) settings = Map.GetSettings();
         }
 
         public bool HasAnyFoodFor([NotNull] Pawn pawn)
@@ -70,11 +64,6 @@ namespace Restaurant.TableTops
 
         public void DrawGizmos()
         {
-            if (radius < GenRadial.MaxRadialPatternRadius)
-            {
-                GenDraw.DrawRadiusRing(Position, radius);
-            }
-
             foreach (var diningSpot in diningSpots.Where(diningSpot => diningSpot != null))
             {
                 GenDraw.DrawLineBetween(this.TrueCenter(), diningSpot.TrueCenter());
@@ -83,17 +72,8 @@ namespace Restaurant.TableTops
 
         public void ScanDiningSpots()
         {
-            foreach (var diningSpot in diningSpots)
-            {
-                // diningSpot.
-            }
-
             diningSpots.Clear();
-            foreach (var pos in GenRadial.RadialCellsAround(Position, radius, true))
-            {
-                var diningSpot = pos.GetFirstThing<DiningSpot>(Map);
-                if (diningSpot != null) diningSpots.Add(diningSpot);
-            }
+            diningSpots.AddRange(DiningUtility.GetAllDiningSpots(Map));
         }
     }
 }
