@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Restaurant.TableTops;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -16,25 +17,26 @@ namespace Restaurant.Dining
             return map.listerBuildings.AllBuildingsColonistOfClass<DiningSpot>();
         }
 
-        public static DiningSpot FindDiningSpotFor(Pawn pawn, out Thing foodDef)
+        public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, out Thing foodDef, bool allowDrug)
         {
             const int maxRegionsToScan = 100;
+            foodDef = null;
+
+            var settings = pawn.Map?.GetSettings();
+            if (settings == null) return null;
+
+            if (!settings.IsOpenedRightNow || !settings.HasAnyFoodFor(pawn, allowDrug)) return null;
 
             bool Validator(Thing thing)
             {
                 var spot = (DiningSpot) thing;
-                if (spot.register == null || !spot.register.IsOpenedRightNow || !spot.register.HasAnyFoodFor(pawn) || spot.IsForbidden(pawn) || !spot.IsSociallyProper(pawn) || !pawn.CanReserve(spot)) return false;
-                return true;
+                return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && pawn.CanReserve(spot);
             }
 
             var diningSpot = (DiningSpot)GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, Validator, null, 0, maxRegionsToScan, false, RegionType.Set_Passable, true);
-            if (diningSpot == null)
-            {
-                foodDef = null;
-                return null;
-            }
+            if (diningSpot == null) return null;
 
-            foodDef = diningSpot.register.GetBestFoodFor(pawn);
+            foodDef = settings.GetBestFoodFor(pawn, allowDrug);
             return foodDef == null ? null : diningSpot;
         }
 

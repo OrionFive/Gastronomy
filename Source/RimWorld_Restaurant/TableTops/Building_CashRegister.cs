@@ -13,7 +13,6 @@ namespace Restaurant.TableTops
         public float radius;
         public RestaurantSettings settings;
 
-        [NotNull] private List<Thing> stock = new List<Thing>();
         public bool IsOpenedRightNow { get; } = true;
 
         public override void ExposeData()
@@ -35,25 +34,6 @@ namespace Restaurant.TableTops
 
             // Created fresh
             if (!respawningAfterLoad) settings = Map.GetSettings();
-        }
-
-        public bool HasAnyFoodFor([NotNull] Pawn pawn)
-        {
-            Log.Message($"Stock: {stock.Count}");
-            return stock.Any();
-        }
-
-        public Thing GetBestFoodFor([NotNull] Pawn pawn)
-        {
-            Log.Message($"Stock: {stock.Count}");
-            return stock.FirstOrDefault();
-        }
-
-        public override void TickRare()
-        {
-            base.TickRare();
-            stock = new List<Thing>(Map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource));
-            Log.Message($"Stock: {stock.Select(s => s.def.label).ToCommaList(true)}");
         }
 
         public override void DrawExtraSelectionOverlays()

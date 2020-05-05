@@ -28,7 +28,7 @@ namespace Restaurant.Dining
                 }
 
                 bool allowDrug = !eater.IsTeetotaler();
-                var diningSpot = DiningUtility.FindDiningSpotFor(getter, out foodDef);
+                var diningSpot = DiningUtility.FindDiningSpotFor(getter, out foodDef, allowDrug);
 
                 if (diningSpot != null)
                 {

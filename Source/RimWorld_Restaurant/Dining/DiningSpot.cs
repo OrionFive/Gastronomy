@@ -10,8 +10,6 @@ namespace Restaurant.Dining
     /// </summary>
     public class DiningSpot : Building_NutrientPasteDispenser
     {
-        public Building_CashRegister register;
-
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             ThingWithComps.SpawnSetup.Base(this, map, respawningAfterLoad);
@@ -28,12 +26,6 @@ namespace Restaurant.Dining
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
             ThingWithComps.Destroy.Base(this, mode);
-        }
-
-        public override void ExposeData()
-        {
-            base.ExposeData();
-            Scribe_References.Look(ref register, "register");
         }
 
         #region NutrientPasteDispenser overrides
