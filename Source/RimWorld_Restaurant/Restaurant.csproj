@@ -64,6 +64,7 @@
     <Compile Include="Dining\CompProperties_CanDineAt.cs" />
     <Compile Include="Dining\DiningSpot.cs" />
     <Compile Include="Dining\DiningUtility.cs" />
+    <Compile Include="Dining\_Harmony_FoodUtility_Patch.cs" />
     <Compile Include="Dining\_Harmony_ThingDef_Patch.cs" />
     <Compile Include="Patching\ThingWithComps.cs" />
     <Compile Include="TableTops\_Harmony_AvoidGrid_Patch.cs" />
