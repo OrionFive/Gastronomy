@@ -6,7 +6,7 @@
 		<label>cash register</label>
 		<description>A cash register where patrons pay. From here you can control your restaurant.</description>
 		<category>Building</category>
-		<thingClass>Restaurant.TableTops.CashRegister</thingClass>
+		<thingClass>Restaurant.TableTops.Building_CashRegister</thingClass>
 		<graphicData>
 			<texPath>Things/CashRegister</texPath>
 			<graphicClass>Graphic_Multi</graphicClass>
@@ -50,6 +50,7 @@
 		</building>
 		<soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
 		<defaultPlacingRot>South</defaultPlacingRot>
+		<tickerType>Rare</tickerType>
 		<designationCategory>Production</designationCategory>
 		<destroyable>true</destroyable>
 		<tradeability>None</tradeability>

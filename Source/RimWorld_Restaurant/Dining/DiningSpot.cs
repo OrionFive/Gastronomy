@@ -1,3 +1,4 @@
+using Restaurant.TableTops;
 using RimWorld;
 using Verse;
 using ThingWithComps = Restaurant.Patching.ThingWithComps;
@@ -9,6 +10,8 @@ namespace Restaurant.Dining
     /// </summary>
     public class DiningSpot : Building_NutrientPasteDispenser
     {
+        public CashRegister register;
+
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             ThingWithComps.SpawnSetup.Base(this, map, respawningAfterLoad);
@@ -24,6 +27,12 @@ namespace Restaurant.Dining
             ThingWithComps.Destroy.Base(this, mode);
         }
 
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_References.Look(ref register, "register");
+        }
+
         #region NutrientPasteDispenser overrides
 
         public override bool HasEnoughFeedstockInHoppers()
@@ -37,10 +46,5 @@ namespace Restaurant.Dining
         }
 
         #endregion
-
-        public Thing GetBestMealFor(Pawn pawn)
-        {
-            return null;
-        }
     }
 }

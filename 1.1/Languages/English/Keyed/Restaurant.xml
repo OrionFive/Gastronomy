@@ -4,9 +4,12 @@
 	<!-- Cash register -->
 	<MustPlaceOnTable>Must be placed on a table.</MustPlaceOnTable>
 	<MustPlaceOnFreeSurface>Must be placed on clear surface.</MustPlaceOnFreeSurface>
+	<TabRegister>Register</TabRegister>
+	<TabRegisterRadius>Radius</TabRegisterRadius>
 	
 	<!-- Dining -->
 	<CommandToggleDining>Dining</CommandToggleDining>
 	<CommandToggleDiningDesc>When enabled, this location can be used for dining.</CommandToggleDiningDesc>
+	<DiningHasNoRegister>You have to build a register nearby first.</DiningHasNoRegister>
 
 </LanguageData>

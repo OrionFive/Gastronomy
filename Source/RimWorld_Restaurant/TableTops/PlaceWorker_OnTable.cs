@@ -13,7 +13,7 @@ namespace Restaurant.TableTops
             bool isBlocked = false;
             foreach (var t in things)
             {
-                if (t is TableTop) isBlocked = true;
+                if (t is Building_TableTop) isBlocked = true;
                 if (t.def.surfaceType == SurfaceType.Eat) hasTable = true;
             }
 
@@ -36,7 +36,7 @@ namespace Restaurant.TableTops
 
         public static bool NotOccupied(IntVec3 pos, Map map)
         {
-            return pos.GetFirstThing<TableTop>(map) == null;
+            return pos.GetFirstThing<Building_TableTop>(map) == null;
         }
     }
 }

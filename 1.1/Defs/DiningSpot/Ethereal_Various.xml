@@ -3,7 +3,7 @@
 
   <!-- Warning: This is a building (Nutrient Dispenser). So this def might be read by scripts expecting a building. -->
   <ThingDef ParentName="EtherealThingBase">
-    <defName>DiningSpot</defName>
+    <defName>Restaurant_DiningSpot</defName>
     <label>dining spot</label>
     <thingClass>Restaurant.Dining.DiningSpot</thingClass>
     <drawerType>MapMeshOnly</drawerType>

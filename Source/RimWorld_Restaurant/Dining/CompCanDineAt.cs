@@ -14,7 +14,9 @@ namespace Restaurant.Dining
         public CompProperties_CanDineAt Props => props as CompProperties_CanDineAt;
 
         public bool CanDineAt => allowDining;
-        
+
+        public CashRegister Register { get; }
+
         public override void PostExposeData()
         {
             base.PostExposeData();
@@ -37,7 +39,9 @@ namespace Restaurant.Dining
                     icon = ContentFinder<Texture2D>.Get("UI/Commands/ToggleDining"),
                     defaultLabel = "CommandToggleDining".Translate(),
                     defaultDesc = "CommandToggleDiningDesc".Translate(),
-                    isActive = (() => allowDining),
+                    isActive = () => allowDining,
+                    disabled = Register == null,
+                    disabledReason = "DiningHasNoRegister".Translate(),
                     toggleAction = ToggleDining
                 };
                 yield return command_Toggle;
@@ -66,6 +70,7 @@ namespace Restaurant.Dining
                     if (diningSpot.Destroyed) continue;
                     diningSpot?.Destroy();
                 }
+
                 diningSpots.Clear();
             }
         }

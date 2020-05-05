@@ -16,7 +16,7 @@ namespace Restaurant.TableTops
             {
                 if (!__result) return;
 
-                if (c.GetFirstThing<TableTop>(map) != null) __result = false;
+                if (c.GetFirstThing<Building_TableTop>(map) != null) __result = false;
             }
         }
     }

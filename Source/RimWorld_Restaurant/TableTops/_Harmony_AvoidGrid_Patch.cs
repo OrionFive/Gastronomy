@@ -18,7 +18,7 @@ namespace Restaurant.TableTops
             {
                 if (building == null) return;
 
-                if (!(building is TableTop)) return;
+                if (!(building is Building_TableTop)) return;
                 Log.Message($"BuildingSpawned at {building.Position}: {building.Label}.");
                 foreach (var thing in building.Position.GetThingList(__instance.map).ToArray())
                 {
@@ -49,9 +49,9 @@ namespace Restaurant.TableTops
                     foreach (var thing in pos.GetThingList(__instance.map).ToArray())
                     {
                         // Notify table top
-                        if(thing is TableTop t) t.Notify_BuildingDespawned(building);
+                        if(thing is Building_TableTop t) t.Notify_BuildingDespawned(building);
                         // Remove blueprints
-                        else if (thing.def.IsBlueprint && thing.def.entityDefToBuild is ThingDef td && typeof(TableTop).IsAssignableFrom(td.thingClass))
+                        else if (thing.def.IsBlueprint && thing.def.entityDefToBuild is ThingDef td && typeof(Building_TableTop).IsAssignableFrom(td.thingClass))
                         {
                             Log.Message($"Removing blueprint.");
                             thing.Destroy(DestroyMode.Cancel);

@@ -4,14 +4,16 @@ using Verse;
 
 namespace Restaurant.TableTops
 {
-    public class TableTop : Building
+    public class Building_TableTop : Building
     {
         public Building Table { get; private set; } // Can't be saved with ExposeData, the reference gets lost
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
-            InitTable(map);
+
+            // Created fresh
+            if(!respawningAfterLoad) InitTable(map);
         }
 
         private void InitTable(Map map)

@@ -67,13 +67,16 @@
     <Compile Include="Dining\_Harmony_FoodUtility_Patch.cs" />
     <Compile Include="Dining\_Harmony_ThingDef_Patch.cs" />
     <Compile Include="Patching\ThingWithComps.cs" />
+    <Compile Include="TableTops\ITab_Register.cs" />
+    <Compile Include="TableTops\RegisterUtility.cs" />
+    <Compile Include="TableTops\RestaurantSettings.cs" />
     <Compile Include="TableTops\_Harmony_AvoidGrid_Patch.cs" />
-    <Compile Include="TableTops\CashRegister.cs" />
+    <Compile Include="TableTops\Building_CashRegister.cs" />
     <Compile Include="TableTops\_Harmony_GenGrid_Patch.cs" />
     <Compile Include="ModBaseRestaurant.cs" />
     <Compile Include="TableTops\PlaceWorker_OnTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TableTops\TableTop.cs" />
+    <Compile Include="TableTops\Building_TableTop.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
