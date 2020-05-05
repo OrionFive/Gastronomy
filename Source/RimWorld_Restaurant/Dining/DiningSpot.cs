@@ -10,7 +10,7 @@ namespace Restaurant.Dining
     /// </summary>
     public class DiningSpot : Building_NutrientPasteDispenser
     {
-        public CashRegister register;
+        public Building_CashRegister register;
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {

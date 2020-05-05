@@ -8,9 +8,9 @@ namespace Restaurant.TableTops
     {
         public static ThingDef cashRegisterDef = ThingDef.Named("Restaurant_CashRegister");
 
-        private static CashRegister GetFirstRegister([NotNull] Map map)
+        private static Building_CashRegister GetFirstRegister([NotNull] Map map)
         {
-            return map.listerThings.ThingsOfDef(cashRegisterDef)?.OfType<CashRegister>().FirstOrDefault();
+            return map.listerThings.ThingsOfDef(cashRegisterDef)?.OfType<Building_CashRegister>().FirstOrDefault();
         }
 
         public static RestaurantSettings GetSettings([NotNull] Map map)

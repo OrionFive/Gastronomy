@@ -7,7 +7,7 @@ using Verse;
 
 namespace Restaurant.TableTops
 {
-    public class CashRegister : TableTop { }
+    public class Building_CashRegister : Building_TableTop
     {
         [NotNull] private List<DiningSpot> diningSpots = new List<DiningSpot>();
         public float radius;

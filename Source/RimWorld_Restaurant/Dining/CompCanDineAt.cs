@@ -15,7 +15,7 @@ namespace Restaurant.Dining
 
         public bool CanDineAt => allowDining;
 
-        public CashRegister Register { get; }
+        public Building_CashRegister Register { get; }
 
         public override void PostExposeData()
         {
