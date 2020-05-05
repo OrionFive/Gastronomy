@@ -54,9 +54,18 @@ namespace Restaurant.TableTops
         {
             if (GenTicks.TicksGame < lastStockUpdateTick + 250) return;
             lastStockUpdateTick = GenTicks.TicksGame;
-
-            stock = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t=>t.def.IsIngestible && t.def.IsNutritionGivingIngestible));
+            stock = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t=>t.def.IsIngestible && IsInConsumableCategory(t.def.thingCategories)));
             Log.Message($"Stock: {stock.Select(s => s.def.label).ToCommaList(true)}");
+        }
+
+        private static bool IsInConsumableCategory(List<ThingCategoryDef> defThingCategories)
+        {
+            if (defThingCategories == null) return false;
+            if (defThingCategories.Contains(ThingCategoryDefOf.Drugs)) return true;
+            if (defThingCategories.Contains(ThingCategoryDefOf.FoodMeals)) return true;
+            if (defThingCategories.Contains(ThingCategoryDefOf.Foods)) return true;
+            if (defThingCategories.Contains(ThingCategoryDefOf.PlantMatter)) return true;
+            return false;
         }
     }
 }
