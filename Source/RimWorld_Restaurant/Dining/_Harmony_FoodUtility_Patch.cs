@@ -5,7 +5,7 @@ using Verse;
 namespace Restaurant.Dining
 {
     /// <summary>
-    /// For allowing pawns to find DiningSpots when hungry
+    /// For allowing pawns to find DiningSpots when hungry. This should later be replaced with BestFoodSourceOnMap, so alternatives are considered
     /// </summary>
     internal static class _Harmony_FoodUtility_Patch
     {

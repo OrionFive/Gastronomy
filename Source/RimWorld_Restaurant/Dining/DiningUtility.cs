@@ -10,6 +10,7 @@ namespace Restaurant.Dining
     public static class DiningUtility
     {
         public static readonly ThingDef diningSpotDef = ThingDef.Named("Restaurant_DiningSpot");
+        public static readonly JobDef dineDef = DefDatabase<JobDef>.GetNamed("Restaurant_Dine");
         public static readonly HashSet<ThingDef> thingsWithCompCanDineAt = new HashSet<ThingDef>();
 
         public static IEnumerable<DiningSpot> GetAllDiningSpots([NotNull]Map map)

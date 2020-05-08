@@ -31,8 +31,6 @@ namespace Restaurant.TableTops
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
-
-            // Created fresh
             if (!respawningAfterLoad) settings = Map.GetSettings();
         }
 
