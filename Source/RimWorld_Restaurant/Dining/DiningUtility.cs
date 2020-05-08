@@ -17,7 +17,7 @@ namespace Restaurant.Dining
             return map.listerBuildings.AllBuildingsColonistOfClass<DiningSpot>();
         }
 
-        public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, out Thing foodDef, bool allowDrug)
+        public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, out ThingDef foodDef, bool allowDrug)
         {
             const int maxRegionsToScan = 100;
             foodDef = null;
@@ -36,7 +36,7 @@ namespace Restaurant.Dining
             var diningSpot = (DiningSpot)GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, Validator, null, 0, maxRegionsToScan, false, RegionType.Set_Passable, true);
             if (diningSpot == null) return null;
 
-            foodDef = settings.GetBestFoodFor(pawn, allowDrug);
+            foodDef = settings.GetBestFoodTypeFor(pawn, allowDrug);
             return foodDef == null ? null : diningSpot;
         }
 

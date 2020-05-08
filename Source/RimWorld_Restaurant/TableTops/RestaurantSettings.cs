@@ -35,14 +35,15 @@ namespace Restaurant.TableTops
 
         public bool HasAnyFoodFor([NotNull] Pawn pawn, bool allowDrug)
         {
-            Log.Message($"Stock: {stock.Count}");
+            Log.Message($"{pawn.NameShortColored}: HasFoodFor: Stock: {stock.Count(s => WillConsume(pawn, allowDrug, s))}");
             return stock.Any(s => WillConsume(pawn, allowDrug, s));
         }
 
-        public Thing GetBestFoodFor([NotNull] Pawn pawn, bool allowDrug)
+        public ThingDef GetBestFoodTypeFor([NotNull] Pawn pawn, bool allowDrug)
         {
-            Log.Message($"Stock: {stock.Count}");
-            return stock.FirstOrDefault(s => WillConsume(pawn, allowDrug, s));
+            var firstOrDefault = stock.FirstOrDefault(s => WillConsume(pawn, allowDrug, s));
+            Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {firstOrDefault?.def.label}");
+            return firstOrDefault?.def;
         }
 
         private static bool WillConsume(Pawn pawn, bool allowDrug, Thing s)
@@ -52,7 +53,7 @@ namespace Restaurant.TableTops
 
         public override void MapComponentTick()
         {
-            if (GenTicks.TicksGame < lastStockUpdateTick + 250) return;
+            if (GenTicks.TicksGame < lastStockUpdateTick + 500) return;
             lastStockUpdateTick = GenTicks.TicksGame;
             stock = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t=>t.def.IsIngestible && IsInConsumableCategory(t.def.thingCategories)));
             Log.Message($"Stock: {stock.Select(s => s.def.label).ToCommaList(true)}");
