@@ -45,7 +45,7 @@ namespace Restaurant.TableTops
             Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {firstOrDefault?.def.label}");
             return firstOrDefault?.def;
         }
-
+        
         private static bool WillConsume(Pawn pawn, bool allowDrug, Thing s)
         {
             return (allowDrug || !s.def.IsDrug) && pawn.WillEat(s);
