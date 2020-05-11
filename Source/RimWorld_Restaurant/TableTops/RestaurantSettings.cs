@@ -36,20 +36,20 @@ namespace Restaurant.TableTops
 
         public bool HasAnyFoodFor([NotNull] Pawn pawn, bool allowDrug)
         {
-            return stock.Any(s => WillConsume(pawn, allowDrug, s));
             //Log.Message($"{pawn.NameShortColored}: HasFoodFor: Defs: {stock.Select(item=>item.def).Count(s => WillConsume(pawn, allowDrug, s))}");
+            return stock.Select(item=>item.def).Any(s => WillConsume(pawn, allowDrug, s));
         }
 
         public ThingDef GetBestFoodTypeFor([NotNull] Pawn pawn, bool allowDrug)
         {
-            var firstOrDefault = stock.FirstOrDefault(s => WillConsume(pawn, allowDrug, s));
-            return firstOrDefault?.def;
+            var best = stock.Select(item=>item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).MaxBy(def => FoodUtility.FoodOptimality(pawn, null, def, 0));
             //Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {best?.label}");
+            return best;
         }
         
-        private static bool WillConsume(Pawn pawn, bool allowDrug, Thing s)
+        private static bool WillConsume(Pawn pawn, bool allowDrug, ThingDef s)
         {
-            return (allowDrug || !s.def.IsDrug) && pawn.WillEat(s);
+            return (allowDrug || !s.IsDrug) && pawn.WillEat(s);
         }
 
         public override void MapComponentTick()
