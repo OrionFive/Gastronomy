@@ -44,10 +44,10 @@ namespace Restaurant.Waiting
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnNotDining(TargetIndex.B);
-            yield return Toils_Misc.FindRandomAdjacentReachableCell(TargetIndex.A, TargetIndex.A); // A is first the dining spot, then where we'll stand
+            yield return WaitingUtility.FindRandomAdjacentCell(TargetIndex.A, TargetIndex.A); // A is first the dining spot, then where we'll stand
             yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.OnCell).FailOnRestaurantClosed();
             yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
-            yield return WaitingUtility.TakeOrder(pawn, TargetIndex.B);
+            yield return WaitingUtility.TakeOrder(TargetIndex.B);
         }
     }
 }

@@ -23,16 +23,27 @@ namespace Restaurant.Waiting
 
             var list = pawn.GetRestaurant().SpawnedDiningPawns;
 
-            return !list.Any(p => {
+            var anyPatrons = list.Any(p => {
                 var driver = p.jobs.curDriver as JobDriver_Dine;
                 return driver?.wantsToOrder == true;
             });
+            return !anyPatrons;
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             if (!(t is Pawn p)) return false;
-            return p.jobs.curDriver is JobDriver_Dine dine && dine.wantsToOrder;
+            var canReserve = pawn.Map.reservationManager.CanReserve(pawn, p, 1, -1, null, forced);
+            if (!canReserve)
+            {
+                var ignored = pawn.Map.reservationManager.CanReserve(pawn, p, 1, -1, null, true);
+                var reserver = pawn.Map.reservationManager.FirstRespectedReserver(p, pawn);
+                Log.Message($"{pawn.NameShortColored} can't reserve {p.NameShortColored}. Is reserved by {reserver?.NameShortColored} who is doing {reserver?.CurJobDef?.label}. " 
+                            + $"When ignoring other reservation: canReserve = {ignored}");
+                return false;
+            }
+            var wantsToOrder = p.jobs.curDriver is JobDriver_Dine dine && dine.wantsToOrder;
+            return wantsToOrder;
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
