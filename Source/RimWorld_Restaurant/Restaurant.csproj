@@ -65,6 +65,7 @@
     <Compile Include="Dining\DiningSpot.cs" />
     <Compile Include="Dining\DiningUtility.cs" />
     <Compile Include="Dining\JobDriver_Dine.cs" />
+    <Compile Include="RestaurantUtility.cs" />
     <Compile Include="Dining\_Harmony_FoodUtility_Patch.cs" />
     <Compile Include="Dining\_Harmony_JobGiver_GetFood_Patch.cs" />
     <Compile Include="Dining\_Harmony_ThingDef_Patch.cs" />
@@ -85,7 +86,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Harmony\" />
-    <Folder Include="Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

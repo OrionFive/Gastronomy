@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using JetBrains.Annotations;
 using Restaurant.Dining;
@@ -13,11 +12,6 @@ namespace Restaurant.TableTops
         private static Building_CashRegister GetFirstRegister([NotNull] Map map)
         {
             return map.listerThings.ThingsOfDef(cashRegisterDef).OfType<Building_CashRegister>().FirstOrDefault();
-        }
-
-        public static RestaurantSettings GetSettings([NotNull]this Map map)
-        {
-            return map.GetComponent<RestaurantSettings>();
         }
 
         public static void OnDiningSpotCreated([NotNull]DiningSpot diningSpot)

@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -8,10 +6,10 @@ namespace Restaurant.Dining
 {
     public class JobDriver_Dine : JobDriver
     {
-        private DiningSpot DiningSpot => job.GetTarget(TargetIndex.A).Thing as DiningSpot;
-        private Thing Food => job.GetTarget(TargetIndex.C).Thing;
-        private Pawn Waiter => job.GetTarget(TargetIndex.B).Pawn;
-        private ThingDef PreferredFoodDef => job.plantDefToSow; // Abusing this for storage of def
+        public DiningSpot DiningSpot => job.GetTarget(TargetIndex.A).Thing as DiningSpot;
+        public Thing Food => job.GetTarget(TargetIndex.C).Thing;
+        public Pawn Waiter => job.GetTarget(TargetIndex.B).Pawn;
+        public ThingDef PreferredFoodDef => job.plantDefToSow; // Abusing this for storage of def
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -31,11 +29,11 @@ namespace Restaurant.Dining
             return true;
         }
 
-        public override string GetReport()
-        {
-            //if (job?.plantDefToSow == null) return base.GetReport();
-            return "JobDineGoReport".Translate();
-        }
+        //public override string GetReport()
+        //{
+        //    //if (job?.plantDefToSow == null) return base.GetReport();
+        //    return "JobDineGoReport".Translate();
+        //}
 
         protected override IEnumerable<Toil> MakeNewToils()
         {

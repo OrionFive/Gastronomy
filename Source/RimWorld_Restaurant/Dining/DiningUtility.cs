@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
-using Restaurant.TableTops;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -50,12 +49,6 @@ namespace Restaurant.Dining
         public static bool CanPossiblyDineAt(ThingDef def)
         {
             return thingsWithCompCanDineAt.Contains(def);
-        }
-
-        public static T FailOnRestaurantClosed<T>(this T f) where T : IJobEndable
-        {
-            f.AddEndCondition(() => f.GetActor().Map.GetSettings().IsOpenedRightNow ? JobCondition.Ongoing : JobCondition.Incompletable);
-            return f;
         }
 
         public static Toil GoToDineSpot(Pawn pawn, TargetIndex dineSpotInd)
