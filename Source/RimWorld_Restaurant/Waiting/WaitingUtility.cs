@@ -6,6 +6,8 @@ namespace Restaurant.Waiting
 {
     public static class WaitingUtility
     {
+        public static readonly JobDef waitDef = DefDatabase<JobDef>.GetNamed("Restaurant_Wait");
+  
         public static Toil TakeOrder(Pawn pawn, TargetIndex patronInd)
         {
             // Talk to patron

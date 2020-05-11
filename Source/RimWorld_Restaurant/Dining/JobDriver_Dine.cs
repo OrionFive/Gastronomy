@@ -9,7 +9,16 @@ namespace Restaurant.Dining
         public DiningSpot DiningSpot => job.GetTarget(TargetIndex.A).Thing as DiningSpot;
         public Thing Food => job.GetTarget(TargetIndex.C).Thing;
         public Pawn Waiter => job.GetTarget(TargetIndex.B).Pawn;
-        public ThingDef PreferredFoodDef => job.plantDefToSow; // Abusing this for storage of def
+
+        public bool wantsToOrder;
+        private ThingDef preferredFoodDef;
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref wantsToOrder, "wantsToOrder");
+            Scribe_Defs.Look(ref preferredFoodDef, "preferredFoodDef");
+        }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -26,6 +35,7 @@ namespace Restaurant.Dining
                 Log.Message($"{pawn.NameShortColored} reserved dining spot at {diningSpot.Position}.");
             }
 
+            preferredFoodDef = job.plantDefToSow; // Abusing this for storage of def
             return true;
         }
 

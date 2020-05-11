@@ -1,5 +1,4 @@
 using HarmonyLib;
-using Restaurant.TableTops;
 using RimWorld;
 using Verse;
 using Verse.AI;

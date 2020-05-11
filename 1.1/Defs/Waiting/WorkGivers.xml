@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <WorkGiverDef>
+    <defName>Restaurant_TakeOrders</defName>
+    <label>take orders</label>
+    <giverClass>Restaurant.Waiting.WorkGiver_TakeOrders</giverClass>
+    <workType>Waiting</workType>
+    <priorityInType>100</priorityInType>
+    <!-- <fixedBillGiverDefs> -->
+      <!-- <li>Restaurant_CashRegister</li> -->
+      <!-- <li>Restaurant_DiningSpot</li> -->
+    <!-- </fixedBillGiverDefs> -->
+    <verb>take order</verb>
+    <gerund>taking order</gerund>
+    <requiredCapacities>
+      <li>Talking</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
+</Defs>

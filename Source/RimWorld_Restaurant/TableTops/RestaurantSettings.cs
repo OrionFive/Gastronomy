@@ -15,6 +15,7 @@ namespace Restaurant.TableTops
         public bool IsOpenedRightNow { get; } = true;
         [NotNull] private List<Thing> stock = new List<Thing>();
         private int lastStockUpdateTick;
+        private List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
 
         public override void ExposeData()
         {
@@ -72,6 +73,16 @@ namespace Restaurant.TableTops
         public void RequestMealFor(Pawn patron, ThingDef foodDef)
         {
             Log.Message($"{patron.NameShortColored} has ordered {foodDef.label}.");
+        }
+
+        public List<Pawn> SpawnedDiningPawns
+        {
+            get
+            {
+                spawnedDiningPawnsResult.Clear();
+                spawnedDiningPawnsResult.AddRange(map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.jobs?.curDriver is JobDriver_Dine));
+                return spawnedDiningPawnsResult;
+            }
         }
     }
 }
