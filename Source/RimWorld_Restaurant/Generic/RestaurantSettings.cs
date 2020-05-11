@@ -5,7 +5,7 @@ using Restaurant.Dining;
 using RimWorld;
 using Verse;
 
-namespace Restaurant.TableTops
+namespace Restaurant
 {
     public class RestaurantSettings : MapComponent
     {
@@ -16,11 +16,13 @@ namespace Restaurant.TableTops
         [NotNull] private List<Thing> stock = new List<Thing>();
         private int lastStockUpdateTick;
         private List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
+        private List<Order> orders = new List<Order>();
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref testPos, "testPos");
+            Scribe_Collections.Look(ref orders, "orders", LookMode.Deep);
         }
 
         public RestaurantSettings(Map map) : base(map) { }

@@ -65,7 +65,8 @@
     <Compile Include="Dining\DiningSpot.cs" />
     <Compile Include="Dining\DiningUtility.cs" />
     <Compile Include="Dining\JobDriver_Dine.cs" />
-    <Compile Include="RestaurantUtility.cs" />
+    <Compile Include="Generic\RestaurantUtility.cs" />
+    <Compile Include="Generic\Order.cs" />
     <Compile Include="Waiting\JobDriver_Wait.cs" />
     <Compile Include="Dining\_Harmony_FoodUtility_Patch.cs" />
     <Compile Include="Dining\_Harmony_JobGiver_GetFood_Patch.cs" />
@@ -73,11 +74,11 @@
     <Compile Include="Patching\ThingWithComps.cs" />
     <Compile Include="TableTops\ITab_Register.cs" />
     <Compile Include="TableTops\RegisterUtility.cs" />
-    <Compile Include="TableTops\RestaurantSettings.cs" />
+    <Compile Include="Generic\RestaurantSettings.cs" />
     <Compile Include="TableTops\_Harmony_AvoidGrid_Patch.cs" />
     <Compile Include="TableTops\Building_CashRegister.cs" />
     <Compile Include="TableTops\_Harmony_GenGrid_Patch.cs" />
-    <Compile Include="ModBaseRestaurant.cs" />
+    <Compile Include="Generic\ModBaseRestaurant.cs" />
     <Compile Include="TableTops\PlaceWorker_OnTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableTops\Building_TableTop.cs" />

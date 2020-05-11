@@ -1,6 +1,5 @@
 using JetBrains.Annotations;
 using Restaurant.Dining;
-using Restaurant.TableTops;
 using Verse;
 using Verse.AI;
 
