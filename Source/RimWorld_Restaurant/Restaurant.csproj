@@ -66,6 +66,7 @@
     <Compile Include="Dining\DiningUtility.cs" />
     <Compile Include="Dining\JobDriver_Dine.cs" />
     <Compile Include="RestaurantUtility.cs" />
+    <Compile Include="Waiting\JobDriver_Wait.cs" />
     <Compile Include="Dining\_Harmony_FoodUtility_Patch.cs" />
     <Compile Include="Dining\_Harmony_JobGiver_GetFood_Patch.cs" />
     <Compile Include="Dining\_Harmony_ThingDef_Patch.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="TableTops\PlaceWorker_OnTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableTops\Building_TableTop.cs" />
+    <Compile Include="Waiting\WaitingUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

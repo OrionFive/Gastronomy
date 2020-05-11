@@ -68,5 +68,10 @@ namespace Restaurant.TableTops
             if (defThingCategories.Contains(ThingCategoryDefOf.PlantMatter)) return true;
             return false;
         }
+
+        public void RequestMealFor(Pawn patron, ThingDef foodDef)
+        {
+            Log.Message($"{patron.NameShortColored} has ordered {foodDef.label}.");
+        }
     }
 }

@@ -4,7 +4,7 @@
   <JobDef>
     <defName>Restaurant_Dine</defName>
     <driverClass>Restaurant.Dining.JobDriver_Dine</driverClass>
-    <reportString>ordering food.</reportString>
+    <reportString>eating at restaurant.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
   
