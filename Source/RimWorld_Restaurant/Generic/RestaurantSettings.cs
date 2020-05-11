@@ -9,14 +9,27 @@ namespace Restaurant
 {
     public class RestaurantSettings : MapComponent
     {
+        public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
+        private int lastStockUpdateTick;
+        [NotNull] private List<Order> orders = new List<Order>();
+        [NotNull] private List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
+        [NotNull] private List<Thing> stock = new List<Thing>();
         public IntVec3 testPos;
 
-        public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
+        public RestaurantSettings(Map map) : base(map) { }
         public bool IsOpenedRightNow { get; } = true;
-        [NotNull] private List<Thing> stock = new List<Thing>();
-        private int lastStockUpdateTick;
-        private List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
-        private List<Order> orders = new List<Order>();
+
+        [NotNull]public List<Pawn> SpawnedDiningPawns
+        {
+            get
+            {
+                spawnedDiningPawnsResult.Clear();
+                spawnedDiningPawnsResult.AddRange(map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.jobs?.curDriver is JobDriver_Dine));
+                return spawnedDiningPawnsResult;
+            }
+        }
+        [NotNull]public IReadOnlyCollection<Thing> Stock => stock.AsReadOnly();
+        [NotNull]public IEnumerable<Order> AvailableOrders => orders.Where(o => !o.hasToBeMade && !o.isBeingDelivered);
 
         public override void ExposeData()
         {
@@ -24,8 +37,6 @@ namespace Restaurant
             Scribe_Values.Look(ref testPos, "testPos");
             Scribe_Collections.Look(ref orders, "orders", LookMode.Deep);
         }
-
-        public RestaurantSettings(Map map) : base(map) { }
 
         public override void FinalizeInit()
         {
@@ -39,16 +50,16 @@ namespace Restaurant
         public bool HasAnyFoodFor([NotNull] Pawn pawn, bool allowDrug)
         {
             //Log.Message($"{pawn.NameShortColored}: HasFoodFor: Defs: {stock.Select(item=>item.def).Count(s => WillConsume(pawn, allowDrug, s))}");
-            return stock.Select(item=>item.def).Any(s => WillConsume(pawn, allowDrug, s));
+            return stock.Select(item => item.def).Any(s => WillConsume(pawn, allowDrug, s));
         }
 
         public ThingDef GetBestFoodTypeFor([NotNull] Pawn pawn, bool allowDrug)
         {
-            var best = stock.Select(item=>item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).MaxBy(def => FoodUtility.FoodOptimality(pawn, null, def, 0));
+            var best = stock.Select(item => item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).MaxBy(def => FoodUtility.FoodOptimality(pawn, null, def, 0));
             //Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {best?.label}");
             return best;
         }
-        
+
         private static bool WillConsume(Pawn pawn, bool allowDrug, ThingDef s)
         {
             return (allowDrug || !s.IsDrug) && pawn.WillEat(s);
@@ -58,7 +69,7 @@ namespace Restaurant
         {
             if (GenTicks.TicksGame < lastStockUpdateTick + 500) return;
             lastStockUpdateTick = GenTicks.TicksGame;
-            stock = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t=>t.def.IsIngestible && IsInConsumableCategory(t.def.thingCategories)));
+            stock = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t => t.def.IsIngestible && IsInConsumableCategory(t.def.thingCategories)));
             //Log.Message($"Stock: {stock.Select(s => s.def.label).ToCommaList(true)}");
         }
 
@@ -72,18 +83,51 @@ namespace Restaurant
             return false;
         }
 
-        public void RequestMealFor(Pawn patron, ThingDef foodDef)
+        public void CreateOrder(Pawn patron, ThingDef consumableDef)
         {
-            Log.Message($"{patron.NameShortColored} has ordered {foodDef.label}.");
+            Log.Message($"{patron.NameShortColored} has ordered {consumableDef.label}.");
+
+            // Already ordered?
+            if (orders.Any(o => o.patron == patron))
+            {
+                Log.Message($"{patron.NameShortColored} has already ordered. Ignoring.");
+                return;
+            }
+
+            // Already prepared?
+            var available = stock.Count(item => item.def == consumableDef);
+            var ordered = orders.Count(o => o.consumableDef == consumableDef);
+
+            if (available <= ordered)
+            {
+                Log.Message($"{consumableDef.label} has to be prepared first {available} available and {ordered} ordered.");
+            }
+            else
+            {
+                Log.Message($"{consumableDef.label} can be delivered. {available} available and {ordered} ordered.");
+                //map.reservationManager.Reserve(patron, patron.CurJob, thing, 1, 1);
+            }
+
+            orders.Add(new Order
+            {
+                consumableDef = consumableDef,
+                //consumable = thing,
+                patron = patron,
+                hasToBeMade = available <= ordered
+            });
         }
 
-        public List<Pawn> SpawnedDiningPawns
+        public void CancelOrder(Order order)
         {
-            get
+            orders.Remove(order);
+        }
+
+        public void CompleteOrderFor(Pawn patron)
+        {
+            var amount = orders.RemoveAll(o => o.patron == patron);
+            if (amount != 1)
             {
-                spawnedDiningPawnsResult.Clear();
-                spawnedDiningPawnsResult.AddRange(map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.jobs?.curDriver is JobDriver_Dine));
-                return spawnedDiningPawnsResult;
+                Log.Error($"Cleared {amount} orders for {patron.NameShortColored}. That's not 1 as expected.");
             }
         }
     }

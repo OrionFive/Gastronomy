@@ -1,15 +1,22 @@
 using Verse;
 
-namespace Restaurant {
-    internal class Order : IExposable
+namespace Restaurant
+{
+    public class Order : IExposable
     {
+        public Thing consumable;
+        public ThingDef consumableDef;
         public Pawn patron;
-        public ThingDef consumable;
+        public bool hasToBeMade;
+        public bool isBeingDelivered;
 
         public void ExposeData()
         {
             Scribe_References.Look(ref patron, "patron");
-            Scribe_Defs.Look(ref consumable, "consumable");
+            Scribe_Defs.Look(ref consumableDef, "consumableDef");
+            Scribe_References.Look(ref consumable, "consumable");
+            Scribe_Values.Look(ref hasToBeMade, "hasToBeMade");
+            Scribe_Values.Look(ref isBeingDelivered, "isBeingDelivered");
         }
     }
 }

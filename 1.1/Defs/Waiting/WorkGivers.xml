@@ -19,4 +19,22 @@
     <prioritizeSustains>true</prioritizeSustains>
   </WorkGiverDef>
 
+  <WorkGiverDef>
+    <defName>Restaurant_Serve</defName>
+    <label>serve</label>
+    <giverClass>Restaurant.Waiting.WorkGiver_Serve</giverClass>
+    <workType>Serving</workType>
+    <priorityInType>110</priorityInType>
+    <!-- <fixedBillGiverDefs> -->
+      <!-- <li>Restaurant_CashRegister</li> -->
+      <!-- <li>Restaurant_DiningSpot</li> -->
+    <!-- </fixedBillGiverDefs> -->
+    <verb>serve</verb>
+    <gerund>serving</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
 </Defs>

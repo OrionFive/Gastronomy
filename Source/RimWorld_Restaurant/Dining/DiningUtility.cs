@@ -141,23 +141,6 @@ namespace Restaurant.Dining
             return toil;
         }
 
-        public static Toil Order(Pawn pawn, TargetIndex waiterInd)
-        {
-            var toil = new Toil();
-            toil.initAction = () => toil.actor.jobs.curDriver.ticksLeftThisToil = 500;
-            toil.tickAction = () => {
-                //if (diningSpotInd != 0 && toil.actor.CurJob.GetTarget(diningSpotInd).IsValid)
-                //{
-                //    toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(diningSpotInd).Cell);
-                //}
-            };
-            toil.defaultDuration = 500;
-            toil.WithProgressBarToilDelay(TargetIndex.A);
-            toil.defaultCompleteMode = ToilCompleteMode.Delay;
-            toil.socialMode = RandomSocialMode.SuperActive;
-            return toil;
-        }
-
         public static Toil WaitForMeal(Pawn pawn, TargetIndex waiterInd, TargetIndex mealInd)
         {
             var toil = new Toil();

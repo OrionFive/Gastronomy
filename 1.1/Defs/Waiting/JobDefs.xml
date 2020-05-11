@@ -2,9 +2,16 @@
 <Defs>
 
   <JobDef>
-    <defName>Restaurant_Wait</defName>
-    <driverClass>Restaurant.Waiting.JobDriver_Wait</driverClass>
-    <reportString>waiting TargetB.</reportString>
+    <defName>Restaurant_TakeOrder</defName>
+    <driverClass>Restaurant.Waiting.JobDriver_TakeOrder</driverClass>
+    <reportString>taking order from TargetB.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+  
+  <JobDef>
+    <defName>Restaurant_Serve</defName>
+    <driverClass>Restaurant.Waiting.JobDriver_Serve</driverClass>
+    <reportString>serving TargetB to TargetA.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
   

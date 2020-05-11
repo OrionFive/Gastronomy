@@ -14,6 +14,7 @@ namespace Restaurant.Waiting
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
+            Log.Message($"{pawn.GetRestaurant().SpawnedDiningPawns.Count} dining pawns...");
             return pawn.GetRestaurant().SpawnedDiningPawns;
         }
 

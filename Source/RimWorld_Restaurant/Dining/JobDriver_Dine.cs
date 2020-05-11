@@ -52,7 +52,6 @@ namespace Restaurant.Dining
             yield return DiningUtility.TurnToEatSurface(TargetIndex.A);
             var waitForWaiter = DiningUtility.WaitForWaiter(pawn, TargetIndex.A, TargetIndex.B).FailOnRestaurantClosed();
             yield return waitForWaiter;
-            yield return DiningUtility.Order(pawn, TargetIndex.B);
             yield return DiningUtility.WaitForMeal(pawn, TargetIndex.B, TargetIndex.C);
             //yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.C);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
@@ -61,6 +60,14 @@ namespace Restaurant.Dining
         public void OnOrderTaken(ThingDef foodDef, Pawn waiter)
         {
             wantsToOrder = false;
+            Log.Message($"{pawn.NameShortColored}'s order has been taken by {waiter.NameShortColored}.");
+        }
+
+        public void ServeFood(Thing food)
+        {
+            job.SetTarget(TargetIndex.C, food);
+            // TODO: Trigger wait for meal
+            // TODO: Make WaitForWaiter continue when ordered
         }
     }
 }

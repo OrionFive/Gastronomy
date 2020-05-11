@@ -8,7 +8,8 @@ namespace Restaurant.Waiting
     public static class WaitingUtility
     {
         public static readonly JobDef waitDef = DefDatabase<JobDef>.GetNamed("Restaurant_Wait");
-  
+        public static readonly JobDef serveDef = DefDatabase<JobDef>.GetNamed("Restaurant_Serve");
+
         public static Toil TakeOrder(TargetIndex patronInd)
         {
             // Talk to patron
@@ -33,7 +34,7 @@ namespace Restaurant.Waiting
 
                 var settings = patron.GetRestaurant();
                 var desiredFoodDef = settings.GetBestFoodTypeFor(patron, !patron.IsTeetotaler());
-                settings.RequestMealFor(patron, desiredFoodDef);
+                settings.CreateOrder(patron, desiredFoodDef);
 
                 if (!(patron.jobs.curDriver is JobDriver_Dine driver))
                 {
@@ -73,6 +74,39 @@ namespace Restaurant.Waiting
                 }
             };
             return findCell;
+        }
+
+        public static Toil ClearOrder(TargetIndex patronInd, TargetIndex foodInd)
+        {
+            Toil clearOrder = new Toil();
+            clearOrder.initAction = delegate {
+                Pawn actor = clearOrder.actor;
+                Job curJob = actor.CurJob;
+                LocalTargetInfo targetPatron = curJob.GetTarget(patronInd);
+                LocalTargetInfo targetFood = curJob.GetTarget(foodInd);
+
+                var patron = targetPatron.Pawn;
+                if (!targetPatron.HasThing || patron == null)
+                {
+                    Log.Error($"Can't clear order. No patron.");
+                    return;
+                }
+
+                var food = targetFood.Thing;
+                if (!targetFood.HasThing || food == null)
+                {
+                    Log.Error($"Can't clear order. No food.");
+                    return;
+                }
+
+                if (patron.jobs.curDriver is JobDriver_Dine patronDriver)
+                {
+                    patronDriver.ServeFood(food);
+                    Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
+                    actor.GetRestaurant().CompleteOrderFor(patron);
+                }
+            };
+            return clearOrder;
         }
     }
 }
