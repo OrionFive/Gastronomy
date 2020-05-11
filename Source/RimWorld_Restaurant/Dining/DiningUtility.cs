@@ -22,7 +22,7 @@ namespace Restaurant.Dining
             const int maxRegionsToScan = 100;
             foodDef = null;
 
-            var settings = pawn.Map?.GetSettings();
+            var settings = pawn.GetRestaurant();
             if (settings == null) return null;
 
             if (!settings.IsOpenedRightNow || !settings.HasAnyFoodFor(pawn, allowDrug)) return null;

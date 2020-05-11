@@ -16,12 +16,12 @@ namespace Restaurant.TableTops
 
         public static void OnDiningSpotCreated([NotNull]DiningSpot diningSpot)
         {
-            diningSpot.Map.GetSettings().diningSpots.Add(diningSpot);
+            diningSpot.GetRestaurant().diningSpots.Add(diningSpot);
         }
 
         public static void OnDiningSpotRemoved([NotNull]DiningSpot diningSpot)
         {
-            diningSpot.Map.GetSettings().diningSpots.Remove(diningSpot);
+            diningSpot.GetRestaurant().diningSpots.Remove(diningSpot);
         }
 
         public static void OnBuildingDespawned(Building building, Map map)

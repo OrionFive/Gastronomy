@@ -14,14 +14,14 @@ namespace Restaurant.Waiting
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
-            return pawn.Map.GetSettings().SpawnedDiningPawns;
+            return pawn.GetRestaurant().SpawnedDiningPawns;
         }
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             if (!InteractionUtility.CanInitiateInteraction(pawn)) return true;
 
-            var list = pawn.Map.GetSettings().SpawnedDiningPawns;
+            var list = pawn.GetRestaurant().SpawnedDiningPawns;
 
             return !list.Any(p => {
                 var driver = p.jobs.curDriver as JobDriver_Dine;

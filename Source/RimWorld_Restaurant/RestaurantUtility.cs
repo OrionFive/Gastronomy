@@ -10,7 +10,7 @@ namespace Restaurant
     {
         public static T FailOnRestaurantClosed<T>(this T f) where T : IJobEndable
         {
-            f.AddEndCondition(() => f.GetActor().Map.GetSettings().IsOpenedRightNow ? JobCondition.Ongoing : JobCondition.Incompletable);
+            f.AddEndCondition(() => f.GetActor().GetRestaurant().IsOpenedRightNow ? JobCondition.Ongoing : JobCondition.Incompletable);
             return f;
         }
 
@@ -28,9 +28,9 @@ namespace Restaurant
             return f;
         }
 
-        public static RestaurantSettings GetSettings([NotNull]this Map map)
+        public static RestaurantSettings GetRestaurant([NotNull]this Thing thing)
         {
-            return map.GetComponent<RestaurantSettings>();
+            return thing.Map.GetComponent<RestaurantSettings>();
         }
     }
 }

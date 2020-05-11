@@ -36,15 +36,15 @@ namespace Restaurant.TableTops
 
         public bool HasAnyFoodFor([NotNull] Pawn pawn, bool allowDrug)
         {
-            Log.Message($"{pawn.NameShortColored}: HasFoodFor: Stock: {stock.Count(s => WillConsume(pawn, allowDrug, s))}");
             return stock.Any(s => WillConsume(pawn, allowDrug, s));
+            //Log.Message($"{pawn.NameShortColored}: HasFoodFor: Defs: {stock.Select(item=>item.def).Count(s => WillConsume(pawn, allowDrug, s))}");
         }
 
         public ThingDef GetBestFoodTypeFor([NotNull] Pawn pawn, bool allowDrug)
         {
             var firstOrDefault = stock.FirstOrDefault(s => WillConsume(pawn, allowDrug, s));
-            Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {firstOrDefault?.def.label}");
             return firstOrDefault?.def;
+            //Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {best?.label}");
         }
         
         private static bool WillConsume(Pawn pawn, bool allowDrug, Thing s)

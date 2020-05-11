@@ -33,7 +33,7 @@ namespace Restaurant.Waiting
                     return;
                 }
 
-                var settings = patron.Map.GetSettings();
+                var settings = patron.GetRestaurant();
                 var desiredFoodDef = settings.GetBestFoodTypeFor(patron, !patron.IsTeetotaler());
                 settings.RequestMealFor(patron, desiredFoodDef);
 

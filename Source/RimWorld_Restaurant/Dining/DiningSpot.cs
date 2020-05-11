@@ -16,12 +16,12 @@ namespace Restaurant.Dining
         private RestaurantSettings settings;
 
         public override ThingDef DispensableDef => throw new NotImplementedException();
-        public bool MayDineStanding { get; } = true;
+        public bool MayDineStanding { get; } = false;
 
         public override void PostMapInit()
         {
             base.PostMapInit();
-            settings = Map.GetSettings();
+            settings = this.GetRestaurant();
         }
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
@@ -31,7 +31,7 @@ namespace Restaurant.Dining
             if (!respawningAfterLoad)
             {
                 RegisterUtility.OnDiningSpotCreated(this);
-                settings = Map.GetSettings();
+                settings = this.GetRestaurant();
             }
         }
 

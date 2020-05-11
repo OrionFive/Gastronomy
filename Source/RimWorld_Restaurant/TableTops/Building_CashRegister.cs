@@ -24,14 +24,14 @@ namespace Restaurant.TableTops
         public override void PostMapInit()
         {
             base.PostMapInit();
-            settings = Map.GetSettings();
+            settings = this.GetRestaurant();
             ScanDiningSpots();
         }
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
-            if (!respawningAfterLoad) settings = Map.GetSettings();
+            if (!respawningAfterLoad) settings = this.GetRestaurant();
         }
 
         public override void DrawExtraSelectionOverlays()

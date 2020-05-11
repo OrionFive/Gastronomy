@@ -36,7 +36,7 @@ namespace Restaurant.Dining
                 if (diningSpot != null)
                 {
                     foodSource = diningSpot;
-                    Log.Message($"{getter.NameShortColored} found diningSpot at {diningSpot.Position} with {foodDef?.label}.");
+                    //Log.Message($"{getter.NameShortColored} found diningSpot at {diningSpot.Position} with {foodDef?.label}.");
                     __result = true;
                     return false; // Don't run original code
                 }
