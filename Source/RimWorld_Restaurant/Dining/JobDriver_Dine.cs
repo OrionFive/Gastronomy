@@ -57,5 +57,10 @@ namespace Restaurant.Dining
             //yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.C);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
         }
+
+        public void OnOrderTaken(ThingDef foodDef, Pawn waiter)
+        {
+            wantsToOrder = false;
+        }
     }
 }

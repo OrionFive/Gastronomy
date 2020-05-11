@@ -1,4 +1,6 @@
+using Restaurant.Dining;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -20,7 +22,7 @@ namespace Restaurant.Waiting
             //toil.FailOnNotDining(patronInd);
             toil.AddFinishAction(OnDoneTalking);
 
-            return null;
+            return toil;
             
             void OnDoneTalking()
             {
@@ -34,6 +36,13 @@ namespace Restaurant.Waiting
                 var settings = patron.Map.GetSettings();
                 var desiredFoodDef = settings.GetBestFoodTypeFor(patron, !patron.IsTeetotaler());
                 settings.RequestMealFor(patron, desiredFoodDef);
+
+                if (!(patron.jobs.curDriver is JobDriver_Dine driver))
+                {
+                    Log.Error($"{patron.NameShortColored} is not dining!");
+                    return;
+                }
+                driver.OnOrderTaken(desiredFoodDef, toil.GetActor());
             }
         }
     }

@@ -27,6 +27,9 @@ namespace Restaurant.Dining
                     return true; // Run original code
                 }
 
+                // Can't talk? Can't order.
+                if (!getter.health.capacities.CapableOf(PawnCapacityDefOf.Talking)) return true;
+
                 bool allowDrug = !eater.IsTeetotaler();
                 var diningSpot = DiningUtility.FindDiningSpotFor(getter, out foodDef, allowDrug);
 

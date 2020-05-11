@@ -117,18 +117,27 @@ namespace Restaurant.Dining
         public static Toil WaitForWaiter(Pawn pawn, TargetIndex diningSpotInd, TargetIndex waiterInd)
         {
             var toil = new Toil();
-            toil.initAction = () => toil.actor.jobs.curDriver.ticksLeftThisToil = 500;
+            toil.initAction = () => {
+                var driver = toil.actor.jobs.curDriver as JobDriver_Dine;
+                driver.wantsToOrder = true;
+            };
             toil.tickAction = () => {
                 if (diningSpotInd != 0 && toil.actor.CurJob.GetTarget(diningSpotInd).IsValid)
                 {
                     toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(diningSpotInd).Cell);
                 }
             };
-            toil.defaultDuration = 500;
+            toil.AddFinishAction(() => {
+                var driver = toil.actor.jobs.curDriver as JobDriver_Dine;
+                driver.wantsToOrder = false;
+            });
+
+            toil.defaultDuration = 1500;
             toil.WithProgressBarToilDelay(TargetIndex.A);
             toil.defaultCompleteMode = ToilCompleteMode.Delay;
             toil.FailOnDestroyedOrNull(diningSpotInd);
             toil.socialMode = RandomSocialMode.SuperActive;
+
             return toil;
         }
 

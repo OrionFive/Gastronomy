@@ -46,6 +46,7 @@ namespace Restaurant.Waiting
                 Log.Message($"{pawn.NameShortColored} couldn't serve {patron.NameShortColored}: patronJob = {patron.jobs.curDriver?.GetType().Name}");
                 return null;
             }
+            Log.Message($"{pawn.NameShortColored} can get a waiting job on {patron.NameShortColored}.");
 
             return JobMaker.MakeJob(WaitingUtility.waitDef, diningSpot, patron);
         }
