@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -47,27 +48,30 @@ namespace Restaurant.Dining
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
+            // Declare these early - jumping points
+            var waitForWaiter = DiningUtility.WaitForWaiter(TargetIndex.A, TargetIndex.B).FailOnRestaurantClosed();
+            var waitForMeal = DiningUtility.WaitForMeal(pawn, TargetIndex.B, TargetIndex.C);
+
             this.FailOn(() => DiningSpot.Destroyed);
             yield return DiningUtility.GoToDineSpot(pawn, TargetIndex.A).FailOnRestaurantClosed();
             yield return DiningUtility.TurnToEatSurface(TargetIndex.A);
-            var waitForWaiter = DiningUtility.WaitForWaiter(pawn, TargetIndex.A, TargetIndex.B).FailOnRestaurantClosed();
+            yield return Toils_Jump.JumpIf(waitForMeal, () => pawn.GetRestaurant().GetOrderFor(pawn) != null);
             yield return waitForWaiter;
-            yield return DiningUtility.WaitForMeal(pawn, TargetIndex.B, TargetIndex.C);
-            //yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.C);
+            yield return waitForMeal;
+            yield return Toils_Reserve.Reserve(TargetIndex.C);
+            yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.C);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
         }
 
         public void OnOrderTaken(ThingDef foodDef, Pawn waiter)
         {
-            wantsToOrder = false;
+            wantsToOrder = false; // This triggers WaitForWaiter
             Log.Message($"{pawn.NameShortColored}'s order has been taken by {waiter.NameShortColored}.");
         }
 
         public void ServeFood(Thing food)
         {
-            job.SetTarget(TargetIndex.C, food);
-            // TODO: Trigger wait for meal
-            // TODO: Make WaitForWaiter continue when ordered
+            job.SetTarget(TargetIndex.C, food); // This triggers WaitForMeal
         }
     }
 }

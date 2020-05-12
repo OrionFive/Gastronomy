@@ -13,6 +13,12 @@ namespace Restaurant
             return f;
         }
 
+        public static T FailOnDurationExpired<T>(this T f) where T : IJobEndable
+        {
+            f.AddEndCondition(() => f.GetActor().jobs.curDriver.ticksLeftThisToil > 0  ? JobCondition.Ongoing : JobCondition.Incompletable);
+            return f;
+        }
+
         public static T FailOnNotDining<T>(this T f, TargetIndex patronInd) where T : IJobEndable
         {
             JobCondition PatronIsNotDining()

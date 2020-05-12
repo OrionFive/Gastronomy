@@ -130,5 +130,10 @@ namespace Restaurant
                 Log.Error($"Cleared {amount} orders for {patron.NameShortColored}. That's not 1 as expected.");
             }
         }
+
+        public Order GetOrderFor(Pawn patron)
+        {
+            return orders.FirstOrDefault(o => o.patron == patron);
+        }
     }
 }

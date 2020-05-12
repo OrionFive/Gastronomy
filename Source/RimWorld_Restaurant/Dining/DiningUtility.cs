@@ -114,46 +114,41 @@ namespace Restaurant.Dining
             return toil;
         }
 
-        public static Toil WaitForWaiter(Pawn pawn, TargetIndex diningSpotInd, TargetIndex waiterInd)
+        public static Toil WaitForWaiter(TargetIndex diningSpotInd, TargetIndex waiterInd)
         {
             var toil = new Toil();
-            toil.initAction = () => {
-                var driver = toil.actor.jobs.curDriver as JobDriver_Dine;
-                driver.wantsToOrder = true;
-            };
+            toil.initAction = () => GetDriver(toil).wantsToOrder = true;
             toil.tickAction = () => {
                 if (diningSpotInd != 0 && toil.actor.CurJob.GetTarget(diningSpotInd).IsValid)
                 {
                     toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(diningSpotInd).Cell);
                 }
+                if(!GetDriver(toil).wantsToOrder) GetDriver(toil).ReadyForNextToil();
             };
-            toil.AddFinishAction(() => {
-                var driver = toil.actor.jobs.curDriver as JobDriver_Dine;
-                driver.wantsToOrder = false;
-            });
+            toil.AddFinishAction(() => GetDriver(toil).wantsToOrder = false);
 
             toil.defaultDuration = 1500;
-            toil.WithProgressBarToilDelay(TargetIndex.A);
-            toil.defaultCompleteMode = ToilCompleteMode.Delay;
+            toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
+            toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDestroyedOrNull(diningSpotInd);
+            toil.FailOnDurationExpired(); // Duration over? Fail job!
             toil.socialMode = RandomSocialMode.SuperActive;
-
             return toil;
         }
+
+        private static JobDriver_Dine GetDriver(Toil t) => t.actor.jobs.curDriver as JobDriver_Dine;
 
         public static Toil WaitForMeal(Pawn pawn, TargetIndex waiterInd, TargetIndex mealInd)
         {
             var toil = new Toil();
-            toil.initAction = () => toil.actor.jobs.curDriver.ticksLeftThisToil = 500;
             toil.tickAction = () => {
-                //if (diningSpotInd != 0 && toil.actor.CurJob.GetTarget(diningSpotInd).IsValid)
-                //{
-                //    toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(diningSpotInd).Cell);
-                //}
+                var target = toil.actor.CurJob.GetTarget(mealInd);
+                if(target.HasThing && target.IsValid) GetDriver(toil).ReadyForNextToil();
             };
-            toil.defaultDuration = 500;
-            toil.WithProgressBarToilDelay(TargetIndex.A);
-            toil.defaultCompleteMode = ToilCompleteMode.Delay;
+            toil.defaultDuration = 1500;
+            toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
+            toil.defaultCompleteMode = ToilCompleteMode.Never;
+            toil.FailOnDurationExpired(); // Duration over? Fail job!
             toil.socialMode = RandomSocialMode.SuperActive;
             return toil;
         }
