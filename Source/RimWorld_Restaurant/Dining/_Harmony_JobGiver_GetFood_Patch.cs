@@ -7,6 +7,9 @@ namespace Restaurant.Dining
 {
     internal static class _Harmony_JobGiver_GetFood_Patch
     {
+        /// <summary>
+        /// Replaces regular ingest job with dine job
+        /// </summary>
         [HarmonyPatch(typeof(JobGiver_GetFood), "TryGiveJob")]
         public class TryGiveJob
         {

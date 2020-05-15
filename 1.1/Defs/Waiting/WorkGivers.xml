@@ -2,10 +2,10 @@
 <Defs>
 
   <WorkGiverDef>
-    <defName>Restaurant_TakeOrders</defName>
+    <defName>Restaurant_TakeOrder</defName>
     <label>take orders</label>
-    <giverClass>Restaurant.Waiting.WorkGiver_TakeOrders</giverClass>
-    <workType>Waiting</workType>
+    <giverClass>Restaurant.Waiting.WorkGiver_TakeOrder</giverClass>
+    <workType>Restaurant_Waiting</workType>
     <priorityInType>100</priorityInType>
     <!-- <fixedBillGiverDefs> -->
       <!-- <li>Restaurant_CashRegister</li> -->
@@ -23,7 +23,7 @@
     <defName>Restaurant_Serve</defName>
     <label>serve</label>
     <giverClass>Restaurant.Waiting.WorkGiver_Serve</giverClass>
-    <workType>Serving</workType>
+    <workType>Restaurant_Waiting</workType>
     <priorityInType>110</priorityInType>
     <!-- <fixedBillGiverDefs> -->
       <!-- <li>Restaurant_CashRegister</li> -->

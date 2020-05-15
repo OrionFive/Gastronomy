@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
 using Restaurant.Dining;
 using RimWorld;
 using Verse;
@@ -22,29 +21,36 @@ namespace Restaurant.Waiting
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            return !pawn.GetRestaurant().AvailableOrders.Any();
+            return !pawn.GetRestaurant().AvailableOrdersForServing.Any();
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             var restaurant = pawn.GetRestaurant();
             if (!pawn.CanReserveAndReach(t, PathEndMode.Touch, Danger.None, 1, 1)) return false;
-            var anyOrder = restaurant.AvailableOrders.FirstOrDefault(o => !o.isBeingDelivered && o.consumableDef == t.def);
+            var anyOrder = restaurant.AvailableOrdersForServing.FirstOrDefault(o => o.consumableDef == t.def && !restaurant.IsBeingDelivered(o, pawn));
             if (anyOrder==null) return false;
-            if (anyOrder.patron == null || !anyOrder.patron.Spawned || anyOrder.patron.Dead || anyOrder.patron.jobs?.curDriver is JobDriver_Dine)
+            if (anyOrder.patron == null || !anyOrder.patron.Spawned || anyOrder.patron.Dead)
             {
-                Log.Message($"Order canceled. null? {anyOrder.patron == null} dead? unspawned? {!anyOrder.patron?.Spawned} driver? {anyOrder.patron?.jobs?.curDriver?.GetType().Name}");
+                Log.Message($"Order canceled. null? {anyOrder.patron == null} dead? {anyOrder.patron.Dead} unspawned? {!anyOrder.patron?.Spawned}");
                 restaurant.CancelOrder(anyOrder);
                 return false;
             }
-            Log.Message($"{pawn.NameShortColored} has an order for {t.Label}.");
+
+            if (!anyOrder.patron.HasDiningQueued())
+            {
+                Log.Message($"{anyOrder.patron.NameShortColored} is not dining. Can't serve.");
+                return false;
+            }
+
+            Log.Message($"{pawn.NameShortColored} can serve {t.Label} to {anyOrder.patron.NameShortColored}.");
             return true;
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             var restaurant = pawn.GetRestaurant();
-            var order = restaurant.AvailableOrders.FirstOrDefault(o => !o.isBeingDelivered && o.consumableDef == t.def);
+            var order = restaurant.AvailableOrdersForServing.FirstOrDefault(o => o.consumableDef == t.def && !restaurant.IsBeingDelivered(o, pawn));
 
             return JobMaker.MakeJob(WaitingUtility.serveDef, order.patron, t);
         }

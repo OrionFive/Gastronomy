@@ -106,10 +106,20 @@ namespace Restaurant.Dining
             return toil;
         }
 
-        public static Toil TurnToEatSurface(TargetIndex eatSurfaceInd)
+        public static Toil TurnToEatSurface(TargetIndex eatSurfaceInd, TargetIndex foodInd = TargetIndex.None)
         {
             var toil = new Toil();
-            toil.initAction = delegate { toil.actor.jobs.curDriver.rotateToFace = eatSurfaceInd; };
+            toil.initAction = delegate {
+                toil.actor.jobs.curDriver.rotateToFace = eatSurfaceInd;
+                if (foodInd != TargetIndex.None)
+                {
+                    var thing = toil.actor.CurJob.GetTarget(foodInd).Thing;
+                    if (thing.def.rotatable)
+                    {
+                        thing.Rotation = Rot4.FromIntVec3(toil.actor.CurJob.GetTarget(eatSurfaceInd).Cell - toil.actor.Position);
+                    }
+                }
+            };
             toil.defaultCompleteMode = ToilCompleteMode.Instant;
             return toil;
         }
@@ -138,9 +148,27 @@ namespace Restaurant.Dining
 
         private static JobDriver_Dine GetDriver(Toil t) => t.actor.jobs.curDriver as JobDriver_Dine;
 
-        public static Toil WaitForMeal(Pawn pawn, TargetIndex waiterInd, TargetIndex mealInd)
+        public static Toil WaitForMeal(TargetIndex waiterInd, TargetIndex mealInd)
         {
             var toil = new Toil();
+            toil.initAction = () => {
+                var order = toil.actor.GetRestaurant().GetOrderFor(toil.actor);
+                if (order.delivered)
+                {
+                    var food = order.consumable;
+                    Log.Message($"{toil.actor.NameShortColored} has already received order: {food?.Label}");
+
+                    if (toil.actor.inventory.Contains(food))
+                    {
+                        Log.Message($"{toil.actor.NameShortColored} has {food.Label} in inventory.");
+                        GetDriver(toil).ReadyForNextToil();
+                    }
+                    else
+                    {
+                        order.delivered = false;
+                    }
+                }
+            };
             toil.tickAction = () => {
                 var target = toil.actor.CurJob.GetTarget(mealInd);
                 if(target.HasThing && target.IsValid) GetDriver(toil).ReadyForNextToil();
@@ -149,6 +177,13 @@ namespace Restaurant.Dining
             toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDurationExpired(); // Duration over? Fail job!
+            toil.socialMode = RandomSocialMode.SuperActive;
+            return toil;
+        }
+
+        public static Toil WaitDuringDinner(TargetIndex lookAtInd, int minDuration, int maxDuration)
+        {
+            var toil = Toils_General.Wait(Rand.Range(minDuration, maxDuration), lookAtInd);
             toil.socialMode = RandomSocialMode.SuperActive;
             return toil;
         }

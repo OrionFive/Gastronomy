@@ -2,7 +2,7 @@
 <Defs>
 
   <WorkTypeDef>
-    <defName>Waiting</defName>
+    <defName>Restaurant_Waiting</defName>
     <labelShort>Wait</labelShort>
     <pawnLabel>Waiter</pawnLabel>
     <gerundLabel>waiting</gerundLabel>

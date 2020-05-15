@@ -7,7 +7,7 @@ namespace Restaurant.Waiting
 {
     public static class WaitingUtility
     {
-        public static readonly JobDef waitDef = DefDatabase<JobDef>.GetNamed("Restaurant_Wait");
+        public static readonly JobDef takeOrdersDef = DefDatabase<JobDef>.GetNamed("Restaurant_TakeOrder");
         public static readonly JobDef serveDef = DefDatabase<JobDef>.GetNamed("Restaurant_Serve");
 
         public static Toil TakeOrder(TargetIndex patronInd)
@@ -20,11 +20,11 @@ namespace Restaurant.Waiting
             toil.activeSkill = () => SkillDefOf.Social;
             toil.FailOnDownedOrDead(patronInd);
             toil.FailOnMentalState(patronInd);
-            toil.AddFinishAction(OnDoneTalking);
+            toil.AddPreInitAction(CreateOrder);
 
             return toil;
             
-            void OnDoneTalking()
+            void CreateOrder()
             {
                 if (!(toil.GetActor().CurJob.GetTarget(patronInd).Thing is Pawn patron))
                 {
@@ -47,7 +47,7 @@ namespace Restaurant.Waiting
 
         public static Toil FindRandomAdjacentCell(TargetIndex adjacentToInd, TargetIndex cellInd)
         {
-            Toil findCell = new Toil();
+            Toil findCell = new Toil {atomicWithPrevious = true};
             findCell.initAction = delegate {
                 Pawn actor = findCell.actor;
                 Job curJob = actor.CurJob;
@@ -78,7 +78,7 @@ namespace Restaurant.Waiting
 
         public static Toil ClearOrder(TargetIndex patronInd, TargetIndex foodInd)
         {
-            Toil clearOrder = new Toil();
+            Toil clearOrder = new Toil {atomicWithPrevious = true};
             clearOrder.initAction = delegate {
                 Pawn actor = clearOrder.actor;
                 Job curJob = actor.CurJob;
@@ -101,12 +101,39 @@ namespace Restaurant.Waiting
 
                 if (patron.jobs.curDriver is JobDriver_Dine patronDriver)
                 {
-                    patronDriver.ServeFood(food);
-                    Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
-                    actor.GetRestaurant().CompleteOrderFor(patron);
+                    var transferred = actor.carryTracker.innerContainer.TryTransferToContainer(food, patron.inventory.innerContainer, false);
+                    if (transferred)
+                    {
+                        patronDriver.OnTransferredFood(food);
+                        Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
+                        actor.GetRestaurant().CompleteOrderFor(patron);
+                    }
+                    else
+                    {
+                        Log.Error($"{actor.NameShortColored} failed to transfer {food?.Label} to {patron.NameShortColored}.");
+                    }
                 }
             };
             return clearOrder;
+        }
+
+        public static Toil GetDiningSpot(TargetIndex patronInd, TargetIndex diningSpotInd)
+        {
+            Toil toil = new Toil {atomicWithPrevious = true};
+            toil.initAction = () => {
+                var patron = toil.actor.CurJob?.GetTarget(patronInd).Pawn;
+                if (patron == null) toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                else
+                {
+                    var diningSpot = patron.GetDriver<JobDriver_Dine>()?.DiningSpot;
+                    if (diningSpot == null) toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                    else
+                    {
+                        toil.actor.CurJob?.SetTarget(diningSpotInd, diningSpot);
+                    }
+                }
+            };
+            return toil;
         }
     }
 }

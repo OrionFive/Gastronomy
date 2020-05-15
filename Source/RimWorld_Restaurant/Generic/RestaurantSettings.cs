@@ -29,7 +29,7 @@ namespace Restaurant
             }
         }
         [NotNull]public IReadOnlyCollection<Thing> Stock => stock.AsReadOnly();
-        [NotNull]public IEnumerable<Order> AvailableOrders => orders.Where(o => !o.hasToBeMade && !o.isBeingDelivered);
+        [NotNull]public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.hasToBeMade && !o.delivered);
 
         public override void ExposeData()
         {
@@ -111,10 +111,18 @@ namespace Restaurant
             orders.Add(new Order
             {
                 consumableDef = consumableDef,
-                //consumable = thing,
                 patron = patron,
                 hasToBeMade = available <= ordered
             });
+        }
+
+        public bool IsBeingDelivered(Order order, Pawn pawn)
+        {
+            if (order.hasToBeMade) return false;
+            if (order.delivered) return false;
+            if (order.consumable == null) return false;
+            Log.Message($"Consumable found: {order.consumable.Label} at {order.consumable.Position}");
+            return map.reservationManager.IsReservedAndRespected(order.consumable, pawn);
         }
 
         public void CancelOrder(Order order)
@@ -124,16 +132,21 @@ namespace Restaurant
 
         public void CompleteOrderFor(Pawn patron)
         {
-            var amount = orders.RemoveAll(o => o.patron == patron);
-            if (amount != 1)
+            var order = orders.FirstOrDefault(o => o.patron == patron);
+            if (order == null)
             {
-                Log.Error($"Cleared {amount} orders for {patron.NameShortColored}. That's not 1 as expected.");
+                Log.Error($"Completed order for {patron.NameShortColored}. But there was none.");
+                return;
             }
+            order.delivered = true;
         }
 
         public Order GetOrderFor(Pawn patron)
         {
-            return orders.FirstOrDefault(o => o.patron == patron);
+            var order = orders.FirstOrDefault(o => o.patron == patron);
+            if (order != null) Log.Message($"Found an order for {patron.NameShortColored}. hasToBeMade? {order.hasToBeMade} IsBeingDelivered? {IsBeingDelivered(order, patron)} hasBeenDelivered? {order.delivered}");
+            else Log.Message($"No order for {patron.NameShortColored} found.");
+            return order;
         }
     }
 }

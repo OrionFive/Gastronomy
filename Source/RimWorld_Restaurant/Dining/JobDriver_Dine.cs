@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -8,8 +9,8 @@ namespace Restaurant.Dining
     public class JobDriver_Dine : JobDriver
     {
         public DiningSpot DiningSpot => job.GetTarget(TargetIndex.A).Thing as DiningSpot;
-        public Thing Food => job.GetTarget(TargetIndex.C).Thing;
         public Pawn Waiter => job.GetTarget(TargetIndex.B).Pawn;
+        public Thing Food => job.GetTarget(TargetIndex.C).Thing;
 
         public bool wantsToOrder;
         private ThingDef preferredFoodDef;
@@ -46,11 +47,13 @@ namespace Restaurant.Dining
         //    return "JobDineGoReport".Translate();
         //}
 
+        private float ChewDurationMultiplier => 1f / pawn.GetStatValue(StatDefOf.EatingSpeed);
+
         protected override IEnumerable<Toil> MakeNewToils()
         {
             // Declare these early - jumping points
             var waitForWaiter = DiningUtility.WaitForWaiter(TargetIndex.A, TargetIndex.B).FailOnRestaurantClosed();
-            var waitForMeal = DiningUtility.WaitForMeal(pawn, TargetIndex.B, TargetIndex.C);
+            var waitForMeal = DiningUtility.WaitForMeal(TargetIndex.B, TargetIndex.C);
 
             this.FailOn(() => DiningSpot.Destroyed);
             yield return DiningUtility.GoToDineSpot(pawn, TargetIndex.A).FailOnRestaurantClosed();
@@ -58,9 +61,14 @@ namespace Restaurant.Dining
             yield return Toils_Jump.JumpIf(waitForMeal, () => pawn.GetRestaurant().GetOrderFor(pawn) != null);
             yield return waitForWaiter;
             yield return waitForMeal;
-            yield return Toils_Reserve.Reserve(TargetIndex.C);
+            yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.C); 
+            //yield return Toils_Reserve.Reserve(TargetIndex.C);
+            yield return DiningUtility.TurnToEatSurface(TargetIndex.A, TargetIndex.C);
+            yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);
+            yield return Toils_Ingest.ChewIngestible(pawn, ChewDurationMultiplier, TargetIndex.C, TargetIndex.A);
             yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.C);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
+            yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);
         }
 
         public void OnOrderTaken(ThingDef foodDef, Pawn waiter)
@@ -69,9 +77,16 @@ namespace Restaurant.Dining
             Log.Message($"{pawn.NameShortColored}'s order has been taken by {waiter.NameShortColored}.");
         }
 
-        public void ServeFood(Thing food)
+        public void OnTransferredFood(Thing food)
         {
+            Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory. {pawn.inventory.Contains(food)}");
             job.SetTarget(TargetIndex.C, food); // This triggers WaitForMeal
+        }
+
+        public override bool ModifyCarriedThingDrawPos(ref Vector3 drawPos, ref bool behind, ref bool flip)
+        {
+            var cell = job.GetTarget(TargetIndex.A).Cell;
+            return JobDriver_Ingest.ModifyCarriedThingDrawPosWorker(ref drawPos, ref behind, ref flip, cell, pawn);
         }
     }
 }

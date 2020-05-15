@@ -1,3 +1,4 @@
+using System.Linq;
 using JetBrains.Annotations;
 using Restaurant.Dining;
 using Verse;
@@ -9,13 +10,17 @@ namespace Restaurant
     {
         public static T FailOnRestaurantClosed<T>(this T f) where T : IJobEndable
         {
-            f.AddEndCondition(() => f.GetActor().GetRestaurant().IsOpenedRightNow ? JobCondition.Ongoing : JobCondition.Incompletable);
+            JobCondition OnRestaurantClosed() => f.GetActor().GetRestaurant().IsOpenedRightNow ? JobCondition.Ongoing : JobCondition.Incompletable;
+
+            f.AddEndCondition(OnRestaurantClosed);
             return f;
         }
 
         public static T FailOnDurationExpired<T>(this T f) where T : IJobEndable
         {
-            f.AddEndCondition(() => f.GetActor().jobs.curDriver.ticksLeftThisToil > 0  ? JobCondition.Ongoing : JobCondition.Incompletable);
+            JobCondition OnDurationExpired() => f.GetActor().jobs.curDriver.ticksLeftThisToil > 0 ? JobCondition.Ongoing : JobCondition.Incompletable;
+            
+            f.AddEndCondition(OnDurationExpired);
             return f;
         }
 
@@ -33,9 +38,34 @@ namespace Restaurant
             return f;
         }
 
+        public static T FailOnNotDiningQueued<T>(this T f, TargetIndex patronInd) where T : IJobEndable
+        {
+            JobCondition PatronHasNoDiningInQueue()
+            {
+                var patron = f.GetActor().jobs.curJob.GetTarget(patronInd).Thing as Pawn;
+                if (patron.HasDiningQueued()) return JobCondition.Ongoing;
+                Log.Message($"Checked {patron?.NameShortColored}. Not planning to dine >> failing {f.GetActor().NameShortColored}'s job {f.GetActor().CurJobDef?.label}.");
+                return JobCondition.Incompletable;
+            }
+
+            f.AddEndCondition(PatronHasNoDiningInQueue);
+            return f;
+        }
+
+        public static bool HasDiningQueued(this Pawn patron)
+        {
+            if (patron?.CurJobDef == DiningUtility.dineDef) return true;
+            return patron?.jobs.jobQueue?.Any(j => j.job.def == DiningUtility.dineDef) == true;
+        }
+
         public static RestaurantSettings GetRestaurant([NotNull]this Thing thing)
         {
             return thing.Map.GetComponent<RestaurantSettings>();
+        }
+
+        public static T GetDriver<T>(this Pawn patron) where T : JobDriver
+        {
+            return patron?.jobs?.curDriver as T;
         }
     }
 }
