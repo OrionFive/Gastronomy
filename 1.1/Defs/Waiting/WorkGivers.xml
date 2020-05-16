@@ -37,4 +37,22 @@
     <prioritizeSustains>true</prioritizeSustains>
   </WorkGiverDef>
 
+  <WorkGiverDef>
+    <defName>Restaurant_MakeTable</defName>
+    <label>make tables</label>
+    <giverClass>Restaurant.Waiting.WorkGiver_MakeTable</giverClass>
+    <workType>Restaurant_Waiting</workType>
+    <priorityInType>90</priorityInType>
+    <!-- <fixedBillGiverDefs> -->
+      <!-- <li>Restaurant_CashRegister</li> -->
+      <!-- <li>Restaurant_DiningSpot</li> -->
+    <!-- </fixedBillGiverDefs> -->
+    <verb>make table</verb>
+    <gerund>making table</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
 </Defs>

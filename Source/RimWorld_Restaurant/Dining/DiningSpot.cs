@@ -190,5 +190,17 @@ namespace Restaurant.Dining
         public override Building AdjacentReachableHopper(Pawn pawn) => null;
 
         #endregion
+
+        public IEnumerable<LocalTargetInfo> GetUnmadeSpotCells()
+        {
+            var spots = GetReservationSpots();
+            for (int i = 0; i < 4; i++)
+            {
+                if (spots[i] == SpotState.Clear || spots[i] > SpotState.Ready)
+                {
+                    yield return Position + new Rot4(i).FacingCell;
+                }
+            }
+        }
     }
 }

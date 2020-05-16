@@ -10,6 +10,7 @@ namespace Restaurant.Waiting
     {
         public static readonly JobDef takeOrderDef = DefDatabase<JobDef>.GetNamed("Restaurant_TakeOrder");
         public static readonly JobDef serveDef = DefDatabase<JobDef>.GetNamed("Restaurant_Serve");
+        public static readonly JobDef makeTableDef = DefDatabase<JobDef>.GetNamed("Restaurant_MakeTable");
 
         public static Toil TakeOrder(TargetIndex patronInd)
         {
@@ -167,6 +168,23 @@ namespace Restaurant.Waiting
                         //Log.Message($"{toil.actor.NameShortColored} updated the consumable {toil.actor.GetRestaurant().GetOrderFor(patron).consumable.Label} to {consumable.Label}.");
                         toil.actor.GetRestaurant().GetOrderFor(patron).consumable = consumable;
                     }
+                }
+            };
+            return toil;
+        }
+
+        public static Toil GetDiningSpotCellForMakingTable(TargetIndex diningSpotInd, TargetIndex jobCellInd)
+        {
+            Toil toil = new Toil {atomicWithPrevious = true};
+            toil.initAction = () => {
+                if (toil.actor.CurJob?.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
+                {
+                    var cell = diningSpot.GetUnmadeSpotCells().InRandomOrder().FirstOrFallback(LocalTargetInfo.Invalid);
+                    toil.actor.CurJob.SetTarget(jobCellInd, cell);
+                }
+                else
+                {
+                    toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
                 }
             };
             return toil;
