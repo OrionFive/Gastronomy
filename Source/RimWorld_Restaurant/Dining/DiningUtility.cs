@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using RimWorld;
@@ -185,6 +186,18 @@ namespace Restaurant.Dining
         {
             var toil = Toils_General.Wait(Rand.Range(minDuration, maxDuration), lookAtInd);
             toil.socialMode = RandomSocialMode.SuperActive;
+            return toil;
+        }
+
+        public static Toil MakeTableMessy(TargetIndex diningSpotInd, Func<IntVec3> patronPos)
+        {
+            Toil toil = new Toil {atomicWithPrevious = true};
+            toil.initAction = () => {
+                if (toil.actor.CurJob.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
+                {
+                    diningSpot.SetSpotMessy(patronPos.Invoke());
+                }
+            };
             return toil;
         }
     }

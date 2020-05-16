@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Restaurant.Dining;
 using RimWorld;
 using Verse;
@@ -7,7 +8,7 @@ namespace Restaurant.Waiting
 {
     public static class WaitingUtility
     {
-        public static readonly JobDef takeOrdersDef = DefDatabase<JobDef>.GetNamed("Restaurant_TakeOrder");
+        public static readonly JobDef takeOrderDef = DefDatabase<JobDef>.GetNamed("Restaurant_TakeOrder");
         public static readonly JobDef serveDef = DefDatabase<JobDef>.GetNamed("Restaurant_Serve");
 
         public static Toil TakeOrder(TargetIndex patronInd)
@@ -130,6 +131,41 @@ namespace Restaurant.Waiting
                     else
                     {
                         toil.actor.CurJob?.SetTarget(diningSpotInd, diningSpot);
+                    }
+                }
+            };
+            return toil;
+        }
+
+        public static Toil MakeTableReady(TargetIndex diningSpotInd, TargetIndex chairPosInd)
+        {
+            Toil toil = new Toil {defaultCompleteMode = ToilCompleteMode.Delay, defaultDuration = 100};
+            toil.WithProgressBarToilDelay(diningSpotInd, true);
+            toil.initAction = () => {
+                var chairPos = toil.actor.CurJob.GetTarget(chairPosInd).Cell;
+                Log.Message($"About to make spot ready ({toil.actor.CurJob.GetTarget(diningSpotInd).Thing?.Label}) at {toil.actor.CurJob.GetTarget(diningSpotInd).Cell}.");
+                if (toil.actor.CurJob.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
+                {
+                    diningSpot.SetSpotReady(chairPos);
+                }
+            };
+            return toil;
+        }
+
+        public static Toil UpdateOrderConsumableTo(TargetIndex patronInd, TargetIndex consumableInd)
+        {
+            Toil toil = new Toil {atomicWithPrevious = true};
+            toil.initAction = () => {
+                var patron = toil.actor.CurJob?.GetTarget(patronInd).Pawn;
+                if (patron == null) toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                else
+                {
+                    var consumable = toil.actor.CurJob.GetTarget(consumableInd).Thing;
+                    if (consumable == null) toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                    else
+                    {
+                        //Log.Message($"{toil.actor.NameShortColored} updated the consumable {toil.actor.GetRestaurant().GetOrderFor(patron).consumable.Label} to {consumable.Label}.");
+                        toil.actor.GetRestaurant().GetOrderFor(patron).consumable = consumable;
                     }
                 }
             };

@@ -27,7 +27,7 @@ namespace Restaurant.Waiting
 
             if (patron.GetRestaurant().IsBeingDelivered(order, pawn))
             {
-                Log.Message($"Order for {patron.NameShortColored} is already being delivered.");
+                Log.Message($"{pawn.NameShortColored}: Order for {patron.NameShortColored} is already being delivered.");
                 return false;
             }
 
@@ -60,6 +60,7 @@ namespace Restaurant.Waiting
             this.FailOnForbidden(TargetIndex.B);
             yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch);
             yield return Toils_Haul.StartCarryThing(TargetIndex.B);
+            yield return WaitingUtility.UpdateOrderConsumableTo(TargetIndex.A, TargetIndex.B);
             yield return WaitingUtility.FindRandomAdjacentCell(TargetIndex.A, TargetIndex.C); // A is the patron, C is the spot
             yield return Toils_Haul.CarryHauledThingToCell(TargetIndex.C);
             yield return wait;

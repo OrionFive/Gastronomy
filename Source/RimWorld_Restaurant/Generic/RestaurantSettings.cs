@@ -29,7 +29,7 @@ namespace Restaurant
             }
         }
         [NotNull]public IReadOnlyCollection<Thing> Stock => stock.AsReadOnly();
-        [NotNull]public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.hasToBeMade && !o.delivered);
+        [NotNull]public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.delivered);
 
         public override void ExposeData()
         {
@@ -121,7 +121,7 @@ namespace Restaurant
             if (order.hasToBeMade) return false;
             if (order.delivered) return false;
             if (order.consumable == null) return false;
-            Log.Message($"Consumable found: {order.consumable.Label} at {order.consumable.Position}");
+            //Log.Message($"Consumable found: {order.consumable.Label} at {order.consumable.Position}");
             return map.reservationManager.IsReservedAndRespected(order.consumable, pawn);
         }
 
@@ -144,7 +144,7 @@ namespace Restaurant
         public Order GetOrderFor(Pawn patron)
         {
             var order = orders.FirstOrDefault(o => o.patron == patron);
-            if (order != null) Log.Message($"Found an order for {patron.NameShortColored}. hasToBeMade? {order.hasToBeMade} IsBeingDelivered? {IsBeingDelivered(order, patron)} hasBeenDelivered? {order.delivered}");
+            if (order != null) Log.Message($"Found an order of {order.consumableDef.label} for {patron.NameShortColored}. hasToBeMade? {order.hasToBeMade} IsBeingDelivered? {IsBeingDelivered(order, patron)} hasBeenDelivered? {order.delivered}");
             else Log.Message($"No order for {patron.NameShortColored} found.");
             return order;
         }

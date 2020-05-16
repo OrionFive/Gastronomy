@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using JetBrains.Annotations;
 using Restaurant.TableTops;
 using RimWorld;
 using UnityEngine;
@@ -9,19 +11,38 @@ using ThingWithComps = Restaurant.Patching.ThingWithComps;
 
 namespace Restaurant.Dining
 {
+    public enum SpotState
+    {
+        Blocked = -1,
+        Clear = 0,
+        Ready = 1,
+        Messy1 = 2,
+        Messy2 = 3
+    }
+
     public class DiningSpot : Building_NutrientPasteDispenser
     {
         public const string jobReportString = "DiningJobReportString";
 
         private RestaurantSettings settings;
+        private SpotState[] spotStates = new SpotState[4];
 
         public override ThingDef DispensableDef => throw new NotImplementedException();
         public bool MayDineStanding { get; } = false;
+
+        public static SpotState GetMessyState => (SpotState) Rand.Range(2, 4);
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Deep.Look(ref spotStates, "spotStates");
+        }
 
         public override void PostMapInit()
         {
             base.PostMapInit();
             settings = this.GetRestaurant();
+            UpdateMesh();
         }
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
@@ -35,30 +56,36 @@ namespace Restaurant.Dining
             }
         }
 
-        public int GetMaxReservations()
+        public int GetMaxReservations() => GetReservationSpots().Count(s => s > 0);
+
+        /// <summary>
+        /// [0] = up, [1] = right, [2] = down, [3] = left
+        /// </summary>
+        [NotNull]
+        public SpotState[] GetReservationSpots()
         {
-            IntVec3 position = Position;
-            Map map = Map;
-            int num = 0;
-            int result = 0;
-            while (true)
+            if (spotStates == null) spotStates = new SpotState[4];
+            var position = Position;
+            var map = Map;
+            var result = new SpotState[4];
+            for (int i = 0; i < 4; i++)
             {
-                if (num >= 4) break;
-                var intVec = position + new Rot4(num).FacingCell;
+                result[i] = SpotState.Blocked;
+                var intVec = position + new Rot4(i).FacingCell;
                 if (MayDineStanding && intVec.Standable(map))
                 {
-                    result++;
+                    result[i] = spotStates[i];
                 }
                 else
                 {
                     var chair = intVec.GetEdifice(map);
-                    if (chair != null && chair.def.building.isSittable && chair.Rotation.FacingCell == position)
+                    if (chair != null && chair.def.building.isSittable && intVec + chair.Rotation.FacingCell == position)
                     {
-                        result++;
+                        result[i] = spotStates[i];
                     }
                 }
 
-                num++;
+                //Log.Message($"Checked {intVec}: {result[i]} chair? {intVec.GetEdifice(map)?.Label} sittable? {intVec.GetEdifice(map)?.def.building.isSittable} facing? {intVec + intVec.GetEdifice(map)?.Rotation.FacingCell}");
             }
 
             return result;
@@ -73,6 +100,53 @@ namespace Restaurant.Dining
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
             ThingWithComps.Destroy.Base(this, mode);
+        }
+
+        private void UpdateMesh()
+        {
+            if (Spawned)
+            {
+                Map.mapDrawer.MapMeshDirty(Position, MapMeshFlag.Things, false, false);
+            }
+        }
+
+        public void SetSpotReady(IntVec3 chairPos) => SetSpotState(chairPos, SpotState.Ready);
+        public bool IsSpotReady(IntVec3 chairPos) => GetSpotState(chairPos) == SpotState.Ready;
+        public void SetSpotMessy(IntVec3 chairPos) => SetSpotState(chairPos, GetMessyState);
+        public bool IsSpotMessy(IntVec3 chairPos) => GetSpotState(chairPos) > SpotState.Ready;
+
+        private void SetSpotState(IntVec3 chairPos, SpotState state)
+        {
+            var position = Position;
+            for (int i = 0; i < 4; i++)
+            {
+                var intVec = position + new Rot4(i).FacingCell;
+                if (intVec == chairPos)
+                {
+                    //Log.Message($"Changed spot at {position} towards {chairPos} from state {spotStates[i]} to {state}.");
+                    spotStates[i] = state;
+                    UpdateMesh();
+                    return;
+                }
+            }
+
+            Log.Error($"Tried to set dining spot {position} with an invalid spot position {chairPos}.");
+        }
+
+        private SpotState GetSpotState(IntVec3 chairPos)
+        {
+            var position = Position;
+            for (int i = 0; i < 4; i++)
+            {
+                var intVec = position + new Rot4(i).FacingCell;
+                if (intVec == chairPos)
+                {
+                    return spotStates[i];
+                }
+            }
+
+            Log.Error($"Tried to get state of dining spot {position} with an invalid spot position {chairPos}.");
+            return SpotState.Clear;
         }
 
         public override Thing TryDispenseFood()

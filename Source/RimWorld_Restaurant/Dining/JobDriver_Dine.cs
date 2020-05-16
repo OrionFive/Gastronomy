@@ -33,8 +33,6 @@ namespace Restaurant.Dining
                     Log.Message($"{pawn.NameShortColored} FAILED to reserve dining spot at {diningSpot.Position}.");
                     return false;
                 }
-
-                Log.Message($"{pawn.NameShortColored} reserved dining spot at {diningSpot.Position}.");
             }
 
             preferredFoodDef = job.plantDefToSow; // Abusing this for storage of def
@@ -67,6 +65,7 @@ namespace Restaurant.Dining
             yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);
             yield return Toils_Ingest.ChewIngestible(pawn, ChewDurationMultiplier, TargetIndex.C, TargetIndex.A);
             yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.C);
+            yield return DiningUtility.MakeTableMessy(TargetIndex.A, () => pawn.Position);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
             yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);
         }
@@ -79,7 +78,7 @@ namespace Restaurant.Dining
 
         public void OnTransferredFood(Thing food)
         {
-            Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory. {pawn.inventory.Contains(food)}");
+            //Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory. {pawn.inventory.Contains(food)}");
             job.SetTarget(TargetIndex.C, food); // This triggers WaitForMeal
         }
 

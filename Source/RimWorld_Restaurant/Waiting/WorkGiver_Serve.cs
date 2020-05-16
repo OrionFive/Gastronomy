@@ -27,23 +27,19 @@ namespace Restaurant.Waiting
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             var restaurant = pawn.GetRestaurant();
+            if (pawn == t) return false;
             if (!pawn.CanReserveAndReach(t, PathEndMode.Touch, Danger.None, 1, 1)) return false;
-            var anyOrder = restaurant.AvailableOrdersForServing.FirstOrDefault(o => o.consumableDef == t.def && !restaurant.IsBeingDelivered(o, pawn));
-            if (anyOrder==null) return false;
-            if (anyOrder.patron == null || !anyOrder.patron.Spawned || anyOrder.patron.Dead)
+            var anyOrder = restaurant.AvailableOrdersForServing.FirstOrDefault(o => o.consumableDef == t.def && !restaurant.IsBeingDelivered(o, pawn) && o.patron?.HasDiningQueued() == true);
+            if (anyOrder == null) return false;
+            if (!anyOrder.patron.Spawned || anyOrder.patron.Dead)
             {
                 Log.Message($"Order canceled. null? {anyOrder.patron == null} dead? {anyOrder.patron.Dead} unspawned? {!anyOrder.patron?.Spawned}");
                 restaurant.CancelOrder(anyOrder);
                 return false;
             }
 
-            if (!anyOrder.patron.HasDiningQueued())
-            {
-                Log.Message($"{anyOrder.patron.NameShortColored} is not dining. Can't serve.");
-                return false;
-            }
-
             Log.Message($"{pawn.NameShortColored} can serve {t.Label} to {anyOrder.patron.NameShortColored}.");
+            anyOrder.hasToBeMade = false;
             return true;
         }
 

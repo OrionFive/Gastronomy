@@ -64,6 +64,7 @@
     <Compile Include="Dining\CompProperties_CanDineAt.cs" />
     <Compile Include="Dining\DiningSpot.cs" />
     <Compile Include="Dining\DiningUtility.cs" />
+    <Compile Include="Dining\Graphic_DiningSpot.cs" />
     <Compile Include="Dining\JobDriver_Dine.cs" />
     <Compile Include="Generic\RestaurantUtility.cs" />
     <Compile Include="Generic\Order.cs" />

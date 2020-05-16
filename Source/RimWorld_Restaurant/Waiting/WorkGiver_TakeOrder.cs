@@ -12,11 +12,7 @@ namespace Restaurant.Waiting
 
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
-        {
-            Log.Message($"{pawn.GetRestaurant().SpawnedDiningPawns.Count} dining pawns...");
-            return pawn.GetRestaurant().SpawnedDiningPawns;
-        }
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetRestaurant().SpawnedDiningPawns;
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
@@ -34,6 +30,7 @@ namespace Restaurant.Waiting
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             if (!(t is Pawn p)) return false;
+            if (pawn == t) return false;
             var driver = p.GetDriver<JobDriver_Dine>();
             if (driver == null || !driver.wantsToOrder) return false;
 
@@ -60,7 +57,7 @@ namespace Restaurant.Waiting
             }
             Log.Message($"{pawn.NameShortColored} can get a take order job on {patron.NameShortColored}.");
 
-            return JobMaker.MakeJob(WaitingUtility.takeOrdersDef, diningSpot, patron);
+            return JobMaker.MakeJob(WaitingUtility.takeOrderDef, diningSpot, patron);
         }
     }
 }
