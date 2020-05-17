@@ -132,11 +132,19 @@ namespace Restaurant.Waiting
             Toil toil = new Toil {atomicWithPrevious = true};
             toil.initAction = () => {
                 var patron = toil.actor.CurJob?.GetTarget(patronInd).Pawn;
-                if (patron == null) toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                if (patron == null)
+                {
+                    Log.Message($"Couldn't get patron.");
+                    toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                }
                 else
                 {
                     var diningSpot = patron.GetDriver<JobDriver_Dine>()?.DiningSpot;
-                    if (diningSpot == null) toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                    if (diningSpot == null)
+                    {
+                        Log.Message($"Couldn't get dining spot from {patron.NameShortColored} doing {patron.jobs.curDriver?.GetType().Name}.");
+                        toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                    }
                     else
                     {
                         toil.actor.CurJob?.SetTarget(diningSpotInd, diningSpot);
@@ -151,8 +159,21 @@ namespace Restaurant.Waiting
             Toil toil = new Toil {defaultCompleteMode = ToilCompleteMode.Delay, defaultDuration = 100};
             toil.WithProgressBarToilDelay(diningSpotInd, true);
             toil.AddFinishAction(() => {
-                var patron = toil.actor.CurJob.GetTarget(patronInd).Pawn;
-                var chairPos = GetChairPosition(patron);
+                var target = toil.actor.CurJob.GetTarget(patronInd);
+                IntVec3 chairPos;
+
+                if (target.HasThing)
+                {
+                    var patron = target.Pawn;
+                    chairPos = GetChairPosition(patron);
+                }
+                else if (target.IsValid) chairPos = target.Cell;
+                else
+                {
+                    toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                    return;
+                }
+
                 Log.Message($"About to make spot ready ({toil.actor.CurJob.GetTarget(diningSpotInd).Thing?.Label}) at {toil.actor.CurJob.GetTarget(diningSpotInd).Cell}.");
                 if (toil.actor.CurJob.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
                 {

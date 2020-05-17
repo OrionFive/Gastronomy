@@ -11,8 +11,6 @@ namespace Restaurant.Waiting
     {
         public override PathEndMode PathEndMode => PathEndMode.Touch;
 
-        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.FoodDispenser);
-
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetRestaurant().diningSpots;
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
@@ -35,7 +33,7 @@ namespace Restaurant.Waiting
                     return false;
                 }
 
-                Log.Message($"{pawn.NameShortColored} can make table at {spot.Position}.");
+                //Log.Message($"{pawn.NameShortColored} can make table at {spot.Position}.");
                 return true;
             }
 
@@ -46,7 +44,7 @@ namespace Restaurant.Waiting
         {
             var diningSpot = (DiningSpot) t;
 
-            Log.Message($"{pawn.NameShortColored} can get a make table job at {diningSpot.Position}.");
+            //Log.Message($"{pawn.NameShortColored} can get a make table job at {diningSpot.Position}.");
 
             return JobMaker.MakeJob(WaitingUtility.makeTableDef, diningSpot);
         }

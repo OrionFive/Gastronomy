@@ -19,7 +19,6 @@ namespace Restaurant.Waiting
                 return false;
             }
 
-            Log.Message($"{pawn.NameShortColored} reserved spot for making table {diningSpot.Position}.");
             return true;
         }
 

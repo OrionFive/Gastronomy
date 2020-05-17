@@ -44,7 +44,7 @@ namespace Restaurant
 
             diningSpots.Clear();
             diningSpots.AddRange(DiningUtility.GetAllDiningSpots(map));
-            Log.Message($"Finalized with {diningSpots.Count} dining spots.");
+            //Log.Message($"Finalized with {diningSpots.Count} dining spots.");
         }
 
         public bool HasAnyFoodFor([NotNull] Pawn pawn, bool allowDrug)
@@ -145,8 +145,12 @@ namespace Restaurant
         {
             var order = orders.FirstOrDefault(o => o.patron == patron);
             if (order != null) Log.Message($"Found an order of {order.consumableDef.label} for {patron.NameShortColored}. hasToBeMade? {order.hasToBeMade} IsBeingDelivered? {IsBeingDelivered(order, patron)} hasBeenDelivered? {order.delivered}");
-            else Log.Message($"No order for {patron.NameShortColored} found.");
             return order;
+        }
+
+        public void OnFinishedEatingOrder(Pawn patron)
+        {
+            orders.RemoveAll(o => o.patron == patron);
         }
     }
 }

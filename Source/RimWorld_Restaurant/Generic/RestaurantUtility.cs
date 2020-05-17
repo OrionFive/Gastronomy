@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using JetBrains.Annotations;
 using Restaurant.Dining;
@@ -13,6 +14,14 @@ namespace Restaurant
             JobCondition OnRestaurantClosed() => f.GetActor().GetRestaurant().IsOpenedRightNow ? JobCondition.Ongoing : JobCondition.Incompletable;
 
             f.AddEndCondition(OnRestaurantClosed);
+            return f;
+        }
+
+        public static T FailOnDangerous<T>(this T f) where T : IJobEndable
+        {
+            JobCondition OnRegionDangerous() => f.GetActor().GetRegion().DangerFor(f.GetActor()) <= Danger.None ? JobCondition.Ongoing : JobCondition.Incompletable;
+
+            f.AddEndCondition(OnRegionDangerous);
             return f;
         }
 
@@ -66,6 +75,16 @@ namespace Restaurant
         public static T GetDriver<T>(this Pawn patron) where T : JobDriver
         {
             return patron?.jobs?.curDriver as T;
+        }
+
+        public static void GetRequestGroup(Thing thing)
+        {
+            foreach (ThingRequestGroup group in Enum.GetValues(typeof(ThingRequestGroup)))
+            {
+                if (@group == ThingRequestGroup.Undefined) continue;
+                if (thing.Map.listerThings.ThingsInGroup(@group).Contains(thing))
+                    Log.Message($"DiningSpot group: {@group}");
+            }
         }
     }
 }

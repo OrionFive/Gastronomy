@@ -50,8 +50,8 @@ namespace Restaurant.Dining
         protected override IEnumerable<Toil> MakeNewToils()
         {
             // Declare these early - jumping points
-            var waitForWaiter = DiningUtility.WaitForWaiter(TargetIndex.A, TargetIndex.B).FailOnRestaurantClosed();
-            var waitForMeal = DiningUtility.WaitForMeal(TargetIndex.B, TargetIndex.C);
+            var waitForWaiter = DiningUtility.WaitForWaiter(TargetIndex.A, TargetIndex.B).FailOnRestaurantClosed().FailOnDangerous();
+            var waitForMeal = DiningUtility.WaitForMeal(TargetIndex.B, TargetIndex.C).FailOnDangerous();
 
             this.FailOn(() => DiningSpot.Destroyed);
             yield return DiningUtility.GoToDineSpot(pawn, TargetIndex.A).FailOnRestaurantClosed();
@@ -65,6 +65,7 @@ namespace Restaurant.Dining
             yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);
             yield return Toils_Ingest.ChewIngestible(pawn, ChewDurationMultiplier, TargetIndex.C, TargetIndex.A);
             yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.C);
+            yield return DiningUtility.OnCompletedMeal(pawn);
             yield return DiningUtility.MakeTableMessy(TargetIndex.A, () => pawn.Position);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
             yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);

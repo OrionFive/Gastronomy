@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
@@ -15,7 +16,7 @@ namespace Restaurant.Dining
 
         public static IEnumerable<DiningSpot> GetAllDiningSpots([NotNull] Map map)
         {
-            return map.listerBuildings.AllBuildingsColonistOfClass<DiningSpot>();
+            return map.listerThings.ThingsOfDef(diningSpotDef).OfType<DiningSpot>();
         }
 
         public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, out ThingDef foodDef, bool allowDrug)
@@ -197,7 +198,7 @@ namespace Restaurant.Dining
 
         public static Toil MakeTableMessy(TargetIndex diningSpotInd, Func<IntVec3> patronPos)
         {
-            Toil toil = new Toil {atomicWithPrevious = true};
+            var toil = new Toil {atomicWithPrevious = true};
             toil.initAction = () => {
                 if (toil.actor.CurJob.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
                 {
@@ -205,6 +206,11 @@ namespace Restaurant.Dining
                 }
             };
             return toil;
+        }
+
+        public static Toil OnCompletedMeal(Pawn pawn)
+        {
+            return new Toil {atomicWithPrevious = true, initAction = () => { pawn.GetRestaurant().OnFinishedEatingOrder(pawn); }};
         }
     }
 }

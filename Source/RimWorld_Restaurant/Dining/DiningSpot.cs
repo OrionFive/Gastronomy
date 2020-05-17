@@ -25,7 +25,7 @@ namespace Restaurant.Dining
         public const string jobReportString = "DiningJobReportString";
 
         private RestaurantSettings settings;
-        private SpotState[] spotStates = new SpotState[4];
+        private List<SpotState> spotStates = new List<SpotState>(4) {SpotState.Clear, SpotState.Clear, SpotState.Clear, SpotState.Clear};
 
         public override ThingDef DispensableDef => throw new NotImplementedException();
         public bool MayDineStanding { get; } = false;
@@ -35,7 +35,7 @@ namespace Restaurant.Dining
         public override void ExposeData()
         {
             base.ExposeData();
-            Scribe_Deep.Look(ref spotStates, "spotStates");
+            Scribe_Collections.Look(ref spotStates, "spotStates");
         }
 
         public override void PostMapInit()
@@ -64,7 +64,7 @@ namespace Restaurant.Dining
         [NotNull]
         public SpotState[] GetReservationSpots()
         {
-            if (spotStates == null) spotStates = new SpotState[4];
+            if (spotStates == null) spotStates = new List<SpotState>(4) {SpotState.Clear, SpotState.Clear, SpotState.Clear, SpotState.Clear};
             var position = Position;
             var map = Map;
             var result = new SpotState[4];
@@ -141,6 +141,7 @@ namespace Restaurant.Dining
                 var intVec = position + new Rot4(i).FacingCell;
                 if (intVec == chairPos)
                 {
+                    Log.Message($"Checked spot state of {position} from {chairPos}: {spotStates[i]} ({i})");
                     return spotStates[i];
                 }
             }
