@@ -56,7 +56,7 @@ namespace Restaurant.Dining
             }
         }
 
-        public int GetMaxReservations() => GetReservationSpots().Count(s => s > 0);
+        public int GetMaxReservations() => GetReservationSpots().Count(s => s >= SpotState.Clear);
 
         /// <summary>
         /// [0] = up, [1] = right, [2] = down, [3] = left

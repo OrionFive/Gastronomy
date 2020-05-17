@@ -8,12 +8,20 @@ namespace Restaurant.Dining
 {
     public class JobDriver_Dine : JobDriver
     {
+        private ThingDef preferredFoodDef;
+
+        public bool wantsToOrder;
         public DiningSpot DiningSpot => job.GetTarget(TargetIndex.A).Thing as DiningSpot;
         public Pawn Waiter => job.GetTarget(TargetIndex.B).Pawn;
         public Thing Food => job.GetTarget(TargetIndex.C).Thing;
 
-        public bool wantsToOrder;
-        private ThingDef preferredFoodDef;
+        //public override string GetReport()
+        //{
+        //    //if (job?.plantDefToSow == null) return base.GetReport();
+        //    return "JobDineGoReport".Translate();
+        //}
+
+        private float ChewDurationMultiplier => 1f / pawn.GetStatValue(StatDefOf.EatingSpeed);
 
         public override void ExposeData()
         {
@@ -28,7 +36,7 @@ namespace Restaurant.Dining
             {
                 var diningSpot = DiningSpot;
 
-                if (!pawn.Reserve(diningSpot, job, diningSpot.GetMaxReservations(), 0, null, errorOnFailed))
+                if (diningSpot == null || !diningSpot.Spawned || !pawn.Reserve(diningSpot, job, diningSpot.GetMaxReservations(), 0, null, errorOnFailed))
                 {
                     Log.Message($"{pawn.NameShortColored} FAILED to reserve dining spot at {diningSpot.Position}.");
                     return false;
@@ -38,14 +46,6 @@ namespace Restaurant.Dining
             preferredFoodDef = job.plantDefToSow; // Abusing this for storage of def
             return true;
         }
-
-        //public override string GetReport()
-        //{
-        //    //if (job?.plantDefToSow == null) return base.GetReport();
-        //    return "JobDineGoReport".Translate();
-        //}
-
-        private float ChewDurationMultiplier => 1f / pawn.GetStatValue(StatDefOf.EatingSpeed);
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
@@ -59,8 +59,8 @@ namespace Restaurant.Dining
             yield return Toils_Jump.JumpIf(waitForMeal, () => pawn.GetRestaurant().GetOrderFor(pawn) != null);
             yield return waitForWaiter;
             yield return waitForMeal;
-            yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.C); 
-            //yield return Toils_Reserve.Reserve(TargetIndex.C);
+            yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.C);
+            yield return Toils_Reserve.Reserve(TargetIndex.C, 1, 1);
             yield return DiningUtility.TurnToEatSurface(TargetIndex.A, TargetIndex.C);
             yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);
             yield return Toils_Ingest.ChewIngestible(pawn, ChewDurationMultiplier, TargetIndex.C, TargetIndex.A);
@@ -82,10 +82,33 @@ namespace Restaurant.Dining
             job.SetTarget(TargetIndex.C, food); // This triggers WaitForMeal
         }
 
+        // Mostly copied from JobDriver_Ingest
         public override bool ModifyCarriedThingDrawPos(ref Vector3 drawPos, ref bool behind, ref bool flip)
         {
-            var cell = job.GetTarget(TargetIndex.A).Cell;
-            return JobDriver_Ingest.ModifyCarriedThingDrawPosWorker(ref drawPos, ref behind, ref flip, cell, pawn);
+            var placeCell = job.GetTarget(TargetIndex.A).Cell;
+            if (pawn.pather.Moving) return false;
+            Thing carriedThing = pawn.carryTracker.CarriedThing;
+            if (carriedThing == null || !carriedThing.IngestibleNow) return false;
+            if (placeCell.IsValid && placeCell.AdjacentToCardinal(pawn.Position) && placeCell.HasEatSurface(pawn.Map) && carriedThing.def.ingestible.ingestHoldUsesTable)
+            {
+                drawPos = new Vector3((placeCell.x + pawn.Position.x) * 0.5f + 0.5f, drawPos.y, (placeCell.z + pawn.Position.z) * 0.5f + 0.5f);
+                behind = pawn.Rotation != Rot4.South;
+                return true;
+            }
+
+            if (carriedThing.def.ingestible.ingestHoldOffsetStanding != null)
+            {
+                HoldOffset holdOffset = carriedThing.def.ingestible.ingestHoldOffsetStanding.Pick(pawn.Rotation);
+                if (holdOffset != null)
+                {
+                    drawPos += holdOffset.offset;
+                    behind = holdOffset.behind;
+                    flip = holdOffset.flip;
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

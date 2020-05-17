@@ -46,14 +46,16 @@ namespace Restaurant.Waiting
             var end = Toils_General.Wait(5);
 
             this.FailOnNotDiningQueued(TargetIndex.B);
+
             yield return WaitingUtility.FindRandomAdjacentCell(TargetIndex.A, TargetIndex.A); // A is first the dining spot, then where we'll stand
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.OnCell).FailOnRestaurantClosed();
             yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
             yield return wait;
             yield return Toils_Jump.JumpIf(wait, () => !(Patron?.jobs.curDriver is JobDriver_Dine)); // Not dining right now
             yield return WaitingUtility.TakeOrder(TargetIndex.B);
+            yield return Toils_Interpersonal.SetLastInteractTime(TargetIndex.B);
             yield return WaitingUtility.GetDiningSpot(TargetIndex.B, TargetIndex.A);
-            yield return Toils_Jump.JumpIf(end, () => DiningSpot.IsSpotReady(Patron.Position));
+            yield return Toils_Jump.JumpIf(end, () => DiningSpot.IsSpotReady(WaitingUtility.GetChairPosition(Patron)));
             yield return Toils_Goto.GotoCell(TargetIndex.A, PathEndMode.ClosestTouch);
             yield return WaitingUtility.MakeTableReady(TargetIndex.A, TargetIndex.B);
             yield return end;

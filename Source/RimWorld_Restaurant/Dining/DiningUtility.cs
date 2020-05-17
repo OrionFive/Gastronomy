@@ -139,11 +139,11 @@ namespace Restaurant.Dining
             toil.AddFinishAction(() => GetDriver(toil).wantsToOrder = false);
 
             toil.defaultDuration = 1500;
-            toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
+            //toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDestroyedOrNull(diningSpotInd);
             toil.FailOnDurationExpired(); // Duration over? Fail job!
-            toil.socialMode = RandomSocialMode.SuperActive;
+            toil.socialMode = RandomSocialMode.Normal;
             return toil;
         }
 
@@ -154,14 +154,20 @@ namespace Restaurant.Dining
             var toil = new Toil();
             toil.initAction = () => {
                 var order = toil.actor.GetRestaurant().GetOrderFor(toil.actor);
-                if (order.delivered)
+                if (order?.delivered == true && order.consumable?.Spawned == true)
                 {
                     var food = order.consumable;
-                    Log.Message($"{toil.actor.NameShortColored} has already received order: {food?.Label}");
+                    Log.Message($"{toil.actor.NameShortColored} has already received order: {food.Label}");
 
                     if (toil.actor.inventory.Contains(food))
                     {
                         Log.Message($"{toil.actor.NameShortColored} has {food.Label} in inventory.");
+                        GetDriver(toil).ReadyForNextToil();
+                    }
+                    else if (food.Position.AdjacentTo8Way(toil.actor.Position))
+                    {
+                        Log.Message($"{toil.actor.NameShortColored} has {food.Label} on table.");
+                        toil.actor.inventory.innerContainer.TryAdd(food.SplitOff(1), 1, false);
                         GetDriver(toil).ReadyForNextToil();
                     }
                     else
@@ -175,17 +181,17 @@ namespace Restaurant.Dining
                 if(target.HasThing && target.IsValid) GetDriver(toil).ReadyForNextToil();
             };
             toil.defaultDuration = 1500;
-            toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
+            //toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDurationExpired(); // Duration over? Fail job!
-            toil.socialMode = RandomSocialMode.SuperActive;
+            toil.socialMode = RandomSocialMode.Normal;
             return toil;
         }
 
         public static Toil WaitDuringDinner(TargetIndex lookAtInd, int minDuration, int maxDuration)
         {
             var toil = Toils_General.Wait(Rand.Range(minDuration, maxDuration), lookAtInd);
-            toil.socialMode = RandomSocialMode.SuperActive;
+            toil.socialMode = RandomSocialMode.Normal;
             return toil;
         }
 

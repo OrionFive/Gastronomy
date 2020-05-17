@@ -16,7 +16,15 @@ namespace Restaurant.Waiting
         {
             // Talk to patron
             var toil = Toils_Interpersonal.Interact(patronInd, InteractionDefOf.Chitchat);
+            toil.initAction = () => {
+                var patron = toil.actor.CurJob.GetTarget(patronInd).Pawn;
+                if (patron != null)
+                {
+                    PawnUtility.ForceWait(patron, toil.defaultDuration);
+                }
+            };
             toil.tickAction = () => toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(patronInd).Cell);
+            toil.socialMode = RandomSocialMode.Off;
             toil.defaultDuration = 500;
             toil.WithProgressBarToilDelay(patronInd, true);
             toil.activeSkill = () => SkillDefOf.Social;
@@ -138,18 +146,21 @@ namespace Restaurant.Waiting
             return toil;
         }
 
-        public static Toil MakeTableReady(TargetIndex diningSpotInd, TargetIndex chairPosInd)
+        public static Toil MakeTableReady(TargetIndex diningSpotInd, TargetIndex patronInd)
         {
             Toil toil = new Toil {defaultCompleteMode = ToilCompleteMode.Delay, defaultDuration = 100};
             toil.WithProgressBarToilDelay(diningSpotInd, true);
-            toil.initAction = () => {
-                var chairPos = toil.actor.CurJob.GetTarget(chairPosInd).Cell;
+            toil.AddFinishAction(() => {
+                var patron = toil.actor.CurJob.GetTarget(patronInd).Pawn;
+                var chairPos = GetChairPosition(patron);
                 Log.Message($"About to make spot ready ({toil.actor.CurJob.GetTarget(diningSpotInd).Thing?.Label}) at {toil.actor.CurJob.GetTarget(diningSpotInd).Cell}.");
                 if (toil.actor.CurJob.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
                 {
                     diningSpot.SetSpotReady(chairPos);
                 }
-            };
+            });
+            toil.WithEffect(EffecterDefOf.Clean, diningSpotInd);
+            toil.PlaySustainerOrSound(() => SoundDefOf.Interact_CleanFilth);
             return toil;
         }
 
@@ -188,6 +199,13 @@ namespace Restaurant.Waiting
                 }
             };
             return toil;
+        }
+
+        public static IntVec3 GetChairPosition(Pawn patron)
+        {
+            if(patron.pather.MovingNow)
+                return patron.pather.Destination.Cell;
+            return patron.Position;
         }
     }
 }

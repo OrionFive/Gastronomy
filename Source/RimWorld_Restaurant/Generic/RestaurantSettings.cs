@@ -95,7 +95,7 @@ namespace Restaurant
             }
 
             // Already prepared?
-            var available = stock.Count(item => item.def == consumableDef);
+            var available = stock.Where(item => item.def == consumableDef).Sum(item => item.stackCount);
             var ordered = orders.Count(o => o.consumableDef == consumableDef);
 
             if (available <= ordered)

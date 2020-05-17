@@ -5,12 +5,13 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Restaurant.Waiting {
+namespace Restaurant.Waiting
+{
     public class WorkGiver_MakeTable : WorkGiver_Scanner
     {
         public override PathEndMode PathEndMode => PathEndMode.Touch;
 
-        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial);
+        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.FoodDispenser);
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetRestaurant().diningSpots;
 
@@ -33,15 +34,17 @@ namespace Restaurant.Waiting {
                     Log.Message($"{pawn.NameShortColored} can't reserve {spot.Position} for making. Is reserved by {reserver?.NameShortColored}. ");
                     return false;
                 }
+
                 Log.Message($"{pawn.NameShortColored} can make table at {spot.Position}.");
                 return true;
             }
+
             return false;
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            var diningSpot = (DiningSpot)t;
+            var diningSpot = (DiningSpot) t;
 
             Log.Message($"{pawn.NameShortColored} can get a make table job at {diningSpot.Position}.");
 

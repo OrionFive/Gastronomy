@@ -15,7 +15,6 @@ namespace Restaurant.Waiting
 
         public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
-            Log.Message($"{pawn.GetRestaurant().Stock.Count} potential work things...");
             return pawn.GetRestaurant().Stock;
         }
 
@@ -29,7 +28,7 @@ namespace Restaurant.Waiting
             var restaurant = pawn.GetRestaurant();
             if (pawn == t) return false;
             if (!pawn.CanReserveAndReach(t, PathEndMode.Touch, Danger.None, 1, 1)) return false;
-            var anyOrder = restaurant.AvailableOrdersForServing.FirstOrDefault(o => o.consumableDef == t.def && !restaurant.IsBeingDelivered(o, pawn) && o.patron?.HasDiningQueued() == true);
+            var anyOrder = GetOrderOnThing(pawn, t, restaurant);
             if (anyOrder == null) return false;
             if (!anyOrder.patron.Spawned || anyOrder.patron.Dead)
             {
@@ -45,10 +44,14 @@ namespace Restaurant.Waiting
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            var restaurant = pawn.GetRestaurant();
-            var order = restaurant.AvailableOrdersForServing.FirstOrDefault(o => o.consumableDef == t.def && !restaurant.IsBeingDelivered(o, pawn));
+            var order = GetOrderOnThing(pawn, t, pawn.GetRestaurant());
 
             return JobMaker.MakeJob(WaitingUtility.serveDef, order.patron, t);
+        }
+
+        private static Order GetOrderOnThing(Pawn pawn, Thing t, RestaurantSettings restaurant)
+        {
+            return restaurant.AvailableOrdersForServing.FirstOrDefault(o => o.consumableDef == t.def && !restaurant.IsBeingDelivered(o, pawn) && o.patron?.jobs.curDriver is JobDriver_Dine);
         }
     }
 }

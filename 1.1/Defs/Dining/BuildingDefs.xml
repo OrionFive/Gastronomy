@@ -13,6 +13,7 @@
 	  <drawRotated>false</drawRotated>
       <drawOffsetNorth>(0,0,0.25)</drawOffsetNorth>
     </graphicData>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
 	<building>
 		<!-- Must be there so code that checks buildings doesn't break -->
 	</building>

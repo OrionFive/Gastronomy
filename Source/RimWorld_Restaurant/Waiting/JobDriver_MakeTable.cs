@@ -3,7 +3,8 @@ using Restaurant.Dining;
 using Verse;
 using Verse.AI;
 
-namespace Restaurant.Waiting {
+namespace Restaurant.Waiting
+{
     public class JobDriver_MakeTable : JobDriver
     {
         private DiningSpot DiningSpot => job.GetTarget(TargetIndex.A).Thing as DiningSpot;
