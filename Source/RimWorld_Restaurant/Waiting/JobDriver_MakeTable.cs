@@ -31,7 +31,7 @@ namespace Restaurant.Waiting
             this.FailOnForbidden(TargetIndex.A);
             yield return begin;
             yield return Toils_Jump.JumpIf(end, () => pawn.CurJob?.GetTarget(TargetIndex.B).IsValid == false);
-            yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.OnCell);
+            yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.OnCell).FailOnDespawnedNullOrForbidden(TargetIndex.B);
             yield return WaitingUtility.MakeTableReady(TargetIndex.A, TargetIndex.B);
             yield return end;
         }

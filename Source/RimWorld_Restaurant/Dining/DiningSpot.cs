@@ -135,6 +135,7 @@ namespace Restaurant.Dining
 
         private SpotState GetSpotState(IntVec3 chairPos)
         {
+            if(!Spawned || Destroyed) return SpotState.Blocked;
             var position = Position;
             for (int i = 0; i < 4; i++)
             {
@@ -147,7 +148,7 @@ namespace Restaurant.Dining
             }
 
             Log.Error($"Tried to get state of dining spot {position} with an invalid spot position {chairPos}.");
-            return SpotState.Clear;
+            return SpotState.Blocked;
         }
 
         public override Thing TryDispenseFood()
