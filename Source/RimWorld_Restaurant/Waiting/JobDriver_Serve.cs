@@ -44,6 +44,7 @@ namespace Restaurant.Waiting
             }
 
             order.consumable = food;
+            order.hasToBeMade = false;
 
             Log.Message($"{pawn.NameShortColored} reserved food {food.Label}.");
             job.count = 1;

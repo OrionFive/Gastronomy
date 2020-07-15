@@ -11,12 +11,9 @@ namespace Restaurant.Waiting
     {
         public override PathEndMode PathEndMode => PathEndMode.Touch;
 
-        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.HaulableAlways);
+        public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
-        {
-            return pawn.GetRestaurant().Stock;
-        }
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetRestaurant().SpawnedDiningPawns;
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
@@ -25,33 +22,52 @@ namespace Restaurant.Waiting
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            var restaurant = pawn.GetRestaurant();
+            if (!(t is Pawn patron)) return false;
+
             if (pawn == t) return false;
-            if (!pawn.CanReserveAndReach(t, PathEndMode.Touch, Danger.None, 1, 1)) return false;
-            var anyOrder = GetOrderOnThing(pawn, t, restaurant);
-            if (anyOrder == null) return false;
-            if (!anyOrder.patron.Spawned || anyOrder.patron.Dead)
+
+            var driver = patron.GetDriver<JobDriver_Dine>();
+            if (driver == null || driver.wantsToOrder) return false;
+
+            var restaurant = pawn.GetRestaurant();
+            var order = restaurant.GetOrderFor(patron);
+
+            if (order == null) return false;
+            if (order.delivered) return false;
+
+            if (restaurant.IsBeingDelivered(order, patron)) return false;
+
+            if (!patron.Spawned || patron.Dead)
             {
-                Log.Message($"Order canceled. null? {anyOrder.patron == null} dead? {anyOrder.patron.Dead} unspawned? {!anyOrder.patron?.Spawned}");
-                restaurant.CancelOrder(anyOrder);
+                Log.Message($"Order canceled. null? {order.patron == null} dead? {order.patron.Dead} unspawned? {!order.patron?.Spawned}");
+                restaurant.CancelOrder(order);
                 return false;
             }
 
-            Log.Message($"{pawn.NameShortColored} can serve {t.Label} to {anyOrder.patron.NameShortColored}.");
-            anyOrder.hasToBeMade = false;
+            Log.Message($"{pawn.NameShortColored} is trying to serve {patron.NameShortColored} a {order.consumableDef.label}.");
+            var consumable = restaurant.GetServableThing(order, pawn);
+
+            if (consumable == null)
+            {
+                Log.Message($"Nothing found that matches order.");
+                return false;
+            }
+
+            Log.Message($"{pawn.NameShortColored} can serve {consumable.Label} to {order.patron.NameShortColored}.");
+            order.consumable = consumable; // Store for JobOnThing
             return true;
         }
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            var order = GetOrderOnThing(pawn, t, pawn.GetRestaurant());
+            if (!(t is Pawn p)) return null;
+            
 
-            return JobMaker.MakeJob(WaitingUtility.serveDef, order.patron, t);
-        }
+            var order = pawn.GetRestaurant().GetOrderFor(p);
+            var consumable = order.consumable;
+            if(consumable == null) Log.Error($"Consumable in order for {p.NameShortColored} is suddenly null.");
 
-        private static Order GetOrderOnThing(Pawn pawn, Thing t, RestaurantSettings restaurant)
-        {
-            return restaurant.AvailableOrdersForServing.FirstOrDefault(o => o.consumableDef == t.def && !restaurant.IsBeingDelivered(o, pawn) && o.patron?.jobs.curDriver is JobDriver_Dine);
+            return JobMaker.MakeJob(WaitingUtility.serveDef, order.patron, consumable);
         }
     }
 }

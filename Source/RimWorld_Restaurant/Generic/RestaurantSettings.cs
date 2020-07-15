@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using Restaurant.Dining;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace Restaurant
 {
@@ -151,6 +152,11 @@ namespace Restaurant
         public void OnFinishedEatingOrder(Pawn patron)
         {
             orders.RemoveAll(o => o.patron == patron);
+        }
+
+        public Thing GetServableThing(Order order, Pawn pawn)
+        {
+            return Stock.Where(o => o.Spawned && o.def == order.consumableDef).OrderBy(o => pawn.Position.DistanceToSquared(o.Position)).FirstOrDefault(o => pawn.CanReserveAndReach(o, PathEndMode.Touch, Danger.None, 1, 1));
         }
     }
 }
