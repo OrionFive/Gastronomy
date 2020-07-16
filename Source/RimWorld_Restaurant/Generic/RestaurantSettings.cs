@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using JetBrains.Annotations;
 using Restaurant.Dining;
@@ -18,15 +19,16 @@ namespace Restaurant
 		public IntVec3 testPos;
 
 		public RestaurantSettings(Map map) : base(map) { }
-		public bool IsOpenedRightNow { get; } = true;
+		public bool IsOpenedRightNow => openForBusiness;
 		public bool openForBusiness = true;
 
 		public int Seats => diningSpots.Sum(s => s.GetMaxSeats());
-		public int Patrons => SpawnedDiningPawns.Count;
-		public int Orders => orders.Count;
-		public int OrdersReadyToServe => AvailableOrdersForServing.Count();
-		public int StockedMeals => stock.Sum(s => s.stackCount);
+		public ReadOnlyCollection<Pawn> Patrons => SpawnedDiningPawns.AsReadOnly();
+		public ReadOnlyCollection<Order> Orders => orders.AsReadOnly();
 
+		[NotNull] public IEnumerable<Thing> Stock => stock.AsReadOnly();
+		[NotNull] public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.delivered && stock.Exists(s=>s.def == o.consumableDef));
+		[NotNull] public IEnumerable<Order> AvailableOrdersForCooking => orders.Where(o => !o.delivered && !stock.Exists(s=>s.def == o.consumableDef));
 		[NotNull] public List<Pawn> SpawnedDiningPawns
 		{
 			get
@@ -36,8 +38,6 @@ namespace Restaurant
 				return spawnedDiningPawnsResult;
 			}
 		}
-		[NotNull] public IReadOnlyCollection<Thing> Stock => stock.AsReadOnly();
-		[NotNull] public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.delivered);
 
 		public override void ExposeData()
 		{
@@ -79,6 +79,7 @@ namespace Restaurant
 			if (GenTicks.TicksGame < lastStockUpdateTick + 500) return;
 			lastStockUpdateTick = GenTicks.TicksGame;
 			stock = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t => t.def.IsIngestible && IsInConsumableCategory(t.def.thingCategories)));
+			orders.RemoveAll(o => !o.patron.Spawned || o.patron.Dead);
 			//Log.Message($"Stock: {stock.Select(s => s.def.label).ToCommaList(true)}");
 		}
 

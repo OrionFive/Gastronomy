@@ -1,3 +1,4 @@
+using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -21,11 +22,11 @@ namespace Restaurant.TableTops
 
         protected override void FillTab()
         {
-            var rect = new Rect(0f, 10f, WinSize.x, WinSize.y).ContractedBy(10f);
+            var rect = new Rect(0f, 16f, WinSize.x, WinSize.y).ContractedBy(10f);
 
             if (showSettings)
             {
-                var smallRect = new Rect(rect) {height = 1 * 25};
+                var smallRect = new Rect(rect) {height = 1 * 24};
                 rect.yMin += smallRect.height + 10;
 
                 DrawSettings(smallRect);
@@ -41,7 +42,7 @@ namespace Restaurant.TableTops
 
             if (showStats)
             {
-                var smallRect = new Rect(rect) {height = 5 * 25 + 20};
+                var smallRect = new Rect(rect) {height = 5 * 24 + 20};
                 rect.yMin += smallRect.height + 10;
 
                 DrawStats(smallRect);
@@ -90,13 +91,25 @@ namespace Restaurant.TableTops
             var listing = new Listing_Standard();
             listing.Begin(rect);
             {
+                var patrons = Register.settings.Patrons;
+                var orders = Register.settings.Orders;
+                var stock = Register.settings.Stock;
+                var ordersForServing = Register.settings.AvailableOrdersForServing.ToArray();
+                var ordersForCooking = Register.settings.AvailableOrdersForCooking.ToArray();
+
                 listing.LabelDouble("Seats:", Register.settings.Seats.ToString()); // TODO: localize
-                listing.LabelDouble("Patrons:", Register.settings.Patrons.ToString()); // TODO: localize
-                listing.LabelDouble("Total orders:", Register.settings.Orders.ToString()); // TODO: localize
-                listing.LabelDouble("Orders ready to serve:", Register.settings.OrdersReadyToServe.ToString()); // TODO: localize
-                listing.LabelDouble("Stocked meals:", Register.settings.StockedMeals.ToString()); // TODO: localize
+                listing.LabelDouble("Patrons:", patrons.Count.ToString(), patrons.Select(p=>p.LabelShort).ToCommaList(true)); // TODO: localize
+                listing.LabelDouble("Total orders:", orders.Count.ToString(), orders.Select(GetOrderLabel).ToCommaList(true)); // TODO: localize
+                listing.LabelDouble("Orders need serving:", ordersForServing.Count().ToString(), ordersForServing.Select(GetOrderLabel).ToCommaList(true)); // TODO: localize
+                listing.LabelDouble("Orders need cooking:", ordersForCooking.Count().ToString(), ordersForCooking.Select(GetOrderLabel).ToCommaList(true)); // TODO: localize
+                listing.LabelDouble("Stocked meals:", stock.Sum(s=>s.stackCount).ToString(), stock.Select(s=>s.def).Distinct().Select(s=>s.label).ToCommaList()); // TODO: localize
             }
             listing.End();
+        }
+
+        private static string GetOrderLabel(Order order)
+        {
+            return $"{order.patron.NameShortColored} ({order.consumableDef.label})";
         }
 
         public override void TabUpdate()
