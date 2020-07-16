@@ -2,12 +2,13 @@ using System.Linq;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using TimetableUtility = Restaurant.Timetable.TimetableUtility;
 
 namespace Restaurant.TableTops
 {
     public class ITab_Register : ITab
     {
-        private static readonly Vector2 WinSize = new Vector2(420f, 480f);
+        private static readonly Vector2 WinSize = new Vector2(600f, 480f);
         private bool showSettings = true;
         private bool showRadius = false;
         private bool showStats = true;
@@ -26,7 +27,7 @@ namespace Restaurant.TableTops
 
             if (showSettings)
             {
-                var smallRect = new Rect(rect) {height = 1 * 24};
+                var smallRect = new Rect(rect) {height = 2 * 24 + 30};
                 rect.yMin += smallRect.height + 10;
 
                 DrawSettings(smallRect);
@@ -55,10 +56,13 @@ namespace Restaurant.TableTops
             listing.Begin(rect);
             {
                 listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref Register.settings.openForBusiness, "TabRegisterOpenedTooltip".Translate());
-
-                // TODO: Timetable
             }
             listing.End();
+
+            rect.yMin += 24;
+            TimetableUtility.DoHeader(new Rect(rect) {height = 24});
+            rect.yMin += 24;
+            TimetableUtility.DoCell(new Rect(rect) {height = 30}, Register.settings.timetableOpen);
         }
 
         private void DrawRadius(Rect rect)

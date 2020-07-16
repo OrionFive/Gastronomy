@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using JetBrains.Annotations;
 using Restaurant.Dining;
+using Restaurant.Timetable;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -19,8 +20,9 @@ namespace Restaurant
 		public IntVec3 testPos;
 
 		public RestaurantSettings(Map map) : base(map) { }
-		public bool IsOpenedRightNow => openForBusiness;
+		public bool IsOpenedRightNow => openForBusiness && timetableOpen.CurrentAssignment(map);
 		public bool openForBusiness = true;
+		public TimetableBool timetableOpen;
 
 		public int Seats => diningSpots.Sum(s => s.GetMaxSeats());
 		public ReadOnlyCollection<Pawn> Patrons => SpawnedDiningPawns.AsReadOnly();
@@ -45,6 +47,9 @@ namespace Restaurant
 			Scribe_Values.Look(ref testPos, "testPos");
 			Scribe_Collections.Look(ref orders, "orders", LookMode.Deep);
 			Scribe_Values.Look(ref openForBusiness, "openForBusiness", true);
+
+			Scribe_Deep.Look(ref timetableOpen, "timetableOpen");
+			if (timetableOpen == null) timetableOpen = new TimetableBool();
 		}
 
 		public override void FinalizeInit()
