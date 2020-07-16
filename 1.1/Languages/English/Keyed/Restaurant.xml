@@ -4,7 +4,20 @@
 	<!-- Cash register -->
 	<MustPlaceOnTable>Must be placed on a table.</MustPlaceOnTable>
 	<MustPlaceOnFreeSurface>Must be placed on clear surface.</MustPlaceOnFreeSurface>
+	
+	<!-- Register tab -->
 	<TabRegister>Register</TabRegister>
+	<!-- Settings -->
+	<TabRegisterOpened>Opened</TabRegisterOpened>
+	<TabRegisterOpenedTooltip>When checked, patrons can make orders during business hours.</TabRegisterOpenedTooltip>
+	<!-- Stats -->
+	<TabRegisterRadius>Radius</TabRegisterRadius>
+	<TabRegisterSeats>Seats:</TabRegisterSeats>
+	<TabRegisterPatrons>Patrons:</TabRegisterPatrons>
+	<TabRegisterTotalOrders>Total orders:</TabRegisterTotalOrders>
+	<TabRegisterNeedsServing>Orders need serving:</TabRegisterNeedsServing>
+	<TabRegisterNeedsCooking>Orders need cooking:</TabRegisterNeedsCooking>
+	<TabRegisterStocked>Stocked meals:</TabRegisterStocked>
 	
 	<!-- Dining -->
 	<CommandToggleDining>Dining</CommandToggleDining>

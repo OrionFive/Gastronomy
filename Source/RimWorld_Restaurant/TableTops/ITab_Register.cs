@@ -54,7 +54,7 @@ namespace Restaurant.TableTops
             var listing = new Listing_Standard();
             listing.Begin(rect);
             {
-                listing.CheckboxLabeled("Opened", ref Register.settings.openForBusiness, "When checked, patrons can make orders during business hours."); // TODO: localize
+                listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref Register.settings.openForBusiness, "TabRegisterOpenedTooltip".Translate());
 
                 // TODO: Timetable
             }
@@ -93,16 +93,16 @@ namespace Restaurant.TableTops
             {
                 var patrons = Register.settings.Patrons;
                 var orders = Register.settings.Orders;
-                var stock = Register.settings.Stock;
+                var stock = Register.settings.Stock.ToArray();
                 var ordersForServing = Register.settings.AvailableOrdersForServing.ToArray();
                 var ordersForCooking = Register.settings.AvailableOrdersForCooking.ToArray();
 
-                listing.LabelDouble("Seats:", Register.settings.Seats.ToString()); // TODO: localize
-                listing.LabelDouble("Patrons:", patrons.Count.ToString(), patrons.Select(p=>p.LabelShort).ToCommaList()); // TODO: localize
-                listing.LabelDouble("Total orders:", orders.Count.ToString(), orders.Select(GetOrderLabel).ToCommaList()); // TODO: localize
-                listing.LabelDouble("Orders need serving:", ordersForServing.Count().ToString(), ordersForServing.Select(GetOrderLabel).ToCommaList()); // TODO: localize
-                listing.LabelDouble("Orders need cooking:", ordersForCooking.Count().ToString(), ordersForCooking.Select(GetOrderLabel).ToCommaList()); // TODO: localize
-                listing.LabelDouble("Stocked meals:", stock.Sum(s=>s.stackCount).ToString(), stock.Select(s=>s.def).Distinct().Select(s=>s.label).ToCommaList()); // TODO: localize
+                listing.LabelDouble("TabRegisterSeats".Translate(), Register.settings.Seats.ToString());
+                listing.LabelDouble("TabRegisterPatrons".Translate(), patrons.Count.ToString(), patrons.Select(p=>p.LabelShort).ToCommaList());
+                listing.LabelDouble("TabRegisterTotalOrders".Translate(), orders.Count.ToString(), orders.Select(GetOrderLabel).ToCommaList());
+                listing.LabelDouble("TabRegisterNeedsServing".Translate(), ordersForServing.Count().ToString(), ordersForServing.Select(GetOrderLabel).ToCommaList());
+                listing.LabelDouble("TabRegisterNeedsCooking".Translate(), ordersForCooking.Count().ToString(), ordersForCooking.Select(GetOrderLabel).ToCommaList());
+                listing.LabelDouble("TabRegisterStocked".Translate(), stock.Sum(s=>s.stackCount).ToString(), stock.Select(s=>s.def).Distinct().Select(s=>s.label).ToCommaList());
             }
             listing.End();
         }
