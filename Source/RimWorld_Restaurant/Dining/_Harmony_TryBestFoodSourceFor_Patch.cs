@@ -7,7 +7,7 @@ namespace Restaurant.Dining
     /// <summary>
     /// For allowing pawns to find DiningSpots when hungry. This should later be replaced with BestFoodSourceOnMap, so alternatives are considered
     /// </summary>
-    internal static class _Harmony_FoodUtility_Patch
+    internal static class _Harmony_TryBestFoodSourceFor_Patch
     {
         [HarmonyPatch(typeof(FoodUtility), "TryFindBestFoodSourceFor")]
         public class TryFindBestFoodSourceFor
@@ -20,6 +20,9 @@ namespace Restaurant.Dining
                     Log.Message($"{getter?.NameShortColored} != {eater?.NameShortColored}.");
                     return true; // Run original code
                 }
+
+                // Only if time assignment allows
+                if (!eater.GetTimeAssignment().allowJoy) return true;
 
                 bool canManipulate = getter.RaceProps.ToolUser && getter.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation);
                 if (!canManipulate)

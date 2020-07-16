@@ -71,9 +71,9 @@
     <Compile Include="Waiting\JobDriver_MakeTable.cs" />
     <Compile Include="Waiting\JobDriver_Serve.cs" />
     <Compile Include="Waiting\JobDriver_TakeOrder.cs" />
-    <Compile Include="Dining\_Harmony_FoodUtility_Patch.cs" />
+    <Compile Include="Dining\_Harmony_TryBestFoodSourceFor_Patch.cs" />
     <Compile Include="Dining\_Harmony_JobGiver_GetFood_Patch.cs" />
-    <Compile Include="Dining\_Harmony_ThingDef_Patch.cs" />
+    <Compile Include="Dining\_Harmony_IsFoodDispenser_Patch.cs" />
     <Compile Include="Patching\ThingWithComps.cs" />
     <Compile Include="TableTops\ITab_Register.cs" />
     <Compile Include="TableTops\RegisterUtility.cs" />

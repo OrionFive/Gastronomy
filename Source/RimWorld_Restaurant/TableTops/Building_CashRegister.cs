@@ -34,12 +34,6 @@ namespace Restaurant.TableTops
             if (!respawningAfterLoad) settings = this.GetRestaurant();
         }
 
-        public override void DrawExtraSelectionOverlays()
-        {
-            base.DrawExtraSelectionOverlays();
-            DrawGizmos();
-        }
-
         public void DrawGizmos()
         {
             foreach (var diningSpot in diningSpots.Where(diningSpot => diningSpot != null))
