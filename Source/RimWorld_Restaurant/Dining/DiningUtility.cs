@@ -27,12 +27,12 @@ namespace Restaurant.Dining
             var settings = pawn.GetRestaurant();
             if (settings == null) return null;
 
-            if (!settings.IsOpenedRightNow || !settings.HasAnyFoodFor(pawn, allowDrug)) return null;
+            if (!settings.HasAnyFoodFor(pawn, allowDrug)) return null;
 
             bool Validator(Thing thing)
             {
                 var spot = (DiningSpot) thing;
-                return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && pawn.CanReserve(spot, spot.GetMaxReservations(), 0);
+                return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && pawn.CanReserve(spot, spot.GetMaxReservations(), 0) && spot.IsOpenedRightNow;
             }
 
             var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, Validator, null, 0, maxRegionsToScan, false,

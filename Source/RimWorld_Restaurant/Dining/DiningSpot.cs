@@ -57,6 +57,9 @@ namespace Restaurant.Dining
         }
 
         public int GetMaxReservations() => GetReservationSpots().Count(s => s >= SpotState.Clear);
+        public int GetMaxSeats() => GetReservationSpots().Count(s => s != SpotState.Blocked);
+
+        public bool IsOpenedRightNow => settings.IsOpenedRightNow;
 
         /// <summary>
         /// [0] = up, [1] = right, [2] = down, [3] = left
@@ -147,16 +150,17 @@ namespace Restaurant.Dining
                 }
             }
 
-            Log.Error($"Tried to get state of dining spot {position} with an invalid spot position {chairPos}.");
+            Log.Warning($"Tried to get state of dining spot {position} with an invalid spot position {chairPos}. This message can probably be ignored.");
             return SpotState.Blocked;
         }
 
         public override Thing TryDispenseFood()
         {
-            if (!settings.IsOpenedRightNow) return null;
+            return null;
+            if (!IsOpenedRightNow) return null;
 
             // TODO: Implement this method correctly
-            Log.Message("Trying to get food from DiningSpot!");
+            Log.Warning("Trying to get food from DiningSpot!");
             float num = def.building.nutritionCostPerDispense - 0.0001f;
             List<ThingDef> list = new List<ThingDef>();
             do
@@ -177,9 +181,9 @@ namespace Restaurant.Dining
             def.building.soundDispense.PlayOneShot(new TargetInfo(Position, Map));
             Thing thing2 = ThingMaker.MakeThing(ThingDefOf.MealNutrientPaste);
             CompIngredients compIngredients = thing2.TryGetComp<CompIngredients>();
-            for (int i = 0; i < list.Count; i++)
+            foreach (var ingredient in list)
             {
-                compIngredients.RegisterIngredient(list[i]);
+                compIngredients.RegisterIngredient(ingredient);
             }
 
             return thing2;
