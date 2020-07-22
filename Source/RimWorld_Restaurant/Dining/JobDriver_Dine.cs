@@ -76,7 +76,7 @@ namespace Restaurant.Dining
 
         public void OnTransferredFood(Thing food)
         {
-            //Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory. {pawn.inventory.Contains(food)}");
+            Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory. {pawn.inventory.Contains(food)}");
             job.SetTarget(TargetIndex.C, food); // This triggers WaitForMeal
         }
 

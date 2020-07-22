@@ -116,7 +116,7 @@ namespace Restaurant.Dining
                 if (foodInd != TargetIndex.None)
                 {
                     var thing = toil.actor.CurJob.GetTarget(foodInd).Thing;
-                    if (thing.def.rotatable)
+                    if (thing?.def.rotatable == true)
                     {
                         thing.Rotation = Rot4.FromIntVec3(toil.actor.CurJob.GetTarget(eatSurfaceInd).Cell - toil.actor.Position);
                     }
@@ -158,8 +158,10 @@ namespace Restaurant.Dining
                 if (order?.delivered == true && order.consumable?.Spawned == true)
                 {
                     var food = order.consumable;
+                    toil.actor.CurJob.SetTarget(mealInd, food);
                     Log.Message($"{toil.actor.NameShortColored} has already received order: {food.Label}");
-
+                    Log.Message($"Food {food.LabelShort} is inside map: {(food.ParentHolder as Map)?.IsPlayerHome} At: {food.Position} Spawned: {food.Spawned}");
+                    Log.Message($"{toil.actor.NameShortColored} has {toil.actor.inventory.GetDirectlyHeldThings().Select(s=>s.Label).ToCommaList()}");
                     if (toil.actor.inventory.Contains(food))
                     {
                         Log.Message($"{toil.actor.NameShortColored} has {food.Label} in inventory.");
@@ -168,13 +170,22 @@ namespace Restaurant.Dining
                     else if (food.Position.AdjacentTo8Way(toil.actor.Position))
                     {
                         Log.Message($"{toil.actor.NameShortColored} has {food.Label} on table.");
-                        toil.actor.inventory.innerContainer.TryAdd(food.SplitOff(1), 1, false);
+                        food.DeSpawn();
+                        var amount = toil.actor.inventory.innerContainer.TryAdd(order.consumable, 1, false);
+                        Log.Message($"{toil.actor.NameShortColored} received {amount} of {food.LabelShort} to his inventory.");
                         GetDriver(toil).ReadyForNextToil();
                     }
                     else
                     {
                         order.delivered = false;
                     }
+                }
+                else if (order?.delivered == true)
+                {
+                    // Order not spawned? Already eaten it, or something happened to it
+                    // Let it go.
+                    Log.Warning($"{toil.actor.NameShortColored}'s food is gone. Already eaten?");
+                    GetDriver(toil).EndJobWith(JobCondition.QueuedNoLongerValid);
                 }
             };
             toil.tickAction = () => {

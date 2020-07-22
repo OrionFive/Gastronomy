@@ -107,9 +107,13 @@ namespace Restaurant.Waiting
 
         public static Toil ClearOrder(TargetIndex patronInd, TargetIndex foodInd)
         {
-            Toil clearOrder = new Toil {atomicWithPrevious = true};
-            clearOrder.initAction = delegate {
-                Pawn actor = clearOrder.actor;
+            var toil = new Toil {atomicWithPrevious = true};
+            toil.initAction = InitAction;
+            return toil;
+
+            void InitAction()
+            {
+                Pawn actor = toil.actor;
                 Job curJob = actor.CurJob;
                 LocalTargetInfo targetPatron = curJob.GetTarget(patronInd);
                 LocalTargetInfo targetFood = curJob.GetTarget(foodInd);
@@ -142,8 +146,8 @@ namespace Restaurant.Waiting
                         Log.Error($"{actor.NameShortColored} failed to transfer {food?.Label} to {patron.NameShortColored}.");
                     }
                 }
-            };
-            return clearOrder;
+            }
+        }
 
         public static Toil AnnounceServing(TargetIndex patronInd, TargetIndex foodInd)
         {
