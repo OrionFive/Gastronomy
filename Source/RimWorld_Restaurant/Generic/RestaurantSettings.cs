@@ -168,5 +168,23 @@ namespace Restaurant
 		{
 			return Stock.Where(o => o.Spawned && o.def == order.consumableDef).OrderBy(o => pawn.Position.DistanceToSquared(o.Position)).FirstOrDefault(o => pawn.CanReserveAndReach(o, PathEndMode.Touch, Danger.None, 1, 1));
 		}
+
+		/// <summary>
+		/// Check if the order is somehow broken.
+		/// </summary>
+		/// <returns>True of order is fine, false if it's not.</returns>
+		public bool CheckOrderOfWaitingPawn(Pawn patron)
+		{
+			var order = orders.FirstOrDefault(o => o.patron == patron);
+			if (order != null && order.delivered && order.consumable?.Spawned == false)
+			{
+				// Order not spawned? Already eaten it, or something happened to it
+				// Clear order
+				Log.Warning($"{patron.NameShortColored}'s food is gone. Already eaten?");
+				CancelOrder(order);
+				return false;
+			}
+			return true;
+		}
 	}
 }

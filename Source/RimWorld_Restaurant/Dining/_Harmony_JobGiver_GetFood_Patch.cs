@@ -17,10 +17,10 @@ namespace Restaurant.Dining
 			internal static void Postfix(Pawn pawn, ref Job __result)
 			{
 				if (__result == null) return;
-				Log.Message($"{pawn.NameShortColored} got job {__result.def.label} on {__result.targetA.Thing.Label}.");
+				//Log.Message($"{pawn.NameShortColored} got job {__result.def.label} on {__result.targetA.Thing.Label}.");
 				if (__result?.def == JobDefOf.Ingest && __result?.targetA.HasThing == true && __result?.targetA.Thing is DiningSpot spot)
 				{
-					Log.Message($"{pawn.NameShortColored} is now dining instead of ingesting.");
+					//Log.Message($"{pawn.NameShortColored} is now dining instead of ingesting.");
 					__result.def = DiningUtility.dineDef;
 
 					bool allowDrug = !pawn.IsTeetotaler();

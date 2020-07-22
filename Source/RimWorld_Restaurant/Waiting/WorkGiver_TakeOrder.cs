@@ -18,6 +18,7 @@ namespace Restaurant.Waiting
         {
             if (!InteractionUtility.CanInitiateInteraction(pawn)) return true;
 
+            if (!pawn.GetRestaurant().IsOpenedRightNow) return true;
             var list = pawn.GetRestaurant().SpawnedDiningPawns;
 
             var anyPatrons = list.Any(p => {

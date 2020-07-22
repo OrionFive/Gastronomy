@@ -70,6 +70,7 @@ namespace Restaurant.Waiting
             yield return Toils_Haul.CarryHauledThingToCell(TargetIndex.C);
             yield return Toils_Jump.JumpIf(wait, () => pawn.jobs.curJob?.GetTarget(TargetIndex.A).Pawn?.GetDriver<JobDriver_Dine>()==null); // Driver not available
             yield return WaitingUtility.ClearOrder(TargetIndex.A, TargetIndex.B);
+            yield return WaitingUtility.AnnounceServing(TargetIndex.A, TargetIndex.B);
         }
     }
 }

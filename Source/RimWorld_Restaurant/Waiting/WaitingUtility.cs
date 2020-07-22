@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+using System.Linq;
 using Restaurant.Dining;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -16,24 +17,45 @@ namespace Restaurant.Waiting
         {
             // Talk to patron
             var toil = Toils_Interpersonal.Interact(patronInd, InteractionDefOf.Chitchat);
-            toil.initAction = () => {
-                var patron = toil.actor.CurJob.GetTarget(patronInd).Pawn;
-                if (patron != null)
-                {
-                    PawnUtility.ForceWait(patron, toil.defaultDuration);
-                }
-            };
-            toil.tickAction = () => toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(patronInd).Cell);
+
+            toil.initAction = InitAction;
             toil.socialMode = RandomSocialMode.Off;
             toil.defaultDuration = 500;
             toil.WithProgressBarToilDelay(patronInd, true);
             toil.activeSkill = () => SkillDefOf.Social;
             toil.FailOnDownedOrDead(patronInd);
             toil.FailOnMentalState(patronInd);
-            toil.AddPreInitAction(CreateOrder);
+            toil.tickAction = TickAction;
 
             return toil;
-            
+
+            void InitAction()
+            {
+                var patron = toil.actor.CurJob.GetTarget(patronInd).Pawn;
+                if (patron == null) return;
+             
+                if (!(patron.jobs.curDriver is JobDriver_Dine driver))
+                {
+                    Log.Error($"{patron.NameShortColored} is not dining!");
+                    toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
+                    return;
+                }
+
+                PawnUtility.ForceWait(patron, toil.defaultDuration, toil.actor);
+
+                //var order = patron.GetRestaurant().GetOrderFor(patron);
+                //var icon = order?.consumableDef?.uiIcon;
+                //if(icon != null) TryCreateBubble(toil.actor, patron, icon);
+                // TODO: Chance to insult patron
+                TryCreateBubble(toil.actor, patron, ModBaseRestaurant.symbolTakeOrder);
+            }
+
+            void TickAction()
+            {
+                toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(patronInd).Cell);
+                if (toil.actor.jobs.curDriver.ticksLeftThisToil == 200) CreateOrder();
+            }
+
             void CreateOrder()
             {
                 if (!(toil.GetActor().CurJob.GetTarget(patronInd).Thing is Pawn patron))
@@ -46,12 +68,9 @@ namespace Restaurant.Waiting
                 var desiredFoodDef = settings.GetBestFoodTypeFor(patron, !patron.IsTeetotaler());
                 settings.CreateOrder(patron, desiredFoodDef);
 
-                if (!(patron.jobs.curDriver is JobDriver_Dine driver))
-                {
-                    Log.Error($"{patron.NameShortColored} is not dining!");
-                    return;
-                }
-                driver.OnOrderTaken(desiredFoodDef, toil.GetActor());
+                var symbol = desiredFoodDef.uiIcon;
+                if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
+                Log.Message($"{patron.NameShortColored} should have shown symbol {symbol.name}");
             }
         }
 
@@ -125,6 +144,47 @@ namespace Restaurant.Waiting
                 }
             };
             return clearOrder;
+
+        public static Toil AnnounceServing(TargetIndex patronInd, TargetIndex foodInd)
+        {
+            var toil = Toils_Interpersonal.Interact(patronInd, InteractionDefOf.Chitchat);
+            toil.defaultDuration = 200;
+            toil.socialMode = RandomSocialMode.Off;
+            toil.activeSkill = () => SkillDefOf.Social;
+            toil.tickAction = TickAction;
+            toil.initAction = InitAction;
+            return toil;
+
+            void InitAction()
+            {
+                Pawn actor = toil.actor;
+                Job curJob = actor.CurJob;
+                LocalTargetInfo targetPatron = curJob.GetTarget(patronInd);
+                LocalTargetInfo targetFood = curJob.GetTarget(foodInd);
+
+                var patron = targetPatron.Pawn;
+                if (!targetPatron.HasThing || patron == null)
+                {
+                    Log.Error($"Can't announce serving. No patron.");
+                    return;
+                }
+
+                var food = targetFood.Thing;
+                if (!targetFood.HasThing || food == null)
+                {
+                    Log.Error($"Can't announce serving. No food.");
+                    return;
+                }
+
+                // TODO: Chance to insult patron
+                var symbol = food.def.uiIcon;
+                if (symbol != null) TryCreateBubble(actor, patron, symbol);
+            }
+
+            void TickAction()
+            {
+                toil.actor.rotationTracker.FaceCell(toil.actor.CurJob.GetTarget(patronInd).Cell);
+            }
         }
 
         public static Toil GetDiningSpot(TargetIndex patronInd, TargetIndex diningSpotInd)
@@ -162,7 +222,7 @@ namespace Restaurant.Waiting
                 var target = toil.actor.CurJob.GetTarget(patronInd);
                 IntVec3 chairPos;
 
-                if (target.HasThing)
+                if (target.Pawn != null)
                 {
                     var patron = target.Pawn;
                     chairPos = GetChairPosition(patron);
@@ -174,7 +234,7 @@ namespace Restaurant.Waiting
                     return;
                 }
 
-                Log.Message($"About to make spot ready ({toil.actor.CurJob.GetTarget(diningSpotInd).Thing?.Label}) at {toil.actor.CurJob.GetTarget(diningSpotInd).Cell}.");
+                Log.Message($"About to make spot ready ({toil.actor.CurJob.GetTarget(diningSpotInd).Cell}) from {toil.actor.CurJob.GetTarget(diningSpotInd).Cell}.");
                 if (toil.actor.CurJob.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
                 {
                     diningSpot.SetSpotReady(chairPos);
@@ -227,6 +287,12 @@ namespace Restaurant.Waiting
             if(patron.pather.MovingNow)
                 return patron.pather.Destination.Cell;
             return patron.Position;
+        }
+
+        private static void TryCreateBubble(Pawn pawn1, Pawn pawn2, Texture2D symbol)
+        {
+            if (pawn1.interactions.InteractedTooRecentlyToInteract()) return;
+            MoteMaker.MakeInteractionBubble(pawn1, pawn2, ThingDefOf.Mote_Speech, symbol);
         }
     }
 }

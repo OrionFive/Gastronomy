@@ -56,6 +56,9 @@ namespace Restaurant.Dining
             this.FailOn(() => DiningSpot.Destroyed);
             yield return DiningUtility.GoToDineSpot(pawn, TargetIndex.A).FailOnRestaurantClosed();
             yield return DiningUtility.TurnToEatSurface(TargetIndex.A);
+            // Order broken? Jump straight to waiter
+            yield return Toils_Jump.JumpIf(waitForWaiter, () => !pawn.GetRestaurant().CheckOrderOfWaitingPawn(pawn));
+            // Already has ordered? Jump to waiting for meal
             yield return Toils_Jump.JumpIf(waitForMeal, () => pawn.GetRestaurant().GetOrderFor(pawn) != null);
             yield return waitForWaiter;
             yield return waitForMeal;
@@ -69,12 +72,6 @@ namespace Restaurant.Dining
             yield return DiningUtility.MakeTableMessy(TargetIndex.A, () => pawn.Position);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
             yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);
-        }
-
-        public void OnOrderTaken(ThingDef foodDef, Pawn waiter)
-        {
-            wantsToOrder = false; // This triggers WaitForWaiter
-            Log.Message($"{pawn.NameShortColored}'s order has been taken by {waiter.NameShortColored}.");
         }
 
         public void OnTransferredFood(Thing food)
