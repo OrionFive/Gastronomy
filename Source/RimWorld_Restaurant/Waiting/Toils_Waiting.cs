@@ -134,6 +134,7 @@ namespace Restaurant.Waiting
                     var transferred = actor.carryTracker.innerContainer.TryTransferToContainer(food, patron.inventory.innerContainer, false);
                     if (transferred)
                     {
+                        patron.Map.reservationManager.Release(food, actor, actor.CurJob);
                         patronDriver.OnTransferredFood(food);
                         Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
                         actor.GetRestaurant().CompleteOrderFor(patron);
