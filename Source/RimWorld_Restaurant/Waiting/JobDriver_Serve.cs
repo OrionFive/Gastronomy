@@ -61,16 +61,16 @@ namespace Restaurant.Waiting
             this.FailOnForbidden(TargetIndex.B);
             yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.ClosestTouch);
             yield return Toils_Haul.StartCarryThing(TargetIndex.B);
-            yield return WaitingUtility.UpdateOrderConsumableTo(TargetIndex.A, TargetIndex.B);
-            yield return WaitingUtility.FindRandomAdjacentCell(TargetIndex.A, TargetIndex.C); // A is the patron, C is the spot
+            yield return Toils_Waiting.UpdateOrderConsumableTo(TargetIndex.A, TargetIndex.B);
+            yield return Toils_Waiting.FindRandomAdjacentCell(TargetIndex.A, TargetIndex.C); // A is the patron, C is the spot
             yield return Toils_Haul.CarryHauledThingToCell(TargetIndex.C);
             yield return wait;
             yield return Toils_Jump.JumpIf(wait, () => pawn.jobs.curJob?.GetTarget(TargetIndex.A).Pawn?.GetDriver<JobDriver_Dine>()==null); // Driver not available
-            yield return WaitingUtility.GetDiningSpot(TargetIndex.A, TargetIndex.C);
+            yield return Toils_Waiting.GetDiningSpot(TargetIndex.A, TargetIndex.C);
             yield return Toils_Haul.CarryHauledThingToCell(TargetIndex.C);
             yield return Toils_Jump.JumpIf(wait, () => pawn.jobs.curJob?.GetTarget(TargetIndex.A).Pawn?.GetDriver<JobDriver_Dine>()==null); // Driver not available
-            yield return WaitingUtility.ClearOrder(TargetIndex.A, TargetIndex.B);
-            yield return WaitingUtility.AnnounceServing(TargetIndex.A, TargetIndex.B);
+            yield return Toils_Waiting.ClearOrder(TargetIndex.A, TargetIndex.B);
+            yield return Toils_Waiting.AnnounceServing(TargetIndex.A, TargetIndex.B);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Restaurant.Waiting
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            var begin = WaitingUtility.GetDiningSpotCellForMakingTable(TargetIndex.A, TargetIndex.B);
+            var begin = Toils_Waiting.GetDiningSpotCellForMakingTable(TargetIndex.A, TargetIndex.B);
             var end = Toils_General.Wait(10, TargetIndex.A);
 
             this.FailOnDestroyedOrNull(TargetIndex.A);
@@ -32,7 +32,7 @@ namespace Restaurant.Waiting
             yield return begin;
             yield return Toils_Jump.JumpIf(end, () => pawn.CurJob?.GetTarget(TargetIndex.B).IsValid == false);
             yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.OnCell).FailOnDespawnedNullOrForbidden(TargetIndex.B);
-            yield return WaitingUtility.MakeTableReady(TargetIndex.A, TargetIndex.B);
+            yield return Toils_Waiting.MakeTableReady(TargetIndex.A, TargetIndex.B);
             yield return end;
         }
     }

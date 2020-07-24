@@ -111,6 +111,7 @@
     <Compile Include="TableTops\PlaceWorker_OnTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableTops\Building_TableTop.cs" />
+    <Compile Include="Waiting\Toils_Waiting.cs" />
     <Compile Include="Waiting\WaitingUtility.cs" />
     <Compile Include="Waiting\WorkGiver_MakeTable.cs" />
     <Compile Include="Waiting\WorkGiver_Serve.cs" />
