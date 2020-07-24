@@ -7,30 +7,30 @@ namespace Restaurant.Patching
     /// <summary>
     /// So we can call the base method on ThingWithComps and avoid whatever overrides it
     /// </summary>
-    public class ThingWithComps
+    public class ThingWithComps_Base
     {
-        [HarmonyPatch(typeof(Verse.ThingWithComps), "SpawnSetup")]
+        [HarmonyPatch(typeof(ThingWithComps), nameof(ThingWithComps.SpawnSetup))]
         public class SpawnSetup
         {
             [HarmonyReversePatch]
             [MethodImpl(MethodImplOptions.NoInlining)]
-            public static void Base(Verse.ThingWithComps instance, Map map, bool respawningAfterLoad) { } // Can't remove unused parameters
+            public static void Base(ThingWithComps instance, Map map, bool respawningAfterLoad) { } // Can't remove unused parameters
         }
 
-        [HarmonyPatch(typeof(Verse.ThingWithComps), "Destroy")]
+        [HarmonyPatch(typeof(ThingWithComps), nameof(ThingWithComps.Destroy))]
         public class Destroy
         {
             [HarmonyReversePatch]
             [MethodImpl(MethodImplOptions.NoInlining)]
-            public static void Base(Verse.ThingWithComps instance, DestroyMode mode) { }
+            public static void Base(ThingWithComps instance, DestroyMode mode) { }
         }
 
-        [HarmonyPatch(typeof(Verse.ThingWithComps), "DeSpawn")]
+        [HarmonyPatch(typeof(ThingWithComps), nameof(ThingWithComps.DeSpawn))]
         public class DeSpawn
         {
             [HarmonyReversePatch]
             [MethodImpl(MethodImplOptions.NoInlining)]
-            public static void Base(Verse.ThingWithComps instance, DestroyMode mode) { }
+            public static void Base(ThingWithComps instance, DestroyMode mode) { }
         }
     }
 }

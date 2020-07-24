@@ -19,7 +19,7 @@ namespace Restaurant.Dining
 
                 if (getter != eater)
                 {
-                    Log.Message($"{getter?.NameShortColored} != {eater?.NameShortColored}.");
+                    //Log.Message($"{getter?.NameShortColored} != {eater?.NameShortColored}.");
                     return true; // Run original code
                 }
 

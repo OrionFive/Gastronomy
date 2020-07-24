@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Restaurant.Patching;
 using Restaurant.TableTops;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
-using ThingWithComps = Restaurant.Patching.ThingWithComps;
 
 namespace Restaurant.Dining
 {
@@ -47,7 +47,7 @@ namespace Restaurant.Dining
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            ThingWithComps.SpawnSetup.Base(this, map, respawningAfterLoad);
+            ThingWithComps_Base.SpawnSetup.Base(this, map, respawningAfterLoad);
 
             if (!respawningAfterLoad)
             {
@@ -97,12 +97,12 @@ namespace Restaurant.Dining
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             RegisterUtility.OnDiningSpotRemoved(this);
-            ThingWithComps.DeSpawn.Base(this, mode);
+            ThingWithComps_Base.DeSpawn.Base(this, mode);
         }
 
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
-            ThingWithComps.Destroy.Base(this, mode);
+            ThingWithComps_Base.Destroy.Base(this, mode);
         }
 
         private void UpdateMesh()

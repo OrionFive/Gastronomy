@@ -19,7 +19,10 @@ namespace Restaurant
             JobCondition OnRegionDangerous()
             {
                 Pawn pawn = f.GetActor();
-                return RestaurantUtility.IsRegionDangerous(pawn, pawn.GetRegion()) ? JobCondition.Incompletable : JobCondition.Ongoing;
+                var check = RestaurantUtility.IsRegionDangerous(pawn, pawn.GetRegion());
+                if (!check) return JobCondition.Ongoing;
+                Log.Message($"{pawn.NameShortColored} failed {pawn.CurJobDef.label} because of danger ({pawn.GetRegion().DangerFor(pawn)})");
+                return JobCondition.Incompletable;
             }
 
             f.AddEndCondition(OnRegionDangerous);
@@ -28,7 +31,13 @@ namespace Restaurant
 
         public static T FailOnDurationExpired<T>(this T f) where T : IJobEndable
         {
-            JobCondition OnDurationExpired() => f.GetActor().jobs.curDriver.ticksLeftThisToil > 0 ? JobCondition.Ongoing : JobCondition.Incompletable;
+            JobCondition OnDurationExpired()
+            {
+                var pawn = f.GetActor();
+                if (pawn.jobs.curDriver.ticksLeftThisToil > 0) return JobCondition.Ongoing;
+                Log.Message($"{pawn.NameShortColored} failed {pawn.CurJobDef?.label} because of timeout.");
+                return JobCondition.Incompletable;
+            }
 
             f.AddEndCondition(OnDurationExpired);
             return f;

@@ -37,7 +37,7 @@ namespace Restaurant.Waiting
                 return false;
             }
 
-            if (!pawn.Reserve(food, job, 1, 1, null, errorOnFailed))
+            if (!pawn.Reserve(food, job, food.stackCount, 1, null, errorOnFailed))
             {
                 Log.Message($"{pawn.NameShortColored} FAILED to reserve food {food?.Label}.");
                 return false;

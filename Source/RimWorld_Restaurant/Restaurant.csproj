@@ -95,13 +95,14 @@
     <Compile Include="Generic\Order.cs" />
     <Compile Include="Generic\Timetable\TimetableBool.cs" />
     <Compile Include="Generic\Timetable\TimetableUtility.cs" />
+    <Compile Include="Patching\Pawn_JobTracker_Patch.cs" />
+    <Compile Include="Patching\ThingWithComps_Base.cs" />
     <Compile Include="Waiting\JobDriver_MakeTable.cs" />
     <Compile Include="Waiting\JobDriver_Serve.cs" />
     <Compile Include="Waiting\JobDriver_TakeOrder.cs" />
     <Compile Include="Dining\_Harmony_TryBestFoodSourceFor_Patch.cs" />
     <Compile Include="Dining\_Harmony_JobGiver_GetFood_Patch.cs" />
     <Compile Include="Dining\_Harmony_IsFoodDispenser_Patch.cs" />
-    <Compile Include="Patching\ThingWithComps.cs" />
     <Compile Include="TableTops\ITab_Register.cs" />
     <Compile Include="TableTops\RegisterUtility.cs" />
     <Compile Include="Generic\RestaurantSettings.cs" />
@@ -121,9 +122,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Harmony\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

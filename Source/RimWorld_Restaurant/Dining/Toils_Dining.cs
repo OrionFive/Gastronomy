@@ -43,6 +43,7 @@ namespace Restaurant.Dining
                         var chewSpotDanger = targetPosition.GetDangerFor(pawn, actor.Map);
                         if (chewSpotDanger != Danger.None)
                         {
+                            Log.Message($"{pawn.NameShortColored} could not find a save place around {diningSpot.Position} ({chewSpotDanger}).");
                             actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                             return;
                         }

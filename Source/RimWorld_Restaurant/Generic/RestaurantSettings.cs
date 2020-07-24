@@ -166,7 +166,7 @@ namespace Restaurant
 
 		public Thing GetServableThing(Order order, Pawn pawn)
 		{
-			return Stock.Where(o => o.Spawned && o.def == order.consumableDef).OrderBy(o => pawn.Position.DistanceToSquared(o.Position)).FirstOrDefault(o => pawn.CanReserveAndReach(o, PathEndMode.Touch, Danger.None, 1, 1));
+			return Stock.Where(o => o.Spawned && o.def == order.consumableDef).OrderBy(o => pawn.Position.DistanceToSquared(o.Position)).FirstOrDefault(o => pawn.CanReserveAndReach(o, PathEndMode.Touch, Danger.None, o.stackCount, 1));
 		}
 
 		/// <summary>
