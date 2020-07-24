@@ -31,7 +31,8 @@ namespace Restaurant.Dining
             bool Validator(Thing thing)
             {
                 var spot = (DiningSpot) thing;
-                return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && pawn.CanReserve(spot, spot.GetMaxReservations(), 0) && spot.IsOpenedRightNow;
+                return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && pawn.CanReserve(spot, spot.GetMaxReservations(), 0) 
+                       && spot.IsOpenedRightNow && !RestaurantUtility.IsRegionDangerous(pawn, spot.GetRegion());
             }
 
             var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), 

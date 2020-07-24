@@ -23,6 +23,7 @@ namespace Restaurant.Waiting
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             if (!(t is DiningSpot spot)) return false;
+            if (RestaurantUtility.IsRegionDangerous(pawn, spot.GetRegion()) && !forced) return false;
             if (spot.GetReservationSpots().Any(s => s == SpotState.Clear || s > SpotState.Ready))
             {
                 var canReserve = pawn.Map.reservationManager.CanReserve(pawn, spot);
