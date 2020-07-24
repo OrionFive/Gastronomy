@@ -13,8 +13,10 @@ namespace Restaurant.Dining
         public class TryFindBestFoodSourceFor
         {
             [HarmonyPrefix]
-            internal static bool Prefix(Pawn getter, Pawn eater, ref bool __result, ref Thing foodSource, ref ThingDef foodDef)
+            internal static bool Prefix(Pawn getter, Pawn eater, ref bool __result, ref Thing foodSource, ref ThingDef foodDef, ref bool desperate)
             {
+                if (desperate) return true; // Run original code
+
                 if (getter != eater)
                 {
                     Log.Message($"{getter?.NameShortColored} != {eater?.NameShortColored}.");
