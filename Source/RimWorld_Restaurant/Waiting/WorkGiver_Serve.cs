@@ -61,7 +61,6 @@ namespace Restaurant.Waiting
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             if (!(t is Pawn p)) return null;
-            
 
             var order = pawn.GetRestaurant().GetOrderFor(p);
             var consumable = order.consumable;

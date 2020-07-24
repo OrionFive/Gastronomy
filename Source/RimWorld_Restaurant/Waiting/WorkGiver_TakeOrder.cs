@@ -30,16 +30,16 @@ namespace Restaurant.Waiting
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (!(t is Pawn p)) return false;
+            if (!(t is Pawn patron)) return false;
             if (pawn == t) return false;
-            var driver = p.GetDriver<JobDriver_Dine>();
+            var driver = patron.GetDriver<JobDriver_Dine>();
             if (driver == null || !driver.wantsToOrder) return false;
 
-            var canReserve = pawn.Map.reservationManager.CanReserve(pawn, p, 1, -1, null, forced);
+            var canReserve = pawn.Map.reservationManager.CanReserve(pawn, patron, 1, -1, null, forced);
             if (!canReserve)
             {
-                var reserver = pawn.Map.reservationManager.FirstRespectedReserver(p, pawn);
-                Log.Message($"{pawn.NameShortColored} can't reserve {p.NameShortColored}. Is reserved by {reserver?.NameShortColored}. ");
+                var reserver = pawn.Map.reservationManager.FirstRespectedReserver(patron, pawn);
+                Log.Message($"{pawn.NameShortColored} can't reserve {patron.NameShortColored}. Is reserved by {reserver?.NameShortColored}. ");
                 return false;
             }
             return true;

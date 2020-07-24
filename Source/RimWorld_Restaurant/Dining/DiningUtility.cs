@@ -34,8 +34,9 @@ namespace Restaurant.Dining
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && pawn.CanReserve(spot, spot.GetMaxReservations(), 0) && spot.IsOpenedRightNow;
             }
 
-            var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, Validator, null, 0, maxRegionsToScan, false,
-                RegionType.Set_Passable, true);
+            var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), 
+                PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, Validator, null, 0, 
+                maxRegionsToScan, false, RegionType.Set_Passable, true);
             if (diningSpot == null) return null;
 
             foodDef = settings.GetBestFoodTypeFor(pawn, allowDrug);

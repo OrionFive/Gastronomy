@@ -20,11 +20,11 @@ namespace Restaurant.Dining
 				//Log.Message($"{pawn.NameShortColored} got job {__result.def.label} on {__result.targetA.Thing.Label}.");
 				if (__result?.def == JobDefOf.Ingest && __result?.targetA.HasThing == true && __result?.targetA.Thing is DiningSpot spot)
 				{
-					//Log.Message($"{pawn.NameShortColored} is now dining instead of ingesting.");
-					__result.def = DiningUtility.dineDef;
-
 					bool allowDrug = !pawn.IsTeetotaler();
 					var foodDef = pawn.GetRestaurant().GetBestFoodTypeFor(pawn, allowDrug);
+
+					//Log.Message($"{pawn.NameShortColored} is now dining instead of ingesting.");
+					__result.def = DiningUtility.dineDef;
 					__result.plantDefToSow = foodDef; // Abusing this def for storing our favorite food type
 				}
 			}
