@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace Restaurant.TableTops
         private bool showSettings = true;
         private bool showRadius = false;
         private bool showStats = true;
+        private Vector2 menuScrollPosition;
 
         public ITab_Register()
         {
@@ -23,11 +25,38 @@ namespace Restaurant.TableTops
 
         protected override void FillTab()
         {
-            var rect = new Rect(0f, 16f, WinSize.x, WinSize.y).ContractedBy(10f);
+            var rectTop = new Rect(0, 16, WinSize.x, 40).ContractedBy(10);
+            var rectLeft = new Rect(0f, 40+20+16, WinSize.x/2, WinSize.y).ContractedBy(10f);
+            var rectRight = new Rect(WinSize.x/2, 40+20+16, WinSize.x/2, WinSize.y).ContractedBy(10f);
 
+            DrawTop(rectTop);
+            DrawLeft(rectLeft);
+            DrawRight(rectRight);
+        }
+
+        private void DrawTop(Rect rect)
+        {
+            TimetableUtility.DoHeader(new Rect(rect) {height = 24});
+            rect.yMin += 24;
+            TimetableUtility.DoCell(new Rect(rect) {height = 30}, Register.settings.timetableOpen);
+        }
+
+        private void DrawRight(Rect rect)
+        {
+            // Menu
+            {
+                var menuRect = new Rect(rect);
+                menuRect.yMax += 20;
+                ThingFilterUI.DoThingFilterConfigWindow(menuRect, ref menuScrollPosition, Register.settings.menuFilter, Register.settings.menuGlobalFilter, 
+                    1, null, HiddenSpecialThingFilters(), true);
+            }
+        }
+
+        private void DrawLeft(Rect rect)
+        {
             if (showSettings)
             {
-                var smallRect = new Rect(rect) {height = 2 * 24 + 30};
+                var smallRect = new Rect(rect) {height = 30};
                 rect.yMin += smallRect.height + 10;
 
                 DrawSettings(smallRect);
@@ -58,11 +87,6 @@ namespace Restaurant.TableTops
                 listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref Register.settings.openForBusiness, "TabRegisterOpenedTooltip".Translate());
             }
             listing.End();
-
-            rect.yMin += 24;
-            TimetableUtility.DoHeader(new Rect(rect) {height = 24});
-            rect.yMin += 24;
-            TimetableUtility.DoCell(new Rect(rect) {height = 30}, Register.settings.timetableOpen);
         }
 
         private void DrawRadius(Rect rect)
@@ -119,6 +143,11 @@ namespace Restaurant.TableTops
         public override void TabUpdate()
         {
             Register.DrawGizmos();
+        }
+
+        private static IEnumerable<SpecialThingFilterDef> HiddenSpecialThingFilters()
+        {
+            yield return SpecialThingFilterDefOf.AllowFresh;
         }
     }
 }

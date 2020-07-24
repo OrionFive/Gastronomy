@@ -23,6 +23,8 @@ namespace Restaurant
 		public bool IsOpenedRightNow => openForBusiness && timetableOpen.CurrentAssignment(map);
 		public bool openForBusiness = true;
 		public TimetableBool timetableOpen;
+		public ThingFilter menuFilter;
+		public ThingFilter menuGlobalFilter;
 
 		public int Seats => diningSpots.Sum(s => s.GetMaxSeats());
 		public ReadOnlyCollection<Pawn> Patrons => SpawnedDiningPawns.AsReadOnly();
@@ -49,7 +51,24 @@ namespace Restaurant
 			Scribe_Values.Look(ref openForBusiness, "openForBusiness", true);
 
 			Scribe_Deep.Look(ref timetableOpen, "timetableOpen");
+			Scribe_Deep.Look(ref menuFilter, "menuFilter");
 			if (timetableOpen == null) timetableOpen = new TimetableBool();
+			if (menuGlobalFilter == null) InitMenuGlobalFilter();
+			if (menuFilter == null) InitMenuFilter();
+		}
+
+		private void InitMenuFilter()
+		{
+			menuFilter = new ThingFilter();
+			menuFilter.SetAllowAll(menuGlobalFilter);
+		}
+
+		private void InitMenuGlobalFilter()
+		{
+			menuGlobalFilter = new ThingFilter();
+			menuGlobalFilter.SetAllow(ThingCategoryDefOf.Foods, true);
+			menuGlobalFilter.SetAllow(ThingCategoryDefOf.Drugs, true);
+			menuGlobalFilter.allowedQualitiesConfigurable = true;
 		}
 
 		public override void FinalizeInit()
@@ -69,7 +88,7 @@ namespace Restaurant
 
 		public ThingDef GetBestFoodTypeFor([NotNull] Pawn pawn, bool allowDrug)
 		{
-			var best = stock.Select(item => item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).MaxBy(def => FoodUtility.FoodOptimality(pawn, null, def, 0));
+			var best = stock.Select(item => item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).RandomElementByWeight(def => FoodUtility.FoodOptimality(pawn, null, def, 0));
 			//Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {best?.label}");
 			return best;
 		}
@@ -83,9 +102,26 @@ namespace Restaurant
 		{
 			if (GenTicks.TicksGame < lastStockUpdateTick + 500) return;
 			lastStockUpdateTick = GenTicks.TicksGame;
-			stock = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t => t.def.IsIngestible && IsInConsumableCategory(t.def.thingCategories)));
-			orders.RemoveAll(o => !o.patron.Spawned || o.patron.Dead);
+			stock = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t => t.def.IsIngestible && IsOnMenu(t)));
+			orders.RemoveAll(o => !o.patron.Spawned || o.patron.Dead || CantBeOrdered(o));
 			//Log.Message($"Stock: {stock.Select(s => s.def.label).ToCommaList(true)}");
+		}
+
+		private bool CantBeOrdered(Order o)
+		{
+			if (o.delivered) return false;
+			if (o.consumable != null) return false;
+			return !IsOnMenu(o.consumableDef);
+		}
+
+		public bool IsOnMenu(ThingDef def)
+		{
+			return menuFilter.Allows(def);
+		}
+
+		private bool IsOnMenu(Thing thing)
+		{
+			return menuFilter.Allows(thing);
 		}
 
 		private static bool IsInConsumableCategory(List<ThingCategoryDef> defThingCategories)
