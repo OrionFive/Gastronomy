@@ -50,12 +50,12 @@ namespace Restaurant.Dining
         protected override IEnumerable<Toil> MakeNewToils()
         {
             // Declare these early - jumping points
-            var waitForWaiter = DiningUtility.WaitForWaiter(TargetIndex.A, TargetIndex.B).FailOnRestaurantClosed().FailOnDangerous();
-            var waitForMeal = DiningUtility.WaitForMeal(TargetIndex.B, TargetIndex.C).FailOnDangerous();
+            var waitForWaiter = Toils_Dining.WaitForWaiter(TargetIndex.A, TargetIndex.B).FailOnRestaurantClosed().FailOnDangerous();
+            var waitForMeal = Toils_Dining.WaitForMeal(TargetIndex.B, TargetIndex.C).FailOnDangerous();
 
             this.FailOn(() => DiningSpot.Destroyed);
-            yield return DiningUtility.GoToDineSpot(pawn, TargetIndex.A).FailOnRestaurantClosed();
-            yield return DiningUtility.TurnToEatSurface(TargetIndex.A);
+            yield return Toils_Dining.GoToDineSpot(pawn, TargetIndex.A).FailOnRestaurantClosed();
+            yield return Toils_Dining.TurnToEatSurface(TargetIndex.A);
             // Order broken? Jump straight to waiter
             yield return Toils_Jump.JumpIf(waitForWaiter, () => !pawn.GetRestaurant().CheckOrderOfWaitingPawn(pawn));
             // Already has ordered? Jump to waiting for meal
@@ -64,14 +64,14 @@ namespace Restaurant.Dining
             yield return waitForMeal;
             yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.C);
             yield return Toils_Reserve.Reserve(TargetIndex.C, 1, 1);
-            yield return DiningUtility.TurnToEatSurface(TargetIndex.A, TargetIndex.C);
-            yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);
+            yield return Toils_Dining.TurnToEatSurface(TargetIndex.A, TargetIndex.C);
+            yield return Toils_Dining.WaitDuringDinner(TargetIndex.A, 100, 250);
             yield return Toils_Ingest.ChewIngestible(pawn, ChewDurationMultiplier, TargetIndex.C, TargetIndex.A);
             yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.C);
-            yield return DiningUtility.OnCompletedMeal(pawn);
-            yield return DiningUtility.MakeTableMessy(TargetIndex.A, () => pawn.Position);
+            yield return Toils_Dining.OnCompletedMeal(pawn);
+            yield return Toils_Dining.MakeTableMessy(TargetIndex.A, () => pawn.Position);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
-            yield return DiningUtility.WaitDuringDinner(TargetIndex.A, 100, 250);
+            yield return Toils_Dining.WaitDuringDinner(TargetIndex.A, 100, 250);
         }
 
         public void OnTransferredFood(Thing food)

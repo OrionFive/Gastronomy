@@ -31,7 +31,8 @@
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\1.1\Assemblies\</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
@@ -39,7 +40,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Prefer32Bit>false</Prefer32Bit>
     <LangVersion>8</LangVersion>
-  </PropertyGroup>  
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.0.0.8, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lib.Harmony.2.0.0.8\lib\net45\0Harmony.dll</HintPath>
@@ -86,6 +87,7 @@
     <Compile Include="Dining\CompProperties_CanDineAt.cs" />
     <Compile Include="Dining\DiningSpot.cs" />
     <Compile Include="Dining\DiningUtility.cs" />
+    <Compile Include="Dining\Toils_Dining.cs" />
     <Compile Include="Dining\Graphic_DiningSpot.cs" />
     <Compile Include="Dining\JobDriver_Dine.cs" />
     <Compile Include="Generic\RestaurantUtility.cs" />
