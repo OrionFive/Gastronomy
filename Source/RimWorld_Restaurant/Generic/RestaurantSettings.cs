@@ -5,6 +5,7 @@ using JetBrains.Annotations;
 using Restaurant.Dining;
 using Restaurant.Timetable;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -52,9 +53,19 @@ namespace Restaurant
 
 			Scribe_Deep.Look(ref timetableOpen, "timetableOpen");
 			Scribe_Deep.Look(ref menuFilter, "menuFilter");
+			InitDeepFields();
+		}
+
+		private void InitDeepFields()
+		{
 			if (timetableOpen == null) timetableOpen = new TimetableBool();
 			if (menuGlobalFilter == null) InitMenuGlobalFilter();
 			if (menuFilter == null) InitMenuFilter();
+		}
+
+		public override void MapGenerated()
+		{
+			InitDeepFields();
 		}
 
 		private void InitMenuFilter()
@@ -88,9 +99,15 @@ namespace Restaurant
 
 		public ThingDef GetBestFoodTypeFor([NotNull] Pawn pawn, bool allowDrug)
 		{
-			var best = stock.Select(item => item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).RandomElementByWeight(def => FoodUtility.FoodOptimality(pawn, null, def, 0));
+			var best = stock.Select(item => item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).RandomElementByWeight(def => FoodOptimality(pawn, def));
 			//Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {best?.label}");
 			return best;
+		}
+
+		private static float FoodOptimality(Pawn pawn, ThingDef def)
+		{
+			// Optimality can be negative
+			return Mathf.Max(0, FoodUtility.FoodOptimality(pawn, null, def, 0));
 		}
 
 		private static bool WillConsume(Pawn pawn, bool allowDrug, ThingDef s)
