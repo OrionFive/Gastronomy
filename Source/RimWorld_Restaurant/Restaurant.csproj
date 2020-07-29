@@ -95,8 +95,7 @@
     <Compile Include="Generic\Order.cs" />
     <Compile Include="Generic\Timetable\TimetableBool.cs" />
     <Compile Include="Generic\Timetable\TimetableUtility.cs" />
-    <Compile Include="Patching\Pawn_JobTracker_Patch.cs" />
-    <Compile Include="Patching\ThingWithComps_Base.cs" />
+    <Compile Include="TableTops\_Harmony_ThingWithComps_Base.cs" />
     <Compile Include="Waiting\JobDriver_MakeTable.cs" />
     <Compile Include="Waiting\JobDriver_Serve.cs" />
     <Compile Include="Waiting\JobDriver_TakeOrder.cs" />

@@ -65,7 +65,6 @@ namespace Restaurant.Waiting
 
                 var symbol = desiredFoodDef.uiIcon;
                 if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
-                Log.Message($"{patron.NameShortColored} should have shown symbol {symbol.name}");
             }
         }
 

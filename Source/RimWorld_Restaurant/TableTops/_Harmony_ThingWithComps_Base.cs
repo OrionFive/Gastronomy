@@ -2,12 +2,12 @@ using System.Runtime.CompilerServices;
 using HarmonyLib;
 using Verse;
 
-namespace Restaurant.Patching
+namespace Restaurant.TableTops
 {
     /// <summary>
     /// So we can call the base method on ThingWithComps and avoid whatever overrides it
     /// </summary>
-    public class ThingWithComps_Base
+    public class _Harmony_ThingWithComps_Base
     {
         [HarmonyPatch(typeof(ThingWithComps), nameof(ThingWithComps.SpawnSetup))]
         public class SpawnSetup
