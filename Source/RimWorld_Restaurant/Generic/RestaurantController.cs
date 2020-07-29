@@ -11,9 +11,9 @@ using Verse.AI;
 
 namespace Restaurant
 {
-	public class RestaurantSettings : MapComponent
+	public class RestaurantController : MapComponent
 	{
-		public RestaurantSettings(Map map) : base(map) { }
+		public RestaurantController(Map map) : base(map) { }
 
 		[NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
 		[NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();

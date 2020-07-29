@@ -14,9 +14,9 @@ namespace Restaurant
             return patron?.jobs.jobQueue?.Any(j => j.job.def == DiningUtility.dineDef) == true;
         }
 
-        public static RestaurantSettings GetRestaurant([NotNull]this Thing thing)
+        public static RestaurantController GetRestaurant([NotNull]this Thing thing)
         {
-            return thing.Map.GetComponent<RestaurantSettings>();
+            return thing.Map.GetComponent<RestaurantController>();
         }
 
         public static void GetRequestGroup(Thing thing)

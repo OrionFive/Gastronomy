@@ -23,7 +23,7 @@ namespace Restaurant.Dining
     {
         public const string jobReportString = "DiningJobReportString";
 
-        private RestaurantSettings settings;
+        private RestaurantController restaurant;
         private List<SpotState> spotStates = new List<SpotState>(4) {SpotState.Clear, SpotState.Clear, SpotState.Clear, SpotState.Clear};
 
         public override ThingDef DispensableDef => throw new NotImplementedException();
@@ -40,7 +40,7 @@ namespace Restaurant.Dining
         public override void PostMapInit()
         {
             base.PostMapInit();
-            settings = this.GetRestaurant();
+            restaurant = this.GetRestaurant();
             UpdateMesh();
         }
 
@@ -51,14 +51,14 @@ namespace Restaurant.Dining
             if (!respawningAfterLoad)
             {
                 RegisterUtility.OnDiningSpotCreated(this);
-                settings = this.GetRestaurant();
+                restaurant = this.GetRestaurant();
             }
         }
 
         public int GetMaxReservations() => GetReservationSpots().Count(s => s >= SpotState.Clear);
         public int GetMaxSeats() => GetReservationSpots().Count(s => s != SpotState.Blocked);
 
-        public bool IsOpenedRightNow => settings.IsOpenedRightNow;
+        public bool IsOpenedRightNow => restaurant.IsOpenedRightNow;
 
         /// <summary>
         /// [0] = up, [1] = right, [2] = down, [3] = left

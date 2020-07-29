@@ -11,7 +11,7 @@ namespace Restaurant.TableTops
     {
         [NotNull] private readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
         public float radius;
-        public RestaurantSettings settings;
+        public RestaurantController restaurant;
 
         public bool IsOpenedRightNow { get; } = true;
 
@@ -24,14 +24,14 @@ namespace Restaurant.TableTops
         public override void PostMapInit()
         {
             base.PostMapInit();
-            settings = this.GetRestaurant();
+            restaurant = this.GetRestaurant();
             ScanDiningSpots();
         }
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
-            if (!respawningAfterLoad) settings = this.GetRestaurant();
+            if (!respawningAfterLoad) restaurant = this.GetRestaurant();
         }
 
         public void DrawGizmos()

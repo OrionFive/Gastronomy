@@ -10,12 +10,12 @@ namespace Restaurant
     {
         private List<Order> orders = new List<Order>();
 
-        public RestaurantOrders([NotNull] RestaurantSettings restaurant)
+        public RestaurantOrders([NotNull] RestaurantController restaurant)
         {
             Restaurant = restaurant;
         }
 
-        [NotNull] public RestaurantSettings Restaurant { get; }
+        [NotNull] public RestaurantController Restaurant { get; }
         [NotNull] private IEnumerable<Thing> Stock => Restaurant.Stock;
         [NotNull] private RestaurantMenu Menu => Restaurant.Menu;
 

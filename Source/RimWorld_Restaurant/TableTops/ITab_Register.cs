@@ -38,7 +38,7 @@ namespace Restaurant.TableTops
         {
             TimetableUtility.DoHeader(new Rect(rect) {height = 24});
             rect.yMin += 24;
-            TimetableUtility.DoCell(new Rect(rect) {height = 30}, Register.settings.timetableOpen);
+            TimetableUtility.DoCell(new Rect(rect) {height = 30}, Register.restaurant.timetableOpen);
         }
 
         private void DrawRight(Rect rect)
@@ -48,7 +48,7 @@ namespace Restaurant.TableTops
                 var menuRect = new Rect(rect);
                 menuRect.yMax += 20;
 
-                Register.settings.Menu.GetMenuFilters(out var filter, out var parentFilter);
+                Register.restaurant.Menu.GetMenuFilters(out var filter, out var parentFilter);
                 ThingFilterUI.DoThingFilterConfigWindow(menuRect, ref menuScrollPosition, filter, parentFilter, 
                     1, null, HiddenSpecialThingFilters(), true);
             }
@@ -86,7 +86,7 @@ namespace Restaurant.TableTops
             var listing = new Listing_Standard();
             listing.Begin(rect);
             {
-                listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref Register.settings.openForBusiness, "TabRegisterOpenedTooltip".Translate());
+                listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref Register.restaurant.openForBusiness, "TabRegisterOpenedTooltip".Translate());
             }
             listing.End();
         }
@@ -121,13 +121,13 @@ namespace Restaurant.TableTops
             var listing = new Listing_Standard();
             listing.Begin(rect);
             {
-                var patrons = Register.settings.Patrons;
-                var orders = Register.settings.Orders.AllOrders;
-                var stock = Register.settings.Stock.ToArray();
-                var ordersForServing = Register.settings.Orders.AvailableOrdersForServing.ToArray();
-                var ordersForCooking = Register.settings.Orders.AvailableOrdersForCooking.ToArray();
+                var patrons = Register.restaurant.Patrons;
+                var orders = Register.restaurant.Orders.AllOrders;
+                var stock = Register.restaurant.Stock.ToArray();
+                var ordersForServing = Register.restaurant.Orders.AvailableOrdersForServing.ToArray();
+                var ordersForCooking = Register.restaurant.Orders.AvailableOrdersForCooking.ToArray();
 
-                listing.LabelDouble("TabRegisterSeats".Translate(), Register.settings.Seats.ToString());
+                listing.LabelDouble("TabRegisterSeats".Translate(), Register.restaurant.Seats.ToString());
                 listing.LabelDouble("TabRegisterPatrons".Translate(), patrons.Count.ToString(), patrons.Select(p=>p.LabelShort).ToCommaList());
                 listing.LabelDouble("TabRegisterTotalOrders".Translate(), orders.Count.ToString(), orders.Select(GetOrderLabel).ToCommaList());
                 listing.LabelDouble("TabRegisterNeedsServing".Translate(), ordersForServing.Count().ToString(), ordersForServing.Select(GetOrderLabel).ToCommaList());

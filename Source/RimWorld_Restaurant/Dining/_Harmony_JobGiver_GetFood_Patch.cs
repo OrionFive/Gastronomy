@@ -18,7 +18,7 @@ namespace Restaurant.Dining
 			{
 				if (__result == null) return;
 				//Log.Message($"{pawn.NameShortColored} got job {__result.def.label} on {__result.targetA.Thing.Label}.");
-				if (__result?.def == JobDefOf.Ingest && __result?.targetA.HasThing == true && __result?.targetA.Thing is DiningSpot spot)
+				if (__result?.def == JobDefOf.Ingest && __result?.targetA.HasThing == true && __result?.targetA.Thing is DiningSpot)
 				{
 					bool allowDrug = !pawn.IsTeetotaler();
 					var foodDef = pawn.GetRestaurant().GetBestFoodTypeFor(pawn, allowDrug);

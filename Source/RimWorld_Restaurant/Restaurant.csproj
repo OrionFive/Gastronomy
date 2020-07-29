@@ -106,7 +106,7 @@
     <Compile Include="Dining\_Harmony_IsFoodDispenser_Patch.cs" />
     <Compile Include="TableTops\ITab_Register.cs" />
     <Compile Include="TableTops\RegisterUtility.cs" />
-    <Compile Include="Generic\RestaurantSettings.cs" />
+    <Compile Include="Generic\RestaurantController.cs" />
     <Compile Include="TableTops\_Harmony_AvoidGrid_Patch.cs" />
     <Compile Include="TableTops\Building_CashRegister.cs" />
     <Compile Include="TableTops\_Harmony_GenGrid_Patch.cs" />
