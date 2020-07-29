@@ -13,27 +13,28 @@ namespace Restaurant
 {
 	public class RestaurantSettings : MapComponent
 	{
-		public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
-		private int lastStockUpdateTick;
-		[NotNull] private List<Order> orders = new List<Order>();
-		[NotNull] private List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
-		[NotNull] private List<Thing> stock = new List<Thing>();
-		public IntVec3 testPos;
-
 		public RestaurantSettings(Map map) : base(map) { }
+
+		[NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
+		[NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
+		[NotNull] private readonly List<Thing> stock = new List<Thing>();
+		private RestaurantMenu menu;
+		private RestaurantOrders orders;
+
+		private int lastStockUpdateTick;
+
 		public bool IsOpenedRightNow => openForBusiness && timetableOpen.CurrentAssignment(map);
 		public bool openForBusiness = true;
+
 		public TimetableBool timetableOpen;
-		public ThingFilter menuFilter;
-		public ThingFilter menuGlobalFilter;
 
 		public int Seats => diningSpots.Sum(s => s.GetMaxSeats());
-		public ReadOnlyCollection<Pawn> Patrons => SpawnedDiningPawns.AsReadOnly();
-		public ReadOnlyCollection<Order> Orders => orders.AsReadOnly();
-
+		[NotNull] public ReadOnlyCollection<Pawn> Patrons => SpawnedDiningPawns.AsReadOnly();
 		[NotNull] public IEnumerable<Thing> Stock => stock.AsReadOnly();
-		[NotNull] public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.delivered && stock.Exists(s=>s.def == o.consumableDef));
-		[NotNull] public IEnumerable<Order> AvailableOrdersForCooking => orders.Where(o => !o.delivered && !stock.Exists(s=>s.def == o.consumableDef));
+		[NotNull] public RestaurantMenu Menu => menu;
+		[NotNull] public RestaurantOrders Orders => orders;
+
+
 		[NotNull] public List<Pawn> SpawnedDiningPawns
 		{
 			get
@@ -47,39 +48,23 @@ namespace Restaurant
 		public override void ExposeData()
 		{
 			base.ExposeData();
-			Scribe_Values.Look(ref testPos, "testPos");
-			Scribe_Collections.Look(ref orders, "orders", LookMode.Deep);
 			Scribe_Values.Look(ref openForBusiness, "openForBusiness", true);
-
+			Scribe_Deep.Look(ref menu, "menu");
 			Scribe_Deep.Look(ref timetableOpen, "timetableOpen");
-			Scribe_Deep.Look(ref menuFilter, "menuFilter");
-			InitDeepFields();
+			Scribe_Deep.Look(ref orders, "orders", this);
+			InitDeepFieldsInitial();
 		}
 
-		private void InitDeepFields()
+		private void InitDeepFieldsInitial()
 		{
 			if (timetableOpen == null) timetableOpen = new TimetableBool();
-			if (menuGlobalFilter == null) InitMenuGlobalFilter();
-			if (menuFilter == null) InitMenuFilter();
+			if (orders == null) orders = new RestaurantOrders(this);
+			if (menu == null) menu = new RestaurantMenu();
 		}
 
 		public override void MapGenerated()
 		{
-			InitDeepFields();
-		}
-
-		private void InitMenuFilter()
-		{
-			menuFilter = new ThingFilter();
-			menuFilter.SetAllowAll(menuGlobalFilter);
-		}
-
-		private void InitMenuGlobalFilter()
-		{
-			menuGlobalFilter = new ThingFilter();
-			menuGlobalFilter.SetAllow(ThingCategoryDefOf.Foods, true);
-			menuGlobalFilter.SetAllow(ThingCategoryDefOf.Drugs, true);
-			menuGlobalFilter.allowedQualitiesConfigurable = true;
+			InitDeepFieldsInitial();
 		}
 
 		public override void FinalizeInit()
@@ -107,6 +92,7 @@ namespace Restaurant
 		private static float FoodOptimality(Pawn pawn, ThingDef def)
 		{
 			// Optimality can be negative
+			Log.Message($"{pawn.NameShortColored} - {def.LabelCap}");
 			return Mathf.Max(0, FoodUtility.FoodOptimality(pawn, null, def, 0));
 		}
 
@@ -119,125 +105,15 @@ namespace Restaurant
 		{
 			if (GenTicks.TicksGame < lastStockUpdateTick + 500) return;
 			lastStockUpdateTick = GenTicks.TicksGame;
-			stock = new List<Thing>(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t => t.def.IsIngestible && IsOnMenu(t)));
-			orders.RemoveAll(o => !o.patron.Spawned || o.patron.Dead || CantBeOrdered(o));
+			stock.Clear();
+			stock.AddRange(map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource).Where(t => t.def.IsIngestible && menu.IsOnMenu(t)));
+			orders.RareTick();	
 			//Log.Message($"Stock: {stock.Select(s => s.def.label).ToCommaList(true)}");
-		}
-
-		private bool CantBeOrdered(Order o)
-		{
-			if (o.delivered) return false;
-			if (o.consumable != null) return false;
-			return !IsOnMenu(o.consumableDef);
-		}
-
-		public bool IsOnMenu(ThingDef def)
-		{
-			return menuFilter.Allows(def);
-		}
-
-		private bool IsOnMenu(Thing thing)
-		{
-			return menuFilter.Allows(thing);
-		}
-
-		private static bool IsInConsumableCategory(List<ThingCategoryDef> defThingCategories)
-		{
-			if (defThingCategories == null) return false;
-			if (defThingCategories.Contains(ThingCategoryDefOf.Drugs)) return true;
-			if (defThingCategories.Contains(ThingCategoryDefOf.FoodMeals)) return true;
-			if (defThingCategories.Contains(ThingCategoryDefOf.Foods)) return true;
-			if (defThingCategories.Contains(ThingCategoryDefOf.PlantMatter)) return true;
-			return false;
-		}
-
-		public void CreateOrder(Pawn patron, ThingDef consumableDef)
-		{
-			Log.Message($"{patron.NameShortColored} has ordered {consumableDef.label}.");
-
-			// Already ordered?
-			if (orders.Any(o => o.patron == patron))
-			{
-				Log.Message($"{patron.NameShortColored} has already ordered. Ignoring.");
-				return;
-			}
-
-			// Already prepared?
-			var available = stock.Where(item => item.def == consumableDef).Sum(item => item.stackCount);
-			var ordered = orders.Count(o => o.consumableDef == consumableDef);
-
-			if (available <= ordered)
-			{
-				Log.Message($"{consumableDef.label} has to be prepared first {available} available and {ordered} ordered.");
-			}
-			else
-			{
-				Log.Message($"{consumableDef.label} can be delivered. {available} available and {ordered} ordered.");
-				//map.reservationManager.Reserve(patron, patron.CurJob, thing, 1, 1);
-			}
-
-			orders.Add(new Order {consumableDef = consumableDef, patron = patron, hasToBeMade = available <= ordered});
-		}
-
-		public bool IsBeingDelivered(Order order, Pawn pawn)
-		{
-			if (order.hasToBeMade) return false;
-			if (order.delivered) return false;
-			if (order.consumable == null) return false;
-			//Log.Message($"Consumable found: {order.consumable.Label} at {order.consumable.Position}");
-			return map.reservationManager.IsReservedAndRespected(order.consumable, pawn);
-		}
-
-		public void CancelOrder(Order order)
-		{
-			orders.Remove(order);
-		}
-
-		public void CompleteOrderFor(Pawn patron)
-		{
-			var order = orders.FirstOrDefault(o => o.patron == patron);
-			if (order == null)
-			{
-				Log.Error($"Completed order for {patron.NameShortColored}. But there was none.");
-				return;
-			}
-
-			order.delivered = true;
-		}
-
-		public Order GetOrderFor(Pawn patron)
-		{
-			var order = orders.FirstOrDefault(o => o.patron == patron);
-			if (order != null) Log.Message($"Found an order of {order.consumableDef.label} for {patron.NameShortColored}. hasToBeMade? {order.hasToBeMade} IsBeingDelivered? {IsBeingDelivered(order, patron)} hasBeenDelivered? {order.delivered}");
-			return order;
-		}
-
-		public void OnFinishedEatingOrder(Pawn patron)
-		{
-			orders.RemoveAll(o => o.patron == patron);
 		}
 
 		public Thing GetServableThing(Order order, Pawn pawn)
 		{
 			return Stock.Where(o => o.Spawned && o.def == order.consumableDef).OrderBy(o => pawn.Position.DistanceToSquared(o.Position)).FirstOrDefault(o => pawn.CanReserveAndReach(o, PathEndMode.Touch, Danger.None, o.stackCount, 1));
-		}
-
-		/// <summary>
-		/// Check if the order is somehow broken.
-		/// </summary>
-		/// <returns>True of order is fine, false if it's not.</returns>
-		public bool CheckOrderOfWaitingPawn(Pawn patron)
-		{
-			var order = orders.FirstOrDefault(o => o.patron == patron);
-			if (order != null && order.delivered && order.consumable?.Spawned == false)
-			{
-				// Order not spawned? Already eaten it, or something happened to it
-				// Clear order
-				Log.Warning($"{patron.NameShortColored}'s food is gone. Already eaten?");
-				CancelOrder(order);
-				return false;
-			}
-			return true;
 		}
 	}
 }

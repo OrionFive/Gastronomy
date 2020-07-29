@@ -17,10 +17,7 @@ namespace Restaurant.Dining
             {
                 if (desperate) return true; // Run original code
 
-                if (getter != eater)
-                {
-                    return true; // Run original code
-                }
+                if (getter != eater) return true; // Run original code
 
                 // Only if time assignment allows
                 if (!eater.GetTimeAssignment().allowJoy) return true;

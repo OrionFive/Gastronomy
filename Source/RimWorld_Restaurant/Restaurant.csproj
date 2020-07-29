@@ -91,6 +91,8 @@
     <Compile Include="Dining\Graphic_DiningSpot.cs" />
     <Compile Include="Dining\JobDriver_Dine.cs" />
     <Compile Include="Generic\JobUtility.cs" />
+    <Compile Include="Generic\RestaurantOrders.cs" />
+    <Compile Include="Generic\RestaurantMenu.cs" />
     <Compile Include="Generic\RestaurantUtility.cs" />
     <Compile Include="Generic\Order.cs" />
     <Compile Include="Generic\Timetable\TimetableBool.cs" />

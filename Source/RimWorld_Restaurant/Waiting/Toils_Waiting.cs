@@ -59,9 +59,9 @@ namespace Restaurant.Waiting
                     return;
                 }
 
-                var settings = patron.GetRestaurant();
-                var desiredFoodDef = settings.GetBestFoodTypeFor(patron, !patron.IsTeetotaler());
-                settings.CreateOrder(patron, desiredFoodDef);
+                var restaurant = patron.GetRestaurant();
+                var desiredFoodDef = restaurant.GetBestFoodTypeFor(patron, !patron.IsTeetotaler());
+                restaurant.Orders.CreateOrder(patron, desiredFoodDef);
 
                 var symbol = desiredFoodDef.uiIcon;
                 if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
@@ -136,7 +136,7 @@ namespace Restaurant.Waiting
                         patron.Map.reservationManager.Release(food, actor, actor.CurJob);
                         patronDriver.OnTransferredFood(food);
                         Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
-                        actor.GetRestaurant().CompleteOrderFor(patron);
+                        actor.GetRestaurant().Orders.CompleteOrderFor(patron);
                     }
                     else
                     {
@@ -259,7 +259,7 @@ namespace Restaurant.Waiting
                     else
                     {
                         //Log.Message($"{toil.actor.NameShortColored} updated the consumable {toil.actor.GetRestaurant().GetOrderFor(patron).consumable.Label} to {consumable.Label}.");
-                        toil.actor.GetRestaurant().GetOrderFor(patron).consumable = consumable;
+                        toil.actor.GetRestaurant().Orders.GetOrderFor(patron).consumable = consumable;
                     }
                 }
             };

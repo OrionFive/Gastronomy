@@ -17,7 +17,7 @@ namespace Restaurant.Waiting
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            return !pawn.GetRestaurant().AvailableOrdersForServing.Any();
+            return !pawn.GetRestaurant().Orders.AvailableOrdersForServing.Any();
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
@@ -30,17 +30,17 @@ namespace Restaurant.Waiting
             if (driver == null || driver.wantsToOrder) return false;
 
             var restaurant = pawn.GetRestaurant();
-            var order = restaurant.GetOrderFor(patron);
+            var order = restaurant.Orders.GetOrderFor(patron);
 
             if (order == null) return false;
             if (order.delivered) return false;
 
-            if (restaurant.IsBeingDelivered(order, patron)) return false;
+            if (restaurant.Orders.IsBeingDelivered(order, patron)) return false;
 
             if (!patron.Spawned || patron.Dead)
             {
                 Log.Message($"Order canceled. null? {order.patron == null} dead? {order.patron.Dead} unspawned? {!order.patron?.Spawned}");
-                restaurant.CancelOrder(order);
+                restaurant.Orders.CancelOrder(order);
                 return false;
             }
 
@@ -65,7 +65,7 @@ namespace Restaurant.Waiting
         {
             if (!(t is Pawn p)) return null;
 
-            var order = pawn.GetRestaurant().GetOrderFor(p);
+            var order = pawn.GetRestaurant().Orders.GetOrderFor(p);
             var consumable = order.consumable;
             if(consumable == null) Log.Error($"Consumable in order for {p.NameShortColored} is suddenly null.");
 

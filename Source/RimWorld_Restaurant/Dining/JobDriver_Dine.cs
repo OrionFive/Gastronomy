@@ -57,9 +57,9 @@ namespace Restaurant.Dining
             yield return Toils_Dining.GoToDineSpot(pawn, TargetIndex.A).FailOnRestaurantClosed();
             yield return Toils_Dining.TurnToEatSurface(TargetIndex.A);
             // Order broken? Jump straight to waiter
-            yield return Toils_Jump.JumpIf(waitForWaiter, () => !pawn.GetRestaurant().CheckOrderOfWaitingPawn(pawn));
+            yield return Toils_Jump.JumpIf(waitForWaiter, () => !pawn.GetRestaurant().Orders.CheckOrderOfWaitingPawn(pawn));
             // Already has ordered? Jump to waiting for meal
-            yield return Toils_Jump.JumpIf(waitForMeal, () => pawn.GetRestaurant().GetOrderFor(pawn) != null);
+            yield return Toils_Jump.JumpIf(waitForMeal, () => pawn.GetRestaurant().Orders.GetOrderFor(pawn) != null);
             yield return waitForWaiter;
             yield return waitForMeal;
             yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.C);

@@ -109,7 +109,7 @@ namespace Restaurant.Dining
         {
             var toil = new Toil();
             toil.initAction = () => {
-                var order = toil.actor.GetRestaurant().GetOrderFor(toil.actor);
+                var order = toil.actor.GetRestaurant().Orders.GetOrderFor(toil.actor);
                 if (order?.delivered == true && order.consumable?.Spawned == true)
                 {
                     var food = order.consumable;
@@ -174,7 +174,7 @@ namespace Restaurant.Dining
 
         public static Toil OnCompletedMeal(Pawn pawn)
         {
-            return new Toil {atomicWithPrevious = true, initAction = () => { pawn.GetRestaurant().OnFinishedEatingOrder(pawn); }};
+            return new Toil {atomicWithPrevious = true, initAction = () => { pawn.GetRestaurant().Orders.OnFinishedEatingOrder(pawn); }};
         }
     }
 }

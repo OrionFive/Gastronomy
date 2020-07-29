@@ -47,7 +47,9 @@ namespace Restaurant.TableTops
             {
                 var menuRect = new Rect(rect);
                 menuRect.yMax += 20;
-                ThingFilterUI.DoThingFilterConfigWindow(menuRect, ref menuScrollPosition, Register.settings.menuFilter, Register.settings.menuGlobalFilter, 
+
+                Register.settings.Menu.GetMenuFilters(out var filter, out var parentFilter);
+                ThingFilterUI.DoThingFilterConfigWindow(menuRect, ref menuScrollPosition, filter, parentFilter, 
                     1, null, HiddenSpecialThingFilters(), true);
             }
         }
@@ -120,10 +122,10 @@ namespace Restaurant.TableTops
             listing.Begin(rect);
             {
                 var patrons = Register.settings.Patrons;
-                var orders = Register.settings.Orders;
+                var orders = Register.settings.Orders.AllOrders;
                 var stock = Register.settings.Stock.ToArray();
-                var ordersForServing = Register.settings.AvailableOrdersForServing.ToArray();
-                var ordersForCooking = Register.settings.AvailableOrdersForCooking.ToArray();
+                var ordersForServing = Register.settings.Orders.AvailableOrdersForServing.ToArray();
+                var ordersForCooking = Register.settings.Orders.AvailableOrdersForCooking.ToArray();
 
                 listing.LabelDouble("TabRegisterSeats".Translate(), Register.settings.Seats.ToString());
                 listing.LabelDouble("TabRegisterPatrons".Translate(), patrons.Count.ToString(), patrons.Select(p=>p.LabelShort).ToCommaList());

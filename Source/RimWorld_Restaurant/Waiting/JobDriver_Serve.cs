@@ -18,14 +18,14 @@ namespace Restaurant.Waiting
             var patronJob = patron.GetDriver<JobDriver_Dine>();
             var diningSpot = patronJob?.DiningSpot;
 
-            var order = patron?.GetRestaurant().GetOrderFor(patron);
+            var order = patron?.GetRestaurant().Orders.GetOrderFor(patron);
             if (order == null)
             {
                 Log.Message($"{patron.NameShortColored} has no existing order.");
                 return false;
             }
 
-            if (patron.GetRestaurant().IsBeingDelivered(order, pawn))
+            if (patron.GetRestaurant().Orders.IsBeingDelivered(order, pawn))
             {
                 Log.Message($"{pawn.NameShortColored}: Order for {patron.NameShortColored} is already being delivered.");
                 return false;
