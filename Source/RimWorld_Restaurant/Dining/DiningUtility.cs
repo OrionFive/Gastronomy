@@ -53,5 +53,19 @@ namespace Restaurant.Dining
         {
             return thingsWithCompCanDineAt.Contains(def);
         }
+
+        public static bool IsAbleToDine(this Pawn getter)
+        {
+            var canManipulate = getter.RaceProps.ToolUser && getter.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation);
+            if (!canManipulate) return false;
+
+            var canTalk = getter.health.capacities.CapableOf(PawnCapacityDefOf.Talking);
+            if (!canTalk) return false;
+
+            var canMove = getter.health.capacities.CapableOf(PawnCapacityDefOf.Moving);
+            if (!canMove) return false;
+
+            return true;
+        }
     }
 }

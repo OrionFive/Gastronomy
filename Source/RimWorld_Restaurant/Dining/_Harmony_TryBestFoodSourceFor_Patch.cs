@@ -25,27 +25,17 @@ namespace Restaurant.Dining
                 // Only if time assignment allows
                 if (!eater.GetTimeAssignment().allowJoy) return true;
 
-                bool canManipulate = getter.RaceProps.ToolUser && getter.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation);
-                if (!canManipulate)
-                {
-                    return true; // Run original code
-                }
+                if (!getter.IsAbleToDine()) return true;
 
-                // Can't talk? Can't order.
-                if (!getter.health.capacities.CapableOf(PawnCapacityDefOf.Talking)) return true;
+                var diningSpot = DiningUtility.FindDiningSpotFor(getter, out foodDef, false);
 
-                bool allowDrug = !eater.IsTeetotaler();
-                var diningSpot = DiningUtility.FindDiningSpotFor(getter, out foodDef, allowDrug);
-
-                if (diningSpot != null)
-                {
-                    foodSource = diningSpot;
-                    //Log.Message($"{getter.NameShortColored} found diningSpot at {diningSpot.Position} with {foodDef?.label}.");
-                    __result = true;
-                    return false; // Don't run original code
-                }
-
-                return true; // Run original code
+                if (diningSpot == null) return true; // Run original code
+                
+                // Actually dine
+                foodSource = diningSpot;
+                //Log.Message($"{getter.NameShortColored} found diningSpot at {diningSpot.Position} with {foodDef?.label}.");
+                __result = true;
+                return false; // Don't run original code
             }
         }
     }
