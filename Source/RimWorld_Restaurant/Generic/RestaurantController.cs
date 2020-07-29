@@ -84,16 +84,24 @@ namespace Restaurant
 
 		public ThingDef GetBestFoodTypeFor([NotNull] Pawn pawn, bool allowDrug)
 		{
-			var best = stock.Select(item => item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).RandomElementByWeight(def => FoodOptimality(pawn, def));
+			var best = stock.Select(item => item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).MaxBy(def => FoodOptimality(pawn, def));
 			//Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {best?.label}");
 			return best;
 		}
 
-		private static float FoodOptimality(Pawn pawn, ThingDef def)
+		public ThingDef GetRandomFoodTypeFor([NotNull] Pawn pawn, bool allowDrug)
+		{
+			var random = stock.Select(item => item.def).Distinct().Where(def => WillConsume(pawn, allowDrug, def)).RandomElementByWeight(def => FoodOptimality(pawn, def));
+			//Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {best?.label}");
+			return random;
+		}
+
+		private float FoodOptimality(Pawn pawn, ThingDef def)
 		{
 			// Optimality can be negative
 			Log.Message($"{pawn.NameShortColored} - {def.LabelCap}");
-			return Mathf.Max(0, FoodUtility.FoodOptimality(pawn, null, def, 0));
+			var dummyFoodSource = stock[0]; // Can be null again once erdelf fixes the patch
+			return Mathf.Max(0, FoodUtility.FoodOptimality(pawn, dummyFoodSource, def, 0));
 		}
 
 		private static bool WillConsume(Pawn pawn, bool allowDrug, ThingDef s)
