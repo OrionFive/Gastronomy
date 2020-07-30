@@ -21,7 +21,7 @@ namespace Restaurant.Dining
 				if (__result?.def == JobDefOf.Ingest && __result?.targetA.HasThing == true && __result?.targetA.Thing is DiningSpot)
 				{
 					bool allowDrug = !pawn.IsTeetotaler();
-					var foodDef = pawn.GetRestaurant().GetBestFoodTypeFor(pawn, allowDrug);
+					var foodDef = pawn.GetRestaurant().Stock.GetBestFoodTypeFor(pawn, allowDrug);
 
 					//Log.Message($"{pawn.NameShortColored} is now dining instead of ingesting.");
 					__result.def = DiningUtility.dineDef;

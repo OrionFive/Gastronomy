@@ -45,7 +45,7 @@ namespace Restaurant.Waiting
             }
 
             Log.Message($"{pawn.NameShortColored} is trying to serve {patron.NameShortColored} a {order.consumableDef.label}.");
-            var consumable = restaurant.GetServableThing(order, pawn);
+            var consumable = restaurant.Stock.GetServableThing(order, pawn);
 
             if (consumable == null)
             {

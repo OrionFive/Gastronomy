@@ -23,10 +23,10 @@ namespace Restaurant.Dining
             const int maxRegionsToScan = 100;
             foodDef = null;
 
-            var settings = pawn.GetRestaurant();
-            if (settings == null) return null;
+            var restaurant = pawn.GetRestaurant();
+            if (restaurant == null) return null;
 
-            if (!settings.HasAnyFoodFor(pawn, allowDrug)) return null;
+            if (!restaurant.Stock.HasAnyFoodFor(pawn, allowDrug)) return null;
 
             bool Validator(Thing thing)
             {
@@ -40,7 +40,7 @@ namespace Restaurant.Dining
                 maxRegionsToScan, false, RegionType.Set_Passable, true);
             if (diningSpot == null) return null;
 
-            foodDef = settings.GetBestFoodTypeFor(pawn, allowDrug);
+            foodDef = restaurant.Stock.GetBestFoodTypeFor(pawn, allowDrug);
             return foodDef == null ? null : diningSpot;
         }
 

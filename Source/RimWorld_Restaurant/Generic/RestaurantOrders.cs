@@ -10,18 +10,17 @@ namespace Restaurant
     {
         private List<Order> orders = new List<Order>();
 
+        [NotNull] public ReadOnlyCollection<Order> AllOrders => orders.AsReadOnly();
+        [NotNull] public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.delivered && Stock.AllStock.Any(s => s.def == o.consumableDef));
+        [NotNull] public IEnumerable<Order> AvailableOrdersForCooking => orders.Where(o => !o.delivered && Stock.AllStock.All(s => s.def != o.consumableDef));
+        [NotNull] private RestaurantStock Stock => Restaurant.Stock;
+        [NotNull] private RestaurantMenu Menu => Restaurant.Menu;
+        [NotNull] private RestaurantController Restaurant { get; }
+
         public RestaurantOrders([NotNull] RestaurantController restaurant)
         {
             Restaurant = restaurant;
         }
-
-        [NotNull] public RestaurantController Restaurant { get; }
-        [NotNull] private IEnumerable<Thing> Stock => Restaurant.Stock;
-        [NotNull] private RestaurantMenu Menu => Restaurant.Menu;
-
-        [NotNull] public ReadOnlyCollection<Order> AllOrders => orders.AsReadOnly();
-        [NotNull] public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.delivered && Stock.Any(s => s.def == o.consumableDef));
-        [NotNull] public IEnumerable<Order> AvailableOrdersForCooking => orders.Where(o => !o.delivered && Stock.All(s => s.def != o.consumableDef));
 
         public void ExposeData()
         {
@@ -53,7 +52,7 @@ namespace Restaurant
             }
 
             // Already prepared?
-            var available = Stock.Where(item => item.def == consumableDef).Sum(item => item.stackCount);
+            var available = Stock.AllStock.Where(item => item.def == consumableDef).Sum(item => item.stackCount);
             var ordered = orders.Count(o => o.consumableDef == consumableDef);
 
             if (available <= ordered)

@@ -123,7 +123,7 @@ namespace Restaurant.TableTops
             {
                 var patrons = Register.restaurant.Patrons;
                 var orders = Register.restaurant.Orders.AllOrders;
-                var stock = Register.restaurant.Stock.ToArray();
+                var stock = Register.restaurant.Stock.AllStock;
                 var ordersForServing = Register.restaurant.Orders.AvailableOrdersForServing.ToArray();
                 var ordersForCooking = Register.restaurant.Orders.AvailableOrdersForCooking.ToArray();
 

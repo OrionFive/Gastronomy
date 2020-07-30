@@ -60,7 +60,7 @@ namespace Restaurant.Waiting
                 }
 
                 var restaurant = patron.GetRestaurant();
-                var desiredFoodDef = restaurant.GetBestFoodTypeFor(patron, !patron.IsTeetotaler());
+                var desiredFoodDef = restaurant.Stock.GetBestFoodTypeFor(patron, !patron.IsTeetotaler());
                 restaurant.Orders.CreateOrder(patron, desiredFoodDef);
 
                 var symbol = desiredFoodDef.uiIcon;
