@@ -21,6 +21,7 @@ namespace Restaurant.Dining
         public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, out ThingDef foodDef, bool allowDrug)
         {
             const int maxRegionsToScan = 100;
+            const int maxDistanceToScan = 100; // TODO: Make mod option?
             foodDef = null;
 
             var restaurant = pawn.GetRestaurant();
@@ -36,7 +37,7 @@ namespace Restaurant.Dining
             }
 
             var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), 
-                PathEndMode.ClosestTouch, TraverseParms.For(pawn), 9999f, Validator, null, 0, 
+                PathEndMode.ClosestTouch, TraverseParms.For(pawn), maxDistanceToScan, Validator, null, 0, 
                 maxRegionsToScan, false, RegionType.Set_Passable, true);
             if (diningSpot == null) return null;
 
