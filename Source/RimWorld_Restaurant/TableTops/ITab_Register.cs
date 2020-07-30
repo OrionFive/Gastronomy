@@ -26,8 +26,8 @@ namespace Restaurant.TableTops
         protected override void FillTab()
         {
             var rectTop = new Rect(0, 16, WinSize.x, 40).ContractedBy(10);
-            var rectLeft = new Rect(0f, 40+20+16, WinSize.x/2, WinSize.y).ContractedBy(10f);
-            var rectRight = new Rect(WinSize.x/2, 40+20+16, WinSize.x/2, WinSize.y).ContractedBy(10f);
+            var rectLeft = new Rect(0f, 40+20+16, WinSize.x/2, WinSize.y-40).ContractedBy(10f);
+            var rectRight = new Rect(WinSize.x/2, 40+20+16, WinSize.x/2, WinSize.y-40).ContractedBy(10f);
 
             DrawTop(rectTop);
             DrawLeft(rectLeft);
@@ -46,7 +46,7 @@ namespace Restaurant.TableTops
             // Menu
             {
                 var menuRect = new Rect(rect);
-                menuRect.yMax += 20;
+                menuRect.yMax -= 36;
 
                 Register.restaurant.Menu.GetMenuFilters(out var filter, out var parentFilter);
                 ThingFilterUI.DoThingFilterConfigWindow(menuRect, ref menuScrollPosition, filter, parentFilter, 
