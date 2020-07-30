@@ -53,12 +53,11 @@ namespace Restaurant
 
         private float GetFoodOptimality(Pawn pawn, ThingDef def)
         {
-            // Optimality can be negative
-            var dummyFoodSource = stockCache[0]; // Can be null again once erdelf fixes the patch
             var optimality = optimalityCache.FirstOrDefault(o => o.pawn == pawn && o.def == def);
             if (optimality == null)
             {
-                optimality = new FoodOptimality {pawn = pawn, def = def, value = Mathf.Max(0, FoodUtility.FoodOptimality(pawn, dummyFoodSource, def, 0))};
+                // Optimality can be negative
+                optimality = new FoodOptimality {pawn = pawn, def = def, value = Mathf.Max(0, FoodUtility.FoodOptimality(pawn, null, def, 0))};
                 optimalityCache.Add(optimality);
             }
 
