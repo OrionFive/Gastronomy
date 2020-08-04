@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -18,7 +19,7 @@ namespace Restaurant.Dining
             return map.listerThings.ThingsOfDef(diningSpotDef).OfType<DiningSpot>();
         }
 
-        public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, out ThingDef foodDef, bool allowDrug)
+        public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, out ThingDef foodDef, bool allowDrug, Predicate<Thing> extraSpotValidator = null)
         {
             const int maxRegionsToScan = 100;
             const int maxDistanceToScan = 100; // TODO: Make mod option?
@@ -33,7 +34,7 @@ namespace Restaurant.Dining
             {
                 var spot = (DiningSpot) thing;
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && pawn.CanReserve(spot, spot.GetMaxReservations(), 0) 
-                       && spot.IsOpenedRightNow && !RestaurantUtility.IsRegionDangerous(pawn, spot.GetRegion());
+                       && spot.IsOpenedRightNow && !RestaurantUtility.IsRegionDangerous(pawn, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
             }
 
             var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), 
