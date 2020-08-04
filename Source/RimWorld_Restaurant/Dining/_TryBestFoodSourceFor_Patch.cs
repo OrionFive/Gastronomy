@@ -24,11 +24,12 @@ namespace Restaurant.Dining
 
                 if (!getter.IsAbleToDine()) return true;
 
-                var diningSpot = DiningUtility.FindDiningSpotFor(getter, out foodDef, false);
+                var diningSpot = DiningUtility.FindDiningSpotFor(eater, false);
 
-                if (diningSpot == null) return true; // Run original code
-                
-                // Actually dine
+                var bestType = diningSpot?.GetRestaurant().Stock.GetBestFoodTypeFor(eater, false);
+                if (bestType == null) return true; // Run original code
+
+                foodDef = bestType;
                 foodSource = diningSpot;
                 //Log.Message($"{getter.NameShortColored} found diningSpot at {diningSpot.Position} with {foodDef?.label}.");
                 __result = true;

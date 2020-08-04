@@ -19,11 +19,10 @@ namespace Restaurant.Dining
             return map.listerThings.ThingsOfDef(diningSpotDef).OfType<DiningSpot>();
         }
 
-        public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, out ThingDef foodDef, bool allowDrug, Predicate<Thing> extraSpotValidator = null)
+        public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, bool allowDrug, Predicate<Thing> extraSpotValidator = null)
         {
             const int maxRegionsToScan = 100;
             const int maxDistanceToScan = 100; // TODO: Make mod option?
-            foodDef = null;
 
             var restaurant = pawn.GetRestaurant();
             if (restaurant == null) return null;
@@ -40,10 +39,8 @@ namespace Restaurant.Dining
             var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), 
                 PathEndMode.ClosestTouch, TraverseParms.For(pawn), maxDistanceToScan, Validator, null, 0, 
                 maxRegionsToScan, false, RegionType.Set_Passable, true);
-            if (diningSpot == null) return null;
 
-            foodDef = restaurant.Stock.GetBestFoodTypeFor(pawn, allowDrug);
-            return foodDef == null ? null : diningSpot;
+            return diningSpot;
         }
 
         public static void RegisterDiningSpotHolder(ThingWithComps thing)
