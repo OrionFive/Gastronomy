@@ -5,7 +5,7 @@ using Verse.AI;
 
 namespace Restaurant.Dining
 {
-	internal static class _Harmony_JobGiver_GetFood_Patch
+	internal static class _JobGiver_GetFood_Patch
 	{
 		/// <summary>
 		/// Replaces regular ingest job with dine job

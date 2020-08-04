@@ -57,7 +57,8 @@ namespace Restaurant
             if (optimality == null)
             {
                 // Optimality can be negative
-                optimality = new FoodOptimality {pawn = pawn, def = def, value = Mathf.Max(0, FoodUtility.FoodOptimality(pawn, null, def, 0))};
+                var value = Mathf.Max(0, FoodUtility.FoodOptimality(pawn, null, def, 0));
+                optimality = new FoodOptimality {pawn = pawn, def = def, value = value};
                 optimalityCache.Add(optimality);
             }
 

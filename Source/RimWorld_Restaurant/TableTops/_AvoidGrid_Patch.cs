@@ -4,7 +4,7 @@ using Verse.AI;
 
 namespace Restaurant.TableTops
 {
-    internal static class _Harmony_AvoidGrid_Patch
+    internal static class _AvoidGrid_Patch
     {
         /// <summary>
         /// Is a tabletop spawned? Remove DiningSpots

@@ -6,7 +6,7 @@ namespace Restaurant.Dining
     /// <summary>
     /// So DiningSpot is not checked by Nutrient Paste Dispenser alerts
     /// </summary>
-    internal static class _Harmony_IsFoodDispenser_Patch
+    internal static class _IsFoodDispenser_Patch
     {
         [HarmonyPatch(typeof(ThingDef), "get_IsFoodDispenser")]
         public class IsFoodDispenser

@@ -7,7 +7,7 @@ namespace Restaurant.Dining
     /// <summary>
     /// For allowing pawns to find DiningSpots when hungry. This should later be replaced with BestFoodSourceOnMap, so alternatives are considered
     /// </summary>
-    internal static class _Harmony_TryBestFoodSourceFor_Patch
+    internal static class _TryBestFoodSourceFor_Patch
     {
         [HarmonyPatch(typeof(FoodUtility), "TryFindBestFoodSourceFor")]
         public class TryFindBestFoodSourceFor

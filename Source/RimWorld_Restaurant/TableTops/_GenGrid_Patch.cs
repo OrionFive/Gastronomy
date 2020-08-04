@@ -6,7 +6,7 @@ namespace Restaurant.TableTops
     /// <summary>
     /// So pawns won't eat where the register is placed
     /// </summary>
-    internal static class _Harmony_GenGrid_Patch
+    internal static class _GenGrid_Patch
     {
         [HarmonyPatch(typeof(GenGrid), "HasEatSurface")]
         public class HasEatSurface
