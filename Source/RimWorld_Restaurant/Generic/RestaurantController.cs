@@ -42,9 +42,9 @@ namespace Restaurant
 		{
 			base.ExposeData();
 			Scribe_Values.Look(ref openForBusiness, "openForBusiness", true);
-			Scribe_Deep.Look(ref menu, "menu");
-			Scribe_Deep.Look(ref stock, "stock");
 			Scribe_Deep.Look(ref timetableOpen, "timetableOpen");
+			Scribe_Deep.Look(ref menu, "menu");
+			Scribe_Deep.Look(ref stock, "stock", this);
 			Scribe_Deep.Look(ref orders, "orders", this);
 			InitDeepFieldsInitial();
 		}
@@ -52,8 +52,9 @@ namespace Restaurant
 		private void InitDeepFieldsInitial()
 		{
 			if (timetableOpen == null) timetableOpen = new TimetableBool();
-			if (orders == null) orders = new RestaurantOrders(this);
 			if (menu == null) menu = new RestaurantMenu();
+			if (orders == null) orders = new RestaurantOrders(this);
+			if (stock == null) stock = new RestaurantStock(this);
 		}
 
 		public override void MapGenerated()

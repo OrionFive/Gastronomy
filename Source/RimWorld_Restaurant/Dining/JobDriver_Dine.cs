@@ -8,8 +8,6 @@ namespace Restaurant.Dining
 {
     public class JobDriver_Dine : JobDriver
     {
-        private ThingDef preferredFoodDef;
-
         public bool wantsToOrder;
         public DiningSpot DiningSpot => job.GetTarget(TargetIndex.A).Thing as DiningSpot;
         public Pawn Waiter => job.GetTarget(TargetIndex.B).Pawn;
@@ -27,7 +25,6 @@ namespace Restaurant.Dining
         {
             base.ExposeData();
             Scribe_Values.Look(ref wantsToOrder, "wantsToOrder");
-            Scribe_Defs.Look(ref preferredFoodDef, "preferredFoodDef");
         }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -42,8 +39,6 @@ namespace Restaurant.Dining
                     return false;
                 }
             }
-
-            preferredFoodDef = job.plantDefToSow; // Abusing this for storage of def
             return true;
         }
 

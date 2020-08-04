@@ -10,9 +10,7 @@ namespace Restaurant.Waiting
 
         public static IntVec3 GetChairPosition(Pawn patron)
         {
-            if(patron.pather.MovingNow)
-                return patron.pather.Destination.Cell;
-            return patron.Position;
+            return patron.pather.MovingNow ? patron.pather.Destination.Cell : patron.Position;
         }
     }
 }
