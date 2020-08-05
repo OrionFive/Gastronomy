@@ -89,7 +89,7 @@ namespace Restaurant
         {
             var order = orders.FirstOrDefault(o => o.patron == patron);
             if (order != null)
-                Log.Message($"Found an order of {order.consumableDef.label} for {patron.NameShortColored}. hasToBeMade? {order.hasToBeMade} IsBeingDelivered? {IsBeingDelivered(order, patron)} hasBeenDelivered? {order.delivered}");
+                Log.Message($"Found an order of {order.consumableDef.label} for {patron.NameShortColored}. hasToBeMade? {order.hasToBeMade} IsBeingDelivered? {IsBeingDelivered(order)} hasBeenDelivered? {order.delivered}");
             return order;
         }
 
@@ -98,13 +98,15 @@ namespace Restaurant
             orders.RemoveAll(o => o.patron == patron);
         }
 
-        public bool IsBeingDelivered(Order order, Pawn pawn)
+        public bool IsBeingDelivered(Order order, Pawn waiter = null)
         {
             if (order.hasToBeMade) return false;
             if (order.delivered) return false;
             if (order.consumable == null) return false;
             //Log.Message($"Consumable found: {order.consumable.Label} at {order.consumable.Position}");
-            return Restaurant.map.reservationManager.IsReservedAndRespected(order.consumable, pawn);
+            var reserver = Restaurant.map.reservationManager.FirstRespectedReserver(order.consumable, waiter ?? order.patron);
+            if (reserver == null) return false;
+            return reserver != waiter;
         }
 
         /// <summary>
