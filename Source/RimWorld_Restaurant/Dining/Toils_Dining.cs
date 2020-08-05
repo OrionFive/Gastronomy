@@ -110,7 +110,7 @@ namespace Restaurant.Dining
             var toil = new Toil();
             toil.initAction = () => {
                 var order = toil.actor.GetRestaurant().Orders.GetOrderFor(toil.actor);
-                if (order?.delivered == true && order.consumable?.Spawned == true)
+                if (order?.delivered == true && (order.consumable?.Spawned == true || order.consumable?.ParentHolder == toil.actor.inventory))
                 {
                     var food = order.consumable;
                     toil.actor.CurJob.SetTarget(mealInd, food);

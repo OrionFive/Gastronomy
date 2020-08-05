@@ -35,7 +35,7 @@ namespace Restaurant.Waiting
             if (order == null) return false;
             if (order.delivered) return false;
 
-            if (restaurant.Orders.IsBeingDelivered(order, pawn)) return false;
+            if (restaurant.Orders.IsBeingDelivered(order)) return false;
 
             if (!patron.Spawned || patron.Dead)
             {

@@ -61,10 +61,20 @@ namespace Restaurant.Waiting
 
                 var restaurant = patron.GetRestaurant();
                 var desiredFoodDef = restaurant.Stock.GetRandomFoodTypeFor(patron, !patron.IsTeetotaler());
-                restaurant.Orders.CreateOrder(patron, desiredFoodDef);
+                if (desiredFoodDef == null)
+                {
+                    // Couldn't find anything desired on menu
+                    Log.Message($"{patron.NameShortColored} couldn't find anything on menu.");
+                    toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
+                    // TODO: Make guest leave
+                }
+                else
+                {
+                    restaurant.Orders.CreateOrder(patron, desiredFoodDef);
 
-                var symbol = desiredFoodDef.uiIcon;
-                if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
+                    var symbol = desiredFoodDef.uiIcon;
+                    if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
+                }
             }
         }
 

@@ -116,7 +116,7 @@ namespace Restaurant
         public bool CheckOrderOfWaitingPawn(Pawn patron)
         {
             var order = orders.FirstOrDefault(o => o.patron == patron);
-            if (order != null && order.delivered && order.consumable?.Spawned == false)
+            if (order != null && order.delivered && (order.consumable?.Spawned == false || order.consumable.ParentHolder == patron.inventory))
             {
                 // Order not spawned? Already eaten it, or something happened to it
                 // Clear order

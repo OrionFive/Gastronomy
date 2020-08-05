@@ -25,8 +25,9 @@ namespace Restaurant.Dining
 
                 var diningSpot = DiningUtility.FindDiningSpotFor(pawn, allowDrug, extraValidator);
                 if ( diningSpot == null) return true; // Run regular code
-                var hasFoodFor = restaurant.Stock.HasAnyFoodFor(pawn, allowDrug);
-                if (!hasFoodFor) return true;
+                // There is something edible, but is it good enough or like... a corpse?
+                var bestFood = restaurant.Stock.GetBestFoodTypeFor(pawn, allowDrug);
+                if (bestFood == null) return true; // Run regular code
 
                 Log.Message($"{pawn.NameShortColored} wants to eat at restaurant ({diningSpot.Position}).");
 
