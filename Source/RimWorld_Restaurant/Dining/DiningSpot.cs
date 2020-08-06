@@ -4,9 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Restaurant.TableTops;
 using RimWorld;
-using UnityEngine;
 using Verse;
-using Verse.Sound;
 
 namespace Restaurant.Dining
 {
@@ -153,40 +151,7 @@ namespace Restaurant.Dining
             return SpotState.Blocked;
         }
 
-        public override Thing TryDispenseFood()
-        {
-            return null;
-            if (!IsOpenedRightNow) return null;
-
-            // TODO: Implement this method correctly
-            Log.Warning("Trying to get food from DiningSpot!");
-            float num = def.building.nutritionCostPerDispense - 0.0001f;
-            List<ThingDef> list = new List<ThingDef>();
-            do
-            {
-                Thing thing = FindFeedInAnyHopper();
-                if (thing == null)
-                {
-                    Log.Error("Did not find enough food in hoppers while trying to dispense.");
-                    return null;
-                }
-
-                int num2 = Mathf.Min(thing.stackCount, Mathf.CeilToInt(num / thing.GetStatValue(StatDefOf.Nutrition)));
-                num -= num2 * thing.GetStatValue(StatDefOf.Nutrition);
-                list.Add(thing.def);
-                thing.SplitOff(num2);
-            } while (!(num <= 0f));
-
-            def.building.soundDispense.PlayOneShot(new TargetInfo(Position, Map));
-            Thing thing2 = ThingMaker.MakeThing(ThingDefOf.MealNutrientPaste);
-            CompIngredients compIngredients = thing2.TryGetComp<CompIngredients>();
-            foreach (var ingredient in list)
-            {
-                compIngredients.RegisterIngredient(ingredient);
-            }
-
-            return thing2;
-        }
+        public override Thing TryDispenseFood() => null;
 
         #region NutrientPasteDispenser overrides
 
