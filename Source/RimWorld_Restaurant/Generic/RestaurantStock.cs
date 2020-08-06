@@ -23,7 +23,7 @@ namespace Restaurant
         [NotNull] private readonly List<Thing> stockCache = new List<Thing>();
         [NotNull] private readonly List<ConsumeOptimality> eatOptimalityCache = new List<ConsumeOptimality>();
         [NotNull] private readonly List<ConsumeOptimality> joyOptimalityCache = new List<ConsumeOptimality>();
-        [NotNull] public IEnumerable<Thing> AllStock => stockCache.AsReadOnly();
+        [NotNull] public IReadOnlyCollection<Thing> AllStock => stockCache.AsReadOnly();
         [NotNull] private Map Map => Restaurant.map;
         [NotNull] private RestaurantMenu Menu => Restaurant.Menu;
         [NotNull] private RestaurantController Restaurant { get; }

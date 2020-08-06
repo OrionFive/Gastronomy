@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -9,7 +10,7 @@ namespace Restaurant.TableTops
 {
     public class ITab_Register : ITab
     {
-        private static readonly Vector2 WinSize = new Vector2(600f, 480f);
+        private static readonly Vector2 WinSize = new Vector2(800f, 480f);
         private bool showSettings = true;
         private bool showRadius = false;
         private bool showStats = true;
@@ -74,7 +75,7 @@ namespace Restaurant.TableTops
 
             if (showStats)
             {
-                var smallRect = new Rect(rect) {height = 5 * 24 + 20};
+                var smallRect = new Rect(rect) {height = 8 * 24 + 20};
                 rect.yMin += smallRect.height + 10;
 
                 DrawStats(smallRect);
@@ -129,17 +130,123 @@ namespace Restaurant.TableTops
 
                 listing.LabelDouble("TabRegisterSeats".Translate(), Register.restaurant.Seats.ToString());
                 listing.LabelDouble("TabRegisterPatrons".Translate(), patrons.Count.ToString(), patrons.Select(p=>p.LabelShort).ToCommaList());
-                listing.LabelDouble("TabRegisterTotalOrders".Translate(), orders.Count.ToString(), orders.Select(GetOrderLabel).ToCommaList());
-                listing.LabelDouble("TabRegisterNeedsServing".Translate(), ordersForServing.Count().ToString(), ordersForServing.Select(GetOrderLabel).ToCommaList());
-                listing.LabelDouble("TabRegisterNeedsCooking".Translate(), ordersForCooking.Count().ToString(), ordersForCooking.Select(GetOrderLabel).ToCommaList());
-                listing.LabelDouble("TabRegisterStocked".Translate(), stock.Sum(s=>s.stackCount).ToString(), stock.Select(s=>s.def).Distinct().Select(s=>s.label).ToCommaList());
+                DrawOrders(listing, "TabRegisterTotalOrders".Translate(), orders);
+                DrawOrders(listing, "TabRegisterNeedsServing".Translate(), ordersForServing);
+                DrawOrders(listing, "TabRegisterNeedsCooking".Translate(), ordersForCooking);
+                DrawStock(listing, "TabRegisterStocked".Translate(), stock);
+                
+                //listing.LabelDouble("TabRegisterStocked".Translate(), stock.Sum(s=>s.stackCount).ToString(), stock.Select(s=>s.def).Distinct().Select(s=>s.label).ToCommaList());
             }
             listing.End();
         }
 
-        private static string GetOrderLabel(Order order)
+        private static void DrawOrders(Listing listing, TaggedString label, [NotNull] IReadOnlyCollection<Order> orders)
         {
-            return $"{order.patron.NameShortColored} ({order.consumableDef.label})";
+            // Label
+            var rect = CustomLabelDouble(listing, label, $"{orders.Count}: ", out var countSize);
+
+            var grouped = orders.GroupBy(o => o.consumableDef);
+
+            var rectImage  = rect.RightHalf();
+            rectImage.xMin += countSize.x;
+            rectImage.width = rectImage.height = countSize.y;
+
+            // Icons for each type of order
+            foreach (var group in grouped)
+            {
+                if (group.Key == null) continue;
+                // A list of the patrons for the order
+                DrawDefIcon(rectImage, group.Key, group.Select(o => o.patron.Name.ToStringShort).ToCommaList());
+                rectImage.x += 2 + rectImage.width;
+               
+                // Will the next one fit?
+                if (rectImage.xMax > rect.xMax) break;
+            }
+            listing.Gap(listing.verticalSpacing);
+        }
+
+        private static void DrawStockExpanded(Listing listing, TaggedString label, [NotNull] IReadOnlyCollection<Thing> stock)
+        {
+            // Label
+            var rect = CustomLabelDouble(listing, label, $"{stock.Count}:", out var countSize);
+
+            var grouped = stock.GroupBy(s => s.def);
+
+            var rectImage  = rect.RightHalf();
+            rectImage.xMin += countSize.x;
+            rectImage.height = countSize.y;
+
+            // Icons for each type of stock
+            foreach (var group in grouped)
+            {
+                if (group.Key == null) continue;
+                // Amount label
+                string amountText = $" {group.Count()}x";
+                var amountSize = Text.CalcSize(amountText);
+                rectImage.width = amountSize.x;
+
+                // Will it fit?
+                if (rectImage.xMax + rectImage.height > rect.xMax) break;
+
+                // Draw label
+                Widgets.Label(rectImage, amountText);
+                rectImage.x += rectImage.width;
+                // Icon
+                rectImage.width = rectImage.height;
+                DrawDefIcon(rectImage, group.Key, group.Key.LabelCap);
+                rectImage.x += rectImage.width;
+
+                // Will the next one fit?
+                if (rectImage.xMax > rect.xMax) break;
+            }
+            listing.Gap(listing.verticalSpacing);
+        }
+
+        private static void DrawStock(Listing listing, TaggedString label, [NotNull] IReadOnlyCollection<Thing> stock)
+        {
+            // Label
+            var rect = CustomLabelDouble(listing, label, $"{stock.Sum(i => i.stackCount)}:", out var countSize);
+
+            var grouped = stock.GroupBy(s => s.def);
+
+            var rectImage  = rect.RightHalf();
+            rectImage.xMin += countSize.x;
+            rectImage.height = countSize.y;
+
+            // Icons for each type of stock
+            foreach (var group in grouped)
+            {
+                if (group.Key == null) continue;
+
+                // Icon
+                rectImage.width = rectImage.height;
+                DrawDefIcon(rectImage, group.Key, $"{group.Sum(i => i.stackCount)}x {group.Key.LabelCap}");
+                rectImage.x += rectImage.width;
+
+                // Will the next one fit?
+                if (rectImage.xMax > rect.xMax) break;
+            }
+            listing.Gap(listing.verticalSpacing);
+        }
+
+        private static Rect CustomLabelDouble(Listing listing, TaggedString labelLeft, TaggedString stringRight, out Vector2 sizeRight)
+        {
+            sizeRight = Text.CalcSize(stringRight);
+            Rect rect = listing.GetRect(Mathf.Max(Text.CalcHeight(labelLeft, listing.ColumnWidth / 2f), sizeRight.y));
+            Widgets.Label(rect.LeftHalf(), labelLeft);
+            Widgets.Label(rect.RightHalf(), stringRight);
+            return rect;
+        }
+
+        private static void DrawDefIcon(Rect rect, ThingDef def, string tooltip = null)
+        {
+            if (tooltip != null)
+            {
+                TooltipHandler.TipRegion(rect, tooltip);
+                Widgets.DrawHighlightIfMouseover(rect);
+            }
+
+            GUI.DrawTexture(rect, def.uiIcon);
         }
 
         public override void TabUpdate()
