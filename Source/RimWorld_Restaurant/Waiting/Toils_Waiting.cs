@@ -65,8 +65,10 @@ namespace Restaurant.Waiting
                 {
                     // Couldn't find anything desired on menu
                     Log.Message($"{patron.NameShortColored} couldn't find anything on menu.");
+                    TryCreateBubble(patron, toil.actor, ModBaseRestaurant.symbolNoOrder);
+
                     toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
-                    // TODO: Make guest leave
+                    patron.jobs.EndCurrentJob(JobCondition.Incompletable);
                 }
                 else
                 {
