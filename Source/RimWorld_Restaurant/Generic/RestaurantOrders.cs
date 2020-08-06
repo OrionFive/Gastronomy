@@ -30,14 +30,27 @@ namespace Restaurant
 
         public void RareTick()
         {
-            orders.RemoveAll(o => !o.patron.Spawned || o.patron.Dead || CantBeOrdered(o));
+            orders.RemoveAll(o => !o.patron.Spawned || o.patron.Dead || IsInvalidOrder(o));
         }
 
-        private bool CantBeOrdered(Order o)
+        private bool IsInvalidOrder(Order o)
         {
             if (o.delivered) return false;
             if (o.consumable != null) return false;
-            return !Menu.IsOnMenu(o.consumableDef);
+            if (!Menu.IsOnMenu(o.consumableDef)) return true;
+            // TODO: Preference to allow ordering out of stock items
+            if (!CanBeOrdered(o.consumableDef))
+            {
+                Log.Message($"Order for {o.patron?.NameShortColored} ({o.consumableDef?.label}) had to be canceled. Not in stock.");
+                return true;
+            }
+            return false;
+        }
+
+        private bool CanBeOrdered(ThingDef foodDef)
+        {
+            // Do we have any item of that type that isn't part of any order?
+            return Stock.AllStock.Where(s => s.def == foodDef).Any(s => AllOrders.All(o => o.consumable != s));
         }
 
         public void CreateOrder(Pawn patron, ThingDef consumableDef)
