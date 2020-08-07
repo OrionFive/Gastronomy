@@ -68,7 +68,8 @@ namespace Restaurant
 
 			diningSpots.Clear();
 			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(map));
-			//Log.Message($"Finalized with {diningSpots.Count} dining spots.");
+			stock.RareTick();
+			orders.RareTick();
 		}
 
 		public override void MapComponentTick()
