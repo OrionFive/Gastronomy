@@ -130,6 +130,8 @@ namespace Restaurant.Dining
                     }
                     else
                     {
+                        Log.Message($"{toil.actor.NameShortColored}'s food is somewhere else ({food?.Position}). Will wait.");
+                        toil.actor.CurJob.SetTarget(mealInd, null);
                         order.delivered = false;
                     }
                 }
