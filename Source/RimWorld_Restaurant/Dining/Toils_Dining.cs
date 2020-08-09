@@ -105,7 +105,7 @@ namespace Restaurant.Dining
 
         private static JobDriver_Dine GetDriver(Toil t) => t.actor.jobs.curDriver as JobDriver_Dine;
 
-        public static Toil WaitForMeal(TargetIndex waiterInd, TargetIndex mealInd)
+        public static Toil WaitForMeal(TargetIndex mealInd)
         {
             var toil = new Toil();
             toil.initAction = () => {

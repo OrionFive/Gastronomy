@@ -9,9 +9,14 @@ namespace Restaurant.Dining
     public class JobDriver_Dine : JobDriver
     {
         public bool wantsToOrder;
-        public DiningSpot DiningSpot => job.GetTarget(TargetIndex.A).Thing as DiningSpot;
-        public Pawn Waiter => job.GetTarget(TargetIndex.B).Pawn;
-        public Thing Food => job.GetTarget(TargetIndex.C).Thing;
+        public DiningSpot DiningSpot => job.GetTarget(SpotIndex).Thing as DiningSpot;
+        public Pawn Waiter => job.GetTarget(WaiterIndex).Pawn;
+        public Thing Meal => job.GetTarget(MealIndex).Thing;
+
+        private const TargetIndex SpotIndex = TargetIndex.A;
+        private const TargetIndex WaiterIndex = TargetIndex.B;
+        private const TargetIndex MealIndex = TargetIndex.C;
+
 
         //public override string GetReport()
         //{
@@ -45,40 +50,48 @@ namespace Restaurant.Dining
         protected override IEnumerable<Toil> MakeNewToils()
         {
             // Declare these early - jumping points
-            var waitForWaiter = Toils_Dining.WaitForWaiter(TargetIndex.A, TargetIndex.B).FailOnRestaurantClosed().FailOnDangerous();
-            var waitForMeal = Toils_Dining.WaitForMeal(TargetIndex.B, TargetIndex.C).FailOnDangerous();
+            var waitForWaiter = Toils_Dining.WaitForWaiter(SpotIndex, WaiterIndex).FailOnRestaurantClosed().FailOnDangerous();
+            var waitForMeal = Toils_Dining.WaitForMeal(MealIndex).FailOnDangerous();
 
             this.FailOn(() => DiningSpot.Destroyed);
-            yield return Toils_Dining.GoToDineSpot(pawn, TargetIndex.A).FailOnRestaurantClosed();
-            yield return Toils_Dining.TurnToEatSurface(TargetIndex.A);
+            yield return Toils_Dining.GoToDineSpot(pawn, SpotIndex).FailOnRestaurantClosed();
+            yield return Toils_Dining.TurnToEatSurface(SpotIndex);
             // Order broken? Jump straight to waiter
             yield return Toils_Jump.JumpIf(waitForWaiter, () => !pawn.GetRestaurant().Orders.CheckOrderOfWaitingPawn(pawn));
             // Already has ordered? Jump to waiting for meal
             yield return Toils_Jump.JumpIf(waitForMeal, () => pawn.GetRestaurant().Orders.GetOrderFor(pawn) != null);
             yield return waitForWaiter;
             yield return waitForMeal;
-            yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.C);
-            yield return Toils_Reserve.Reserve(TargetIndex.C, 1, 1);
-            yield return Toils_Dining.TurnToEatSurface(TargetIndex.A, TargetIndex.C);
-            yield return Toils_Dining.WaitDuringDinner(TargetIndex.A, 100, 250);
-            yield return Toils_Ingest.ChewIngestible(pawn, ChewDurationMultiplier, TargetIndex.C, TargetIndex.A);
-            yield return Toils_Ingest.FinalizeIngest(pawn, TargetIndex.C);
+            yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, MealIndex);
+            yield return Toils_Reserve.Reserve(MealIndex, 1, 1);
+            yield return Toils_Dining.TurnToEatSurface(SpotIndex, MealIndex);
+            yield return Toils_Dining.WaitDuringDinner(SpotIndex, 100, 250);
+            yield return Toils_Ingest.ChewIngestible(pawn, ChewDurationMultiplier, MealIndex, SpotIndex);
+            yield return Toils_Ingest.FinalizeIngest(pawn, MealIndex);
             yield return Toils_Dining.OnCompletedMeal(pawn);
-            yield return Toils_Dining.MakeTableMessy(TargetIndex.A, () => pawn.Position);
+            yield return Toils_Dining.MakeTableMessy(SpotIndex, () => pawn.Position);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
-            yield return Toils_Dining.WaitDuringDinner(TargetIndex.A, 100, 250);
+            yield return Toils_Dining.WaitDuringDinner(SpotIndex, 100, 250);
         }
 
         public void OnTransferredFood(Thing food)
         {
-            Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory. {pawn.inventory.Contains(food)}");
-            job.SetTarget(TargetIndex.C, food); // This triggers WaitForMeal
+            var hasIt = pawn.inventory.Contains(food);
+            if (hasIt)
+            {
+                Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory.");
+                job.SetTarget(MealIndex, food); // This triggers WaitForMeal
+            }
+            else
+            {
+                Log.Warning($"{pawn.NameShortColored} doesn't have {food.Label} in his inventory.");
+            }
         }
 
         // Mostly copied from JobDriver_Ingest
         public override bool ModifyCarriedThingDrawPos(ref Vector3 drawPos, ref bool behind, ref bool flip)
         {
-            var placeCell = job.GetTarget(TargetIndex.A).Cell;
+            var placeCell = job.GetTarget(SpotIndex).Cell;
             if (pawn.pather.Moving) return false;
             Thing carriedThing = pawn.carryTracker.CarriedThing;
             if (carriedThing == null || !carriedThing.IngestibleNow) return false;

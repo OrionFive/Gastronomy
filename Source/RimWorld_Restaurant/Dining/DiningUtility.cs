@@ -66,5 +66,17 @@ namespace Restaurant.Dining
 
             return true;
         }
+
+        public static DrugPolicyEntry GetPolicyFor(this Pawn pawn, ThingDef def)
+        {
+            var policy = pawn.drugs.CurrentPolicy;
+            for (int i = 0; i < policy.Count; i++)
+            {
+                var entry = policy[i];
+                if (entry.drug == def) return entry;
+            }
+
+            return null;
+        }
     }
 }
