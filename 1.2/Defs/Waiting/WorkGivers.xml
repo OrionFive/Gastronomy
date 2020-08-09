@@ -6,7 +6,7 @@
     <label>take orders</label>
     <giverClass>Restaurant.Waiting.WorkGiver_TakeOrder</giverClass>
     <workType>Restaurant_Waiting</workType>
-    <priorityInType>100</priorityInType>
+    <priorityInType>120</priorityInType>
     <!-- <fixedBillGiverDefs> -->
       <!-- <li>Restaurant_CashRegister</li> -->
       <!-- <li>Restaurant_DiningSpot</li> -->
