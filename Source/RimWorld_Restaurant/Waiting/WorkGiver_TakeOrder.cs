@@ -39,7 +39,7 @@ namespace Restaurant.Waiting
             if (!canReserve)
             {
                 var reserver = pawn.Map.reservationManager.FirstRespectedReserver(patron, pawn);
-                Log.Message($"{pawn.NameShortColored} can't reserve {patron.NameShortColored}. Is reserved by {reserver?.NameShortColored}. ");
+                //Log.Message($"{pawn.NameShortColored} can't reserve {patron.NameShortColored}. Is reserved by {reserver?.NameShortColored}. ");
                 return false;
             }
             if (RestaurantUtility.IsRegionDangerous(pawn, patron.GetRegion()) && !forced) return false;

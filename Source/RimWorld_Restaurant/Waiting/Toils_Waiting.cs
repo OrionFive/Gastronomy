@@ -101,7 +101,7 @@ namespace Restaurant.Waiting
                             out var result))
                         {
                             curJob.SetTarget(cellInd, result);
-                            Log.Message($"{actor.NameShortColored} found a place to stand at {result}. radius = {radius}");
+                            //Log.Message($"{actor.NameShortColored} found a place to stand at {result}. radius = {radius}");
                             return;
                         }
                     }
@@ -247,7 +247,7 @@ namespace Restaurant.Waiting
                     return;
                 }
 
-                Log.Message($"About to make spot ready ({toil.actor.CurJob.GetTarget(diningSpotInd).Cell}) from {toil.actor.CurJob.GetTarget(diningSpotInd).Cell}.");
+                //Log.Message($"About to make spot ready ({toil.actor.CurJob.GetTarget(diningSpotInd).Cell}) from {toil.actor.CurJob.GetTarget(diningSpotInd).Cell}.");
                 if (toil.actor.CurJob.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
                 {
                     diningSpot.SetSpotReady(chairPos);

@@ -29,8 +29,8 @@ namespace Restaurant.Waiting
                 var canReserve = pawn.Map.reservationManager.CanReserve(pawn, spot);
                 if (!canReserve)
                 {
-                    var reserver = pawn.Map.reservationManager.FirstRespectedReserver(spot, pawn);
-                    Log.Message($"{pawn.NameShortColored} can't reserve {spot.Position} for making. Is reserved by {reserver?.NameShortColored}. ");
+                    //var reserver = pawn.Map.reservationManager.FirstRespectedReserver(spot, pawn);
+                    //Log.Message($"{pawn.NameShortColored} can't reserve {spot.Position} for making. Is reserved by {reserver?.NameShortColored}. ");
                     return false;
                 }
 
