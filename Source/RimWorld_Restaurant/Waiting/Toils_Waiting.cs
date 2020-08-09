@@ -60,7 +60,7 @@ namespace Restaurant.Waiting
                 }
 
                 var restaurant = patron.GetRestaurant();
-                var desiredFoodDef = restaurant.Stock.GetRandomFoodTypeFor(patron, !patron.IsTeetotaler());
+                var desiredFoodDef = restaurant.Stock.GetRandomMealTypeFor(patron, !patron.IsTeetotaler());
                 if (desiredFoodDef == null)
                 {
                     // Couldn't find anything desired on menu

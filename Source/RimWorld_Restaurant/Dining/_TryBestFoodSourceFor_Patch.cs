@@ -26,7 +26,7 @@ namespace Restaurant.Dining
 
                 var diningSpot = DiningUtility.FindDiningSpotFor(eater, false);
 
-                var bestType = diningSpot?.GetRestaurant().Stock.GetBestFoodTypeFor(eater, false);
+                var bestType = diningSpot?.GetRestaurant().Stock.GetBestMealTypeFor(eater, false);
                 if (bestType == null) return true; // Run original code
 
                 foodDef = bestType;

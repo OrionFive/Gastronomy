@@ -202,25 +202,24 @@ namespace Restaurant.TableTops
             listing.Gap(listing.verticalSpacing);
         }
 
-        private static void DrawStock(Listing listing, TaggedString label, [NotNull] IReadOnlyCollection<Thing> stock)
+        private static void DrawStock(Listing listing, TaggedString label, [NotNull] IReadOnlyDictionary<ThingDef, RestaurantStock.Stock> stock)
         {
             // Label
-            var rect = CustomLabelDouble(listing, label, $"{stock.Sum(i => i.stackCount)}:", out var countSize);
-
-            var grouped = stock.GroupBy(s => s.def);
+            var rect = CustomLabelDouble(listing, label, $"{stock.Values.Sum(pair => pair.items.Sum(item=>item.stackCount))}:", out var countSize);
 
             var rectImage  = rect.RightHalf();
             rectImage.xMin += countSize.x;
             rectImage.height = countSize.y;
 
             // Icons for each type of stock
-            foreach (var group in grouped)
+            foreach (var group in stock.Values)
             {
-                if (group.Key == null) continue;
+                if (group.def == null) continue;
+                if (group.items.Count == 0) continue;
 
                 // Icon
                 rectImage.width = rectImage.height;
-                DrawDefIcon(rectImage, group.Key, $"{group.Sum(i => i.stackCount)}x {group.Key.LabelCap}");
+                DrawDefIcon(rectImage, group.def, $"{group.items.Sum(item => item.stackCount)}x {group.def.LabelCap}");
                 rectImage.x += rectImage.width;
 
                 // Will the next one fit?

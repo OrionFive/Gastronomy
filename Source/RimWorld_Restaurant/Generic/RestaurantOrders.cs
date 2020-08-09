@@ -11,8 +11,8 @@ namespace Restaurant
         private List<Order> orders = new List<Order>();
 
         [NotNull] public ReadOnlyCollection<Order> AllOrders => orders.AsReadOnly();
-        [NotNull] public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.delivered && Stock.AllStock.Any(s => s.def == o.consumableDef));
-        [NotNull] public IEnumerable<Order> AvailableOrdersForCooking => orders.Where(o => !o.delivered && Stock.AllStock.All(s => s.def != o.consumableDef));
+        [NotNull] public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.delivered && Stock.GetAllStockOfDef(o.consumableDef).Count > 0);
+        [NotNull] public IEnumerable<Order> AvailableOrdersForCooking => orders.Where(o => !o.delivered && !CanBeOrdered(o.consumableDef));
         [NotNull] private RestaurantStock Stock => Restaurant.Stock;
         [NotNull] private RestaurantMenu Menu => Restaurant.Menu;
         [NotNull] private RestaurantController Restaurant { get; }
@@ -47,10 +47,12 @@ namespace Restaurant
             return false;
         }
 
-        private bool CanBeOrdered(ThingDef foodDef)
+        public bool CanBeOrdered(ThingDef foodDef)
         {
             // Do we have any item of that type that isn't part of any order?
-            return Stock.AllStock.Where(s => s.def == foodDef).Any(s => AllOrders.All(o => o.consumable != s));
+            var orderedAmount = AllOrders.Where(o => o.consumableDef == foodDef).Sum(o => 1);
+            var stockedAmount = Stock.GetAllStockOfDef(foodDef).Sum(item => item.stackCount);
+            return stockedAmount > orderedAmount;
         }
 
         public void CreateOrder(Pawn patron, ThingDef consumableDef)
@@ -65,7 +67,7 @@ namespace Restaurant
             }
 
             // Already prepared?
-            var available = Stock.AllStock.Where(item => item.def == consumableDef).Sum(item => item.stackCount);
+            var available = Stock.GetAllStockOfDef(consumableDef).Sum(item => item.stackCount);
             var ordered = orders.Count(o => o.consumableDef == consumableDef);
 
             if (available <= ordered)
