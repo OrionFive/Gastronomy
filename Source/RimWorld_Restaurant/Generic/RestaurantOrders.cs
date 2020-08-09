@@ -36,7 +36,7 @@ namespace Restaurant
         private bool IsInvalidOrder(Order o)
         {
             if (o.delivered) return false;
-            if (o.consumable != null) return false;
+            if (o.consumable != null && o.consumable.SpawnedOrAnyParentSpawned) return false;
             if (!Menu.IsOnMenu(o.consumableDef)) return true;
             // TODO: Preference to allow ordering out of stock items
             if (!CanBeOrdered(o.consumableDef))
@@ -118,6 +118,7 @@ namespace Restaurant
             if (order.hasToBeMade) return false;
             if (order.delivered) return false;
             if (order.consumable == null) return false;
+            if (!order.consumable.SpawnedOrAnyParentSpawned) return false;
             //Log.Message($"Consumable found: {order.consumable.Label} at {order.consumable.Position}");
             var reserver = Restaurant.map.reservationManager.FirstRespectedReserver(order.consumable, waiter ?? order.patron);
             if (reserver == null) return false;

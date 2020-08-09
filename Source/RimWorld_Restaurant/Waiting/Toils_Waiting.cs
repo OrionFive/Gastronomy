@@ -19,7 +19,7 @@ namespace Restaurant.Waiting
             toil.WithProgressBarToilDelay(patronInd, true);
             toil.activeSkill = () => SkillDefOf.Social;
             toil.FailOnDownedOrDead(patronInd);
-            toil.FailOnMentalState(patronInd);
+            //toil.FailOnMentalState(patronInd);
             toil.tickAction = TickAction;
 
             return toil;
@@ -29,7 +29,7 @@ namespace Restaurant.Waiting
                 var patron = toil.actor.CurJob.GetTarget(patronInd).Pawn;
                 if (patron == null) return;
 
-                if (!(patron.jobs.curDriver is JobDriver_Dine driver))
+                if (!(patron.jobs.curDriver is JobDriver_Dine))
                 {
                     Log.Error($"{patron.NameShortColored} is not dining!");
                     toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
