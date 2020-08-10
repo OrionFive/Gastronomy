@@ -11,7 +11,7 @@ using Verse.AI;
 
 namespace Restaurant
 {
-    public class RestaurantStock
+    public class RestaurantStock : IExposable
     {
         public class Stock
         {
@@ -43,6 +43,8 @@ namespace Restaurant
         {
             Restaurant = restaurant;
         }
+
+        public void ExposeData() { }
 
         public bool HasAnyFoodFor([NotNull] Pawn pawn, bool allowDrug)
         {
