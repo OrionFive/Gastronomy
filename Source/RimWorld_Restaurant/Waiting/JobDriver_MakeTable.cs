@@ -7,7 +7,9 @@ namespace Restaurant.Waiting
 {
     public class JobDriver_MakeTable : JobDriver
     {
-        private DiningSpot DiningSpot => job.GetTarget(TargetIndex.A).Thing as DiningSpot;
+        private const TargetIndex IndexSpot = TargetIndex.A;
+        private const TargetIndex IndexInteractionCell = TargetIndex.B;
+        private DiningSpot DiningSpot => job.GetTarget(IndexSpot).Thing as DiningSpot;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -24,15 +26,15 @@ namespace Restaurant.Waiting
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            var begin = Toils_Waiting.GetDiningSpotCellForMakingTable(TargetIndex.A, TargetIndex.B);
-            var end = Toils_General.Wait(10, TargetIndex.A);
+            var begin = Toils_Waiting.GetRandomDiningSpotCellForMakingTable(IndexSpot, IndexInteractionCell);
+            var end = Toils_General.Wait(10, IndexSpot);
 
-            this.FailOnDestroyedOrNull(TargetIndex.A);
-            this.FailOnForbidden(TargetIndex.A);
+            this.FailOnDestroyedOrNull(IndexSpot);
+            this.FailOnForbidden(IndexSpot);
             yield return begin;
-            yield return Toils_Jump.JumpIf(end, () => pawn.CurJob?.GetTarget(TargetIndex.B).IsValid == false);
-            yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.OnCell).FailOnDespawnedNullOrForbidden(TargetIndex.B);
-            yield return Toils_Waiting.MakeTableReady(TargetIndex.A, TargetIndex.B);
+            yield return Toils_Jump.JumpIf(end, () => pawn.CurJob?.GetTarget(IndexInteractionCell).IsValid == false);
+            yield return Toils_Goto.GotoThing(IndexInteractionCell, PathEndMode.OnCell).FailOnDespawnedNullOrForbidden(IndexInteractionCell);
+            yield return Toils_Waiting.MakeTableReady(IndexSpot, IndexInteractionCell);
             yield return end;
         }
     }

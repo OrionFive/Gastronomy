@@ -172,5 +172,18 @@ namespace Restaurant.Dining
                 }
             }
         }
+
+        public bool IsValidSpot(IntVec3 chairPos)
+        {
+            if(!Spawned || Destroyed) return false;
+            var position = Position;
+            for (int i = 0; i < 4; i++)
+            {
+                var intVec = position + new Rot4(i).FacingCell;
+                if (intVec == chairPos) return true;
+            }
+
+            return false;
+        }
     }
 }

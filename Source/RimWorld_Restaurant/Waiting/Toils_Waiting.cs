@@ -227,20 +227,15 @@ namespace Restaurant.Waiting
             return toil;
         }
 
-        public static Toil MakeTableReady(TargetIndex diningSpotInd, TargetIndex patronInd)
+        public static Toil MakeTableReady(TargetIndex diningSpotInd, TargetIndex chairInd)
         {
             Toil toil = new Toil {defaultCompleteMode = ToilCompleteMode.Delay, defaultDuration = 100};
             toil.WithProgressBarToilDelay(diningSpotInd, true);
             toil.AddFinishAction(() => {
-                var target = toil.actor.CurJob.GetTarget(patronInd);
+                var target = toil.actor.CurJob.GetTarget(chairInd);
                 IntVec3 chairPos;
 
-                if (target.Pawn != null)
-                {
-                    var patron = target.Pawn;
-                    chairPos = WaitingUtility.GetChairPosition(patron);
-                }
-                else if (target.IsValid) chairPos = target.Cell;
+                if (target.IsValid) chairPos = target.Cell;
                 else
                 {
                     toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
