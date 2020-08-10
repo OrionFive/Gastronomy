@@ -2,14 +2,14 @@
 <Defs>
 
   <WorkGiverDef>
-    <defName>Restaurant_TakeOrder</defName>
+    <defName>Gastronomy_TakeOrder</defName>
     <label>take orders</label>
-    <giverClass>Restaurant.Waiting.WorkGiver_TakeOrder</giverClass>
-    <workType>Restaurant_Waiting</workType>
+    <giverClass>Gastronomy.Waiting.WorkGiver_TakeOrder</giverClass>
+    <workType>Gastronomy_Waiting</workType>
     <priorityInType>120</priorityInType>
     <!-- <fixedBillGiverDefs> -->
-      <!-- <li>Restaurant_CashRegister</li> -->
-      <!-- <li>Restaurant_DiningSpot</li> -->
+      <!-- <li>Gastronomy_CashRegister</li> -->
+      <!-- <li>Gastronomy_DiningSpot</li> -->
     <!-- </fixedBillGiverDefs> -->
     <verb>take order</verb>
     <gerund>taking order</gerund>
@@ -20,14 +20,14 @@
   </WorkGiverDef>
 
   <WorkGiverDef>
-    <defName>Restaurant_Serve</defName>
+    <defName>Gastronomy_Serve</defName>
     <label>serve</label>
-    <giverClass>Restaurant.Waiting.WorkGiver_Serve</giverClass>
-    <workType>Restaurant_Waiting</workType>
+    <giverClass>Gastronomy.Waiting.WorkGiver_Serve</giverClass>
+    <workType>Gastronomy_Waiting</workType>
     <priorityInType>110</priorityInType>
     <!-- <fixedBillGiverDefs> -->
-      <!-- <li>Restaurant_CashRegister</li> -->
-      <!-- <li>Restaurant_DiningSpot</li> -->
+      <!-- <li>Gastronomy_CashRegister</li> -->
+      <!-- <li>Gastronomy_DiningSpot</li> -->
     <!-- </fixedBillGiverDefs> -->
     <verb>serve</verb>
     <gerund>serving</gerund>
@@ -38,14 +38,14 @@
   </WorkGiverDef>
 
   <WorkGiverDef>
-    <defName>Restaurant_MakeTable</defName>
+    <defName>Gastronomy_MakeTable</defName>
     <label>make tables</label>
-    <giverClass>Restaurant.Waiting.WorkGiver_MakeTable</giverClass>
-    <workType>Restaurant_Waiting</workType>
+    <giverClass>Gastronomy.Waiting.WorkGiver_MakeTable</giverClass>
+    <workType>Gastronomy_Waiting</workType>
     <priorityInType>90</priorityInType>
     <!-- <fixedBillGiverDefs> -->
-      <!-- <li>Restaurant_CashRegister</li> -->
-      <!-- <li>Restaurant_DiningSpot</li> -->
+      <!-- <li>Gastronomy_CashRegister</li> -->
+      <!-- <li>Gastronomy_DiningSpot</li> -->
     <!-- </fixedBillGiverDefs> -->
     <verb>make table</verb>
     <gerund>making table</gerund>

@@ -10,6 +10,6 @@ ExportedObj/
 *.booproj
 *.svd
 *.txt
-Source/RimWorld_Restaurant/obj/
+Source/RimWorld_Gastronomy/obj/
 Source/.vs/
 Source/packages/

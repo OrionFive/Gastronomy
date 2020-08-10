@@ -2,22 +2,22 @@
 <Defs>
 
   <JobDef>
-    <defName>Restaurant_TakeOrder</defName>
-    <driverClass>Restaurant.Waiting.JobDriver_TakeOrder</driverClass>
+    <defName>Gastronomy_TakeOrder</defName>
+    <driverClass>Gastronomy.Waiting.JobDriver_TakeOrder</driverClass>
     <reportString>taking order from TargetB.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
   
   <JobDef>
-    <defName>Restaurant_Serve</defName>
-    <driverClass>Restaurant.Waiting.JobDriver_Serve</driverClass>
+    <defName>Gastronomy_Serve</defName>
+    <driverClass>Gastronomy.Waiting.JobDriver_Serve</driverClass>
     <reportString>serving TargetB to TargetA.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>
   
   <JobDef>
-    <defName>Restaurant_MakeTable</defName>
-    <driverClass>Restaurant.Waiting.JobDriver_MakeTable</driverClass>
+    <defName>Gastronomy_MakeTable</defName>
+    <driverClass>Gastronomy.Waiting.JobDriver_MakeTable</driverClass>
     <reportString>preparing table.</reportString>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>

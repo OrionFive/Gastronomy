@@ -1,5 +1,5 @@
-# Restaurant
-Orion's RimWorld mod "Restaurant".
+# Gastronomy
+Orion's RimWorld mod "Gastronomy".
 
 All original artwork included is Copyright © 2020 Orion, and distributed under the Creative Commons License Attribution-ShareAlike 4.0 International, or CC-BY-SA 4.0I.
 

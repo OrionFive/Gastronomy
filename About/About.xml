@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>Restaurant</name>
+	<name>Gastronomy</name>
 	<author>Orion</author>
-	<packageId>Orion.Restaurant</packageId>
+	<packageId>Orion.Gastronomy</packageId>
 	<url>http://steamcommunity.com/sharedfiles/filedetails/?id=000000000</url>
 	<supportedVersions>
 		<li>1.2</li>

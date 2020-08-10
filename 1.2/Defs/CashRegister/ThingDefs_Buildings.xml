@@ -2,11 +2,11 @@
 <Defs>
   
   	<ThingDef ParentName="BuildingBase">
-		<defName>Restaurant_CashRegister</defName>
+		<defName>Gastronomy_CashRegister</defName>
 		<label>cash register</label>
 		<description>A cash register where patrons pay. From here you can control your restaurant.</description>
 		<category>Building</category>
-		<thingClass>Restaurant.TableTops.Building_CashRegister</thingClass>
+		<thingClass>Gastronomy.TableTops.Building_CashRegister</thingClass>
 		<graphicData>
 			<texPath>Things/CashRegister</texPath>
 			<graphicClass>Graphic_Multi</graphicClass>
@@ -16,7 +16,7 @@
 			</damageData>
 		</graphicData>
 		<placeWorkers>
-			<li>Restaurant.TableTops.PlaceWorker_OnTable</li>
+			<li>Gastronomy.TableTops.PlaceWorker_OnTable</li>
 			<li>PlaceWorker_PreventInteractionSpotOverlap</li>
 		</placeWorkers>
 		<uiIconScale>0.8</uiIconScale>
@@ -29,7 +29,7 @@
 		<constructionSkillPrerequisite>3</constructionSkillPrerequisite>
 		<interactionCellOffset>(0,0,1)</interactionCellOffset>
 		<inspectorTabs>
-		  <li>Restaurant.TableTops.ITab_Register</li>
+		  <li>Gastronomy.TableTops.ITab_Register</li>
 		</inspectorTabs>
 		<fillPercent>0.2</fillPercent>
 		<costStuffCount>35</costStuffCount>

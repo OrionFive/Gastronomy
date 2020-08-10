@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Manifest>
-  <identifier>Restaurant</identifier>
+  <identifier>Gastronomy</identifier>
   <version>1.2.0</version>
   <dependencies>
     <li>HugsLib</li>
@@ -15,6 +15,6 @@
     <!-- <li>OtherCoolMod</li> -->
   <!-- </suggests> -->
   <showCrossPromotions>true</showCrossPromotions>
-  <manifestUri>https://raw.githubusercontent.com/OrionFive/Restaurant/develop/About/Manifest.xml</manifestUri>
-  <downloadUri>https://github.com/OrionFive/Restaurant/releases</downloadUri>
+  <manifestUri>https://raw.githubusercontent.com/OrionFive/Gastronomy/develop/About/Manifest.xml</manifestUri>
+  <downloadUri>https://github.com/OrionFive/Gastronomy/releases</downloadUri>
 </Manifest>

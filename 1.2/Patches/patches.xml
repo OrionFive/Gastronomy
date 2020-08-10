@@ -10,7 +10,7 @@
 	<Operation Class="PatchOperationAdd">
 		<xpath>/Defs/ThingDef[surfaceType = "Eat"]/comps</xpath>
 		<value>
-			<li Class="Restaurant.Dining.CompProperties_CanDineAt"></li>		
+			<li Class="Gastronomy.Dining.CompProperties_CanDineAt"></li>		
 		</value>
 	</Operation>
 </Patch>
