@@ -64,7 +64,7 @@ namespace Restaurant.Waiting
                 if (desiredFoodDef == null)
                 {
                     // Couldn't find anything desired on menu
-                    Log.Message($"{patron.NameShortColored} couldn't find anything on menu.");
+                    //Log.Message($"{patron.NameShortColored} couldn't find anything on menu.");
                     TryCreateBubble(patron, toil.actor, ModBaseRestaurant.symbolNoOrder);
 
                     toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
@@ -147,7 +147,7 @@ namespace Restaurant.Waiting
                     {
                         patron.Map.reservationManager.Release(food, actor, actor.CurJob);
                         patronDriver.OnTransferredFood(food);
-                        Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
+                        //Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
                         actor.GetRestaurant().Orders.CompleteOrderFor(patron);
                     }
                     else
@@ -178,14 +178,14 @@ namespace Restaurant.Waiting
                 var patron = targetPatron.Pawn;
                 if (!targetPatron.HasThing || patron == null)
                 {
-                    Log.Error($"Can't announce serving. No patron.");
+                    Log.Warning($"Can't announce serving. No patron.");
                     return;
                 }
 
                 var food = targetFood.Thing;
                 if (!targetFood.HasThing || food == null)
                 {
-                    Log.Error($"Can't announce serving. No food.");
+                    Log.Warning($"Can't announce serving. No food.");
                     return;
                 }
 
@@ -207,7 +207,7 @@ namespace Restaurant.Waiting
                 var patron = toil.actor.CurJob?.GetTarget(patronInd).Pawn;
                 if (patron == null)
                 {
-                    Log.Message($"Couldn't get patron.");
+                    Log.Warning($"Couldn't get patron.");
                     toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
                 }
                 else
@@ -215,7 +215,7 @@ namespace Restaurant.Waiting
                     var diningSpot = patron.GetDriver<JobDriver_Dine>()?.DiningSpot;
                     if (diningSpot == null)
                     {
-                        Log.Message($"Couldn't get dining spot from {patron.NameShortColored} doing {patron.jobs.curDriver?.GetType().Name}.");
+                        Log.Warning($"Couldn't get dining spot from {patron.NameShortColored} doing {patron.jobs.curDriver?.GetType().Name}.");
                         toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
                     }
                     else
@@ -278,19 +278,44 @@ namespace Restaurant.Waiting
             return toil;
         }
 
-        public static Toil GetDiningSpotCellForMakingTable(TargetIndex diningSpotInd, TargetIndex jobCellInd)
+        public static Toil GetRandomDiningSpotCellForMakingTable(TargetIndex diningSpotInd, TargetIndex outputInd)
         {
             Toil toil = new Toil {atomicWithPrevious = true};
             toil.initAction = () => {
                 if (toil.actor.CurJob?.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
                 {
                     var cell = diningSpot.GetUnmadeSpotCells().InRandomOrder().FirstOrFallback(LocalTargetInfo.Invalid);
-                    toil.actor.CurJob.SetTarget(jobCellInd, cell);
+                    toil.actor.CurJob.SetTarget(outputInd, cell);
                 }
                 else
                 {
                     toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
                 }
+            };
+            return toil;
+        }
+
+        public static Toil GetSpecificDiningSpotCellForMakingTable(TargetIndex diningSpotInd, TargetIndex patronInd, TargetIndex outputInd)
+        {
+            var toil = new Toil {atomicWithPrevious = true};
+            toil.initAction = () => {
+                if (toil.actor.CurJob?.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
+                {
+                    var patron = toil.actor.CurJob?.GetTarget(patronInd).Pawn;
+                    if (patron != null)
+                    {
+                        var cell = patron.pather.MovingNow ? patron.pather.Destination.Cell : patron.Position;
+                        if (diningSpot.IsValidSpot(cell))
+                        {
+                            //Log.Message($"Got make table cell from {patron.NameShortColored}. Cell should be {cell}.");
+                            toil.actor.CurJob.SetTarget(outputInd, cell);
+                            return; // Success
+                        }
+                        Log.Warning($"Failed to get make table cell from {patron.NameShortColored}. Cell {cell} was invalid. Moving = {patron.pather.MovingNow}");
+                    }
+                    else Log.Warning($"Failed to get make table cell. Patron was null.");
+                }
+                toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
             };
             return toil;
         }

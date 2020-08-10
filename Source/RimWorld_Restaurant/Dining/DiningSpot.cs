@@ -142,7 +142,7 @@ namespace Restaurant.Dining
                 var intVec = position + new Rot4(i).FacingCell;
                 if (intVec == chairPos)
                 {
-                    Log.Message($"Checked spot state of {position} from {chairPos}: {spotStates[i]} ({i})");
+                    //Log.Message($"Checked spot state of {position} from {chairPos}: {spotStates[i]} ({i})");
                     return spotStates[i];
                 }
             }
