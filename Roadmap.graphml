@@ -17,11 +17,11 @@
     <node id="n0" yfiles.foldertype="group">
       <data key="d6">
         <y:TableNode configuration="YED_TABLE_NODE">
-          <y:Geometry height="665.0" width="1250.0" x="-15.0" y="-75.0"/>
-          <y:Fill hasColor="false" transparent="false"/>
+          <y:Geometry height="505.0" width="1302.0" x="0.0" y="-60.0"/>
+          <y:Fill color2="#0042F440" hasColor="false" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#EDEDED" borderDistance="12.0" fontFamily="Dialog" fontSize="24" fontStyle="bold" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#333333" verticalTextPosition="bottom" visible="true" width="1250.0" x="0.0" xml:space="preserve" y="12.0">Roadmap</y:NodeLabel>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" rotationAngle="270.0" textColor="#000000" verticalTextPosition="bottom" visible="true" width="4.0" x="3.0" y="180.5">
+          <y:NodeLabel alignment="center" autoSizePolicy="node_width" backgroundColor="#EDEDED" borderDistance="12.0" fontFamily="Dialog" fontSize="24" fontStyle="bold" height="33.40234375" horizontalTextPosition="center" iconTextGap="4" lineColor="#000000" modelName="internal" modelPosition="t" textColor="#333333" verticalTextPosition="bottom" visible="true" width="1302.0" x="0.0" xml:space="preserve" y="12.0">Roadmap</y:NodeLabel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" rotationAngle="270.0" textColor="#000000" verticalTextPosition="bottom" visible="true" width="4.0" x="3.0" y="163.9897777777778">
             <y:LabelModel>
               <y:RowNodeLabelModel offset="3.0"/>
             </y:LabelModel>
@@ -29,7 +29,7 @@
               <y:RowNodeLabelModelParameter horizontalPosition="0.0" id="row_0" inside="true"/>
             </y:ModelParameter>
           </y:NodeLabel>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" rotationAngle="270.0" textColor="#000000" verticalTextPosition="bottom" visible="true" width="4.0" x="3.0" y="483.0">
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" hasText="false" height="4.0" horizontalTextPosition="center" iconTextGap="4" modelName="custom" rotationAngle="270.0" textColor="#000000" verticalTextPosition="bottom" visible="true" width="4.0" x="3.0" y="386.4897777777778">
             <y:LabelModel>
               <y:RowNodeLabelModel offset="3.0"/>
             </y:LabelModel>
@@ -54,15 +54,15 @@
             <y:DefaultRowInsets bottom="0.0" left="24.0" right="0.0" top="0.0"/>
             <y:Insets bottom="0.0" left="0.0" right="0.0" top="60.0"/>
             <y:Columns>
-              <y:Column id="column_0" minimumWidth="80.0" width="1250.0">
+              <y:Column id="column_0" minimumWidth="80.0" width="1302.0">
                 <y:Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
               </y:Column>
             </y:Columns>
             <y:Rows>
-              <y:Row height="245.0" id="row_0" minimumHeight="50.0">
+              <y:Row height="211.97955555555558" id="row_0" minimumHeight="50.0">
                 <y:Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
               </y:Row>
-              <y:Row height="360.0" id="row_1" minimumHeight="50.0">
+              <y:Row height="233.02044444444442" id="row_1" minimumHeight="50.0">
                 <y:Insets bottom="0.0" left="0.0" right="0.0" top="0.0"/>
               </y:Row>
             </y:Rows>
@@ -73,7 +73,7 @@
         <node id="n0::n0">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="455.0" y="245.0"/>
+              <y:Geometry height="100.0" width="200.0" x="551.0" y="230.0"/>
               <y:Fill color="#FFFFFF" color2="#C0C0C0" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#C0C0C0" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="117.361328125" x="41.3193359375" xml:space="preserve" y="4.0">Favorite meal mood</y:NodeLabel>
@@ -88,7 +88,7 @@
         <node id="n0::n1">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="15.0" y="245.0"/>
+              <y:Geometry height="100.0" width="200.0" x="1.0" y="230.0"/>
               <y:Fill color="#FFFFFF" color2="#C0C0C0" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#C0C0C0" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="78.677734375" x="60.6611328125" xml:space="preserve" y="4.0">Auto prepare</y:NodeLabel>
@@ -103,7 +103,7 @@
         <node id="n0::n2">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="125.0" y="360.0"/>
+              <y:Geometry height="100.0" width="200.0" x="771.0" y="230.0"/>
               <y:Fill color="#FFFFFF" color2="#C0C0C0" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#C0C0C0" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="64.66796875" x="67.666015625" xml:space="preserve" y="4.0">Gourmand</y:NodeLabel>
@@ -118,7 +118,7 @@
         <node id="n0::n3">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="15.0" y="0.0"/>
+              <y:Geometry height="100.0" width="200.0" x="1.0" y="0.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="167.998046875" x="16.0009765625" xml:space="preserve" y="4.0">Ordering of unprepared food</y:NodeLabel>
@@ -132,7 +132,7 @@
         <node id="n0::n4">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="455.0" y="0.0"/>
+              <y:Geometry height="100.0" width="200.0" x="551.0" y="115.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="81.3671875" x="59.31640625" xml:space="preserve" y="4.0">Favorite meal</y:NodeLabel>
@@ -146,7 +146,7 @@
         <node id="n0::n5">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="235.0" y="0.0"/>
+              <y:Geometry height="100.0" width="200.0" x="111.0" y="115.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="150.68359375" x="24.658203125" xml:space="preserve" y="4.0">Mood for social treatment</y:NodeLabel>
@@ -160,7 +160,7 @@
         <node id="n0::n6">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="345.0" y="115.0"/>
+              <y:Geometry height="100.0" width="200.0" x="221.0" y="0.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="85.33984375" x="57.330078125" xml:space="preserve" y="4.0">Limiting stock</y:NodeLabel>
@@ -176,7 +176,7 @@ b) A radius around the register<y:LabelModel><y:ErdAttributesNodeLabelModel/></y
         <node id="n0::n7">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="565.0" y="115.0"/>
+              <y:Geometry height="100.0" width="200.0" x="441.0" y="0.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="108.021484375" x="45.9892578125" xml:space="preserve" y="4.0">Multiple instances</y:NodeLabel>
@@ -190,7 +190,7 @@ b) A radius around the register<y:LabelModel><y:ErdAttributesNodeLabelModel/></y
         <node id="n0::n8">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="675.0" y="0.0"/>
+              <y:Geometry height="100.0" width="200.0" x="331.0" y="115.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="130.673828125" x="34.6630859375" xml:space="preserve" y="4.0">Hospitality integration</y:NodeLabel>
@@ -205,7 +205,7 @@ silver for dining.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><
         <node id="n0::n9">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="125.0" y="115.0"/>
+              <y:Geometry height="100.0" width="200.0" x="771.0" y="115.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="102.02734375" x="48.986328125" xml:space="preserve" y="4.0">Taste exhaustion</y:NodeLabel>
@@ -219,7 +219,7 @@ silver for dining.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><
         <node id="n0::n10">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="785.0" y="115.0"/>
+              <y:Geometry height="100.0" width="200.0" x="661.0" y="0.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="99.982421875" x="50.0087890625" xml:space="preserve" y="4.0">Mood for waiting</y:NodeLabel>
@@ -233,7 +233,7 @@ silver for dining.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><
         <node id="n0::n11">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="675.0" y="360.0"/>
+              <y:Geometry height="100.0" width="200.0" x="331.0" y="230.0"/>
               <y:Fill color="#FFFFFF" color2="#C0C0C0" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#C0C0C0" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="112.673828125" x="43.6630859375" xml:space="preserve" y="4.0">Adjusting of prices</y:NodeLabel>
@@ -248,7 +248,7 @@ silver for dining.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><
         <node id="n0::n12">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="895.0" y="475.0"/>
+              <y:Geometry height="100.0" width="200.0" x="991.0" y="345.0"/>
               <y:Fill color="#FFFFFF" color2="#C0C0C0" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#C0C0C0" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="96.021484375" x="51.9892578125" xml:space="preserve" y="4.0">Cleaning dishes</y:NodeLabel>
@@ -263,7 +263,7 @@ silver for dining.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><
         <node id="n0::n13">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="895.0" y="245.0"/>
+              <y:Geometry height="100.0" width="200.0" x="991.0" y="230.0"/>
               <y:Fill color="#FFFFFF" color2="#C0C0C0" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#C0C0C0" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="139.380859375" x="30.3095703125" xml:space="preserve" y="4.0">Preparing needs dishes</y:NodeLabel>
@@ -278,7 +278,7 @@ silver for dining.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><
         <node id="n0::n14">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="675.0" y="475.0"/>
+              <y:Geometry height="100.0" width="200.0" x="331.0" y="345.0"/>
               <y:Fill color="#FFFFFF" color2="#C0C0C0" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#C0C0C0" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="47.318359375" x="76.3408203125" xml:space="preserve" y="4.0">Tipping</y:NodeLabel>
@@ -293,7 +293,7 @@ silver for dining.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><
         <node id="n0::n15">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="125.0" y="475.0"/>
+              <y:Geometry height="100.0" width="200.0" x="771.0" y="345.0"/>
               <y:Fill color="#FFFFFF" color2="#C0C0C0" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#C0C0C0" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="46.69140625" x="76.654296875" xml:space="preserve" y="4.0">Ascetic</y:NodeLabel>
@@ -308,7 +308,7 @@ silver for dining.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><
         <node id="n0::n16">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="1005.0" y="115.0"/>
+              <y:Geometry height="100.0" width="200.0" x="881.0" y="0.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="111.34375" x="44.328125" xml:space="preserve" y="4.0">Waiter standby job</y:NodeLabel>
@@ -322,11 +322,25 @@ silver for dining.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><
         <node id="n0::n17">
           <data key="d6">
             <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
-              <y:Geometry height="100.0" width="200.0" x="895.0" y="0.0"/>
+              <y:Geometry height="100.0" width="200.0" x="991.0" y="115.0"/>
               <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="72.689453125" x="63.6552734375" xml:space="preserve" y="4.0">Dirty dishes</y:NodeLabel>
               <y:NodeLabel alignment="left" autoSizePolicy="node_width" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="36.1875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="200.0" x="2.0" xml:space="preserve" y="30.701171875">Dining will leave dirty dishes that have to be removed.<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
+              <y:StyleProperties>
+                <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
+              </y:StyleProperties>
+            </y:GenericNode>
+          </data>
+        </node>
+        <node id="n0::n18">
+          <data key="d6">
+            <y:GenericNode configuration="com.yworks.entityRelationship.big_entity">
+              <y:Geometry height="100.0" width="200.0" x="1101.0" y="0.0"/>
+              <y:Fill color="#FFFFFF" color2="#FFFF99" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" backgroundColor="#FFFF99" configuration="com.yworks.entityRelationship.label.name" fontFamily="Dialog" fontSize="12" fontStyle="bold" hasLineColor="false" height="18.701171875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="95.37109375" x="52.314453125" xml:space="preserve" y="4.0">Ordering stacks</y:NodeLabel>
+              <y:NodeLabel alignment="left" autoSizePolicy="node_width" configuration="CroppingLabel" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="51.28125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="top" visible="true" width="200.0" x="2.0" xml:space="preserve" y="30.701171875">Patrons can order more than one of the same type of thing (e.g. ambrosia or berries).<y:LabelModel><y:ErdAttributesNodeLabelModel/></y:LabelModel><y:ModelParameter><y:ErdAttributesNodeLabelModelParameter/></y:ModelParameter></y:NodeLabel>
               <y:StyleProperties>
                 <y:Property class="java.lang.Boolean" name="y.view.ShadowNodePainter.SHADOW_PAINTING" value="true"/>
               </y:StyleProperties>

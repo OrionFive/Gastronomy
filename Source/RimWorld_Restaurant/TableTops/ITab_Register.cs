@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -156,7 +157,7 @@ namespace Restaurant.TableTops
             {
                 if (group.Key == null) continue;
                 // A list of the patrons for the order
-                DrawDefIcon(rectImage, group.Key, group.Select(o => o.patron.Name.ToStringShort).ToCommaList());
+                DrawDefIcon(rectImage, group.Key, $"{group.Key.LabelCap}: {group.Select(o => o.patron.Name.ToStringShort).ToCommaList()}");
                 rectImage.x += 2 + rectImage.width;
                
                 // Will the next one fit?
@@ -205,25 +206,37 @@ namespace Restaurant.TableTops
         private static void DrawStock(Listing listing, TaggedString label, [NotNull] IReadOnlyDictionary<ThingDef, RestaurantStock.Stock> stock)
         {
             // Label
-            var rect = CustomLabelDouble(listing, label, $"{stock.Values.Sum(pair => pair.items.Sum(item=>item.stackCount))}:", out var countSize);
+            var rect = CustomLabelDouble(listing, label, $"{stock.Values.Sum(pair => pair.items.Sum(item=>item.stackCount))}", out var countSize);
 
-            var rectImage  = rect.RightHalf();
-            rectImage.xMin += countSize.x;
-            rectImage.height = countSize.y;
+            var rectIcon  = rect.RightHalf();
+            //rectIcon.xMin += countSize.x;
+            var iconSize = rectIcon.width = rectIcon.height = countSize.y;
+            
+            var iconCols = Mathf.FloorToInt(rect.width / iconSize);
+            var iconRows = Mathf.CeilToInt((float) stock.Count / iconCols);
+            var height = iconRows * iconSize;
+
+            var rectIcons = listing.GetRect(height);
+            rectIcon.x = rectIcons.x;
+            rectIcon.y = rectIcons.y;
 
             // Icons for each type of stock
+            int col = 0;
             foreach (var group in stock.Values)
             {
                 if (group.def == null) continue;
                 if (group.items.Count == 0) continue;
 
                 // Icon
-                rectImage.width = rectImage.height;
-                DrawDefIcon(rectImage, group.def, $"{group.items.Sum(item => item.stackCount)}x {group.def.LabelCap}");
-                rectImage.x += rectImage.width;
+                DrawDefIcon(rectIcon, group.def, $"{group.items.Sum(item => item.stackCount)}x {group.def.LabelCap}");
+                rectIcon.x += iconSize;
 
-                // Will the next one fit?
-                if (rectImage.xMax > rect.xMax) break;
+                col++;
+                if (col == iconCols)
+                {
+                    col = 0;
+                    rectIcon.x = rectIcons.x;
+                }
             }
             listing.Gap(listing.verticalSpacing);
         }
