@@ -1,3 +1,4 @@
+using System;
 using Gastronomy.Dining;
 using RimWorld;
 using UnityEngine;
@@ -302,6 +303,7 @@ namespace Gastronomy.Waiting
                         var cell = patron.pather.MovingNow ? patron.pather.Destination.Cell : patron.Position;
                         if (diningSpot.IsValidSpot(cell))
                         {
+                            var cell = toil.actor.pather.MovingNow ? toil.actor.pather.Destination.Cell : toil.actor.Position;
                             //Log.Message($"Got make table cell from {patron.NameShortColored}. Cell should be {cell}.");
                             toil.actor.CurJob.SetTarget(outputInd, cell);
                             return; // Success

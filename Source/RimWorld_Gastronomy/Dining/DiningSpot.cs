@@ -173,7 +173,7 @@ namespace Gastronomy.Dining
             }
         }
 
-        public bool IsValidSpot(IntVec3 chairPos)
+        public bool IsValidDineCell(IntVec3 chairPos)
         {
             if(!Spawned || Destroyed) return false;
             var position = Position;

@@ -32,6 +32,7 @@ namespace Gastronomy.Dining
             bool Validator(Thing thing)
             {
                 var spot = (DiningSpot) thing;
+                //Log.Message($"Validating spot for {pawn.NameShortColored}: social = {spot.IsSociallyProper(pawn)}, political = {spot.IsPoliticallyProper(pawn)}, canReserve = {pawn.CanReserve(spot, spot.GetMaxReservations(), 0)}");
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && pawn.CanReserve(spot, spot.GetMaxReservations(), 0) 
                        && spot.IsOpenedRightNow && !RestaurantUtility.IsRegionDangerous(pawn, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
             }

@@ -1,3 +1,4 @@
+using System.Linq;
 using Gastronomy.Dining;
 using Verse;
 using Verse.AI;
@@ -73,7 +74,9 @@ namespace Gastronomy
 
         public static T GetDriver<T>(this Pawn patron) where T : JobDriver
         {
+            // Current
             return patron?.jobs?.curDriver as T;
+            // It's not possible to get a driver from queue (only jobs are queued)
         }
     }
 }
