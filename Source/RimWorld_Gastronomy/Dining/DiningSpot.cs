@@ -11,10 +11,10 @@ namespace Gastronomy.Dining
     public enum SpotState
     {
         Blocked = -1,
-        Clear = 0,
-        Ready = 1,
-        Messy1 = 2,
-        Messy2 = 3
+        Clear = 0, // 0-4
+        Ready = 5,
+        Messy1 = 6,
+        Messy2 = 7
     }
 
     public class DiningSpot : Building_NutrientPasteDispenser
@@ -22,17 +22,19 @@ namespace Gastronomy.Dining
         public const string jobReportString = "DiningJobReportString";
 
         private RestaurantController restaurant;
-        private List<SpotState> spotStates = new List<SpotState>(4) {SpotState.Clear, SpotState.Clear, SpotState.Clear, SpotState.Clear};
+        private List<SpotState> spotStates = Enumerable.Repeat(SpotState.Clear, 4).ToList();
+        private int clearVariation;
+        public int CenterGraphicIndex => clearVariation;
 
         public override ThingDef DispensableDef => throw new NotImplementedException();
         public bool MayDineStanding { get; } = false;
-
-        public static SpotState GetMessyState => (SpotState) Rand.Range(2, 4);
+        public static SpotState RandomMessyState => (SpotState) Rand.RangeInclusive((int) SpotState.Messy1, (int) SpotState.Messy2);
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Collections.Look(ref spotStates, "spotStates");
+            Scribe_Values.Look(ref clearVariation, "clearVariation");
         }
 
         public override void PostMapInit()
@@ -50,6 +52,7 @@ namespace Gastronomy.Dining
             {
                 RegisterUtility.OnDiningSpotCreated(this);
                 restaurant = this.GetRestaurant();
+                clearVariation = Rand.Range(0, 5);
             }
         }
 
@@ -112,7 +115,7 @@ namespace Gastronomy.Dining
 
         public void SetSpotReady(IntVec3 chairPos) => SetSpotState(chairPos, SpotState.Ready);
         public bool IsSpotReady(IntVec3 chairPos) => GetSpotState(chairPos) == SpotState.Ready;
-        public void SetSpotMessy(IntVec3 chairPos) => SetSpotState(chairPos, GetMessyState);
+        public void SetSpotMessy(IntVec3 chairPos) => SetSpotState(chairPos, RandomMessyState);
         public bool IsSpotMessy(IntVec3 chairPos) => GetSpotState(chairPos) > SpotState.Ready;
 
         private void SetSpotState(IntVec3 chairPos, SpotState state)

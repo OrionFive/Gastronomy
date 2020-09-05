@@ -23,12 +23,12 @@ namespace Gastronomy.Dining
             var center = thing.TrueCenter();
 
             // Draw center piece
-            Printer_Plane.PrintPlane(layer, center, data.drawSize, subGraphics[0].MatSingle);
+            Printer_Plane.PrintPlane(layer, center, data.drawSize, subGraphics[diningSpot.CenterGraphicIndex].MatSingle);
 
             // Draw spots rotated
             for (int i = 0; i < 4; i++)
             {
-                if (spots[i] <= 0) continue; // Can be -1 if blocked
+                if (spots[i] < SpotState.Ready) continue; // Can be -1 if blocked
 
                 Printer_Plane.PrintPlane(layer, center, data.drawSize, GetGraphic(spots[i]), i * 90 + 180);
             }
