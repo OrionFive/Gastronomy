@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gastronomy.TableTops;
 using RimWorld;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Gastronomy.Dining
     {
         private bool allowDining;
         private List<DiningSpot> diningSpots = new List<DiningSpot>();
+        private int decoVariation; // Stored so when turning dining on and off it's remembered
 
         public CompProperties_CanDineAt Props => props as CompProperties_CanDineAt;
 
@@ -19,6 +21,7 @@ namespace Gastronomy.Dining
         {
             base.PostExposeData();
             Scribe_Values.Look(ref allowDining, "switchOn");
+            Scribe_Values.Look(ref decoVariation, "decoVariation");
             Scribe_Collections.Look(ref diningSpots, "diningSpots", LookMode.Reference);
         }
 
@@ -47,6 +50,29 @@ namespace Gastronomy.Dining
                     toggleAction = ToggleDining
                 };
                 yield return command_Toggle;
+            }
+
+            if (allowDining)
+            {
+                var command_SetDeco = new Command_Action
+                {
+                    hotKey = KeyBindingDefOf.Misc2,
+                    icon = ContentFinder<Texture2D>.Get($"Things/DiningSpot/Center{diningSpots.FirstOrDefault()?.DecoVariation}"),
+                    defaultLabel = "CommandSetDeco".Translate(),
+                    defaultDesc = "CommandSetDecoDesc".Translate(),
+                    action = ChangeDeco
+                };
+                yield return command_SetDeco;
+            }
+        }
+
+        private void ChangeDeco()
+        {
+            decoVariation = (decoVariation + 1) % Graphic_DiningSpot.DecoVariations;
+
+            foreach (var diningSpot in diningSpots)
+            {
+                diningSpot.DecoVariation = decoVariation;
             }
         }
 
@@ -84,6 +110,7 @@ namespace Gastronomy.Dining
                 if (PlaceWorker_OnTable.NotOccupied(pos, map))
                 {
                     var diningSpot = (DiningSpot) GenSpawn.Spawn(DiningUtility.diningSpotDef, pos, map);
+                    diningSpot.DecoVariation = decoVariation;
                     diningSpots.Add(diningSpot);
                 }
             }

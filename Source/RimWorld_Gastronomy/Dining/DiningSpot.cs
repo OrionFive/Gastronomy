@@ -23,18 +23,27 @@ namespace Gastronomy.Dining
 
         private RestaurantController restaurant;
         private List<SpotState> spotStates = Enumerable.Repeat(SpotState.Clear, 4).ToList();
-        private int clearVariation;
-        public int CenterGraphicIndex => clearVariation;
+        private int decoVariation;
 
         public override ThingDef DispensableDef => throw new NotImplementedException();
         public bool MayDineStanding { get; } = false;
         public static SpotState RandomMessyState => (SpotState) Rand.RangeInclusive((int) SpotState.Messy1, (int) SpotState.Messy2);
 
+        public int DecoVariation
+        {
+            get => decoVariation;
+            set
+            {
+                decoVariation = value;
+                UpdateMesh();
+            }
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Collections.Look(ref spotStates, "spotStates");
-            Scribe_Values.Look(ref clearVariation, "clearVariation");
+            Scribe_Values.Look(ref decoVariation, "decoVariation");
         }
 
         public override void PostMapInit()
@@ -52,7 +61,6 @@ namespace Gastronomy.Dining
             {
                 RegisterUtility.OnDiningSpotCreated(this);
                 restaurant = this.GetRestaurant();
-                clearVariation = Rand.Range(0, 5);
             }
         }
 

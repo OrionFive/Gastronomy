@@ -6,7 +6,10 @@ namespace Gastronomy.Dining
 {
     public class Graphic_DiningSpot : Graphic_Collection
     {
+        public const int DecoVariations = 6;
         public override Material MatSingle => subGraphics[1].MatSingle;
+
+        private Material GetGraphic(SpotState spotIndex) => subGraphics[(int) spotIndex]?.MatSingle;
 
         public override void DrawWorker(Vector3 loc, Rot4 rot, ThingDef thingDef, Thing thing, float extraRotation)
         {
@@ -23,7 +26,7 @@ namespace Gastronomy.Dining
             var center = thing.TrueCenter();
 
             // Draw center piece
-            Printer_Plane.PrintPlane(layer, center, data.drawSize, subGraphics[diningSpot.CenterGraphicIndex].MatSingle);
+            Printer_Plane.PrintPlane(layer, center, data.drawSize, subGraphics[diningSpot.DecoVariation].MatSingle);
 
             // Draw spots rotated
             for (int i = 0; i < 4; i++)
@@ -34,6 +37,5 @@ namespace Gastronomy.Dining
             }
         }
 
-        private Material GetGraphic(SpotState spotIndex) => subGraphics[(int) spotIndex]?.MatSingle;
     }
 }

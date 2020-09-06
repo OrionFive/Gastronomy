@@ -22,6 +22,8 @@
 	<!-- Dining -->
 	<CommandToggleDining>Dining</CommandToggleDining>
 	<CommandToggleDiningDesc>When enabled, this location can be used for dining.</CommandToggleDiningDesc>
+	<CommandSetDeco>Change Decoration</CommandSetDeco>
+	<CommandSetDecoDesc>Change the decoration on the table.</CommandSetDecoDesc>
 	<JobDineGoReport>Eating at restaurant.</JobDineGoReport>
 
 </LanguageData>
