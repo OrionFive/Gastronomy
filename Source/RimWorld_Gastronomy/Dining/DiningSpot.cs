@@ -11,10 +11,10 @@ namespace Gastronomy.Dining
     public enum SpotState
     {
         Blocked = -1,
-        Clear = 0, // 0-4
-        Ready = 5,
-        Messy1 = 6,
-        Messy2 = 7
+        Clear = 0, // 0-5
+        Ready = 6,
+        Messy1 = 7,
+        Messy2 = 8
     }
 
     public class DiningSpot : Building_NutrientPasteDispenser
