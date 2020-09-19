@@ -1,5 +1,5 @@
-using System.Linq;
 using Gastronomy.Dining;
+using Gastronomy.Waiting;
 using Verse;
 using Verse.AI;
 
