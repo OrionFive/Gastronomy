@@ -9,7 +9,7 @@ namespace Gastronomy.TableTops
         /// <summary>
         /// Is a tabletop spawned? Remove DiningSpots
         /// </summary>
-        [HarmonyPatch(typeof(AvoidGrid), "Notify_BuildingSpawned")]
+        [HarmonyPatch(typeof(AvoidGrid), nameof(AvoidGrid.Notify_BuildingDespawned))]
         public class Notify_BuildingSpawned
         {
             [HarmonyPostfix]
@@ -22,7 +22,7 @@ namespace Gastronomy.TableTops
         /// <summary>
         /// Is a building removed? Remove tabletops and blueprints of tabletops at its location
         /// </summary>
-        [HarmonyPatch(typeof(AvoidGrid), "Notify_BuildingDespawned")]
+        [HarmonyPatch(typeof(AvoidGrid), nameof(AvoidGrid.Notify_BuildingDespawned))]
         public class Notify_BuildingDespawned
         {
             [HarmonyPostfix]

@@ -9,7 +9,7 @@ namespace Gastronomy.Dining
     /// </summary>
     internal static class _TryBestFoodSourceFor_Patch
     {
-        [HarmonyPatch(typeof(FoodUtility), "TryFindBestFoodSourceFor")]
+        [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor))]
         public class TryFindBestFoodSourceFor
         {
             [HarmonyPrefix]

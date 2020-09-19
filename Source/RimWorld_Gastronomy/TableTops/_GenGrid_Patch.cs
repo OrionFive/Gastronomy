@@ -8,7 +8,7 @@ namespace Gastronomy.TableTops
     /// </summary>
     internal static class _GenGrid_Patch
     {
-        [HarmonyPatch(typeof(GenGrid), "HasEatSurface")]
+        [HarmonyPatch(typeof(GenGrid), nameof(GenGrid.HasEatSurface))]
         public class HasEatSurface
         {
             [HarmonyPostfix]
