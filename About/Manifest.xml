@@ -15,6 +15,6 @@
     <!-- <li>OtherCoolMod</li> -->
   <!-- </suggests> -->
   <showCrossPromotions>true</showCrossPromotions>
-  <manifestUri>https://raw.githubusercontent.com/OrionFive/Gastronomy/develop/About/Manifest.xml</manifestUri>
+  <manifestUri>https://raw.githubusercontent.com/OrionFive/Gastronomy/master/About/Manifest.xml</manifestUri>
   <downloadUri>https://github.com/OrionFive/Gastronomy/releases</downloadUri>
 </Manifest>
