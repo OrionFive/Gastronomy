@@ -25,5 +25,9 @@
 	<CommandSetDeco>Change Decoration</CommandSetDeco>
 	<CommandSetDecoDesc>Change the decoration on the table.</CommandSetDecoDesc>
 	<JobDineGoReport>Eating at restaurant.</JobDineGoReport>
+	
+	<!-- Alerts -->
+	<NoDedicatedWaiter>No dedicated waiter</NoDedicatedWaiter>
+	<NoDedicatedWaiterExplanation>You have dining tables and are opened, but there are no dedicated waiters right now.\nMake sure at least one colonist is set as waiter and scheduled to work while you're opened.\n\nYou can also modify the opening times by building a cash register.</NoDedicatedWaiterExplanation>
 
 </LanguageData>
