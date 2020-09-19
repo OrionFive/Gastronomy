@@ -57,7 +57,7 @@ namespace Gastronomy.Dining
                 var command_SetDeco = new Command_Action
                 {
                     hotKey = KeyBindingDefOf.Misc2,
-                    icon = ContentFinder<Texture2D>.Get($"Things/DiningSpot/Center{diningSpots.FirstOrDefault()?.DecoVariation}"),
+                    icon = ContentFinder<Texture2D>.Get($"Things/DiningSpot/Center{DecoVariation}"),
                     defaultLabel = "CommandSetDeco".Translate(),
                     defaultDesc = "CommandSetDecoDesc".Translate(),
                     action = ChangeDeco
@@ -65,6 +65,8 @@ namespace Gastronomy.Dining
                 yield return command_SetDeco;
             }
         }
+
+        private int DecoVariation => diningSpots.FirstOrDefault()?.DecoVariation ?? 0;
 
         private void ChangeDeco()
         {
