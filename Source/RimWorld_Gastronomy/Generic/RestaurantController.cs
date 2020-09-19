@@ -51,10 +51,10 @@ namespace Gastronomy
 
 		private void InitDeepFieldsInitial()
 		{
-			if (timetableOpen == null) timetableOpen = new TimetableBool();
-			if (menu == null) menu = new RestaurantMenu();
-			if (orders == null) orders = new RestaurantOrders(this);
-			if (stock == null) stock = new RestaurantStock(this);
+			timetableOpen ??= new TimetableBool();
+			menu ??= new RestaurantMenu();
+			orders ??= new RestaurantOrders(this);
+			stock ??= new RestaurantStock(this);
 		}
 
 		public override void MapGenerated()
@@ -65,6 +65,8 @@ namespace Gastronomy
 		public override void FinalizeInit()
 		{
 			base.FinalizeInit();
+
+			InitDeepFieldsInitial();
 
 			diningSpots.Clear();
 			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(map));
