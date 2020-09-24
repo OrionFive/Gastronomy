@@ -113,6 +113,7 @@
     <Compile Include="Generic\RestaurantStock.cs" />
     <Compile Include="Generic\RestaurantUtility.cs" />
     <Compile Include="Generic\Order.cs" />
+    <Compile Include="Generic\Settings.cs" />
     <Compile Include="Generic\Timetable\TimetableBool.cs" />
     <Compile Include="Generic\Timetable\TimetableUtility.cs" />
     <Compile Include="Generic\_DrugPolicy_ExposeData_Patch.cs" />

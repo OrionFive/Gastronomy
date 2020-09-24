@@ -36,6 +36,9 @@ namespace Gastronomy.Waiting
 		private void CheckMaps()
 		{
 			getReport = false;
+
+			if (!Settings.showAlertNoDedicatedWaiter) return;
+
 			foreach (var map in Find.Maps)
 			{
 				if (!map.IsPlayerHome || !map.mapPawns.AnyColonistSpawned) continue;

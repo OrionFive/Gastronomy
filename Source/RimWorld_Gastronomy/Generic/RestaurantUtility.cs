@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
 using Gastronomy.Dining;
+using HarmonyLib;
 using JetBrains.Annotations;
+using RimWorld;
 using Verse;
+using Verse.AI.Group;
 
 namespace Gastronomy
 {
@@ -33,6 +36,20 @@ namespace Gastronomy
         {
             if (region == null) region = pawn.GetRegion();
             return region.DangerFor(pawn) > Danger.None;
+        }
+
+        public static bool IsGuest(this Pawn pawn)
+        {
+            var faction = pawn.GetLord()?.faction;
+            //Log.Message($"{pawn.NameShortColored}: Faction = {faction?.GetCallLabel()} Is player = {faction?.IsPlayer} Hostile = {faction?.HostileTo(Faction.OfPlayer)}");
+            return faction != null && !faction.IsPlayer && !faction.HostileTo(Faction.OfPlayer);
+            //var isGuest = AccessTools.Method("Hospitality.GuestUtility:IsGuest");
+            //Log.Message($"isGuest == null? {isGuest == null}");
+            //if(isGuest != null)
+            //{
+            //    return (bool) isGuest.Invoke(null, new object[] {pawn, false});
+            //}
+            //return false;
         }
     }
 }

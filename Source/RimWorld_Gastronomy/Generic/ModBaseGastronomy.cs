@@ -12,6 +12,13 @@ namespace Gastronomy
         public static Texture2D symbolInsultPatron;
         public override string ModIdentifier => "Gastronomy";
 
+        private static Settings settings;
+
+        public override void DefsLoaded()
+        {
+            settings = new Settings(Settings);
+        }
+
         public override void MapLoaded(Map map)
         {
             symbolTakeOrder = ContentFinder<Texture2D>.Get("Things/Mote/SpeechSymbols/TakeOrder");

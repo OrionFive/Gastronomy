@@ -21,25 +21,25 @@ namespace Gastronomy.Dining
 
         public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, bool allowDrug, Predicate<Thing> extraSpotValidator = null)
         {
-            const int maxRegionsToScan = 100;
-            const int maxDistanceToScan = 100; // TODO: Make mod option?
+            const int maxRegionsToScan = 1000;
+            const int maxDistanceToScan = 1000; // TODO: Make mod option?
 
             var restaurant = pawn.GetRestaurant();
             if (restaurant == null) return null;
-
             if (!restaurant.Stock.HasAnyFoodFor(pawn, allowDrug)) return null;
 
             bool Validator(Thing thing)
             {
                 var spot = (DiningSpot) thing;
-                //Log.Message($"Validating spot for {pawn.NameShortColored}: social = {spot.IsSociallyProper(pawn)}, political = {spot.IsPoliticallyProper(pawn)}, canReserve = {pawn.CanReserve(spot, spot.GetMaxReservations(), 0)}");
+                //Log.Message($"Validating spot for {pawn.NameShortColored}: social = {spot.IsSociallyProper(pawn)}, political = {spot.IsPoliticallyProper(pawn)}, " 
+                //            + $"canReserve = {pawn.CanReserve(spot, spot.GetMaxReservations(), 0)}, canDineHere = {spot.CanDineHere(pawn)}, " 
+                //            + $"extraValidator = { extraSpotValidator == null || extraSpotValidator.Invoke(spot)}");
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && pawn.CanReserve(spot, spot.GetMaxReservations(), 0) 
-                       && spot.IsOpenedRightNow && !RestaurantUtility.IsRegionDangerous(pawn, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
+                       && spot.CanDineHere(pawn) && !RestaurantUtility.IsRegionDangerous(pawn, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
             }
-
             var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), 
                 PathEndMode.ClosestTouch, TraverseParms.For(pawn), maxDistanceToScan, Validator, null, 0, 
-                maxRegionsToScan, false, RegionType.Set_Passable, true);
+                maxRegionsToScan);
 
             return diningSpot;
         }

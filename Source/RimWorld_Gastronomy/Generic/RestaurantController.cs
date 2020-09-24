@@ -4,6 +4,7 @@ using System.Linq;
 using Gastronomy.Dining;
 using Gastronomy.Timetable;
 using JetBrains.Annotations;
+using RimWorld;
 using Verse;
 
 namespace Gastronomy
@@ -20,6 +21,9 @@ namespace Gastronomy
 
 		public bool IsOpenedRightNow => openForBusiness && timetableOpen.CurrentAssignment(map);
 		public bool openForBusiness = true;
+
+		public bool allowGuests = true;
+		public bool allowColonists = true;
 
 		public TimetableBool timetableOpen;
 
@@ -42,6 +46,8 @@ namespace Gastronomy
 		{
 			base.ExposeData();
 			Scribe_Values.Look(ref openForBusiness, "openForBusiness", true);
+			Scribe_Values.Look(ref allowGuests, "allowGuests", true);
+			Scribe_Values.Look(ref allowColonists, "allowColonists", true);
 			Scribe_Deep.Look(ref timetableOpen, "timetableOpen");
 			Scribe_Deep.Look(ref menu, "menu");
 			Scribe_Deep.Look(ref stock, "stock", this);
@@ -80,6 +86,20 @@ namespace Gastronomy
 			if ((GenTicks.TicksGame + map.uniqueID) % 500 == 0) stock.RareTick();
 			if ((GenTicks.TicksGame + map.uniqueID) % 500 == 250) orders.RareTick();
 			//Log.Message($"Stock: {stock.Select(s => s.def.label).ToCommaList(true)}");
+		}
+
+		public bool CanDineHere(Pawn pawn)
+		{
+			if (!IsOpenedRightNow) return false;
+
+			//var isPrisoner = pawn.IsPrisoner;
+			var isGuest = pawn.IsGuest();
+			var isColonist = pawn.IsColonist;
+
+			if (!allowColonists && isColonist) return false;
+			if (!allowGuests && isGuest) return false;
+			
+			return true;
 		}
 	}
 }

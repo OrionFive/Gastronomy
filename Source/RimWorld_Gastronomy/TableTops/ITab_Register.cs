@@ -58,7 +58,7 @@ namespace Gastronomy.TableTops
         {
             if (showSettings)
             {
-                var smallRect = new Rect(rect) {height = 30};
+                var smallRect = new Rect(rect) {height = 30*3};
                 rect.yMin += smallRect.height + 10;
 
                 DrawSettings(smallRect);
@@ -87,6 +87,8 @@ namespace Gastronomy.TableTops
             listing.Begin(rect);
             {
                 listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref Register.restaurant.openForBusiness, "TabRegisterOpenedTooltip".Translate());
+                listing.CheckboxLabeled("TabRegisterGuests".Translate(), ref Register.restaurant.allowGuests, "TabRegisterGuestsTooltip".Translate());
+                listing.CheckboxLabeled("TabRegisterColonists".Translate(), ref Register.restaurant.allowColonists, "TabRegisterColonistsTooltip".Translate());
             }
             listing.End();
         }

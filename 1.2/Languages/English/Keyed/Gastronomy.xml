@@ -1,6 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
   
+	<!-- Settings -->
+	<ShowAlertNoDedicatedWaiter>Show 'no waiter' warning</ShowAlertNoDedicatedWaiter>
+	<ShowAlertNoDedicatedWaiterDesc>Show a warning when you're opened, but no waiter is set to work at that time.</ShowAlertNoDedicatedWaiterDesc>
+  
 	<!-- Cash register -->
 	<MustPlaceOnTable>Must be placed on a table.</MustPlaceOnTable>
 	<MustPlaceOnFreeSurface>Must be placed on clear surface.</MustPlaceOnFreeSurface>
@@ -10,6 +14,10 @@
 	<!-- Settings -->
 	<TabRegisterOpened>Opened</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>When checked, patrons can make orders during business hours.</TabRegisterOpenedTooltip>
+	<TabRegisterGuests>Allow guests</TabRegisterGuests>
+	<TabRegisterGuestsTooltip>When checked, guests will make orders.</TabRegisterGuestsTooltip>
+	<TabRegisterColonists>Allow colonists</TabRegisterColonists>
+	<TabRegisterColonistsTooltip>When checked, colonists will make orders.</TabRegisterColonistsTooltip>
 	<!-- Stats -->
 	<TabRegisterRadius>Radius</TabRegisterRadius>
 	<TabRegisterSeats>Seats:</TabRegisterSeats>
