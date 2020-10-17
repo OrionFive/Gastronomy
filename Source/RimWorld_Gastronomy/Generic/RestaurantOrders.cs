@@ -25,7 +25,7 @@ namespace Gastronomy
         public void ExposeData()
         {
             Scribe_Collections.Look(ref orders, "orders", LookMode.Deep);
-            if(orders == null) orders = new List<Order>();
+            orders ??= new List<Order>();
         }
 
         public void RareTick()

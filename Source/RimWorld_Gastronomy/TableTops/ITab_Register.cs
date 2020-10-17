@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using JetBrains.Annotations;
 using RimWorld;
@@ -74,7 +75,7 @@ namespace Gastronomy.TableTops
 
             if (showStats)
             {
-                var smallRect = new Rect(rect) {height = 8 * 24 + 20};
+                var smallRect = new Rect(rect) {height = 9 * 24 + 20};
                 rect.yMin += smallRect.height + 10;
 
                 DrawStats(smallRect);
@@ -89,6 +90,11 @@ namespace Gastronomy.TableTops
                 listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref Register.restaurant.openForBusiness, "TabRegisterOpenedTooltip".Translate());
                 listing.CheckboxLabeled("TabRegisterGuests".Translate(), ref Register.restaurant.allowGuests, "TabRegisterGuestsTooltip".Translate());
                 listing.CheckboxLabeled("TabRegisterColonists".Translate(), ref Register.restaurant.allowColonists, "TabRegisterColonistsTooltip".Translate());
+
+                // TODO: Make adjustable (guests will have to react somehow)
+                bool guestsPay = Register.restaurant.guestPricePercentage > 0;
+                listing.CheckboxLabeled("TabRegisterGuestsHaveToPay".Translate(), ref guestsPay, "TabRegisterGuestHaveToPayTooltip".Translate(0.5f.ToStringPercent()));
+                Register.restaurant.guestPricePercentage = guestsPay ? 0.5f : 0;
             }
             listing.End();
         }
@@ -125,6 +131,7 @@ namespace Gastronomy.TableTops
             {
                 var patrons = Register.restaurant.Patrons;
                 var orders = Register.restaurant.Orders.AllOrders;
+                var debts = Register.restaurant.Debts.AllDebts;
                 var stock = Register.restaurant.Stock.AllStock;
                 var ordersForServing = Register.restaurant.Orders.AvailableOrdersForServing.ToArray();
                 var ordersForCooking = Register.restaurant.Orders.AvailableOrdersForCooking.ToArray();
@@ -135,7 +142,8 @@ namespace Gastronomy.TableTops
                 DrawOrders(listing, "TabRegisterNeedsServing".Translate(), ordersForServing);
                 DrawOrders(listing, "TabRegisterNeedsCooking".Translate(), ordersForCooking);
                 DrawStock(listing, "TabRegisterStocked".Translate(), stock);
-                
+                DrawDebts(listing, "TabRegisterDebts".Translate(), debts);
+
                 //listing.LabelDouble("TabRegisterStocked".Translate(), stock.Sum(s=>s.stackCount).ToString(), stock.Select(s=>s.def).Distinct().Select(s=>s.label).ToCommaList());
             }
             listing.End();
@@ -229,6 +237,44 @@ namespace Gastronomy.TableTops
 
                 // Icon
                 DrawDefIcon(rectIcon, group.def, $"{group.items.Sum(item => item.stackCount)}x {group.def.LabelCap}");
+                rectIcon.x += iconSize;
+
+                col++;
+                if (col == iconCols)
+                {
+                    col = 0;
+                    rectIcon.x = rectIcons.x;
+                }
+            }
+            listing.Gap(listing.verticalSpacing);
+        }  
+        
+        private static void DrawDebts(Listing listing, TaggedString label, [NotNull] ReadOnlyCollection<Debt> debts)
+        {
+            // Label
+            var rect = CustomLabelDouble(listing, label, $"{debts.Sum(debt => debt.amount).ToStringMoney()}", out var countSize);
+
+            var rectIcon  = rect.RightHalf();
+            //rectIcon.xMin += countSize.x;
+            var iconSize = rectIcon.width = rectIcon.height = countSize.y;
+            
+            var iconCols = Mathf.FloorToInt(rect.width / iconSize);
+            var iconRows = Mathf.CeilToInt((float) debts.Count / iconCols);
+            var height = iconRows * iconSize;
+
+            var rectIcons = listing.GetRect(height);
+            rectIcon.x = rectIcons.x;
+            rectIcon.y = rectIcons.y;
+
+            // Icons for each type of stock
+            int col = 0;
+            foreach (var debt in debts)
+            {
+                if (debt.patron == null) continue;
+                if (debt.amount == 0) continue;
+
+                // Icon
+                DrawDefIcon(rectIcon, ThingDefOf.Silver, $"{debt.patron.Name.ToStringFull}: {debt.amount.ToStringMoney()}");
                 rectIcon.x += iconSize;
 
                 col++;

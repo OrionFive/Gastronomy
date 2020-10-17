@@ -4,6 +4,7 @@ using Gastronomy.Dining;
 using HarmonyLib;
 using JetBrains.Annotations;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 
@@ -50,6 +51,18 @@ namespace Gastronomy
             //    return (bool) isGuest.Invoke(null, new object[] {pawn, false});
             //}
             //return false;
+        }
+
+        public static int GetSilver(this Pawn pawn)
+        {
+            if (pawn?.inventory?.innerContainer == null) return 0;
+            return pawn.inventory.innerContainer.Where(s => s.def == ThingDefOf.Silver).Sum(s => s.stackCount);
+        }
+
+        public static float GetPrice(this ThingDef mealDef, RestaurantController restaurant)
+        {
+            if (mealDef == null) return 0;
+            return mealDef.BaseMarketValue * restaurant.guestPricePercentage;
         }
     }
 }

@@ -72,6 +72,7 @@ namespace Gastronomy.Dining
             yield return Toils_Dining.MakeTableMessy(SpotIndex, () => pawn.Position);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
             yield return Toils_Dining.WaitDuringDinner(SpotIndex, 100, 250);
+            yield return Toils_Dining.PayDebt(pawn);
         }
 
         public void OnTransferredFood(Thing food)

@@ -107,7 +107,9 @@
     <Compile Include="Dining\Graphic_DiningSpot.cs" />
     <Compile Include="Dining\JobDriver_Dine.cs" />
     <Compile Include="Dining\_JoyGiver_Ingest_Patch.cs" />
+    <Compile Include="Generic\Debt.cs" />
     <Compile Include="Generic\JobUtility.cs" />
+    <Compile Include="Generic\RestaurantDebt.cs" />
     <Compile Include="Generic\RestaurantOrders.cs" />
     <Compile Include="Generic\RestaurantMenu.cs" />
     <Compile Include="Generic\RestaurantStock.cs" />

@@ -148,6 +148,7 @@ namespace Gastronomy.Waiting
                     {
                         patron.Map.reservationManager.Release(food, actor, actor.CurJob);
                         patronDriver.OnTransferredFood(food);
+                        actor.GetRestaurant().Debts.Add(food, patron);
                         //Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
                         actor.GetRestaurant().Orders.CompleteOrderFor(patron);
                     }

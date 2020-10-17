@@ -18,6 +18,10 @@
 	<TabRegisterGuestsTooltip>When checked, guests will make orders.</TabRegisterGuestsTooltip>
 	<TabRegisterColonists>Allow colonists</TabRegisterColonists>
 	<TabRegisterColonistsTooltip>When checked, colonists will make orders.</TabRegisterColonistsTooltip>
+	<!-- TEMP -->
+	<TabRegisterGuestsHaveToPay>Guests must pay</TabRegisterGuestsHaveToPay>
+	<TabRegisterGuestHaveToPayTooltip>When checked, guests have to pay {0} of market value.</TabRegisterGuestHaveToPayTooltip>
+	
 	<!-- Stats -->
 	<TabRegisterRadius>Radius</TabRegisterRadius>
 	<TabRegisterSeats>Seats:</TabRegisterSeats>
@@ -26,6 +30,7 @@
 	<TabRegisterNeedsServing>Orders need serving:</TabRegisterNeedsServing>
 	<TabRegisterNeedsCooking>Orders need cooking:</TabRegisterNeedsCooking>
 	<TabRegisterStocked>Stocked meals:</TabRegisterStocked>
+	<TabRegisterDebts>Unpaid bills:</TabRegisterDebts>
 	
 	<!-- Dining -->
 	<CommandToggleDining>Dining</CommandToggleDining>

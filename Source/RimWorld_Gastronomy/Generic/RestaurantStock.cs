@@ -91,8 +91,16 @@ namespace Gastronomy
             return stockCache.Keys
                 .Where(def => Restaurant.Orders.CanBeOrdered(def))
                 .Where(def => WillConsume(pawn, allowDrug, def))
+                .Where(def => CanAfford(pawn, def))
                 .Select(def => new DefOptimality(def, GetMealOptimalityScore(pawn, def, includeEat, includeJoy)))
                 .Where(def => def.optimality >= MinOptimality);
+        }
+
+        private bool CanAfford(Pawn pawn, ThingDef def)
+        {
+            if (Restaurant.guestPricePercentage <= 0) return true;
+            if (!pawn.IsGuest()) return true;
+            return pawn.GetSilver() >= def.GetPrice(Restaurant);
         }
 
         private float GetMealOptimalityScore(Pawn pawn, ThingDef def, bool includeEat = true, bool includeJoy = true)

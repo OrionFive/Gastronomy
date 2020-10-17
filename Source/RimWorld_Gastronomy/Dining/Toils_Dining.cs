@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -177,6 +179,21 @@ namespace Gastronomy.Dining
         public static Toil OnCompletedMeal(Pawn pawn)
         {
             return new Toil {atomicWithPrevious = true, initAction = () => { pawn.GetRestaurant().Orders.OnFinishedEatingOrder(pawn); }};
+        }
+
+        public static Toil PayDebt(Pawn pawn)
+        {
+            return new Toil {atomicWithPrevious = true, initAction = () => {
+                var debt = pawn.GetRestaurant().Debts.GetDebt(pawn);
+                if (debt == null) return;
+
+                var debtAmount = Mathf.FloorToInt(debt.amount);
+                if (debtAmount < 0) return;
+                var cash = pawn.inventory.innerContainer.FirstOrDefault(t => t.def == ThingDefOf.Silver);
+                var payAmount = Mathf.Min(cash.stackCount, debtAmount);
+                pawn.inventory.innerContainer.TryDrop(cash, ThingPlaceMode.Near, payAmount, out var droppedSilver);
+                pawn.GetRestaurant().Debts.PayDebt(pawn, payAmount);
+            }};
         }
     }
 }

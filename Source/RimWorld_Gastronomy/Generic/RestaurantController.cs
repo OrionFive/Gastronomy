@@ -17,6 +17,7 @@ namespace Gastronomy
 		[NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
 		private RestaurantMenu menu;
 		private RestaurantOrders orders;
+		private RestaurantDebt debts;
 		private RestaurantStock stock;
 
 		public bool IsOpenedRightNow => openForBusiness && timetableOpen.CurrentAssignment(map);
@@ -25,12 +26,15 @@ namespace Gastronomy
 		public bool allowGuests = true;
 		public bool allowColonists = true;
 
+		public float guestPricePercentage = 0.5f;
+
 		public TimetableBool timetableOpen;
 
 		public int Seats => diningSpots.Sum(s => s.GetMaxSeats());
 		[NotNull] public ReadOnlyCollection<Pawn> Patrons => SpawnedDiningPawns.AsReadOnly();
 		[NotNull] public RestaurantMenu Menu => menu;
 		[NotNull] public RestaurantOrders Orders => orders;
+		[NotNull] public RestaurantDebt Debts => debts;
 		[NotNull] public RestaurantStock Stock => stock;
 		[NotNull] public List<Pawn> SpawnedDiningPawns
 		{
@@ -52,6 +56,7 @@ namespace Gastronomy
 			Scribe_Deep.Look(ref menu, "menu");
 			Scribe_Deep.Look(ref stock, "stock", this);
 			Scribe_Deep.Look(ref orders, "orders", this);
+			Scribe_Deep.Look(ref debts, "debts", this);
 			InitDeepFieldsInitial();
 		}
 
@@ -60,6 +65,7 @@ namespace Gastronomy
 			timetableOpen ??= new TimetableBool();
 			menu ??= new RestaurantMenu();
 			orders ??= new RestaurantOrders(this);
+			debts ??= new RestaurantDebt(this);
 			stock ??= new RestaurantStock(this);
 		}
 
@@ -78,6 +84,7 @@ namespace Gastronomy
 			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(map));
 			stock.RareTick();
 			orders.RareTick();
+			debts.RareTick();
 		}
 
 		public override void MapComponentTick()
