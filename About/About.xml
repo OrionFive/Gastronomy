@@ -19,5 +19,9 @@
 	</loadAfter>
     <incompatibleWith>
     </incompatibleWith>
-	<description>This is still a work in progress. Use at your own risk.</description>
+	<description>Gastronomy allows guests and (optionally) colonists to sit down and order their meals from a waiter.
+	
+Build a cash register to control opening times and what's on the menu.
+	
+It is recommended to have at least one colonist on forced work at every opened hour, to avoid patrons to go hungry.</description>
 </ModMetaData>
