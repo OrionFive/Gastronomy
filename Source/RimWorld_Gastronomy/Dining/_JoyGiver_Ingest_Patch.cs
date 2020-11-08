@@ -19,7 +19,7 @@ namespace Gastronomy.Dining
             {
                 var restaurant = pawn.GetRestaurant();
                 if (restaurant?.IsOpenedRightNow == false) return true; // Run regular code
-                Log.Message($"{pawn.NameShortColored} is looking for restaurant (as joy job).");
+                //Log.Message($"{pawn.NameShortColored} is looking for restaurant (as joy job).");
 
                 bool allowDrug = !pawn.IsTeetotaler();
 
@@ -29,7 +29,7 @@ namespace Gastronomy.Dining
                 var bestFood = restaurant.Stock.GetBestMealTypeFor(pawn, allowDrug, false);
                 if (bestFood == null) return true; // Run regular code
 
-                Log.Message($"{pawn.NameShortColored} wants to eat at restaurant ({diningSpot.Position}).");
+                //Log.Message($"{pawn.NameShortColored} wants to eat at restaurant ({diningSpot.Position}).");
 
                 Job job = JobMaker.MakeJob(DiningUtility.dineDef, diningSpot);
                 __result = job;

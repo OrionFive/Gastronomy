@@ -80,7 +80,7 @@ namespace Gastronomy
             if (GetMealOptions(pawn, allowDrug, includeEat, includeJoy)
                 .TryRandomElementByWeight(def => def.optimality, out var random))
             {
-                Log.Message($"{pawn.NameShortColored} picked {random.def.label} with a score of {random.optimality}");
+                //Log.Message($"{pawn.NameShortColored} picked {random.def.label} with a score of {random.optimality}");
                 return random.def;
             }
             return null;
@@ -108,13 +108,13 @@ namespace Gastronomy
             if (!IsAllowedIfDrug(pawn, def)) return 0;
 
             float score = 0;
-            var debugMessage = new StringBuilder($"{pawn.NameShortColored}: {def.LabelCap} ");
+            //var debugMessage = new StringBuilder($"{pawn.NameShortColored}: {def.LabelCap} ");
             if (includeEat && pawn.needs.food != null)
             {
                 var optimality = GetCachedOptimality(pawn, def, eatOptimalityCache, CalcEatOptimality);
                 var factor = NutritionVsNeedFactor(pawn, def);
                 score += optimality * factor;
-                debugMessage.Append($"EAT = {optimality:F0} * {factor:F2} ");
+                //debugMessage.Append($"EAT = {optimality:F0} * {factor:F2} ");
             }
 
             if (includeJoy && pawn.needs.joy != null)
@@ -122,11 +122,11 @@ namespace Gastronomy
                 var optimality = GetCachedOptimality(pawn, def, joyOptimalityCache, CalcJoyOptimality);
                 var factor = JoyVsNeedFactor(pawn, def);
                 score += optimality * factor;
-                debugMessage.Append($"JOY = {optimality:F0} * {factor:F2} ");
+                //debugMessage.Append($"JOY = {optimality:F0} * {factor:F2} ");
             }
 
-            debugMessage.Append($"= {score:F0}");
-            Log.Message(debugMessage.ToString());
+            //debugMessage.Append($"= {score:F0}");
+            //Log.Message(debugMessage.ToString());
             return score;
         }
 
@@ -161,7 +161,7 @@ namespace Gastronomy
             if (pawn.IsTeetotaler()) return false;
             if (pawn.story?.traits.DegreeOfTrait(TraitDefOf.DrugDesire) > 0) return true; // Doesn't care about schedule no matter the schedule
             var drugPolicyEntry = pawn.GetPolicyFor(def);
-            Log.Message($"{pawn.NameShortColored} vs {def.label} as drug: for joy = {drugPolicyEntry?.allowedForJoy}");
+            //Log.Message($"{pawn.NameShortColored} vs {def.label} as drug: for joy = {drugPolicyEntry?.allowedForJoy}");
             if (drugPolicyEntry?.allowedForJoy == false) return false;
             return true;
         }

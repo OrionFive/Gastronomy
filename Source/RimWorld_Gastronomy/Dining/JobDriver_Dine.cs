@@ -80,12 +80,12 @@ namespace Gastronomy.Dining
             var hasIt = pawn.inventory.Contains(food);
             if (hasIt)
             {
-                Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory.");
+                //Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory.");
                 job.SetTarget(MealIndex, food); // This triggers WaitForMeal
             }
             else
             {
-                Log.Warning($"{pawn.NameShortColored} doesn't have {food.Label} in his inventory.");
+                //Log.Warning($"{pawn.NameShortColored} doesn't have {food.Label} in his inventory.");
             }
         }
 

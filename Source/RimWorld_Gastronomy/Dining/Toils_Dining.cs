@@ -119,15 +119,15 @@ namespace Gastronomy.Dining
                     Log.Message($"{toil.actor.NameShortColored} has already received order: {food.Label}");
                     if (toil.actor.inventory.Contains(food))
                     {
-                        Log.Message($"{toil.actor.NameShortColored} has {food.Label} in inventory.");
+                        //Log.Message($"{toil.actor.NameShortColored} has {food.Label} in inventory.");
                         GetDriver(toil).ReadyForNextToil();
                     }
                     else if (food.Position.AdjacentTo8Way(toil.actor.Position))
                     {
-                        Log.Message($"{toil.actor.NameShortColored} has {food.Label} on table.");
+                        //Log.Message($"{toil.actor.NameShortColored} has {food.Label} on table.");
                         food.DeSpawn();
-                        var amount = toil.actor.inventory.innerContainer.TryAdd(order.consumable, 1, false);
-                        Log.Message($"{toil.actor.NameShortColored} received {amount} of {food.LabelShort} to his inventory.");
+                        //var amount = toil.actor.inventory.innerContainer.TryAdd(order.consumable, 1, false);
+                        //Log.Message($"{toil.actor.NameShortColored} received {amount} of {food.LabelShort} to his inventory.");
                         GetDriver(toil).ReadyForNextToil();
                     }
                     else

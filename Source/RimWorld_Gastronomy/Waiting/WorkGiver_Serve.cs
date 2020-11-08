@@ -44,7 +44,7 @@ namespace Gastronomy.Waiting
                 return false;
             }
 
-            Log.Message($"{pawn.NameShortColored} is trying to serve {patron.NameShortColored} a {order.consumableDef.label}.");
+            //Log.Message($"{pawn.NameShortColored} is trying to serve {patron.NameShortColored} a {order.consumableDef.label}.");
             var consumable = restaurant.Stock.GetServableThing(order, pawn);
 
             if (consumable == null)
@@ -56,7 +56,7 @@ namespace Gastronomy.Waiting
             if (RestaurantUtility.IsRegionDangerous(pawn, patron.GetRegion()) && !forced) return false;
             if (RestaurantUtility.IsRegionDangerous(pawn, consumable.GetRegion()) && !forced) return false;
 
-            Log.Message($"{pawn.NameShortColored} can serve {consumable.Label} to {order.patron.NameShortColored}.");
+            //Log.Message($"{pawn.NameShortColored} can serve {consumable.Label} to {order.patron.NameShortColored}.");
             order.consumable = consumable; // Store for JobOnThing
             return true;
         }

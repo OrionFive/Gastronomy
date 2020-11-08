@@ -34,7 +34,7 @@ namespace Gastronomy.Waiting
                 return false;
             }
 
-            Log.Message($"{pawn.NameShortColored} reserved patron {patron.NameShortColored}.");
+            //Log.Message($"{pawn.NameShortColored} reserved patron {patron.NameShortColored}.");
             job.SetTarget(IndexSpot, diningSpot);
             return true;
         }

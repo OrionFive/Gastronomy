@@ -47,7 +47,7 @@ namespace Gastronomy.Waiting
             order.consumable = food;
             order.hasToBeMade = false;
 
-            Log.Message($"{pawn.NameShortColored} reserved food {food.Label}.");
+            //Log.Message($"{pawn.NameShortColored} reserved food {food.Label}.");
             job.count = 1;
             job.SetTarget(TargetIndex.C, diningSpot);
             return true;

@@ -57,7 +57,7 @@ namespace Gastronomy
 
         public void CreateOrder(Pawn patron, ThingDef consumableDef)
         {
-            Log.Message($"{patron.NameShortColored} has ordered {consumableDef.label}.");
+            //Log.Message($"{patron.NameShortColored} has ordered {consumableDef.label}.");
 
             // Already ordered?
             if (orders.Any(o => o.patron == patron))
@@ -70,15 +70,17 @@ namespace Gastronomy
             var available = Stock.GetAllStockOfDef(consumableDef).Sum(item => item.stackCount);
             var ordered = orders.Count(o => o.consumableDef == consumableDef);
 
+            /*
             if (available <= ordered)
             {
-                Log.Message($"{consumableDef.label} has to be prepared first {available} available and {ordered} ordered.");
+                Log.Message($"{consumableDef.label} has to be prepared first. {available} available and {ordered} ordered.");
             }
             else
             {
                 Log.Message($"{consumableDef.label} can be delivered. {available} available and {ordered} ordered.");
                 //map.reservationManager.Reserve(patron, patron.CurJob, thing, 1, 1);
             }
+            */
 
             orders.Add(new Order {consumableDef = consumableDef, patron = patron, hasToBeMade = available <= ordered});
         }
@@ -103,8 +105,7 @@ namespace Gastronomy
         public Order GetOrderFor(Pawn patron)
         {
             var order = orders.FirstOrDefault(o => o.patron == patron);
-            if (order != null)
-                Log.Message($"Found an order of {order.consumableDef.label} for {patron.NameShortColored}. hasToBeMade? {order.hasToBeMade} IsBeingDelivered? {IsBeingDelivered(order)} hasBeenDelivered? {order.delivered}");
+            //if (order != null) Log.Message($"Found an order of {order.consumableDef.label} for {patron.NameShortColored}. hasToBeMade? {order.hasToBeMade} IsBeingDelivered? {IsBeingDelivered(order)} hasBeenDelivered? {order.delivered}");
             return order;
         }
 
