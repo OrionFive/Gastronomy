@@ -28,14 +28,21 @@ namespace Gastronomy
 
 		public void RareTick()
 		{
-			debts.RemoveAll(o => o.patron == null || o.amount == 0 || o.patron.Dead);
+			debts.RemoveAll(o => o.amount <= 0 || !CanHaveDebt(o.patron));
 		}
 
 		public void Add(Thing meal, Pawn patron)
 		{
+			if (!CanHaveDebt(patron)) return;
+
 			var debt = GetOrCreateDebt(patron);
 
 			debt.amount += meal.def.GetPrice(Restaurant);
+		}
+
+		private static bool CanHaveDebt(Pawn patron)
+		{
+			return patron != null && !patron.Dead && patron.Faction?.IsPlayer == false;
 		}
 
 		private Debt GetOrCreateDebt(Pawn patron)
