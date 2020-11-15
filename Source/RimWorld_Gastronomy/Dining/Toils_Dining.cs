@@ -147,7 +147,13 @@ namespace Gastronomy.Dining
             };
             toil.tickAction = () => {
                 var target = toil.actor.CurJob.GetTarget(mealInd);
-                if(target.HasThing && target.IsValid && target.Thing.ParentHolder == toil.actor.inventory) GetDriver(toil).ReadyForNextToil();
+                if (target.HasThing && target.IsValid && target.Thing.ParentHolder == toil.actor.inventory)
+                {
+                    // Waiting done
+                    // Set job.count to amount to consume (important for taking to carrier!)
+                    toil.actor.CurJob.count = target.Thing.stackCount;
+                    GetDriver(toil).ReadyForNextToil();
+                }
             };
             toil.defaultDuration = 1500;
             //toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
