@@ -228,7 +228,7 @@ namespace Gastronomy
             }
 
             foreach (var thing in Map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource)
-                .Where(t => t.def.IsIngestible && !t.def.IsCorpse && Menu.IsOnMenu(t)))
+                .Where(t => t.def.IsIngestible && !t.def.IsCorpse && Menu.IsOnMenu(t) && !t.IsForbidden(Faction.OfPlayer)))
             {
                 if (thing?.def == null) continue;
                 if (!stockCache.TryGetValue(thing.def, out var stock))
