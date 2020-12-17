@@ -62,11 +62,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
       <HintPath>..\..\..\..\RimWorldLinux_Data\Managed\UnityEngine.dll</HintPath>
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
@@ -106,6 +101,7 @@
     <Compile Include="Dining\Toils_Dining.cs" />
     <Compile Include="Dining\Graphic_DiningSpot.cs" />
     <Compile Include="Dining\JobDriver_Dine.cs" />
+    <Compile Include="Dining\_DiningSpot_ReplaceBaseMethods_Patch.cs" />
     <Compile Include="Dining\_JoyGiver_Ingest_Patch.cs" />
     <Compile Include="Generic\Debt.cs" />
     <Compile Include="Generic\JobUtility.cs" />
@@ -119,7 +115,6 @@
     <Compile Include="Generic\Timetable\TimetableBool.cs" />
     <Compile Include="Generic\Timetable\TimetableUtility.cs" />
     <Compile Include="Generic\_DrugPolicy_ExposeData_Patch.cs" />
-    <Compile Include="TableTops\_ThingWithComps_Base.cs" />
     <Compile Include="Waiting\Alert_NoDedicatedWaiter.cs" />
     <Compile Include="Waiting\JobDriver_MakeTable.cs" />
     <Compile Include="Waiting\JobDriver_Serve.cs" />

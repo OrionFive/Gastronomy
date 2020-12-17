@@ -55,7 +55,7 @@ namespace Gastronomy.Dining
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            _ThingWithComps_Base.SpawnSetup.Base(this, map, respawningAfterLoad);
+            base.SpawnSetup(map, respawningAfterLoad);
 
             if (!respawningAfterLoad)
             {
@@ -105,12 +105,12 @@ namespace Gastronomy.Dining
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             RegisterUtility.OnDiningSpotRemoved(this);
-            _ThingWithComps_Base.DeSpawn.Base(this, mode);
+            base.DeSpawn(mode);
         }
 
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
-            _ThingWithComps_Base.Destroy.Base(this, mode);
+            base.Destroy(mode);
         }
 
         private void UpdateMesh()
