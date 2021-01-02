@@ -50,6 +50,9 @@
 		<selectable>true</selectable>
 		<building>
 			<isEdifice>false</isEdifice>
+			<fixedStorageSettings>
+				<priority>Unstored</priority>
+		    </fixedStorageSettings>
 		</building>
 		<soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
 		<defaultPlacingRot>South</defaultPlacingRot>

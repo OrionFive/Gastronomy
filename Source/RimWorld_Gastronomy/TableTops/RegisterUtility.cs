@@ -1,17 +1,18 @@
-using System.Linq;
 using Gastronomy.Dining;
 using JetBrains.Annotations;
 using Verse;
+using Verse.AI;
 
 namespace Gastronomy.TableTops
 {
     public static class RegisterUtility
     {
         public static readonly ThingDef cashRegisterDef = ThingDef.Named("Gastronomy_CashRegister");
+        public static readonly JobDef emptyRegisterDef = DefDatabase<JobDef>.GetNamed("Gastronomy_EmptyRegister");
 
-        private static Building_CashRegister GetFirstRegister([NotNull] Map map)
+        public static Building_CashRegister GetClosestRegister([NotNull]this Pawn pawn)
         {
-            return map.listerThings.ThingsOfDef(cashRegisterDef).OfType<Building_CashRegister>().FirstOrDefault();
+            return (Building_CashRegister)GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(cashRegisterDef), PathEndMode.Touch, TraverseParms.For(pawn), 90f, x => x.Faction == pawn.Faction, null, 0, 30);
         }
 
         public static void OnDiningSpotCreated([NotNull]DiningSpot diningSpot)

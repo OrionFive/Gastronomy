@@ -12,6 +12,7 @@ namespace Gastronomy
 {
 	public class RestaurantController : MapComponent
 	{
+		// TODO: For 1.3, make all these settings not part of a map component, so we can have multiple restaurants
 		public RestaurantController(Map map) : base(map) { }
 
 		[NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();

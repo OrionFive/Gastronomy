@@ -115,6 +115,8 @@
     <Compile Include="Generic\Timetable\TimetableBool.cs" />
     <Compile Include="Generic\Timetable\TimetableUtility.cs" />
     <Compile Include="Generic\_DrugPolicy_ExposeData_Patch.cs" />
+    <Compile Include="TableTops\JobDriver_EmptyRegister.cs" />
+    <Compile Include="TableTops\WorkGiver_EmptyRegister.cs" />
     <Compile Include="Waiting\Alert_NoDedicatedWaiter.cs" />
     <Compile Include="Waiting\JobDriver_MakeTable.cs" />
     <Compile Include="Waiting\JobDriver_Serve.cs" />

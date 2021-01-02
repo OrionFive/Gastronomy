@@ -187,35 +187,10 @@ namespace Gastronomy.Dining
             return new Toil {atomicWithPrevious = true, initAction = () => { pawn.GetRestaurant().Orders.OnFinishedEatingOrder(pawn); }};
         }
 
+        [Obsolete("Kept to not break saves")] // TODO: Remove for 1.3
         public static Toil PayDebt(Pawn pawn)
         {
-            return new Toil
-            {
-                atomicWithPrevious = true,
-                initAction = () => {
-                    if (pawn == null)
-                    {
-                        pawn.jobs.curDriver.EndJobWith(JobCondition.Errored);
-                        return;
-                    }
-
-                    var debt = pawn.GetRestaurant().Debts.GetDebt(pawn);
-                    if (debt == null) return;
-
-                    var debtAmount = Mathf.FloorToInt(debt.amount);
-                    if (debtAmount < 0) return;
-                    var cash = pawn.inventory.innerContainer.FirstOrDefault(t => t?.def == ThingDefOf.Silver);
-                    if (cash == null)
-                    {
-                        pawn.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
-                        return;
-                    }
-
-                    var payAmount = Mathf.Min(cash.stackCount, debtAmount);
-                    pawn.inventory.innerContainer.TryDrop(cash, ThingPlaceMode.Near, payAmount, out var droppedSilver);
-                    pawn.GetRestaurant().Debts.PayDebt(pawn, payAmount);
-                }
-            };
+            return new Toil {atomicWithPrevious = true};
         }
     }
 }

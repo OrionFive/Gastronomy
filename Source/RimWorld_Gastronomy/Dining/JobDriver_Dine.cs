@@ -75,12 +75,14 @@ namespace Gastronomy.Dining
             yield return Toils_Dining.PayDebt(pawn);
         }
 
-        public void OnTransferredFood(Thing food)
+        public void OnTransferredFood(Thing food, ThingOwner payTarget, out Thing paidSilver)
         {
+            paidSilver = null;
             var hasIt = pawn.inventory.Contains(food);
             if (hasIt)
             {
                 //Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory.");
+                pawn.PayForMeal(payTarget, out paidSilver);
                 job.SetTarget(MealIndex, food); // This triggers WaitForMeal
             }
             else

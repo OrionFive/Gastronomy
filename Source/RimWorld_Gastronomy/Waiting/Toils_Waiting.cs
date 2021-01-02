@@ -1,5 +1,5 @@
-using System;
 using Gastronomy.Dining;
+using Gastronomy.TableTops;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -114,7 +114,7 @@ namespace Gastronomy.Waiting
             return findCell;
         }
 
-        public static Toil ClearOrder(TargetIndex patronInd, TargetIndex foodInd)
+        public static Toil ClearOrder(TargetIndex patronInd, TargetIndex foodInd, TargetIndex silverInd, TargetIndex registerInd)
         {
             var toil = new Toil {atomicWithPrevious = true};
             toil.initAction = InitAction;
@@ -123,9 +123,9 @@ namespace Gastronomy.Waiting
             void InitAction()
             {
                 Pawn actor = toil.actor;
-                Job curJob = actor.CurJob;
-                LocalTargetInfo targetPatron = curJob.GetTarget(patronInd);
-                LocalTargetInfo targetFood = curJob.GetTarget(foodInd);
+                var curJob = actor.CurJob;
+                var targetPatron = curJob.GetTarget(patronInd);
+                var targetFood = curJob.GetTarget(foodInd);
 
                 var patron = targetPatron.Pawn;
                 if (!targetPatron.HasThing || patron == null)
@@ -147,14 +147,36 @@ namespace Gastronomy.Waiting
                     if (transferred)
                     {
                         patron.Map.reservationManager.Release(food, actor, actor.CurJob);
-                        patronDriver.OnTransferredFood(food);
                         actor.GetRestaurant().Debts.Add(food, patron);
-                        //Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
                         actor.GetRestaurant().Orders.CompleteOrderFor(patron);
+
+                        patronDriver.OnTransferredFood(food, actor.inventory.innerContainer, out Thing silver);
+
+                        if (silver == null)
+                        {
+                            //Log.Message($"{actor.NameShortColored} didn't receive any silver from {patron.NameShortColored}.");
+                            actor.jobs.curDriver.EndJobWith(JobCondition.Succeeded);
+                        }
+                        else
+                        {
+                            var register = actor.GetClosestRegister();
+                            if (register == null)
+                            {
+                                // No register, just drop it
+                                actor.inventory.innerContainer.TryDrop(silver, ThingPlaceMode.Near, out silver);
+                                actor.jobs.curDriver.EndJobWith(JobCondition.Succeeded);
+                            }
+                            curJob.SetTarget(silverInd, silver);
+                            curJob.SetTarget(registerInd, register);
+                            curJob.count = silver.stackCount;
+                        }
+
+                        //Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
                     }
                     else
                     {
-                        Log.Error($"{actor.NameShortColored} failed to transfer {food?.Label} to {patron.NameShortColored}.");
+                        Log.Error($"{actor.NameShortColored} failed to transfer {food.Label} to {patron.NameShortColored}.");
+                        actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                     }
                 }
             }

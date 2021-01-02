@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Gastronomy.Dining;
+using Gastronomy.TableTops;
+using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -9,7 +11,9 @@ namespace Gastronomy.Waiting
     {
         private Pawn Patron => job.GetTarget(TargetIndex.A).Pawn;
         private Thing Food => job.GetTarget(TargetIndex.B).Thing;
+        private Thing Silver => job.GetTarget(TargetIndex.B).Thing;
         private IntVec3 DiningSpot => job.GetTarget(TargetIndex.C).Cell;
+        private Thing Register => job.GetTarget(TargetIndex.C).Thing;
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
@@ -70,8 +74,12 @@ namespace Gastronomy.Waiting
             yield return Toils_Waiting.GetDiningSpot(TargetIndex.A, TargetIndex.C);
             yield return Toils_Haul.CarryHauledThingToCell(TargetIndex.C);
             yield return Toils_Jump.JumpIf(wait, () => pawn.jobs.curJob?.GetTarget(TargetIndex.A).Pawn?.GetDriver<JobDriver_Dine>()==null); // Driver not available
-            yield return Toils_Waiting.ClearOrder(TargetIndex.A, TargetIndex.B);
             yield return Toils_Waiting.AnnounceServing(TargetIndex.A, TargetIndex.B);
+            yield return Toils_Waiting.ClearOrder(TargetIndex.A, TargetIndex.B, TargetIndex.B, TargetIndex.C); // Got no silver or register? Job successful
+            yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.B);
+            yield return Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.Touch);
+            yield return Toils_Haul.DepositHauledThingInContainer(TargetIndex.C, TargetIndex.None);
+
         }
     }
 }

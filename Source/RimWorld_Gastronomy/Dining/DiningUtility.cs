@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -80,6 +81,27 @@ namespace Gastronomy.Dining
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Pay for all money owed
+        /// </summary>
+        public static void PayForMeal(this Pawn pawn, ThingOwner payTarget, out Thing paidSilver)
+        {
+            paidSilver = null;
+
+            var debt = pawn.GetRestaurant().Debts.GetDebt(pawn);
+            if (debt == null) return;
+
+            var debtAmount = Mathf.FloorToInt(debt.amount);
+            if (debtAmount < 0) return;
+            var cash = pawn.inventory.innerContainer.FirstOrDefault(t => t?.def == ThingDefOf.Silver);
+            if (cash == null) return;
+
+            var payAmount = Mathf.Min(cash.stackCount, debtAmount);
+            var paid = pawn.inventory.innerContainer.TryTransferToContainer(cash, payTarget, payAmount, out paidSilver, false);
+            Log.Message($"{pawn.NameShortColored} paid {paid} silver to {payTarget}.");
+            pawn.GetRestaurant().Debts.PayDebt(pawn, paid);
         }
     }
 }
