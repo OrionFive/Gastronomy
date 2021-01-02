@@ -100,7 +100,6 @@ namespace Gastronomy.Dining
 
             var payAmount = Mathf.Min(cash.stackCount, debtAmount);
             var paid = pawn.inventory.innerContainer.TryTransferToContainer(cash, payTarget, payAmount, out paidSilver, false);
-            Log.Message($"{pawn.NameShortColored} paid {paid} silver to {payTarget}.");
             pawn.GetRestaurant().Debts.PayDebt(pawn, paid);
         }
     }

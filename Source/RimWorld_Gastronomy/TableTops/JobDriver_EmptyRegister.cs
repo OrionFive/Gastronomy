@@ -18,6 +18,7 @@ namespace Gastronomy.TableTops
 
 			return pawn.Reserve(register, job, 1, 1, null, errorOnFailed);
 		}
+
 		protected override IEnumerable<Toil> MakeNewToils()
 		{
 			this.FailOnDestroyedOrNull(IndexRegister);
@@ -32,7 +33,11 @@ namespace Gastronomy.TableTops
 		{
 			if (HaulAIUtility.PawnCanAutomaticallyHaulFast(pawn, Silver, false))
 			{
-				pawn.jobs.StartJob(HaulAIUtility.HaulToStorageJob(pawn, Silver));
+				pawn.jobs.StartJob(HaulAIUtility.HaulToStorageJob(pawn, Silver), JobCondition.Succeeded);
+			}
+			else
+			{
+				pawn.jobs.EndCurrentJob(JobCondition.Incompletable);
 			}
 		}
 
