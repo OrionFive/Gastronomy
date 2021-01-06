@@ -132,8 +132,17 @@ namespace Gastronomy
         /// <returns>True of order is fine, false if it's not.</returns>
         public bool CheckOrderOfWaitingPawn(Pawn patron)
         {
-            var order = orders.FirstOrDefault(o => o.patron == patron);
-            if (order != null && order.delivered && (order.consumable?.Spawned == false || order.consumable.ParentHolder == patron.inventory))
+            if (patron == null)
+            {
+                Log.Warning("Patron not set.");
+                return false;
+            }
+            var order = orders?.FirstOrDefault(o => o?.patron == patron);
+            if (order == null)
+            {
+                return true; // No order
+            }
+            if (order.delivered && (order.consumable?.Spawned == false || order.consumable?.ParentHolder == patron.inventory))
             {
                 // Order not spawned? Already eaten it, or something happened to it
                 // Clear order
