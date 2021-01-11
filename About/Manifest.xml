@@ -3,7 +3,7 @@
   <identifier>Gastronomy</identifier>
   <version>1.2.5</version>
   <dependencies>
-    <li>HugsLib</li>
+    <li>UnlimitedHugs.HugsLib</li>
   </dependencies>
   <incompatibleWith />
   <loadBefore>
