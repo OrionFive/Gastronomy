@@ -44,7 +44,7 @@ namespace Gastronomy.Waiting
                 //var icon = order?.consumableDef?.uiIcon;
                 //if(icon != null) TryCreateBubble(toil.actor, patron, icon);
                 // TODO: Chance to insult patron
-                TryCreateBubble(toil.actor, patron, ModBaseGastronomy.symbolTakeOrder);
+                TryCreateBubble(toil.actor, patron, Symbols.symbolTakeOrder);
             }
 
             void TickAction()
@@ -67,7 +67,7 @@ namespace Gastronomy.Waiting
                 {
                     // Couldn't find anything desired on menu
                     //Log.Message($"{patron.NameShortColored} couldn't find anything on menu.");
-                    TryCreateBubble(patron, toil.actor, ModBaseGastronomy.symbolNoOrder);
+                    TryCreateBubble(patron, toil.actor, Symbols.symbolNoOrder);
 
                     toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
                     patron.jobs.EndCurrentJob(JobCondition.Incompletable);

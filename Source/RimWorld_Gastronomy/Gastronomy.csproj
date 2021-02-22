@@ -103,6 +103,7 @@
     <Compile Include="Dining\JobDriver_Dine.cs" />
     <Compile Include="Dining\_DiningSpot_ReplaceBaseMethods_Patch.cs" />
     <Compile Include="Dining\_JoyGiver_Ingest_Patch.cs" />
+    <Compile Include="Generic\Symbols.cs" />
     <Compile Include="Restaurant\Debt.cs" />
     <Compile Include="Generic\JobUtility.cs" />
     <Compile Include="Restaurant\RestaurantDebt.cs" />

@@ -3,7 +3,7 @@ using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-namespace Gastronomy.Timetable
+namespace Gastronomy.Restaurant.Timetable
 {
 	public static class TimetableUtility
 	{
