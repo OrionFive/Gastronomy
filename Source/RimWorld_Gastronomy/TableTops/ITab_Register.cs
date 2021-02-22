@@ -12,7 +12,7 @@ namespace Gastronomy.TableTops
 {
     public class ITab_Register : ITab
     {
-        private static readonly Vector2 WinSize = new Vector2(800f, 480f);
+        private static readonly Vector2 WinSize = new Vector2(800f, 540f);
         private bool showSettings = true;
         private bool showRadius = false;
         private bool showStats = true;
@@ -61,31 +61,34 @@ namespace Gastronomy.TableTops
         {
             if (showSettings)
             {
-                var smallRect = new Rect(rect) {height = 30*3};
-                rect.yMin += smallRect.height + 10;
+                var smallRect = new Rect(rect);
 
-                DrawSettings(smallRect);
+                DrawSettings(ref smallRect);
+                rect.yMin += smallRect.height + 10;
             }
 
             if (showRadius)
             {
                 var smallRect = new Rect(rect) {height = 50};
-                rect.yMin += smallRect.height + 10;
 
                 DrawRadius(smallRect);
+                rect.yMin += smallRect.height + 10;
             }
 
             if (showStats)
             {
                 var smallRect = new Rect(rect) {height = 11 * 24 + 20};
-                rect.yMin += smallRect.height + 10;
 
                 DrawStats(smallRect);
+                rect.yMin += smallRect.height + 10;
             }
         }
 
-        private void DrawSettings(Rect rect)
+        private void DrawSettings(ref Rect rect)
         {
+            const int ListingItems = 5;
+            rect.height = 30 * ListingItems;
+
             var listing = new Listing_Standard();
             listing.Begin(rect);
             {
