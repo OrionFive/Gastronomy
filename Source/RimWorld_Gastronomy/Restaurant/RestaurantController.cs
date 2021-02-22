@@ -29,6 +29,7 @@ namespace Gastronomy.Restaurant
 
 		public bool allowGuests = true;
 		public bool allowColonists = true;
+		public bool allowPrisoners = false;
 
 		public float guestPricePercentage = 0.5f;
 
@@ -58,6 +59,7 @@ namespace Gastronomy.Restaurant
 			Scribe_Values.Look(ref openForBusiness, "openForBusiness", true);
 			Scribe_Values.Look(ref allowGuests, "allowGuests", true);
 			Scribe_Values.Look(ref allowColonists, "allowColonists", true);
+			Scribe_Values.Look(ref allowPrisoners, "allowPrisoners", false);
 			Scribe_Values.Look(ref day, "day");
 			Scribe_Deep.Look(ref timetableOpen, "timetableOpen");
 			Scribe_Deep.Look(ref menu, "menu");
@@ -121,9 +123,11 @@ namespace Gastronomy.Restaurant
 			//var isPrisoner = pawn.IsPrisoner;
 			var isGuest = pawn.IsGuest();
 			var isColonist = pawn.IsColonist;
+			var isPrisoner = pawn.IsPrisoner;
 
 			if (!allowColonists && isColonist) return false;
 			if (!allowGuests && isGuest) return false;
+			if (!allowPrisoners && isPrisoner) return false;
 			
 			return true;
 		}

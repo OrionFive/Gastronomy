@@ -92,6 +92,7 @@ namespace Gastronomy.TableTops
                 listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref Register.restaurant.openForBusiness, "TabRegisterOpenedTooltip".Translate());
                 listing.CheckboxLabeled("TabRegisterGuests".Translate(), ref Register.restaurant.allowGuests, "TabRegisterGuestsTooltip".Translate());
                 listing.CheckboxLabeled("TabRegisterColonists".Translate(), ref Register.restaurant.allowColonists, "TabRegisterColonistsTooltip".Translate());
+                listing.CheckboxLabeled("TabRegisterPrisoners".Translate(), ref Register.restaurant.allowPrisoners, "TabRegisterPrisonersTooltip".Translate());
 
                 // TODO: Make adjustable (guests will have to react somehow)
                 bool guestsPay = Register.restaurant.guestPricePercentage > 0;
