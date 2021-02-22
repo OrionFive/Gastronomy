@@ -97,10 +97,12 @@ namespace Gastronomy.TableTops
                 listing.CheckboxLabeled("TabRegisterColonists".Translate(), ref Register.restaurant.allowColonists, "TabRegisterColonistsTooltip".Translate());
                 listing.CheckboxLabeled("TabRegisterPrisoners".Translate(), ref Register.restaurant.allowPrisoners, "TabRegisterPrisonersTooltip".Translate());
 
+
                 // TODO: Make adjustable (guests will have to react somehow)
                 bool guestsPay = Register.restaurant.guestPricePercentage > 0;
-                listing.CheckboxLabeled("TabRegisterGuestsHaveToPay".Translate(), ref guestsPay, "TabRegisterGuestHaveToPayTooltip".Translate(0.5f.ToStringPercent()));
-                Register.restaurant.guestPricePercentage = guestsPay ? 0.5f : 0;
+                const float MarketPriceFactor = 0.55f;
+                listing.CheckboxLabeled("TabRegisterGuestsHaveToPay".Translate(), ref guestsPay, "TabRegisterGuestHaveToPayTooltip".Translate(MarketPriceFactor.ToStringPercent()));
+                Register.restaurant.guestPricePercentage = guestsPay ? MarketPriceFactor : 0;
             }
             listing.End();
         }
