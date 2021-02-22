@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using JetBrains.Annotations;
 using Gastronomy.Dining;
+using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace Gastronomy
+namespace Gastronomy.Restaurant
 {
     public class RestaurantStock : IExposable
     {

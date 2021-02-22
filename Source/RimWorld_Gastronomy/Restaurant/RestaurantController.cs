@@ -8,7 +8,7 @@ using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 
-namespace Gastronomy
+namespace Gastronomy.Restaurant
 {
 	public class RestaurantController : MapComponent
 	{

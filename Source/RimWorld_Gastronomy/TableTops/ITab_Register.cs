@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Gastronomy.Restaurant;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;

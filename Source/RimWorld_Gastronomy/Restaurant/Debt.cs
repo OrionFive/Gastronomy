@@ -1,6 +1,6 @@
 using Verse;
 
-namespace Gastronomy
+namespace Gastronomy.Restaurant
 {
 	public class Debt : IExposable
 	{

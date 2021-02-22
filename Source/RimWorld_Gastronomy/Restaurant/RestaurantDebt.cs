@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -7,7 +6,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Gastronomy
+namespace Gastronomy.Restaurant
 {
 	public class RestaurantDebt : IExposable
 	{

@@ -1,4 +1,5 @@
 using Gastronomy.Dining;
+using Gastronomy.Restaurant;
 using Gastronomy.TableTops;
 using RimWorld;
 using UnityEngine;

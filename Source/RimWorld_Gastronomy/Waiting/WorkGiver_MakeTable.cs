@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Gastronomy.Dining;
+using Gastronomy.Restaurant;
 using RimWorld;
 using Verse;
 using Verse.AI;

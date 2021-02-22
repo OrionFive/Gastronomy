@@ -1,4 +1,5 @@
 using Gastronomy.Dining;
+using Gastronomy.Restaurant;
 using JetBrains.Annotations;
 using Verse;
 using Verse.AI;

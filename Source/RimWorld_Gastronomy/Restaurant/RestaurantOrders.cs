@@ -4,7 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Verse;
 
-namespace Gastronomy
+namespace Gastronomy.Restaurant
 {
     public class RestaurantOrders : IExposable
     {

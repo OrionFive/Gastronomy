@@ -1,4 +1,5 @@
 using System;
+using Gastronomy.Restaurant;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -20,7 +21,7 @@ namespace Gastronomy.Dining
                 var restaurant = pawn.GetRestaurant();
                 if (restaurant?.IsOpenedRightNow == false) return true; // Run regular code
                 //Log.Message($"{pawn.NameShortColored} is looking for restaurant (as joy job).");
-
+                
                 bool allowDrug = !pawn.IsTeetotaler();
 
                 var diningSpot = DiningUtility.FindDiningSpotFor(pawn, allowDrug, extraValidator);

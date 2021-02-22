@@ -1,4 +1,5 @@
 using System.Linq;
+using Gastronomy.Restaurant;
 using RimWorld;
 using Verse;
 

@@ -1,14 +1,13 @@
 using System;
 using System.Linq;
 using Gastronomy.Dining;
-using HarmonyLib;
 using JetBrains.Annotations;
 using RimWorld;
-using UnityEngine;
 using Verse;
+using Verse.AI;
 using Verse.AI.Group;
 
-namespace Gastronomy
+namespace Gastronomy.Restaurant
 {
     internal static class RestaurantUtility
     {
@@ -63,6 +62,42 @@ namespace Gastronomy
         {
             if (mealDef == null) return 0;
             return mealDef.BaseMarketValue * restaurant.guestPricePercentage;
+        }
+
+        public static T FailOnRestaurantClosed<T>(this T f) where T : IJobEndable
+        {
+            JobCondition OnRestaurantClosed() => f.GetActor().GetRestaurant().IsOpenedRightNow ? JobCondition.Ongoing : JobCondition.Incompletable;
+
+            f.AddEndCondition(OnRestaurantClosed);
+            return f;
+        }
+
+        public static T FailOnNotDining<T>(this T f, TargetIndex patronInd) where T : IJobEndable
+        {
+            JobCondition PatronIsNotDining()
+            {
+                var patron = f.GetActor().jobs.curJob.GetTarget(patronInd).Thing as Pawn;
+                if (patron?.jobs.curDriver is JobDriver_Dine) return JobCondition.Ongoing;
+                Log.Message($"Checked {patron?.NameShortColored}. Not dining >> failing {f.GetActor().NameShortColored}'s job {f.GetActor().CurJobDef?.label}.");
+                return JobCondition.Incompletable;
+            }
+
+            f.AddEndCondition(PatronIsNotDining);
+            return f;
+        }
+
+        public static T FailOnNotDiningQueued<T>(this T f, TargetIndex patronInd) where T : IJobEndable
+        {
+            JobCondition PatronHasNoDiningInQueue()
+            {
+                var patron = f.GetActor().jobs.curJob.GetTarget(patronInd).Thing as Pawn;
+                if (patron.HasDiningQueued()) return JobCondition.Ongoing;
+                Log.Message($"Checked {patron?.NameShortColored}. Not planning to dine >> failing {f.GetActor().NameShortColored}'s job {f.GetActor().CurJobDef?.label}.");
+                return JobCondition.Incompletable;
+            }
+
+            f.AddEndCondition(PatronHasNoDiningInQueue);
+            return f;
         }
     }
 }

@@ -103,14 +103,14 @@
     <Compile Include="Dining\JobDriver_Dine.cs" />
     <Compile Include="Dining\_DiningSpot_ReplaceBaseMethods_Patch.cs" />
     <Compile Include="Dining\_JoyGiver_Ingest_Patch.cs" />
-    <Compile Include="Generic\Debt.cs" />
+    <Compile Include="Restaurant\Debt.cs" />
     <Compile Include="Generic\JobUtility.cs" />
-    <Compile Include="Generic\RestaurantDebt.cs" />
-    <Compile Include="Generic\RestaurantOrders.cs" />
-    <Compile Include="Generic\RestaurantMenu.cs" />
-    <Compile Include="Generic\RestaurantStock.cs" />
-    <Compile Include="Generic\RestaurantUtility.cs" />
-    <Compile Include="Generic\Order.cs" />
+    <Compile Include="Restaurant\RestaurantDebt.cs" />
+    <Compile Include="Restaurant\RestaurantOrders.cs" />
+    <Compile Include="Restaurant\RestaurantMenu.cs" />
+    <Compile Include="Restaurant\RestaurantStock.cs" />
+    <Compile Include="Restaurant\RestaurantUtility.cs" />
+    <Compile Include="Restaurant\Order.cs" />
     <Compile Include="Generic\Settings.cs" />
     <Compile Include="Generic\Timetable\TimetableBool.cs" />
     <Compile Include="Generic\Timetable\TimetableUtility.cs" />
@@ -126,7 +126,7 @@
     <Compile Include="Dining\_IsFoodDispenser_Patch.cs" />
     <Compile Include="TableTops\ITab_Register.cs" />
     <Compile Include="TableTops\RegisterUtility.cs" />
-    <Compile Include="Generic\RestaurantController.cs" />
+    <Compile Include="Restaurant\RestaurantController.cs" />
     <Compile Include="TableTops\_AvoidGrid_Patch.cs" />
     <Compile Include="TableTops\Building_CashRegister.cs" />
     <Compile Include="TableTops\_GenGrid_Patch.cs" />
@@ -143,6 +143,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

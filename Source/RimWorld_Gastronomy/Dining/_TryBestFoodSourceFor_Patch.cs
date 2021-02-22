@@ -1,3 +1,4 @@
+using Gastronomy.Restaurant;
 using HarmonyLib;
 using RimWorld;
 using Verse;

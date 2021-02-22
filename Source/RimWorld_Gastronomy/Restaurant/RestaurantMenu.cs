@@ -2,7 +2,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace Gastronomy
+namespace Gastronomy.Restaurant
 {
     public class RestaurantMenu : IExposable
     {
