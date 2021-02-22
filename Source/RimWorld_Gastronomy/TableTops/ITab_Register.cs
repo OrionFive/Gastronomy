@@ -61,7 +61,7 @@ namespace Gastronomy.TableTops
         {
             if (showSettings)
             {
-                var smallRect = new Rect(rect) {height = 30*3};
+                var smallRect = new Rect(rect) {height = 30*4};
                 rect.yMin += smallRect.height + 10;
 
                 DrawSettings(smallRect);

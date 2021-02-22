@@ -120,10 +120,9 @@ namespace Gastronomy.Restaurant
 		{
 			if (!IsOpenedRightNow) return false;
 
-			//var isPrisoner = pawn.IsPrisoner;
+			var isPrisoner = pawn.IsPrisoner;
 			var isGuest = pawn.IsGuest();
 			var isColonist = pawn.IsColonist;
-			var isPrisoner = pawn.IsPrisoner;
 
 			if (!allowColonists && isColonist) return false;
 			if (!allowGuests && isGuest) return false;
