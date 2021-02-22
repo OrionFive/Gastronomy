@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Gastronomy.Dining;
+using Gastronomy.Restaurant;
 using Gastronomy.Restaurant.Timetable;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 
-namespace Gastronomy.Restaurant
+// WARNING! Can't move to different namespace without break saves :'(
+// TODO: For 1.3, move it to Restaurant namespace
+namespace Gastronomy
 {
 	public class RestaurantController : MapComponent
 	{
