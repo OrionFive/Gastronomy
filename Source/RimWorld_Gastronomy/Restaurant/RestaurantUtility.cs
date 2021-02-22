@@ -41,6 +41,7 @@ namespace Gastronomy.Restaurant
         public static bool IsGuest(this Pawn pawn)
         {
             var faction = pawn.GetLord()?.faction;
+            if (pawn.IsPrisoner) return false;
             //Log.Message($"{pawn.NameShortColored}: Faction = {faction?.GetCallLabel()} Is player = {faction?.IsPlayer} Hostile = {faction?.HostileTo(Faction.OfPlayer)}");
             return faction != null && !faction.IsPlayer && !faction.HostileTo(Faction.OfPlayer);
             //var isGuest = AccessTools.Method("Hospitality.GuestUtility:IsGuest");

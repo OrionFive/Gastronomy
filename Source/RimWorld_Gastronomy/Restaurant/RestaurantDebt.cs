@@ -60,7 +60,7 @@ namespace Gastronomy.Restaurant
 
 		private static bool CanHaveDebt(Pawn patron)
 		{
-			return patron != null && !patron.Dead && patron.Faction?.IsPlayer == false;
+			return patron != null && !patron.Dead && patron.Faction?.IsPlayer == false && !patron.IsPrisoner;
 		}
 
 		private Debt GetOrCreateDebt(Pawn patron)
