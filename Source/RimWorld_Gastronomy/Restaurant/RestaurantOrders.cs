@@ -44,6 +44,12 @@ namespace Gastronomy.Restaurant
                 Log.Message($"Order for {o.patron?.NameShortColored} ({o.consumableDef?.label}) had to be canceled. Not in stock.");
                 return true;
             }
+
+            if (!Restaurant.MayDineHere(o.patron))
+            {
+                Log.Message($"Order for {o.patron?.NameShortColored} has been removed. May not eat here.");
+                return true;
+            }
             return false;
         }
 

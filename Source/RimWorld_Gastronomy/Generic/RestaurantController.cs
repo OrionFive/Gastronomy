@@ -119,10 +119,8 @@ namespace Gastronomy
 			onNextDay?.Invoke();
 		}
 
-		public bool CanDineHere(Pawn pawn)
+		public bool MayDineHere(Pawn pawn)
 		{
-			if (!IsOpenedRightNow) return false;
-
 			//var isPrisoner = pawn.IsPrisoner;
 			var isGuest = pawn.IsGuest();
 			var isColonist = pawn.IsColonist;

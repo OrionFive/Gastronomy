@@ -34,7 +34,7 @@ namespace Gastronomy.Dining
             {
                 var spot = (DiningSpot) thing;
                 //Log.Message($"Validating spot for {pawn.NameShortColored}: social = {spot.IsSociallyProper(pawn)}, political = {spot.IsPoliticallyProper(pawn)}, " 
-                //            + $"canReserve = {pawn.CanReserve(spot, spot.GetMaxReservations(), 0)}, canDineHere = {spot.CanDineHere(pawn)}, " 
+                //            + $"canReserve = {pawn.CanReserve(spot, spot.GetMaxReservations(), 0)}, canDineHere = {spot.MayDineHere(pawn)}, " 
                 //            + $"extraValidator = { extraSpotValidator == null || extraSpotValidator.Invoke(spot)}");
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && CanReserve(pawn, spot) && !spot.HostileTo(pawn)
                        && spot.CanDineHere(pawn) && !RestaurantUtility.IsRegionDangerous(pawn, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
