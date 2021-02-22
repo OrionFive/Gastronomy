@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using TimetableUtility = Gastronomy.Restaurant.Timetable.TimetableUtility;
 
 namespace Gastronomy.TableTops
 {
@@ -38,9 +39,9 @@ namespace Gastronomy.TableTops
 
         private void DrawTop(Rect rect)
         {
-            Timetable.TimetableUtility.DoHeader(new Rect(rect) {height = 24});
+            TimetableUtility.DoHeader(new Rect(rect) {height = 24});
             rect.yMin += 24;
-            Timetable.TimetableUtility.DoCell(new Rect(rect) {height = 30}, Register.restaurant.timetableOpen);
+            TimetableUtility.DoCell(new Rect(rect) {height = 30}, Register.restaurant.timetableOpen);
         }
 
         private void DrawRight(Rect rect)

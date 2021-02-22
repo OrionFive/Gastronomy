@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Gastronomy.Dining;
-using Gastronomy.Timetable;
+using Gastronomy.Restaurant.Timetable;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;

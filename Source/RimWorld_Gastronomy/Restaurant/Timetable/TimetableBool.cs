@@ -4,7 +4,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Gastronomy.Timetable
+namespace Gastronomy.Restaurant.Timetable
 {
 	/// <summary>
 	/// Wrapper for Pawn_TimetableTracker
