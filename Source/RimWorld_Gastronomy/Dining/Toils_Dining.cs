@@ -32,11 +32,11 @@ namespace Gastronomy.Dining
 
                     if (t.HostileTo(pawn)) return false;
 
+                    if (t.Position.GetDangerFor(pawn, t.Map) > Danger.None) return false;
                     return true;
                 }
 
-                var chair = GenClosest.ClosestThingReachable(diningSpot.Position, diningSpot.Map, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(actor), 2,
-                    t => BaseChairValidator(t) && t.Position.GetDangerFor(pawn, t.Map) == Danger.None);
+                var chair = GenClosest.ClosestThingReachable(diningSpot.Position, diningSpot.Map, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(actor), 2, BaseChairValidator);
                 if (chair == null)
                 {
                     Log.Message($"{pawn.NameShortColored} could not find a chair around {diningSpot.Position}.");

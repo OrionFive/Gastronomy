@@ -76,7 +76,7 @@ namespace Gastronomy.Dining
         [NotNull]
         public SpotState[] GetReservationSpots()
         {
-            if (spotStates == null) spotStates = new List<SpotState>(4) {SpotState.Clear, SpotState.Clear, SpotState.Clear, SpotState.Clear};
+            spotStates ??= new List<SpotState>(4) {SpotState.Clear, SpotState.Clear, SpotState.Clear, SpotState.Clear};
             var position = Position;
             var map = Map;
             var result = new SpotState[4];
@@ -109,6 +109,7 @@ namespace Gastronomy.Dining
             base.DeSpawn(mode);
         }
 
+        [UsedImplicitly]
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
             base.Destroy(mode);
@@ -196,6 +197,12 @@ namespace Gastronomy.Dining
             }
 
             return false;
+        }
+
+        public bool IsSociallyProper(Pawn pawn)
+        {
+            var table = Position.GetEdifice(Map);
+            return table?.IsSociallyProper(pawn) == true;
         }
     }
 }

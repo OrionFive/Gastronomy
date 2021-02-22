@@ -36,7 +36,7 @@ namespace Gastronomy.Dining
                 //Log.Message($"Validating spot for {pawn.NameShortColored}: social = {spot.IsSociallyProper(pawn)}, political = {spot.IsPoliticallyProper(pawn)}, " 
                 //            + $"canReserve = {pawn.CanReserve(spot, spot.GetMaxReservations(), 0)}, canDineHere = {spot.CanDineHere(pawn)}, " 
                 //            + $"extraValidator = { extraSpotValidator == null || extraSpotValidator.Invoke(spot)}");
-                return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && pawn.CanReserve(spot, spot.GetMaxReservations(), 0) 
+                return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && CanReserve(pawn, spot) && !spot.HostileTo(pawn)
                        && spot.CanDineHere(pawn) && !RestaurantUtility.IsRegionDangerous(pawn, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
             }
             var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(diningSpotDef), 
@@ -44,6 +44,13 @@ namespace Gastronomy.Dining
                 maxRegionsToScan);
 
             return diningSpot;
+        }
+
+        private static bool CanReserve(Pawn pawn, DiningSpot spot)
+        {
+            var maxReservations = spot.GetMaxReservations();
+            if (maxReservations == 0) return false;
+            return pawn.CanReserve(spot, maxReservations, 0);
         }
 
         public static void RegisterDiningSpotHolder(ThingWithComps thing)

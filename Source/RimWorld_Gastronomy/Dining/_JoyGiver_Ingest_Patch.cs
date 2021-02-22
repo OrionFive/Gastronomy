@@ -23,8 +23,8 @@ namespace Gastronomy.Dining
                 //Log.Message($"{pawn.NameShortColored} is looking for restaurant (as joy job).");
                 
                 bool allowDrug = !pawn.IsTeetotaler();
-
                 var diningSpot = DiningUtility.FindDiningSpotFor(pawn, allowDrug, extraValidator);
+
                 if ( diningSpot == null) return true; // Run regular code
                 // There is something edible, but is it good enough or like... a corpse?
                 var bestFood = restaurant.Stock.GetBestMealTypeFor(pawn, allowDrug, false);
