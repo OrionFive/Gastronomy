@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -77,9 +78,9 @@ namespace Gastronomy.TableTops
 
             if (showStats)
             {
-                var smallRect = new Rect(rect) {height = 11 * 24 + 20};
+                var smallRect = new Rect(rect);
 
-                DrawStats(smallRect);
+                DrawStats(ref smallRect);
                 rect.yMin += smallRect.height + 10;
             }
         }
@@ -130,8 +131,11 @@ namespace Gastronomy.TableTops
             listing.End();
         }
 
-        private void DrawStats(Rect rect)
+        private void DrawStats(ref Rect rect)
         {
+            const int ListingItems = 11;
+            rect.height = ListingItems * 24 + 20;
+
             Widgets.DrawBoxSolid(rect, new Color(1f, 1f, 1f, 0.08f));
             rect = rect.ContractedBy(10);
             var listing = new Listing_Standard();
@@ -257,8 +261,8 @@ namespace Gastronomy.TableTops
                 }
             }
             listing.Gap(listing.verticalSpacing);
-        }  
-        
+        }
+
         private static void DrawDebts(Listing listing, TaggedString label, [NotNull] ReadOnlyCollection<Debt> debts)
         {
             // Label
@@ -281,10 +285,10 @@ namespace Gastronomy.TableTops
             foreach (var debt in debts)
             {
                 if (debt.patron == null) continue;
-                if (debt.amount == 0) continue;
+                if (debt.amount <= 0) continue;
 
                 // Icon
-                DrawDefIcon(rectIcon, ThingDefOf.Silver, $"{debt.patron.Name.ToStringFull}: {debt.amount.ToStringMoney()}");
+                DrawDefIcon(rectIcon, ThingDefOf.Silver, "TabRegisterDebtTooltip".Translate(debt.patron.Name.ToStringFull, debt.amount.ToStringMoney()), () => debt.amount = 0);
                 rectIcon.x += iconSize;
 
                 col++;
@@ -294,6 +298,7 @@ namespace Gastronomy.TableTops
                     rectIcon.x = rectIcons.x;
                 }
             }
+
             listing.Gap(listing.verticalSpacing);
         }
 
@@ -306,7 +311,7 @@ namespace Gastronomy.TableTops
             return rect;
         }
 
-        private static void DrawDefIcon(Rect rect, ThingDef def, string tooltip = null)
+        private static void DrawDefIcon(Rect rect, ThingDef def, string tooltip = null, Action onClicked = null)
         {
             if (tooltip != null)
             {
@@ -315,6 +320,7 @@ namespace Gastronomy.TableTops
             }
 
             GUI.DrawTexture(rect, def.uiIcon);
+            if (onClicked != null && Widgets.ButtonInvisible(rect)) onClicked.Invoke();
         }
 
         public override void TabUpdate()

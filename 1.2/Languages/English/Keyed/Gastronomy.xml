@@ -23,9 +23,9 @@
 	<TabRegisterColonistsTooltip>When checked, colonists will make orders.</TabRegisterColonistsTooltip>
 	<TabRegisterPrisoners>Allow prisoners</TabRegisterPrisoners>
 	<TabRegisterPrisonersTooltip>When checked, prisoners will make orders.</TabRegisterPrisonersTooltip>
-	<!-- TEMP -->
 	<TabRegisterGuestsHaveToPay>Guests must pay</TabRegisterGuestsHaveToPay>
 	<TabRegisterGuestHaveToPayTooltip>When checked, guests have to pay {0} of market value.</TabRegisterGuestHaveToPayTooltip>
+	<TabRegisterDebtTooltip>{0}: {1} (click to clear)</TabRegisterDebtTooltip>
 	
 	<!-- Stats -->
 	<TabRegisterRadius>Radius</TabRegisterRadius>
