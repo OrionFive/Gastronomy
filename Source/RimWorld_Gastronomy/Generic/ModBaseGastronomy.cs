@@ -14,10 +14,5 @@ namespace Gastronomy
         {
             settings = new Settings(Settings);
         }
-
-        public override void MapLoaded(Map map)
-        {
-            Symbols.Initialize();
-        }
     }
 }
