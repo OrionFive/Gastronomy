@@ -35,7 +35,7 @@ namespace Gastronomy.Restaurant
         public static bool IsRegionDangerous(Pawn pawn, Region region = null)
         {
             if (region == null) region = pawn.GetRegion();
-            return region.DangerFor(pawn) > Danger.None;
+            return region.DangerFor(pawn) > Danger.Some;
         }
 
         public static bool IsGuest(this Pawn pawn)
