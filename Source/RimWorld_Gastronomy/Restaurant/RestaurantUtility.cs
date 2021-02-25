@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Gastronomy.Dining;
 using JetBrains.Annotations;
@@ -11,6 +12,20 @@ namespace Gastronomy.Restaurant
 {
     internal static class RestaurantUtility
     {
+        private static Dictionary<Pair<Pawn, Region>, bool> dangerousRegionsCache = new Dictionary<Pair<Pawn, Region>, bool>();
+
+        public static void OnTick()
+        {
+            if(GenTicks.TicksGame > lastTick)
+                if (GenTicks.TicksGame % GenTicks.TickRareInterval == 0)
+                {
+                    // RARE TICK
+                    dangerousRegionsCache.Clear();
+                }
+        }
+
+        private static int lastTick;
+
         public static bool HasDiningQueued(this Pawn patron)
         {
             if (patron?.CurJobDef == DiningUtility.dineDef) return true;
@@ -34,8 +49,14 @@ namespace Gastronomy.Restaurant
 
         public static bool IsRegionDangerous(Pawn pawn, Region region = null)
         {
-            if (region == null) region = pawn.GetRegion();
-            return region.DangerFor(pawn) > Danger.Some;
+            region ??= pawn.GetRegion();
+            var key = new Pair<Pawn, Region>(pawn, region);
+            if (dangerousRegionsCache.TryGetValue(key, out bool result)) return result;
+
+            var isRegionDangerous = region.DangerFor(pawn) > Danger.Some;
+            dangerousRegionsCache.Add(key, isRegionDangerous);
+
+            return isRegionDangerous;
         }
 
         public static bool IsGuest(this Pawn pawn)

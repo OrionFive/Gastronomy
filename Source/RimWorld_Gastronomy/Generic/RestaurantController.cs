@@ -7,6 +7,7 @@ using Gastronomy.Restaurant;
 using Gastronomy.Restaurant.Timetable;
 using JetBrains.Annotations;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 // WARNING! Can't move to different namespace without break saves :'(
@@ -101,6 +102,7 @@ namespace Gastronomy
 
 		public override void MapComponentTick()
 		{
+			RestaurantUtility.OnTick();
 			// Don't tick everything at once
 			if ((GenTicks.TicksGame + map.uniqueID) % 500 == 0) stock.RareTick();
 			if ((GenTicks.TicksGame + map.uniqueID) % 500 == 250) orders.RareTick();
