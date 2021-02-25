@@ -13,6 +13,7 @@ namespace Gastronomy.TableTops
 {
     public class ITab_Register : ITab
     {
+        private const float MarketPriceFactor = 0.55f;
         private static readonly Vector2 WinSize = new Vector2(800f, 540f);
         private bool showSettings = true;
         private bool showRadius = false;
@@ -101,7 +102,6 @@ namespace Gastronomy.TableTops
 
                 // TODO: Make adjustable (guests will have to react somehow)
                 bool guestsPay = Register.restaurant.guestPricePercentage > 0;
-                const float MarketPriceFactor = 0.55f;
                 listing.CheckboxLabeled("TabRegisterGuestsHaveToPay".Translate(), ref guestsPay, "TabRegisterGuestHaveToPayTooltip".Translate(MarketPriceFactor.ToStringPercent()));
                 Register.restaurant.guestPricePercentage = guestsPay ? MarketPriceFactor : 0;
             }
@@ -250,7 +250,8 @@ namespace Gastronomy.TableTops
                 if (group.items.Count == 0) continue;
 
                 // Icon
-                DrawDefIcon(rectIcon, group.def, $"{group.items.Sum(item => item.stackCount)}x {group.def.LabelCap}");
+                var value = (group.def.BaseMarketValue*MarketPriceFactor).ToStringMoney();
+                DrawDefIcon(rectIcon, group.def, $"{group.items.Sum(item => item.stackCount)}x {group.def.LabelCap} ({value})");
                 rectIcon.x += iconSize;
 
                 col++;
