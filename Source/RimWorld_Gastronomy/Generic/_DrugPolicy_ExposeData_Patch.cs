@@ -14,7 +14,7 @@ namespace Gastronomy
 		public class ExposeData
 		{
 			[HarmonyPostfix]
-			internal static void Prefix(DrugPolicy __instance, List<DrugPolicyEntry> ___entriesInt)
+			internal static void Postfix(DrugPolicy __instance, List<DrugPolicyEntry> ___entriesInt)
 			{
 				if (Scribe.mode != LoadSaveMode.PostLoadInit) return;
 
