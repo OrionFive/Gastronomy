@@ -32,7 +32,7 @@ namespace Gastronomy.Dining
 
                     if (t.HostileTo(pawn)) return false;
 
-                    if (t.Position.GetDangerFor(pawn, t.Map) > Danger.None) return false;
+                    if (t.Position.GetDangerFor(pawn, t.Map) > JobUtility.MaxDangerDining) return false;
                     return true;
                 }
 
@@ -44,7 +44,7 @@ namespace Gastronomy.Dining
                     {
                         targetPosition = RCellFinder.SpotToChewStandingNear(actor, diningSpot);
                         var chewSpotDanger = targetPosition.GetDangerFor(pawn, actor.Map);
-                        if (chewSpotDanger != Danger.None)
+                        if (chewSpotDanger != JobUtility.MaxDangerDining)
                         {
                             Log.Message($"{pawn.NameShortColored} could not find a save place around {diningSpot.Position} ({chewSpotDanger}).");
                             actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);

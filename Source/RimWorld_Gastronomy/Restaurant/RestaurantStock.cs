@@ -212,7 +212,7 @@ namespace Gastronomy.Restaurant
             if (stockCache.TryGetValue(order.consumableDef, out var stock))
             {
                 return stock.items.OrderBy(o => pawn.Position.DistanceToSquared(o.Position))
-                    .FirstOrDefault(o => pawn.CanReserveAndReach(o, PathEndMode.Touch, Danger.Some, o.stackCount, 1));
+                    .FirstOrDefault(o => pawn.CanReserveAndReach(o, PathEndMode.Touch, JobUtility.MaxDangerServing, o.stackCount, 1));
             }
             return null;
         }

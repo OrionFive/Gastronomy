@@ -43,7 +43,7 @@ namespace Gastronomy.Waiting
                 //Log.Message($"{pawn.NameShortColored} can't reserve {patron.NameShortColored}. Is reserved by {reserver?.NameShortColored}. ");
                 return false;
             }
-            if (RestaurantUtility.IsRegionDangerous(pawn, patron.GetRegion()) && !forced) return false;
+            if (RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerServing, patron.GetRegion()) && !forced) return false;
 
             return true;
         }

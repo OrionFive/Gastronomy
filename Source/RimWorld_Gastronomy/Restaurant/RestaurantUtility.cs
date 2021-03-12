@@ -47,13 +47,13 @@ namespace Gastronomy.Restaurant
             }
         }
 
-        public static bool IsRegionDangerous(Pawn pawn, Region region = null)
+        public static bool IsRegionDangerous(Pawn pawn, Danger maxDanger, Region region = null)
         {
             region ??= pawn.GetRegion();
             var key = new Pair<Pawn, Region>(pawn, region);
             if (dangerousRegionsCache.TryGetValue(key, out bool result)) return result;
 
-            var isRegionDangerous = region.DangerFor(pawn) > Danger.Some;
+            var isRegionDangerous = region.DangerFor(pawn) > maxDanger;
             dangerousRegionsCache.Add(key, isRegionDangerous);
 
             return isRegionDangerous;
