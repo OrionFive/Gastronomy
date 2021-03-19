@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_Waiting.label>Официант</Gastronomy_Waiting.label>
+  <Gastronomy_Waiting.description>Принимает заказы и подает блюда</Gastronomy_Waiting.description>
+  <Gastronomy_Waiting.labelShort>Официант</Gastronomy_Waiting.labelShort>
+  <Gastronomy_Waiting.pawnLabel>Официант</Gastronomy_Waiting.pawnLabel>
+  <Gastronomy_Waiting.gerundLabel>обслуживание</Gastronomy_Waiting.gerundLabel>
+  <Gastronomy_Waiting.verb>Официант</Gastronomy_Waiting.verb>
+
+</LanguageData>
