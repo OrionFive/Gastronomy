@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+<!-- EN: take orders -->
+<Gastronomy_TakeOrder.label>prendre les commandes</Gastronomy_TakeOrder.label>
+<!-- EN: take order -->
+<Gastronomy_TakeOrder.verb>prendre une commande</Gastronomy_TakeOrder.verb>
+<!-- EN: taking order -->
+<Gastronomy_TakeOrder.gerund>prends une commande</Gastronomy_TakeOrder.gerund>
+
+<!-- EN: serve -->
+<Gastronomy_Serve.label>servir</Gastronomy_Serve.label>
+<!-- EN: serve -->
+<Gastronomy_Serve.verb>servir</Gastronomy_Serve.verb>
+<!-- EN: serving -->
+<Gastronomy_Serve.gerund>sers</Gastronomy_Serve.gerund>
+
+<!-- EN: make tables -->
+<Gastronomy_MakeTable.label>dresser les tables</Gastronomy_MakeTable.label>
+<!-- EN: make table -->
+<Gastronomy_MakeTable.verb>dresser la table</Gastronomy_MakeTable.verb>
+<!-- EN: making table -->
+<Gastronomy_MakeTable.gerund>dresse la table</Gastronomy_MakeTable.gerund>
+
+<!-- EN: empty register -->
+<Gastronomy_EmptyRegister.label>vider le registre</Gastronomy_EmptyRegister.label>
+<!-- EN: empty register -->
+<Gastronomy_EmptyRegister.verb>vider le registre</Gastronomy_EmptyRegister.verb>
+<!-- EN: emptying register -->
+<Gastronomy_EmptyRegister.gerund>vide le registre</Gastronomy_EmptyRegister.gerund>
+
+
+</LanguageData>

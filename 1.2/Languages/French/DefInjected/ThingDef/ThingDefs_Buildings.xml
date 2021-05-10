@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_CashRegister.label>Caisse enregistreuse</Gastronomy_CashRegister.label>
+  <Gastronomy_CashRegister.description>Caisse enregistreuse où les visiteurs paient. De là, vous pouvez gérer votre restaurant.</Gastronomy_CashRegister.description>
+  <Gastronomy_CashRegister_Blueprint.label>Caisse enregistreuse (plan)</Gastronomy_CashRegister_Blueprint.label>
+  <Gastronomy_CashRegister_Blueprint_Install.label>Caisse enregistreuse (installation)</Gastronomy_CashRegister_Blueprint_Install.label>
+  <Gastronomy_CashRegister_Frame.label>Caisse enregistreuse (construction)</Gastronomy_CashRegister_Frame.label>
+  <Gastronomy_CashRegister_Frame.description>Caisse enregistreuse où les visiteurs paient. De là, vous pouvez gérer votre restaurant.</Gastronomy_CashRegister_Frame.description>
+
+</LanguageData>

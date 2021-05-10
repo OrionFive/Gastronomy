@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+<!-- EN: eating at restaurant. -->
+<Gastronomy_Dine.reportString>mange au restaurant.</Gastronomy_Dine.reportString>
+<!-- EN: taking order from TargetB. -->
+<Gastronomy_TakeOrder.reportString>prends la commande de TargetB.</Gastronomy_TakeOrder.reportString>
+<!-- EN: serving TargetB to TargetA. -->
+<Gastronomy_Serve.reportString>sers TargetB à TargetA.</Gastronomy_Serve.reportString>
+<!-- EN: preparing table. -->
+<Gastronomy_MakeTable.reportString>dresse la table.</Gastronomy_MakeTable.reportString>
+<!-- emptying register. -->
+<Gastronomy_EmptyRegister.reportString>vider le registre.</Gastronomy_EmptyRegister.reportString>
+
+</LanguageData>
