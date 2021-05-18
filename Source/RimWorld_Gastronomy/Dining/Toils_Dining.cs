@@ -1,8 +1,6 @@
 using System;
-using System.Linq;
 using Gastronomy.Restaurant;
 using RimWorld;
-using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -87,7 +85,10 @@ namespace Gastronomy.Dining
         public static Toil WaitForWaiter(TargetIndex diningSpotInd, TargetIndex waiterInd)
         {
             var toil = new Toil();
-            toil.initAction = () => GetDriver(toil).wantsToOrder = true;
+            toil.initAction = () => {
+                GetDriver(toil).wantsToOrder = true;
+                GetDriver(toil).OnStartedWaiting();
+            };
             toil.tickAction = () => {
                 if (diningSpotInd != 0 && toil.actor.CurJob.GetTarget(diningSpotInd).IsValid)
                 {
@@ -97,8 +98,8 @@ namespace Gastronomy.Dining
             };
             toil.AddFinishAction(() => GetDriver(toil).wantsToOrder = false);
 
-            toil.defaultDuration = 1500;
-            toil.WithProgressBarToilDelayReversed(TargetIndex.A, 1500);
+            toil.defaultDuration = 3000;
+            toil.WithProgressBarToilDelayReversed(diningSpotInd, 3000, true);
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDestroyedOrNull(diningSpotInd);
             toil.FailOnDurationExpired(); // Duration over? Fail job!
@@ -108,7 +109,7 @@ namespace Gastronomy.Dining
 
         private static JobDriver_Dine GetDriver(Toil t) => t.actor.jobs.curDriver as JobDriver_Dine;
 
-        public static Toil WaitForMeal(TargetIndex mealInd)
+        public static Toil WaitForMeal(TargetIndex mealInd, TargetIndex chairInd)
         {
             var toil = new Toil();
             toil.initAction = () => {
@@ -136,6 +137,7 @@ namespace Gastronomy.Dining
                         Log.Message($"{toil.actor.NameShortColored}'s food is somewhere else ({food?.Position}). Will wait.");
                         toil.actor.CurJob.SetTarget(mealInd, null);
                         order.delivered = false;
+                        GetDriver(toil).OnStartedWaiting();
                     }
                 }
                 else if (order?.delivered == true)
@@ -145,6 +147,7 @@ namespace Gastronomy.Dining
                     Log.Warning($"{toil.actor.NameShortColored}'s food is gone. Already eaten?");
                     GetDriver(toil).EndJobWith(JobCondition.QueuedNoLongerValid);
                 }
+                GetDriver(toil).OnStartedWaiting();
             };
             toil.tickAction = () => {
                 var target = toil.actor.CurJob.GetTarget(mealInd);
@@ -156,8 +159,8 @@ namespace Gastronomy.Dining
                     GetDriver(toil).ReadyForNextToil();
                 }
             };
-            toil.defaultDuration = 1500;
-            toil.WithProgressBarToilDelayReversed(TargetIndex.A, 1500);
+            toil.defaultDuration = 3000;
+            toil.WithProgressBarToilDelayReversed(chairInd, 3000, true);
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDurationExpired(); // Duration over? Fail job!
             toil.socialMode = RandomSocialMode.Normal;

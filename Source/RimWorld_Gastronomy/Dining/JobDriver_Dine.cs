@@ -10,6 +10,7 @@ namespace Gastronomy.Dining
     public class JobDriver_Dine : JobDriver
     {
         public bool wantsToOrder;
+        private int startedWaitingTick;
         public DiningSpot DiningSpot => job.GetTarget(SpotIndex).Thing as DiningSpot;
         public Pawn Waiter => job.GetTarget(WaiterIndex).Pawn;
         public Thing Meal => job.GetTarget(MealIndex).Thing;
@@ -17,7 +18,6 @@ namespace Gastronomy.Dining
         private const TargetIndex SpotIndex = TargetIndex.A;
         private const TargetIndex WaiterIndex = TargetIndex.B;
         private const TargetIndex MealIndex = TargetIndex.C;
-
 
         //public override string GetReport()
         //{
@@ -31,6 +31,7 @@ namespace Gastronomy.Dining
         {
             base.ExposeData();
             Scribe_Values.Look(ref wantsToOrder, "wantsToOrder");
+            Scribe_Values.Look(ref startedWaitingTick, "startedWaitingTick");
         }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -52,7 +53,7 @@ namespace Gastronomy.Dining
         {
             // Declare these early - jumping points
             var waitForWaiter = Toils_Dining.WaitForWaiter(SpotIndex, WaiterIndex).FailOnRestaurantClosed().FailOnDangerous(JobUtility.MaxDangerDining);
-            var waitForMeal = Toils_Dining.WaitForMeal(MealIndex).FailOnDangerous(JobUtility.MaxDangerDining);
+            var waitForMeal = Toils_Dining.WaitForMeal(MealIndex, SpotIndex).FailOnDangerous(JobUtility.MaxDangerDining);
 
             this.FailOn(() => DiningSpot.Destroyed);
             yield return Toils_Dining.GoToDineSpot(pawn, SpotIndex).FailOnRestaurantClosed();
@@ -92,6 +93,14 @@ namespace Gastronomy.Dining
                 //Log.Warning($"{pawn.NameShortColored} doesn't have {food.Label} in his inventory.");
             }
         }
+
+        public void OnStartedWaiting()
+        {
+            startedWaitingTick = GenTicks.TicksGame;
+        }
+
+        public float HoursWaited => (GenTicks.TicksGame - startedWaitingTick) * 1f / GenDate.TicksPerHour;
+
 
         // Mostly copied from JobDriver_Ingest
         public override bool ModifyCarriedThingDrawPos(ref Vector3 drawPos, ref bool behind, ref bool flip)

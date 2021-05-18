@@ -16,6 +16,8 @@ namespace Gastronomy.Dining
         public static readonly JobDef dineDef = DefDatabase<JobDef>.GetNamed("Gastronomy_Dine");
         public static readonly HashSet<ThingDef> thingsWithCompCanDineAt = new HashSet<ThingDef>();
         private static readonly ThoughtDef boughtFoodThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_BoughtFood");
+        private static readonly ThoughtDef servicedThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_Serviced");
+        private static readonly ThoughtDef servicedMoodThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_ServicedMood");
 
         public static IEnumerable<DiningSpot> GetAllDiningSpots([NotNull] Map map)
         {
@@ -117,6 +119,33 @@ namespace Gastronomy.Dining
             if (pawn.needs.mood == null) return;
             pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDef(boughtFoodThoughtDef);
             pawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(boughtFoodThoughtDef, GetBoughtFoodStage(pawn)));
+        }
+
+        public static void GiveServiceThought(Pawn patron, Pawn waiter, float hoursWaited)
+        {
+            if (patron.needs.mood == null) return;
+
+            int stage = GetServiceStage(patron, waiter, hoursWaited);
+            patron.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(servicedThoughtDef, stage), waiter);
+            patron.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(servicedMoodThoughtDef, stage));
+        }
+
+        private static int GetServiceStage(Pawn patron, Pawn waiter, float hoursWaited)
+        {
+            float score = 1 * waiter.GetStatValue(StatDefOf.SocialImpact);
+            score += waiter.story.traits.DegreeOfTrait(TraitDefOf.Industriousness) * 0.25f;
+            score += waiter.story.traits.DegreeOfTrait(TraitDefOf.Beauty) * 0.25f;
+            score += waiter.story.traits.HasTrait(TraitDefOf.Kind) ? 0.25f : 0;
+            score += patron.story.traits.HasTrait(TraitDefOf.Kind) ? 0.15f : 0;
+            score += waiter.story.traits.HasTrait(TraitDefOf.Abrasive) ? -0.2f : 0;
+            score += waiter.story.traits.HasTrait(TraitDefOf.AnnoyingVoice) ? -0.2f : 0;
+            score += waiter.story.traits.HasTrait(TraitDefOf.CreepyBreathing) ? -0.1f : 0;
+            if(waiter.needs.mood != null) score += (waiter.needs.mood.CurLevelPercentage - 0.5f) * 0.6f; // = +-0.3
+            score += patron.relations.OpinionOf(waiter) / 200f; // = +-0.5
+            score += (1 - hoursWaited) * 0.2f;
+            int stage = Mathf.RoundToInt(Mathf.Clamp(score, 0, 2)*2); // 0-4
+
+            return stage;
         }
 
         private static int GetBoughtFoodStage(Pawn pawn)

@@ -1,3 +1,4 @@
+using System.Linq;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
 using Gastronomy.TableTops;
@@ -31,7 +32,7 @@ namespace Gastronomy.Waiting
                 var patron = toil.actor.CurJob.GetTarget(patronInd).Pawn;
                 if (patron == null) return;
 
-                if (!(patron.jobs.curDriver is JobDriver_Dine))
+                if (!(patron.jobs.curDriver is JobDriver_Dine patronDriver))
                 {
                     Log.Error($"{patron.NameShortColored} is not dining!");
                     toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
@@ -40,11 +41,8 @@ namespace Gastronomy.Waiting
 
                 PawnUtility.ForceWait(patron, toil.defaultDuration, toil.actor);
 
-                //var order = patron.GetRestaurant().GetOrderFor(patron);
-                //var icon = order?.consumableDef?.uiIcon;
-                //if(icon != null) TryCreateBubble(toil.actor, patron, icon);
-                // TODO: Chance to insult patron
                 TryCreateBubble(toil.actor, patron, Symbols.symbolTakeOrder);
+                DiningUtility.GiveServiceThought(patron, toil.actor, patronDriver.HoursWaited);
             }
 
             void TickAction()
@@ -214,7 +212,11 @@ namespace Gastronomy.Waiting
                     return;
                 }
 
-                // TODO: Chance to insult patron
+                if (patron.jobs.curDriver is JobDriver_Dine patronDriver)
+                {
+                    DiningUtility.GiveServiceThought(patron, toil.actor, patronDriver.HoursWaited);
+                }
+
                 var symbol = food.def.uiIcon;
                 if (symbol != null) TryCreateBubble(actor, patron, symbol);
             }
