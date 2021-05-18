@@ -6,7 +6,7 @@
     <labelShort>Wait</labelShort>
     <pawnLabel>Waiter</pawnLabel>
     <gerundLabel>waiting</gerundLabel>
-    <description>Take order and serve meals.</description>
+    <description>Take orders and serve meals.</description>
     <verb>Wait</verb>
     <naturalPriority>1055</naturalPriority>
     <relevantSkills>
