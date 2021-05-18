@@ -21,6 +21,7 @@ namespace Gastronomy.Restaurant
                 {
                     // RARE TICK
                     dangerousRegionsCache.Clear();
+                    lastTick = GenTicks.TicksGame;
                 }
         }
 
