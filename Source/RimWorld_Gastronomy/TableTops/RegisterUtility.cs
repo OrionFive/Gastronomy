@@ -10,6 +10,7 @@ namespace Gastronomy.TableTops
     {
         public static readonly ThingDef cashRegisterDef = ThingDef.Named("Gastronomy_CashRegister");
         public static readonly JobDef emptyRegisterDef = DefDatabase<JobDef>.GetNamed("Gastronomy_EmptyRegister");
+        public static readonly SoundDef kachingSoundDef = DefDatabase<SoundDef>.GetNamed("Gastronomy_Register_Kaching");
 
         public static Building_CashRegister GetClosestRegister([NotNull]this Pawn pawn)
         {
