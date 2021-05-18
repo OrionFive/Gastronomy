@@ -98,7 +98,7 @@ namespace Gastronomy.Dining
             toil.AddFinishAction(() => GetDriver(toil).wantsToOrder = false);
 
             toil.defaultDuration = 1500;
-            //toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
+            toil.WithProgressBarToilDelayReversed(TargetIndex.A, 1500);
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDestroyedOrNull(diningSpotInd);
             toil.FailOnDurationExpired(); // Duration over? Fail job!
@@ -157,12 +157,23 @@ namespace Gastronomy.Dining
                 }
             };
             toil.defaultDuration = 1500;
-            //toil.WithProgressBarToilDelay(TargetIndex.A); // TODO: Turn this off later? Or make it go backwards?
+            toil.WithProgressBarToilDelayReversed(TargetIndex.A, 1500);
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDurationExpired(); // Duration over? Fail job!
             toil.socialMode = RandomSocialMode.Normal;
             return toil;
         }
+
+        public static Toil WithProgressBarToilDelayReversed(
+            this Toil toil,
+            TargetIndex ind,
+            int toilDuration,
+            bool interpolateBetweenActorAndTarget = false,
+            float offsetZ = -0.5f)
+        {
+            return toil.WithProgressBar(ind, () => (float) ((double) toil.actor.jobs.curDriver.ticksLeftThisToil / (double) toilDuration), interpolateBetweenActorAndTarget, offsetZ);
+        }
+
 
         public static Toil WaitDuringDinner(TargetIndex lookAtInd, int minDuration, int maxDuration)
         {
