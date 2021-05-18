@@ -103,8 +103,8 @@
         <baseMoodEffect>-3</baseMoodEffect>
       </li>
 	  <li>
-        <label>received overpriced food</label>
-        <description>The food is overpriced.</description>
+        <label>received very expensive food</label>
+        <description>The food is very expensive.</description>
         <baseMoodEffect>-6</baseMoodEffect>
       </li>
 	  

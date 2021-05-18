@@ -23,8 +23,9 @@
 	<TabRegisterColonistsTooltip>When checked, colonists will make orders.</TabRegisterColonistsTooltip>
 	<TabRegisterPrisoners>Allow prisoners</TabRegisterPrisoners>
 	<TabRegisterPrisonersTooltip>When checked, prisoners will make orders.</TabRegisterPrisonersTooltip>
-	<TabRegisterGuestsHaveToPay>Guests must pay</TabRegisterGuestsHaveToPay>
-	<TabRegisterGuestHaveToPayTooltip>When checked, guests have to pay {0} of market value.</TabRegisterGuestHaveToPayTooltip>
+	<TabRegisterGuestPrice>Price for guests: {0}</TabRegisterGuestPrice>
+	<TabRegisterGuestPriceTooltip>A multiplier for the market value. You can see the individual prices when you point at stocked items. This multiplier affects the mood of patrons.</TabRegisterGuestPriceTooltip>
+	<TabRegisterGuestPriceFree>Free</TabRegisterGuestPriceFree>
 	<TabRegisterDebtTooltip>{0}: {1} (click to clear)</TabRegisterDebtTooltip>
 	
 	<!-- Stats -->

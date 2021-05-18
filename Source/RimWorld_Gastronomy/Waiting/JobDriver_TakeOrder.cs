@@ -25,7 +25,8 @@ namespace Gastronomy.Waiting
 
             if (diningSpot == null)
             {
-                Log.Message($"{pawn.NameShortColored} couldn't take order from {patron?.NameShortColored}: patronJob = {patron.jobs.curDriver?.GetType().Name}");
+                //Log.Message($"{pawn.NameShortColored} couldn't take order from {patron?.NameShortColored}: patronJob = {patron.jobs.curDriver?.GetType().Name}");
+                // Patron isn't even trying to dine
                 return false;
             }
 

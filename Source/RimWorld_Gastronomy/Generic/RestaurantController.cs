@@ -63,6 +63,7 @@ namespace Gastronomy
 			Scribe_Values.Look(ref allowGuests, "allowGuests", true);
 			Scribe_Values.Look(ref allowColonists, "allowColonists", true);
 			Scribe_Values.Look(ref allowPrisoners, "allowPrisoners", false);
+			Scribe_Values.Look(ref guestPricePercentage, "guestPricePercentage", 1);
 			Scribe_Values.Look(ref day, "day");
 			Scribe_Deep.Look(ref timetableOpen, "timetableOpen");
 			Scribe_Deep.Look(ref menu, "menu");

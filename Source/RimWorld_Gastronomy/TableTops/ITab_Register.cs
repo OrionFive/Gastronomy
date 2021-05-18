@@ -7,13 +7,13 @@ using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 using TimetableUtility = Gastronomy.Restaurant.Timetable.TimetableUtility;
 
 namespace Gastronomy.TableTops
 {
     public class ITab_Register : ITab
     {
-        private const float MarketPriceFactor = 0.55f;
         private static readonly Vector2 WinSize = new Vector2(800f, 540f);
         private bool showSettings = true;
         private bool showRadius = false;
@@ -99,13 +99,28 @@ namespace Gastronomy.TableTops
                 listing.CheckboxLabeled("TabRegisterColonists".Translate(), ref Register.restaurant.allowColonists, "TabRegisterColonistsTooltip".Translate());
                 listing.CheckboxLabeled("TabRegisterPrisoners".Translate(), ref Register.restaurant.allowPrisoners, "TabRegisterPrisonersTooltip".Translate());
 
+                DrawPrice(listing.GetRect(22));
 
-                // TODO: Make adjustable (guests will have to react somehow)
-                bool guestsPay = Register.restaurant.guestPricePercentage > 0;
-                listing.CheckboxLabeled("TabRegisterGuestsHaveToPay".Translate(), ref guestsPay, "TabRegisterGuestHaveToPayTooltip".Translate(MarketPriceFactor.ToStringPercent()));
-                Register.restaurant.guestPricePercentage = guestsPay ? MarketPriceFactor : 0;
+                //bool guestsPay = Register.restaurant.guestPricePercentage > 0;
+                //listing.CheckboxLabeled("TabRegisterGuestsHaveToPay".Translate(), ref guestsPay, "TabRegisterGuestHaveToPayTooltip".Translate(MarketPriceFactor.ToStringPercent()));
+                //Register.restaurant.guestPricePercentage = guestsPay ? MarketPriceFactor : 0;
             }
             listing.End();
+        }
+
+        private void DrawPrice(Rect rect)
+        {
+            // Price
+            var price = Register.restaurant.guestPricePercentage <= 0? (string)"TabRegisterGuestPriceFree".Translate() : Register.restaurant.guestPricePercentage.ToStringPercentEmptyZero();
+            var label = "TabRegisterGuestPrice".Translate(price);
+            var value = Widgets.HorizontalSlider(rect, Register.restaurant.guestPricePercentage, 0, 5, false, label);
+            TooltipHandler.TipRegionByKey(rect, "TabRegisterGuestPriceTooltip");
+
+            if (value != Register.restaurant.guestPricePercentage)
+            {
+                SoundDefOf.DragSlider.PlayOneShotOnCamera();
+                Register.restaurant.guestPricePercentage = value;
+            }
         }
 
         private void DrawRadius(Rect rect)
@@ -153,7 +168,7 @@ namespace Gastronomy.TableTops
                 DrawOrders(listing, "TabRegisterTotalOrders".Translate(), orders);
                 DrawOrders(listing, "TabRegisterNeedsServing".Translate(), ordersForServing);
                 DrawOrders(listing, "TabRegisterNeedsCooking".Translate(), ordersForCooking);
-                DrawStock(listing, "TabRegisterStocked".Translate(), stock);
+                DrawStock(listing, "TabRegisterStocked".Translate(), stock, Register.restaurant);
                 listing.LabelDouble("TabRegisterEarnedYesterday".Translate(), Register.restaurant.Debts.incomeYesterday.ToStringMoney());
                 listing.LabelDouble("TabRegisterEarnedToday".Translate(), Register.restaurant.Debts.incomeToday.ToStringMoney());
                 DrawDebts(listing, "TabRegisterDebts".Translate(), debts);
@@ -225,7 +240,7 @@ namespace Gastronomy.TableTops
             listing.Gap(listing.verticalSpacing);
         }
 
-        private static void DrawStock(Listing listing, TaggedString label, [NotNull] IReadOnlyDictionary<ThingDef, RestaurantStock.Stock> stock)
+        private static void DrawStock(Listing listing, TaggedString label, [NotNull] IReadOnlyDictionary<ThingDef, RestaurantStock.Stock> stock, RestaurantController restaurant)
         {
             // Label
             var rect = CustomLabelDouble(listing, label, $"{stock.Values.Sum(pair => pair.items.Sum(item=>item.stackCount))}", out var countSize);
@@ -250,7 +265,7 @@ namespace Gastronomy.TableTops
                 if (group.items.Count == 0) continue;
 
                 // Icon
-                var value = (group.def.BaseMarketValue*MarketPriceFactor).ToStringMoney();
+                var value = group.def.GetPrice(restaurant).ToStringMoney();
                 DrawDefIcon(rectIcon, group.def, $"{group.items.Sum(item => item.stackCount)}x {group.def.LabelCap} ({value})");
                 rectIcon.x += iconSize;
 
