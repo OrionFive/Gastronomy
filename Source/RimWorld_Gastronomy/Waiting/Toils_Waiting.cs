@@ -68,12 +68,21 @@ namespace Gastronomy.Waiting
                     TryCreateBubble(patron, toil.actor, Symbols.symbolNoOrder);
 
                     toil.actor.jobs.EndCurrentJob(JobCondition.Incompletable);
-                    patron.jobs.EndCurrentJob(JobCondition.Incompletable);
+                    // Make sure the patron doesn't have the job queued
+                    patron.jobs.EndCurrentJob(JobCondition.Incompletable, false);
+                    // ReSharper disable once ForCanBeConvertedToForeach
+                    for (var i = 0; i < patron.jobs.jobQueue.Count; i++)
+                    {
+                        // queue gets modified while we do this, so we don't use the iterator
+                        var queued = patron.jobs.jobQueue.FirstOrDefault(j => j.job?.def == DiningUtility.dineDef && !j.job.playerForced);
+                        if (queued?.job == null) break;
+                        patron.jobs.EndCurrentOrQueuedJob(queued.job, JobCondition.Incompletable);
+                    }
                 }
                 else
                 {
                     restaurant.Orders.CreateOrder(patron, desiredFoodDef);
-
+                    
                     var symbol = desiredFoodDef.uiIcon;
                     if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
                 }
