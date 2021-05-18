@@ -7,10 +7,9 @@ using Gastronomy.Restaurant;
 using Gastronomy.Restaurant.Timetable;
 using JetBrains.Annotations;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
-// WARNING! Can't move to different namespace without break saves :'(
+// WARNING! Can't move to different namespace without breaking saves :'(
 // TODO: For 1.3, move it to Restaurant namespace
 namespace Gastronomy
 {
@@ -35,7 +34,7 @@ namespace Gastronomy
 		public bool allowColonists = true;
 		public bool allowPrisoners = false;
 
-		public float guestPricePercentage = 0.5f;
+		public float guestPricePercentage = 1;
 
 		public event Action onNextDay;
 

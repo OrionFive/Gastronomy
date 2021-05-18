@@ -142,6 +142,9 @@
     <Compile Include="Waiting\WorkGiver_TakeOrder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

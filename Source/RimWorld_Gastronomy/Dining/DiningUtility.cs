@@ -15,6 +15,7 @@ namespace Gastronomy.Dining
         public static readonly ThingDef diningSpotDef = ThingDef.Named("Gastronomy_DiningSpot");
         public static readonly JobDef dineDef = DefDatabase<JobDef>.GetNamed("Gastronomy_Dine");
         public static readonly HashSet<ThingDef> thingsWithCompCanDineAt = new HashSet<ThingDef>();
+        private static readonly ThoughtDef boughtFoodThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_BoughtFood");
 
         public static IEnumerable<DiningSpot> GetAllDiningSpots([NotNull] Map map)
         {
@@ -109,6 +110,31 @@ namespace Gastronomy.Dining
             var payAmount = Mathf.Min(cash.stackCount, debtAmount);
             var paid = pawn.inventory.innerContainer.TryTransferToContainer(cash, payTarget, payAmount, out paidSilver, false);
             pawn.GetRestaurant().Debts.PayDebt(pawn, paid);
+        }
+
+        public static void GiveBoughtFoodThought(Pawn pawn)
+        {
+            if (pawn.needs.mood == null) return;
+            pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDef(boughtFoodThoughtDef);
+            pawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(boughtFoodThoughtDef, GetBoughtFoodStage(pawn)));
+        }
+
+        private static int GetBoughtFoodStage(Pawn pawn)
+        {
+            var restaurant = pawn.GetRestaurant();
+            if (restaurant.guestPricePercentage <= 0) return 0;
+            int stage = PriceTypeUtlity.ClosestPriceType(restaurant.guestPricePercentage) switch {
+                PriceType.Undefined => 0,
+                PriceType.VeryCheap => 1,
+                PriceType.Cheap => 2,
+                PriceType.Normal => 3,
+                PriceType.Expensive => 4,
+                PriceType.Exorbitant => 5,
+                _ => throw new ArgumentOutOfRangeException($"Gastronomy received an invalid PriceType.")
+            };
+            if (pawn.story.traits.HasTrait(TraitDefOf.Greedy)) stage += 1;
+            if (pawn.story.traits.HasTrait(TraitDef.Named("Gourmand"))) stage -= 1;
+            return Mathf.Clamp(stage, 0, 5);
         }
     }
 }

@@ -85,6 +85,7 @@ namespace Gastronomy.Dining
                 //Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory.");
                 pawn.PayForMeal(payTarget, out paidSilver);
                 job.SetTarget(MealIndex, food); // This triggers WaitForMeal
+                DiningUtility.GiveBoughtFoodThought(pawn);
             }
             else
             {
