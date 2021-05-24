@@ -60,7 +60,7 @@ namespace Gastronomy.Dining
 
             if (!respawningAfterLoad)
             {
-                RegisterUtility.OnDiningSpotCreated(this);
+                DiningUtility.OnDiningSpotCreated(this);
                 restaurant = this.GetRestaurant();
             }
         }
@@ -105,7 +105,7 @@ namespace Gastronomy.Dining
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
-            RegisterUtility.OnDiningSpotRemoved(this);
+            DiningUtility.OnDiningSpotRemoved(this);
             base.DeSpawn(mode);
         }
 

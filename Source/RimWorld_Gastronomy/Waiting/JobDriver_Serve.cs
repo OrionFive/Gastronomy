@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using CashRegister;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
-using Gastronomy.TableTops;
 using RimWorld;
 using Verse;
 using Verse.AI;

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using Gastronomy.TableTops;
+using CashRegister.TableTops;
 using RimWorld;
 using UnityEngine;
 using Verse;

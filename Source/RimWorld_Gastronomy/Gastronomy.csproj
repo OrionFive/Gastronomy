@@ -56,6 +56,10 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CashRegister">
+      <HintPath>..\..\..\Cash Register\1.2\Assemblies\CashRegister.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="HugsLib">
       <HintPath>..\..\..\..\..\..\workshop\content\294100\818773962\Assemblies\HugsLib.dll</HintPath>
       <Private>False</Private>
@@ -106,6 +110,7 @@
     <Compile Include="Generic\Symbols.cs" />
     <Compile Include="Restaurant\Debt.cs" />
     <Compile Include="Generic\JobUtility.cs" />
+    <Compile Include="Restaurant\ITab_Register_Restaurant.cs" />
     <Compile Include="Restaurant\RestaurantDebt.cs" />
     <Compile Include="Restaurant\RestaurantOrders.cs" />
     <Compile Include="Restaurant\RestaurantMenu.cs" />
@@ -116,8 +121,6 @@
     <Compile Include="Restaurant\Timetable\TimetableBool.cs" />
     <Compile Include="Restaurant\Timetable\TimetableUtility.cs" />
     <Compile Include="Generic\_DrugPolicy_ExposeData_Patch.cs" />
-    <Compile Include="TableTops\JobDriver_EmptyRegister.cs" />
-    <Compile Include="TableTops\WorkGiver_EmptyRegister.cs" />
     <Compile Include="Waiting\Alert_NoDedicatedWaiter.cs" />
     <Compile Include="Waiting\JobDriver_MakeTable.cs" />
     <Compile Include="Waiting\JobDriver_Serve.cs" />
@@ -125,16 +128,9 @@
     <Compile Include="Dining\_TryBestFoodSourceFor_Patch.cs" />
     <Compile Include="Dining\_JobGiver_GetFood_Patch.cs" />
     <Compile Include="Dining\_IsFoodDispenser_Patch.cs" />
-    <Compile Include="TableTops\ITab_Register.cs" />
-    <Compile Include="TableTops\RegisterUtility.cs" />
     <Compile Include="Generic\RestaurantController.cs" />
-    <Compile Include="TableTops\_AvoidGrid_Patch.cs" />
-    <Compile Include="TableTops\Building_CashRegister.cs" />
-    <Compile Include="TableTops\_GenGrid_Patch.cs" />
     <Compile Include="Generic\ModBaseGastronomy.cs" />
-    <Compile Include="TableTops\PlaceWorker_OnTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TableTops\Building_TableTop.cs" />
     <Compile Include="Waiting\Toils_Waiting.cs" />
     <Compile Include="Waiting\WaitingUtility.cs" />
     <Compile Include="Waiting\WorkGiver_MakeTable.cs" />

@@ -134,5 +134,11 @@ namespace Gastronomy
 			
 			return true;
 		}
+
+		public void RescanDiningSpots()
+		{
+			diningSpots.Clear();
+			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(map));
+		}
 	}
 }

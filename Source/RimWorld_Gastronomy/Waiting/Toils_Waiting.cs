@@ -1,7 +1,7 @@
 using System.Linq;
+using CashRegister;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
-using Gastronomy.TableTops;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -9,7 +9,7 @@ using Verse.AI;
 
 namespace Gastronomy.Waiting
 {
-    internal static class Toils_Waiting
+    public static class Toils_Waiting
     {
         public static Toil TakeOrder(TargetIndex patronInd)
         {

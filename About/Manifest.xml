@@ -4,11 +4,13 @@
   <version>1.2.6</version>
   <dependencies>
     <li>UnlimitedHugs.HugsLib</li>
+	<li>Orion.CashRegister</li>
   </dependencies>
   <incompatibleWith />
   <loadBefore>
   </loadBefore>
   <loadAfter>
+	<li>Orion.CashRegister</li>
   </loadAfter>
   <!-- <suggests> -->
     <!-- <li>ExpansionMod &gt;= 1.5</li> -->

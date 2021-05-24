@@ -5,10 +5,6 @@
 	<ShowAlertNoDedicatedWaiter>Show 'no waiter' warning</ShowAlertNoDedicatedWaiter>
 	<ShowAlertNoDedicatedWaiterDesc>Show a warning when you're opened, but no waiter is set to work at that time.</ShowAlertNoDedicatedWaiterDesc>
   
-	<!-- Cash register -->
-	<MustPlaceOnTable>Must be placed on a table.</MustPlaceOnTable>
-	<MustPlaceOnFreeSurface>Must be placed on clear surface.</MustPlaceOnFreeSurface>
-	
 	<!-- Messages -->
 	<MessageIncomeToday>Your restaurant has earned {0} today.</MessageIncomeToday>
 	

@@ -10,7 +10,7 @@ using Verse.AI.Group;
 
 namespace Gastronomy.Restaurant
 {
-    internal static class RestaurantUtility
+    public static class RestaurantUtility
     {
         private static Dictionary<Pair<Pawn, Region>, bool> dangerousRegionsCache = new Dictionary<Pair<Pawn, Region>, bool>();
 

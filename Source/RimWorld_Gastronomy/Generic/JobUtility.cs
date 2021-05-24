@@ -4,7 +4,7 @@ using Verse.AI;
 
 namespace Gastronomy
 {
-    internal static class JobUtility
+    public static class JobUtility
     {
         public static T FailOnDangerous<T>(this T f, Danger maxDanger) where T : IJobEndable
         {

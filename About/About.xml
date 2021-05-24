@@ -13,9 +13,15 @@
 		<displayName>HugsLib</displayName>
 		<steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
 		</li>
+		<li>
+		<packageId>Orion.CashRegister</packageId>
+		<displayName>Cash Register</displayName>
+		<!-- <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl> -->
+		</li>
 	</modDependencies>
 	<loadAfter>
 		<li>UnlimitedHugs.HugsLib</li>
+		<li>Orion.CashRegister</li>
 	</loadAfter>
     <incompatibleWith>
     </incompatibleWith>

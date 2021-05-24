@@ -13,4 +13,10 @@
 			<li Class="Gastronomy.Dining.CompProperties_CanDineAt"></li>		
 		</value>
 	</Operation>
+	<Operation Class="PatchOperationAdd">
+		<xpath>/Defs/ThingDef[defName = "Gastronomy_CashRegister"]/inspectorTabs</xpath>
+		<value>
+			<li>Gastronomy.Restaurant.ITab_Register_Restaurant</li>		
+		</value>
+	</Operation>
 </Patch>

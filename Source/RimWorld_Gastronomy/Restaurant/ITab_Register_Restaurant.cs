@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Gastronomy.Restaurant;
+using CashRegister;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -10,29 +10,35 @@ using Verse;
 using Verse.Sound;
 using TimetableUtility = Gastronomy.Restaurant.Timetable.TimetableUtility;
 
-namespace Gastronomy.TableTops
+namespace Gastronomy.Restaurant
 {
-    public class ITab_Register : ITab
+    public class ITab_Register_Restaurant : ITab_Register
     {
-        private static readonly Vector2 WinSize = new Vector2(800f, 540f);
         private bool showSettings = true;
         private bool showRadius = false;
         private bool showStats = true;
         private Vector2 menuScrollPosition;
+        private RestaurantController restaurant;
 
-        public ITab_Register()
+        public ITab_Register_Restaurant() : base(new Vector2(800, 540))
         {
-            size = WinSize;
-            labelKey = "TabRegister";
+            labelKey = "TabRegisterRestaurant";
         }
 
-        protected Building_CashRegister Register => (Building_CashRegister) SelThing;
+        public override bool IsVisible
+        {
+            get
+            {
+                restaurant ??= SelThing?.GetRestaurant();
+                return restaurant != null;
+            }
+        }
 
         protected override void FillTab()
         {
-            var rectTop = new Rect(0, 16, WinSize.x, 40).ContractedBy(10);
-            var rectLeft = new Rect(0f, 40+20+16, WinSize.x/2, WinSize.y-40).ContractedBy(10f);
-            var rectRight = new Rect(WinSize.x/2, 40+20+16, WinSize.x/2, WinSize.y-40).ContractedBy(10f);
+            var rectTop = new Rect(0, 16, size.x, 40).ContractedBy(10);
+            var rectLeft = new Rect(0f, 40+20+16, size.x/2, size.y-40).ContractedBy(10f);
+            var rectRight = new Rect(size.x/2, 40+20+16, size.x/2, size.y-40).ContractedBy(10f);
 
             DrawTop(rectTop);
             DrawLeft(rectLeft);
@@ -43,7 +49,7 @@ namespace Gastronomy.TableTops
         {
             TimetableUtility.DoHeader(new Rect(rect) {height = 24});
             rect.yMin += 24;
-            TimetableUtility.DoCell(new Rect(rect) {height = 30}, Register.restaurant.timetableOpen);
+            TimetableUtility.DoCell(new Rect(rect) {height = 30}, restaurant.timetableOpen);
         }
 
         private void DrawRight(Rect rect)
@@ -53,7 +59,7 @@ namespace Gastronomy.TableTops
                 var menuRect = new Rect(rect);
                 menuRect.yMax -= 36;
 
-                Register.restaurant.Menu.GetMenuFilters(out var filter, out var parentFilter);
+                restaurant.Menu.GetMenuFilters(out var filter, out var parentFilter);
                 ThingFilterUI.DoThingFilterConfigWindow(menuRect, ref menuScrollPosition, filter, parentFilter, 
                     1, null, HiddenSpecialThingFilters(), true);
             }
@@ -94,16 +100,16 @@ namespace Gastronomy.TableTops
             var listing = new Listing_Standard();
             listing.Begin(rect);
             {
-                listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref Register.restaurant.openForBusiness, "TabRegisterOpenedTooltip".Translate());
-                listing.CheckboxLabeled("TabRegisterGuests".Translate(), ref Register.restaurant.allowGuests, "TabRegisterGuestsTooltip".Translate());
-                listing.CheckboxLabeled("TabRegisterColonists".Translate(), ref Register.restaurant.allowColonists, "TabRegisterColonistsTooltip".Translate());
-                listing.CheckboxLabeled("TabRegisterPrisoners".Translate(), ref Register.restaurant.allowPrisoners, "TabRegisterPrisonersTooltip".Translate());
+                listing.CheckboxLabeled("TabRegisterOpened".Translate(), ref restaurant.openForBusiness, "TabRegisterOpenedTooltip".Translate());
+                listing.CheckboxLabeled("TabRegisterGuests".Translate(), ref restaurant.allowGuests, "TabRegisterGuestsTooltip".Translate());
+                listing.CheckboxLabeled("TabRegisterColonists".Translate(), ref restaurant.allowColonists, "TabRegisterColonistsTooltip".Translate());
+                listing.CheckboxLabeled("TabRegisterPrisoners".Translate(), ref restaurant.allowPrisoners, "TabRegisterPrisonersTooltip".Translate());
 
                 DrawPrice(listing.GetRect(22));
 
-                //bool guestsPay = Register.restaurant.guestPricePercentage > 0;
+                //bool guestsPay = restaurant.guestPricePercentage > 0;
                 //listing.CheckboxLabeled("TabRegisterGuestsHaveToPay".Translate(), ref guestsPay, "TabRegisterGuestHaveToPayTooltip".Translate(MarketPriceFactor.ToStringPercent()));
-                //Register.restaurant.guestPricePercentage = guestsPay ? MarketPriceFactor : 0;
+                //restaurant.guestPricePercentage = guestsPay ? MarketPriceFactor : 0;
             }
             listing.End();
         }
@@ -111,15 +117,15 @@ namespace Gastronomy.TableTops
         private void DrawPrice(Rect rect)
         {
             // Price
-            var price = Register.restaurant.guestPricePercentage <= 0? (string)"TabRegisterGuestPriceFree".Translate() : Register.restaurant.guestPricePercentage.ToStringPercentEmptyZero();
+            var price = restaurant.guestPricePercentage <= 0? (string)"TabRegisterGuestPriceFree".Translate() : restaurant.guestPricePercentage.ToStringPercentEmptyZero();
             var label = "TabRegisterGuestPrice".Translate(price);
-            var value = Widgets.HorizontalSlider(rect, Register.restaurant.guestPricePercentage, 0, 5, false, label);
+            var value = Widgets.HorizontalSlider(rect, restaurant.guestPricePercentage, 0, 5, false, label);
             TooltipHandler.TipRegionByKey(rect, "TabRegisterGuestPriceTooltip");
 
-            if (value != Register.restaurant.guestPricePercentage)
+            if (value != restaurant.guestPricePercentage)
             {
                 SoundDefOf.DragSlider.PlayOneShotOnCamera();
-                Register.restaurant.guestPricePercentage = value;
+                restaurant.guestPricePercentage = value;
             }
         }
 
@@ -140,7 +146,7 @@ namespace Gastronomy.TableTops
 
                 if (Register.radius != oldValue)
                 {
-                    Register.ScanDiningSpots();
+                    restaurant.RescanDiningSpots();
                 }
             }
             listing.End();
@@ -156,21 +162,21 @@ namespace Gastronomy.TableTops
             var listing = new Listing_Standard();
             listing.Begin(rect);
             {
-                var patrons = Register.restaurant.Patrons;
-                var orders = Register.restaurant.Orders.AllOrders;
-                var debts = Register.restaurant.Debts.AllDebts;
-                var stock = Register.restaurant.Stock.AllStock;
-                var ordersForServing = Register.restaurant.Orders.AvailableOrdersForServing.ToArray();
-                var ordersForCooking = Register.restaurant.Orders.AvailableOrdersForCooking.ToArray();
+                var patrons = restaurant.Patrons;
+                var orders = restaurant.Orders.AllOrders;
+                var debts = restaurant.Debts.AllDebts;
+                var stock = restaurant.Stock.AllStock;
+                var ordersForServing = restaurant.Orders.AvailableOrdersForServing.ToArray();
+                var ordersForCooking = restaurant.Orders.AvailableOrdersForCooking.ToArray();
 
-                listing.LabelDouble("TabRegisterSeats".Translate(), Register.restaurant.Seats.ToString());
+                listing.LabelDouble("TabRegisterSeats".Translate(), restaurant.Seats.ToString());
                 listing.LabelDouble("TabRegisterPatrons".Translate(), patrons.Count.ToString(), patrons.Select(p=>p.LabelShort).ToCommaList());
                 DrawOrders(listing, "TabRegisterTotalOrders".Translate(), orders);
                 DrawOrders(listing, "TabRegisterNeedsServing".Translate(), ordersForServing);
                 DrawOrders(listing, "TabRegisterNeedsCooking".Translate(), ordersForCooking);
-                DrawStock(listing, "TabRegisterStocked".Translate(), stock, Register.restaurant);
-                listing.LabelDouble("TabRegisterEarnedYesterday".Translate(), Register.restaurant.Debts.incomeYesterday.ToStringMoney());
-                listing.LabelDouble("TabRegisterEarnedToday".Translate(), Register.restaurant.Debts.incomeToday.ToStringMoney());
+                DrawStock(listing, "TabRegisterStocked".Translate(), stock, restaurant);
+                listing.LabelDouble("TabRegisterEarnedYesterday".Translate(), restaurant.Debts.incomeYesterday.ToStringMoney());
+                listing.LabelDouble("TabRegisterEarnedToday".Translate(), restaurant.Debts.incomeToday.ToStringMoney());
                 DrawDebts(listing, "TabRegisterDebts".Translate(), debts);
 
                 //listing.LabelDouble("TabRegisterStocked".Translate(), stock.Sum(s=>s.stackCount).ToString(), stock.Select(s=>s.def).Distinct().Select(s=>s.label).ToCommaList());

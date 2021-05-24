@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CashRegister.TableTops;
 using Gastronomy.Restaurant;
 using JetBrains.Annotations;
 using RimWorld;
@@ -18,6 +19,26 @@ namespace Gastronomy.Dining
         private static readonly ThoughtDef boughtFoodThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_BoughtFood");
         private static readonly ThoughtDef servicedThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_Serviced");
         private static readonly ThoughtDef servicedMoodThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_ServicedMood");
+
+        static DiningUtility()
+        {
+            TableTopUtility.onBuildingSpawned.AddListener(NotifyBuildingSpawned);
+            TableTopUtility.onBuildingDespawned.AddListener(NotifyBuildingDespawned);
+        }
+
+        private static void NotifyBuildingSpawned(Thing thing, Building building)
+        {
+            if (thing is DiningSpot)
+            {
+                thing.Destroy(DestroyMode.Cancel);
+            }
+        }
+
+        private static void NotifyBuildingDespawned(this Thing affected, Building building)
+        {
+            // Notify potential dining spots
+            if (CanPossiblyDineAt(affected.def)) affected.TryGetComp<CompCanDineAt>()?.Notify_BuildingDespawned(building, affected.Map);
+        }
 
         public static IEnumerable<DiningSpot> GetAllDiningSpots([NotNull] Map map)
         {
@@ -164,6 +185,16 @@ namespace Gastronomy.Dining
             if (pawn.story.traits.HasTrait(TraitDefOf.Greedy)) stage += 1;
             if (pawn.story.traits.HasTrait(TraitDef.Named("Gourmand"))) stage -= 1;
             return Mathf.Clamp(stage, 0, 5);
+        }
+
+        public static void OnDiningSpotCreated([NotNull]DiningSpot diningSpot)
+        {
+            diningSpot.GetRestaurant().diningSpots.Add(diningSpot);
+        }
+
+        public static void OnDiningSpotRemoved([NotNull]DiningSpot diningSpot)
+        {
+            diningSpot.GetRestaurant().diningSpots.Remove(diningSpot);
         }
     }
 }
