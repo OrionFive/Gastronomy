@@ -13,7 +13,7 @@
 	<MessageIncomeToday>Votre restaurant a gagné {0} aujourd'hui.</MessageIncomeToday>
 	
 	<!-- Register tab -->
-	<TabRegister>Gérer</TabRegister>
+	<TabRegisterRestaurant>Gérer</TabRegisterRestaurant>
 	<!-- Settings -->
 	<TabRegisterOpened>Ouvert</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>Lorsque coché, les clients peuvent passer des commandes pendant les heures ouvrables.</TabRegisterOpenedTooltip>

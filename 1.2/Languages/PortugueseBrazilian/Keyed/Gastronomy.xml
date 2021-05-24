@@ -13,7 +13,7 @@
 	<MessageIncomeToday>Seu restaurante ganhou {0} hoje.</MessageIncomeToday>
 	
 	<!-- Register tab -->
-	<TabRegister>Registro</TabRegister>
+	<TabRegisterRestaurant>Registro</TabRegisterRestaurant>
 	<!-- Settings -->
 	<TabRegisterOpened>Aberto</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>Quando verificado, os clientes podem fazer pedidos durante o horário comercial.</TabRegisterOpenedTooltip>

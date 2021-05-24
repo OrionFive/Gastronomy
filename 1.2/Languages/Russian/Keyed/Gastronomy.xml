@@ -13,7 +13,7 @@
 	<MessageIncomeToday>Доход ресторана за сегодня: {0}.</MessageIncomeToday>
 	
 	<!-- Register tab -->
-	<TabRegister>Настройки</TabRegister>
+	<TabRegisterRestaurant>Настройки</TabRegisterRestaurant>
 	<!-- Settings -->
 	<TabRegisterOpened>Открыто</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>Если включено, посетители смогут делать заказы в рабочее время.</TabRegisterOpenedTooltip>
