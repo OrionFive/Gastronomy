@@ -1,6 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
   
+	<!-- Errors -->
+	<ErrorRequiresCashRegister>Gastronomy now requires the 'Cash Register' mod to be loaded.
+
+I had to create it in order to be able to work on a new feature. Sorry about this inconvenience.
+
+If you add the 'Cash Register' mod, Gastronomy will continue working as before.
+
+
+-- Regards, Orion</ErrorRequiresCashRegister>
+  
 	<!-- Settings -->
 	<ShowAlertNoDedicatedWaiter>Show 'no waiter' warning</ShowAlertNoDedicatedWaiter>
 	<ShowAlertNoDedicatedWaiterDesc>Show a warning when you're opened, but no waiter is set to work at that time.</ShowAlertNoDedicatedWaiterDesc>
@@ -10,6 +20,7 @@
 	
 	<!-- Register tab -->
 	<TabRegisterRestaurant>Restaurant</TabRegisterRestaurant>
+	
 	<!-- Settings -->
 	<TabRegisterOpened>Opened</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>When checked, patrons can make orders during business hours.</TabRegisterOpenedTooltip>
