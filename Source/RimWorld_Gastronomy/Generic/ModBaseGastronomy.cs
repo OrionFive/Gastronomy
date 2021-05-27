@@ -1,4 +1,3 @@
-using System;
 using CashRegister;
 using Gastronomy.Restaurant;
 using HugsLib;
@@ -17,7 +16,7 @@ namespace Gastronomy
         {
             settings = new Settings(Settings);
 
-            if (!RegisterUtility.TryAddTab<ITab_Register_Restaurant>())
+            if (RegisterUtility.cashRegisterDef == null)
             {
                 GenUI.ErrorDialog("ErrorRequiresCashRegister".Translate());
             }
