@@ -9,14 +9,14 @@
 	</supportedVersions>
 	<modDependencies>
 		<li>
-		<packageId>UnlimitedHugs.HugsLib</packageId>
-		<displayName>HugsLib</displayName>
-		<steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
+			<packageId>UnlimitedHugs.HugsLib</packageId>
+			<displayName>HugsLib</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
 		</li>
 		<li>
-		<packageId>Orion.CashRegister</packageId>
-		<displayName>Cash Register</displayName>
-		<!-- <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl> -->
+			<packageId>Orion.CashRegister</packageId>
+			<displayName>Cash Register</displayName>
+			<!-- <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl> -->
 		</li>
 	</modDependencies>
 	<loadAfter>

@@ -9,7 +9,7 @@
 	<MessageIncomeToday>Your restaurant has earned {0} today.</MessageIncomeToday>
 	
 	<!-- Register tab -->
-	<TabRegisterRestaurant>Register</TabRegisterRestaurant>
+	<TabRegisterRestaurant>Restaurant</TabRegisterRestaurant>
 	<!-- Settings -->
 	<TabRegisterOpened>Opened</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>When checked, patrons can make orders during business hours.</TabRegisterOpenedTooltip>

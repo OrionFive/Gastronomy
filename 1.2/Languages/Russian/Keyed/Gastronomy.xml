@@ -6,14 +6,14 @@
 	<ShowAlertNoDedicatedWaiterDesc>Показывать предупреждение, если нет доступных рабочих в часы работы ресторана</ShowAlertNoDedicatedWaiterDesc>
   
 	<!-- Cash register -->
-	<MustPlaceOnTable>Должен быть размещён на столе</MustPlaceOnTable>
-	<MustPlaceOnFreeSurface>Должен быть размещен на свободной поверхности</MustPlaceOnFreeSurface>
+	<!-- <MustPlaceOnTable>Должен быть размещён на столе</MustPlaceOnTable> -->
+	<!-- <MustPlaceOnFreeSurface>Должен быть размещен на свободной поверхности</MustPlaceOnFreeSurface> -->
 	
 	<!-- Messages -->
 	<MessageIncomeToday>Доход ресторана за сегодня: {0}.</MessageIncomeToday>
 	
 	<!-- Register tab -->
-	<TabRegisterRestaurant>Настройки</TabRegisterRestaurant>
+	<!-- <TabRegisterRestaurant>Настройки</TabRegisterRestaurant> -->
 	<!-- Settings -->
 	<TabRegisterOpened>Открыто</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>Если включено, посетители смогут делать заказы в рабочее время.</TabRegisterOpenedTooltip>

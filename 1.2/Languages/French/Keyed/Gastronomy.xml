@@ -6,14 +6,14 @@
 	<ShowAlertNoDedicatedWaiterDesc>Afficher un avertissement lorsque vous êtes ouvert, mais qu'aucun serveur n'est configuré pour travailler à ce moment-là.</ShowAlertNoDedicatedWaiterDesc>
   
 	<!-- Cash register -->
-	<MustPlaceOnTable>Doit être placé sur une table.</MustPlaceOnTable>
-	<MustPlaceOnFreeSurface>Doit être placé sur une surface vide.</MustPlaceOnFreeSurface>
+	<!-- <MustPlaceOnTable>Doit être placé sur une table.</MustPlaceOnTable> -->
+	<!-- <MustPlaceOnFreeSurface>Doit être placé sur une surface vide.</MustPlaceOnFreeSurface> -->
 	
 	<!-- Messages -->
 	<MessageIncomeToday>Votre restaurant a gagné {0} aujourd'hui.</MessageIncomeToday>
 	
 	<!-- Register tab -->
-	<TabRegisterRestaurant>Gérer</TabRegisterRestaurant>
+	<!-- <TabRegisterRestaurant>Gérer</TabRegisterRestaurant> -->
 	<!-- Settings -->
 	<TabRegisterOpened>Ouvert</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>Lorsque coché, les clients peuvent passer des commandes pendant les heures ouvrables.</TabRegisterOpenedTooltip>

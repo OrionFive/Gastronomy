@@ -6,14 +6,14 @@
 	<ShowAlertNoDedicatedWaiterDesc>Mostre um aviso quando estiver aberto, mas nenhum garçom está pronto para trabalhar naquele momento..</ShowAlertNoDedicatedWaiterDesc>
   
 	<!-- Cash register -->
-	<MustPlaceOnTable>Deve ser colocado em uma mesa.</MustPlaceOnTable>
-	<MustPlaceOnFreeSurface>Deve ser colocado em superfície clara.</MustPlaceOnFreeSurface>
+	<!-- <MustPlaceOnTable>Deve ser colocado em uma mesa.</MustPlaceOnTable> -->
+	<!-- <MustPlaceOnFreeSurface>Deve ser colocado em superfície clara.</MustPlaceOnFreeSurface> -->
 	
 	<!-- Messages -->
 	<MessageIncomeToday>Seu restaurante ganhou {0} hoje.</MessageIncomeToday>
 	
 	<!-- Register tab -->
-	<TabRegisterRestaurant>Registro</TabRegisterRestaurant>
+	<!-- <TabRegisterRestaurant>Registro</TabRegisterRestaurant> -->
 	<!-- Settings -->
 	<TabRegisterOpened>Aberto</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>Quando verificado, os clientes podem fazer pedidos durante o horário comercial.</TabRegisterOpenedTooltip>
