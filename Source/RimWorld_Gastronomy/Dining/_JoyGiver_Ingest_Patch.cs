@@ -19,7 +19,6 @@ namespace Gastronomy.Dining
             internal static bool Prefix(Pawn pawn, Predicate<Thing> extraValidator, ref Job __result)
             {
                 var restaurant = pawn.GetRestaurant();
-                if (restaurant?.IsOpenedRightNow == false) return true; // Run regular code
                 //Log.Message($"{pawn.NameShortColored} is looking for restaurant (as joy job).");
                 
                 bool allowDrug = !pawn.IsTeetotaler();

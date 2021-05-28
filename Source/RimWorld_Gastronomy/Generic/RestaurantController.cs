@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using CashRegister;
+using CashRegister.TableTops;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
-using Gastronomy.Restaurant.Timetable;
+using Gastronomy.TableTops;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
@@ -19,6 +21,8 @@ namespace Gastronomy
 		public RestaurantController(Map map) : base(map) { }
 
 		[NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
+		[NotNull] public IList<Building_CashRegister> Registers { get; private set; } = Array.Empty<Building_CashRegister>();
+
 		[NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
 		private RestaurantMenu menu;
 		private RestaurantOrders orders;
@@ -27,7 +31,10 @@ namespace Gastronomy
 
 		private int day;
 
-		public bool IsOpenedRightNow => openForBusiness && timetableOpen.CurrentAssignment(map);
+		public bool IsOpenedRightNow => openForBusiness && AnyRegisterOpen;
+
+		private bool AnyRegisterOpen => Registers.Any(r => r?.IsActive == true);
+
 		public bool openForBusiness = true;
 
 		public bool allowGuests = true;
@@ -37,8 +44,6 @@ namespace Gastronomy
 		public float guestPricePercentage = 1;
 
 		public event Action onNextDay;
-
-		public TimetableBool timetableOpen;
 
 		public int Seats => diningSpots.Sum(s => s.GetMaxSeats());
 		[NotNull] public ReadOnlyCollection<Pawn> Patrons => SpawnedDiningPawns.AsReadOnly();
@@ -65,7 +70,6 @@ namespace Gastronomy
 			Scribe_Values.Look(ref allowPrisoners, "allowPrisoners", false);
 			Scribe_Values.Look(ref guestPricePercentage, "guestPricePercentage", 1);
 			Scribe_Values.Look(ref day, "day");
-			Scribe_Deep.Look(ref timetableOpen, "timetableOpen");
 			Scribe_Deep.Look(ref menu, "menu");
 			Scribe_Deep.Look(ref stock, "stock", this);
 			Scribe_Deep.Look(ref orders, "orders", this);
@@ -75,7 +79,6 @@ namespace Gastronomy
 
 		private void InitDeepFieldsInitial()
 		{
-			timetableOpen ??= new TimetableBool();
 			menu ??= new RestaurantMenu();
 			orders ??= new RestaurantOrders(this);
 			debts ??= new RestaurantDebt(this);
@@ -92,12 +95,19 @@ namespace Gastronomy
 			base.FinalizeInit();
 
 			InitDeepFieldsInitial();
-
 			diningSpots.Clear();
 			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(map));
 			stock.RareTick();
 			orders.RareTick();
 			debts.RareTick();
+
+			TableTop_Events.onBuildingSpawned.AddListener(RefreshRegisters);
+			TableTop_Events.onBuildingDespawned.AddListener(RefreshRegisters);
+		}
+
+		private void RefreshRegisters(Building building, Map map)
+		{
+			Registers = RegisterUtility.GetRegisters(map);
 		}
 
 		public override void MapComponentTick()

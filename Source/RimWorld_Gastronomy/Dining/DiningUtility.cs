@@ -22,11 +22,11 @@ namespace Gastronomy.Dining
 
         static DiningUtility()
         {
-            TableTopUtility.onBuildingSpawned.AddListener(NotifyBuildingSpawned);
-            TableTopUtility.onBuildingDespawned.AddListener(NotifyBuildingDespawned);
+            TableTop_Events.onThingAffectedBySpawnedBuilding.AddListener(NotifyAffectedBySpawn);
+            TableTop_Events.onThingAffectedByDespawnedBuilding.AddListener(NotifyAffectedByDespawn);
         }
 
-        private static void NotifyBuildingSpawned(Thing thing, Building building)
+        private static void NotifyAffectedBySpawn(Thing thing, Building building)
         {
             if (thing is DiningSpot)
             {
@@ -34,7 +34,7 @@ namespace Gastronomy.Dining
             }
         }
 
-        private static void NotifyBuildingDespawned(this Thing affected, Building building)
+        private static void NotifyAffectedByDespawn(this Thing affected, Building building)
         {
             // Notify potential dining spots
             if (CanPossiblyDineAt(affected.def)) affected.TryGetComp<CompCanDineAt>()?.Notify_BuildingDespawned(building, affected.Map);

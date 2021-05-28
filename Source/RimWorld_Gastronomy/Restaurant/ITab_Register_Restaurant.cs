@@ -8,7 +8,6 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
-using TimetableUtility = Gastronomy.Restaurant.Timetable.TimetableUtility;
 
 namespace Gastronomy.Restaurant
 {
@@ -20,7 +19,7 @@ namespace Gastronomy.Restaurant
         private Vector2 menuScrollPosition;
         private RestaurantController restaurant;
 
-        public ITab_Register_Restaurant() : base(new Vector2(800, 540))
+        public ITab_Register_Restaurant() : base(new Vector2(800, 500))
         {
             labelKey = "TabRegisterRestaurant";
         }
@@ -36,20 +35,11 @@ namespace Gastronomy.Restaurant
 
         protected override void FillTab()
         {
-            var rectTop = new Rect(0, 16, size.x, 40).ContractedBy(10);
-            var rectLeft = new Rect(0f, 40+20+16, size.x/2, size.y-40).ContractedBy(10f);
-            var rectRight = new Rect(size.x/2, 40+20+16, size.x/2, size.y-40).ContractedBy(10f);
+            var rectLeft = new Rect(0f, 0, size.x/2, size.y).ContractedBy(10f);
+            var rectRight = new Rect(size.x/2, 0, size.x/2, size.y).ContractedBy(10f);
 
-            DrawTop(rectTop);
             DrawLeft(rectLeft);
             DrawRight(rectRight);
-        }
-
-        private void DrawTop(Rect rect)
-        {
-            TimetableUtility.DoHeader(new Rect(rect) {height = 24});
-            rect.yMin += 24;
-            TimetableUtility.DoCell(new Rect(rect) {height = 30}, restaurant.timetableOpen);
         }
 
         private void DrawRight(Rect rect)

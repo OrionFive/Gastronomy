@@ -18,8 +18,8 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	<!-- Messages -->
 	<MessageIncomeToday>Your restaurant has earned {0} today.</MessageIncomeToday>
 	
-	<!-- Register tab -->
-	<TabRegisterRestaurant>Restaurant</TabRegisterRestaurant>
+	<!-- Register tab - can't be very long (Restaurant is already too long) -->
+	<TabRegisterRestaurant>Dining</TabRegisterRestaurant>
 	
 	<!-- Settings -->
 	<TabRegisterOpened>Opened</TabRegisterOpened>

@@ -117,8 +117,6 @@
     <Compile Include="Restaurant\RestaurantUtility.cs" />
     <Compile Include="Restaurant\Order.cs" />
     <Compile Include="Generic\Settings.cs" />
-    <Compile Include="Restaurant\Timetable\TimetableBool.cs" />
-    <Compile Include="Restaurant\Timetable\TimetableUtility.cs" />
     <Compile Include="Generic\_DrugPolicy_ExposeData_Patch.cs" />
     <Compile Include="Waiting\Alert_NoDedicatedWaiter.cs" />
     <Compile Include="Waiting\JobDriver_MakeTable.cs" />
