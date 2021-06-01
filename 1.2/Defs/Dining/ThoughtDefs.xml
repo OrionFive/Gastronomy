@@ -34,6 +34,21 @@
   </ThoughtDef>
 
   <ThoughtDef>
+	<defName>Gastronomy_HadToWait</defName>
+    <showBubble>true</showBubble>
+	<durationDays>2</durationDays>
+	<stackLimit>5</stackLimit>
+	<stackedEffectMultiplier>1.2</stackedEffectMultiplier>
+	<stages>
+	  <li>
+		<label>had to wait for food</label>
+ 		<description>I had to wait long at the restaurant.</description>
+		<baseMoodEffect>-1</baseMoodEffect>
+	  </li>
+	</stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
 	<defName>Gastronomy_ServicedMood</defName>
 	<durationDays>1</durationDays>
 	<stackLimit>5</stackLimit>

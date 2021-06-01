@@ -19,6 +19,7 @@ namespace Gastronomy.Dining
         private static readonly ThoughtDef boughtFoodThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_BoughtFood");
         private static readonly ThoughtDef servicedThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_Serviced");
         private static readonly ThoughtDef servicedMoodThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_ServicedMood");
+        private static readonly ThoughtDef hadToWaitThoughtDef = DefDatabase<ThoughtDef>.GetNamed("Gastronomy_HadToWait");
 
         static DiningUtility()
         {
@@ -58,7 +59,7 @@ namespace Gastronomy.Dining
             {
                 var spot = (DiningSpot) thing;
                 //Log.Message($"Validating spot for {pawn.NameShortColored}: social = {spot.IsSociallyProper(pawn)}, political = {spot.IsPoliticallyProper(pawn)}, " 
-                //            + $"canReserve = {pawn.CanReserve(spot, spot.GetMaxReservations(), 0)}, canDineHere = {spot.MayDineHere(pawn)}, " 
+                //            + $"canReserve = {CanReserve(pawn, spot)}, canDineHere = {spot.CanDineHere(pawn)}, isDangerous = {RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion())}," 
                 //            + $"extraValidator = { extraSpotValidator == null || extraSpotValidator.Invoke(spot)}");
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && CanReserve(pawn, spot) && !spot.HostileTo(pawn)
                        && spot.CanDineHere(pawn) && !RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
@@ -146,12 +147,17 @@ namespace Gastronomy.Dining
         {
             if (patron.needs.mood == null) return;
 
-            int stage = GetServiceStage(patron, waiter, hoursWaited);
+            int stage = GetServiceStage(patron, waiter);
             patron.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(servicedThoughtDef, stage), waiter);
             patron.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(servicedMoodThoughtDef, stage));
         }
 
-        private static int GetServiceStage(Pawn patron, Pawn waiter, float hoursWaited)
+        public static void GiveWaitThought(Pawn patron)
+        {
+            patron.needs.mood?.thoughts.memories.TryGainMemory(hadToWaitThoughtDef);
+        }
+
+        private static int GetServiceStage(Pawn patron, Pawn waiter)
         {
             float score = 1 * waiter.GetStatValue(StatDefOf.SocialImpact);
             score += waiter.story.traits.DegreeOfTrait(TraitDefOf.Industriousness) * 0.25f;
@@ -163,8 +169,9 @@ namespace Gastronomy.Dining
             score += waiter.story.traits.HasTrait(TraitDefOf.CreepyBreathing) ? -0.1f : 0;
             if(waiter.needs.mood != null) score += (waiter.needs.mood.CurLevelPercentage - 0.5f) * 0.6f; // = +-0.3
             score += patron.relations.OpinionOf(waiter) / 200f; // = +-0.5
-            score += (1 - hoursWaited) * 0.2f;
             int stage = Mathf.RoundToInt(Mathf.Clamp(score, 0, 2)*2); // 0-4
+            //Log.Message($"Service score of {waiter.NameShortColored} serving {patron.NameShortColored}:\n"
+            //            + $"opinion = {patron.relations.OpinionOf(waiter) * 1f / 200:F2}, mood = {(waiter.needs.mood.CurLevelPercentage - 0.5f) * 0.6f} final = {score:F2}, stage = {stage}");
 
             return stage;
         }
@@ -196,5 +203,50 @@ namespace Gastronomy.Dining
         {
             diningSpot.GetRestaurant().diningSpots.Remove(diningSpot);
         }
+
+        // Copied from ToilEffects, had to remove Faction check
+        public static Toil WithProgressBar(
+            this Toil toil,
+            TargetIndex ind,
+            Func<float> progressGetter,
+            bool interpolateBetweenActorAndTarget = false,
+            float offsetZ = -0.5f)
+        {
+            Effecter effecter = null;
+            toil.AddPreTickAction(() =>
+            {
+                //if (toil.actor.Faction != Faction.OfPlayer)
+                //    return;
+                if (effecter == null)
+                {
+                    effecter = EffecterDefOf.ProgressBar.Spawn();
+                }
+                else
+                {
+                    LocalTargetInfo target = toil.actor.CurJob.GetTarget(ind);
+                    if (!target.IsValid || target.HasThing && !target.Thing.Spawned)
+                        effecter.EffectTick((TargetInfo) toil.actor, TargetInfo.Invalid);
+                    else if (interpolateBetweenActorAndTarget)
+                        effecter.EffectTick(toil.actor.CurJob.GetTarget(ind).ToTargetInfo(toil.actor.Map), (TargetInfo) toil.actor);
+                    else
+                        effecter.EffectTick(toil.actor.CurJob.GetTarget(ind).ToTargetInfo(toil.actor.Map), TargetInfo.Invalid);
+                    MoteProgressBar mote = ((SubEffecter_ProgressBar) effecter.children[0]).mote;
+                    if (mote == null)
+                        return;
+                    mote.progress = Mathf.Clamp01(progressGetter());
+                    mote.offsetZ = offsetZ;
+                }
+            });
+            toil.AddFinishAction(() =>
+            {
+                if (effecter == null)
+                    return;
+                effecter.Cleanup();
+                effecter = null;
+            });
+            return toil;
+        }
+
+
     }
 }

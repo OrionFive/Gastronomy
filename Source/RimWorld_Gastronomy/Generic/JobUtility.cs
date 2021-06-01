@@ -1,3 +1,4 @@
+using Gastronomy.Dining;
 using Gastronomy.Restaurant;
 using Verse;
 using Verse.AI;
@@ -27,7 +28,8 @@ namespace Gastronomy
             {
                 var pawn = f.GetActor();
                 if (pawn.jobs.curDriver.ticksLeftThisToil > 0) return JobCondition.Ongoing;
-                Log.Message($"{pawn.NameShortColored} failed {pawn.CurJobDef?.label} because of timeout.");
+                DiningUtility.GiveWaitThought(pawn);
+                //Log.Message($"{pawn.NameShortColored} ended {pawn.CurJobDef?.label} because of wait timeout.");
                 return JobCondition.Incompletable;
             }
 
