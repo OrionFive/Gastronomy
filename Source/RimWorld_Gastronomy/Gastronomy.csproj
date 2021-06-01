@@ -122,6 +122,7 @@
     <Compile Include="Waiting\Alert_NoWaiter.cs" />
     <Compile Include="Waiting\JobDriver_MakeTable.cs" />
     <Compile Include="Waiting\JobDriver_Serve.cs" />
+    <Compile Include="Waiting\JobDriver_StandBy.cs" />
     <Compile Include="Waiting\JobDriver_TakeOrder.cs" />
     <Compile Include="Dining\_TryBestFoodSourceFor_Patch.cs" />
     <Compile Include="Dining\_JobGiver_GetFood_Patch.cs" />
@@ -133,6 +134,7 @@
     <Compile Include="Waiting\WaitingUtility.cs" />
     <Compile Include="Waiting\WorkGiver_MakeTable.cs" />
     <Compile Include="Waiting\WorkGiver_Serve.cs" />
+    <Compile Include="Waiting\WorkGiver_StandBy.cs" />
     <Compile Include="Waiting\WorkGiver_TakeOrder.cs" />
   </ItemGroup>
   <ItemGroup>

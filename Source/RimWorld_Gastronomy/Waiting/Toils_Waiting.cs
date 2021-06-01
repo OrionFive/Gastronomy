@@ -2,6 +2,7 @@ using System.Linq;
 using CashRegister;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
+using Gastronomy.TableTops;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -85,6 +86,52 @@ namespace Gastronomy.Waiting
                     
                     var symbol = desiredFoodDef.uiIcon;
                     if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
+                }
+            }
+        }
+
+        public static Toil WaitForBetterJob(TargetIndex registerInd)
+        {
+            // Talk to patron
+            var toil = new Toil();
+
+            toil.initAction = InitAction;
+            toil.tickAction = TickAction;
+            toil.socialMode = RandomSocialMode.Normal;
+            toil.defaultCompleteMode = ToilCompleteMode.Never;
+            toil.FailOnDestroyedOrNull(registerInd);
+            //toil.FailOnMentalState(patronInd);
+
+            return toil;
+
+            void InitAction()
+            {
+                toil.actor.pather.StopDead();
+                var register = toil.actor.CurJob.GetTarget(registerInd).Thing;
+                var offset = register.InteractionCell - register.Position;
+                toil.actor.rotationTracker.FaceCell(toil.actor.Position + offset);
+            }
+
+            void TickAction()
+            {
+                if (toil.actor.CurJob?.GetTarget(registerInd).Thing is Building_CashRegister register)
+                {
+                    if (!register.HasToWork(toil.actor))
+                    {
+                        toil.actor.jobs.curDriver.ReadyForNextToil();
+                        return;
+                    }
+                }
+                else
+                {
+                    Log.Message($"Waiting - register disappeared.");
+                    toil.actor.jobs.curDriver.ReadyForNextToil();
+                    return;
+                }
+
+                if (toil.actor.IsHashIntervalTick(176))
+                {
+                    toil.actor.jobs.CheckForJobOverride();
                 }
             }
         }
@@ -356,6 +403,18 @@ namespace Gastronomy.Waiting
         {
             if (pawn1.interactions.InteractedTooRecentlyToInteract()) return;
             MoteMaker.MakeInteractionBubble(pawn1, pawn2, ThingDefOf.Mote_Speech, symbol);
+        }
+
+        public static Toil GetInteractionCell(TargetIndex registerInd, TargetIndex cellInd)
+        {
+            var toil = new Toil {atomicWithPrevious = true};
+            toil.initAction = () => {
+                if (toil.actor.CurJob?.GetTarget(registerInd).Thing is Building_CashRegister register)
+                {
+                    toil.actor.CurJob.SetTarget(cellInd, register.InteractionCell);
+                }
+            };
+            return toil;
         }
     }
 }

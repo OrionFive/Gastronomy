@@ -2,6 +2,20 @@
 <Defs>
 
   <WorkGiverDef>
+    <defName>Gastronomy_StandBy</defName>
+    <label>stand by</label>
+    <giverClass>Gastronomy.Waiting.WorkGiver_StandBy</giverClass>
+    <workType>Gastronomy_Waiting</workType>
+    <priorityInType>0</priorityInType>
+    <!-- <fixedBillGiverDefs> -->
+      <!-- <li>Gastronomy_CashRegister</li> -->
+      <!-- <li>Gastronomy_DiningSpot</li> -->
+    <!-- </fixedBillGiverDefs> -->
+    <verb>stand by</verb>
+    <gerund>standing by</gerund>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
     <defName>Gastronomy_TakeOrder</defName>
     <label>take orders</label>
     <giverClass>Gastronomy.Waiting.WorkGiver_TakeOrder</giverClass>

@@ -2,6 +2,13 @@
 <Defs>
 
   <JobDef>
+    <defName>Gastronomy_StandBy</defName>
+    <driverClass>Gastronomy.Waiting.JobDriver_StandBy</driverClass>
+    <reportString>waiting for restaurant work.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+  
+  <JobDef>
     <defName>Gastronomy_TakeOrder</defName>
     <driverClass>Gastronomy.Waiting.JobDriver_TakeOrder</driverClass>
     <reportString>taking order from TargetB.</reportString>
