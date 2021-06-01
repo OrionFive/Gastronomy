@@ -11,10 +11,6 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 
 -- Regards, Orion</ErrorRequiresCashRegister>
   
-	<!-- Settings -->
-	<ShowAlertNoDedicatedWaiter>Show 'no waiter' warning</ShowAlertNoDedicatedWaiter>
-	<ShowAlertNoDedicatedWaiterDesc>Show a warning when you're opened, but no waiter is set to work at that time.</ShowAlertNoDedicatedWaiterDesc>
-  
 	<!-- Messages -->
 	<MessageIncomeToday>Your restaurant has earned {0} today.</MessageIncomeToday>
 	
@@ -55,7 +51,9 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	<JobDineGoReport>Eating at restaurant.</JobDineGoReport>
 	
 	<!-- Alerts -->
-	<NoDedicatedWaiter>No dedicated waiter</NoDedicatedWaiter>
-	<NoDedicatedWaiterExplanation>You have dining tables and are opened, but there are no dedicated waiters right now.\nMake sure at least one colonist is set as waiter and scheduled to work while you're opened.\n\nYou can also modify the opening times by building a cash register.</NoDedicatedWaiterExplanation>
+	<AlertNoRegister>No register</AlertNoRegister>
+	<AlertNoRegisterExplanation>To open your restaurant, you need at least one register. This can be built from the production tab.</AlertNoRegisterExplanation>
+	<AlertNoWaiter>No waiter</AlertNoWaiter>
+	<AlertNoWaiterExplanation>To operate your restaurant, you need to set up at least one shift at a register and assign a capable waiter.</AlertNoWaiterExplanation>
 
 </LanguageData>

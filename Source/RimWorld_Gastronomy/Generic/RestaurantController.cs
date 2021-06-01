@@ -24,6 +24,7 @@ namespace Gastronomy
 		[NotNull] public IList<Building_CashRegister> Registers { get; private set; } = Array.Empty<Building_CashRegister>();
 
 		[NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
+		[NotNull] private readonly List<Pawn> spawnedActiveStaffResult = new List<Pawn>();
 		private RestaurantMenu menu;
 		private RestaurantOrders orders;
 		private RestaurantDebt debts;
@@ -60,6 +61,17 @@ namespace Gastronomy
 				return spawnedDiningPawnsResult;
 			}
 		}
+		[NotNull] public List<Pawn> ActiveStaff
+		{
+			get
+			{
+				spawnedActiveStaffResult.Clear();
+				var activeShifts = Registers.SelectMany(r => r.shifts.Where(s => s.IsActive));
+				spawnedActiveStaffResult.AddRange(activeShifts.SelectMany(s => s.assigned).Where(p => p.MapHeld == map));
+				return spawnedActiveStaffResult;
+			}
+		}
+
 
 		public override void ExposeData()
 		{
@@ -143,6 +155,11 @@ namespace Gastronomy
 			if (!allowPrisoners && isPrisoner) return false;
 			
 			return true;
+		}
+
+		public bool HasToWork(Pawn pawn)
+		{
+			return Registers.Any(r => r?.HasToWork(pawn) == true);
 		}
 
 		public void RescanDiningSpots()

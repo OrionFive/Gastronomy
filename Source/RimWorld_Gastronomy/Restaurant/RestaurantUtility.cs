@@ -38,6 +38,11 @@ namespace Gastronomy.Restaurant
             return thing.Map.GetComponent<RestaurantController>();
         }
 
+        public static RestaurantController GetRestaurant([NotNull]this Map map)
+        {
+            return map.GetComponent<RestaurantController>();
+        }
+
         public static void GetRequestGroup(Thing thing)
         {
             foreach (ThingRequestGroup group in Enum.GetValues(typeof(ThingRequestGroup)))
