@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
 using RimWorld;
@@ -18,7 +19,11 @@ namespace Gastronomy.Waiting
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            return !pawn.GetRestaurant().Orders.AvailableOrdersForServing.Any();
+            var restaurant = pawn.GetRestaurant();
+
+            if(!forced && !restaurant.HasToWork(pawn)) return true;
+
+            return !restaurant.Orders.AvailableOrdersForServing.Any();
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)

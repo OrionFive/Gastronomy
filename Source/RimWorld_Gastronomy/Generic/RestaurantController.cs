@@ -113,13 +113,15 @@ namespace Gastronomy
 			orders.RareTick();
 			debts.RareTick();
 
-			TableTop_Events.onBuildingSpawned.AddListener(RefreshRegisters);
-			TableTop_Events.onBuildingDespawned.AddListener(RefreshRegisters);
+			TableTop_Events.onAnyBuildingSpawned.AddListener(RefreshRegisters);
+			TableTop_Events.onAnyBuildingDespawned.AddListener(RefreshRegisters);
+			RefreshRegisters(null, map);
 		}
 
 		private void RefreshRegisters(Building building, Map map)
 		{
 			Registers = RegisterUtility.GetRegisters(map);
+			Log.Message($"Restaurant: Got {Registers.Count} registers.");
 		}
 
 		public override void MapComponentTick()

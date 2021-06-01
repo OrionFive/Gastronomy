@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CashRegister;
+using Gastronomy.Waiting;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -35,7 +36,7 @@ namespace Gastronomy.Restaurant
 
         protected override void FillTab()
         {
-            var rectLeft = new Rect(0f, 0, size.x/2, size.y).ContractedBy(10f);
+            var rectLeft = new Rect(0f, 16, size.x/2, size.y).ContractedBy(10f);
             var rectRight = new Rect(size.x/2, 0, size.x/2, size.y).ContractedBy(10f);
 
             DrawLeft(rectLeft);
@@ -152,6 +153,7 @@ namespace Gastronomy.Restaurant
             var listing = new Listing_Standard();
             listing.Begin(rect);
             {
+                var activeStaff = restaurant.ActiveStaff;
                 var patrons = restaurant.Patrons;
                 var orders = restaurant.Orders.AllOrders;
                 var debts = restaurant.Debts.AllDebts;
@@ -159,6 +161,7 @@ namespace Gastronomy.Restaurant
                 var ordersForServing = restaurant.Orders.AvailableOrdersForServing.ToArray();
                 var ordersForCooking = restaurant.Orders.AvailableOrdersForCooking.ToArray();
 
+                listing.LabelDouble("TabRegisterActiveStaff".Translate(), activeStaff.Count.ToString(), activeStaff.Select(p => p.LabelShort).ToCommaList());
                 listing.LabelDouble("TabRegisterSeats".Translate(), restaurant.Seats.ToString());
                 listing.LabelDouble("TabRegisterPatrons".Translate(), patrons.Count.ToString(), patrons.Select(p=>p.LabelShort).ToCommaList());
                 DrawOrders(listing, "TabRegisterTotalOrders".Translate(), orders);
@@ -343,6 +346,11 @@ namespace Gastronomy.Restaurant
         private static IEnumerable<SpecialThingFilterDef> HiddenSpecialThingFilters()
         {
             yield return SpecialThingFilterDefOf.AllowFresh;
+        }
+
+        public override bool CanAssignToShift(Pawn pawn)
+        {
+            return pawn.workSettings.WorkIsActive(WaitingUtility.waitDef);
         }
     }
 }

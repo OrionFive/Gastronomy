@@ -20,8 +20,8 @@ namespace Gastronomy.Dining
 
                 if (getter != eater) return true; // Run original code
 
-                // Only if time assignment allows
-                if (!eater.GetTimeAssignment().allowJoy) return true;
+                // Only if pawn doesn't have to work
+                if (eater.GetRestaurant().HasToWork(eater)) return true;
 
                 if (!getter.IsAbleToDine()) return true;
 

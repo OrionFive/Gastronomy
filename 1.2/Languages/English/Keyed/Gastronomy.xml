@@ -19,7 +19,7 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	
 	<!-- Settings -->
 	<TabRegisterOpened>Opened</TabRegisterOpened>
-	<TabRegisterOpenedTooltip>When checked, patrons can make orders during business hours.</TabRegisterOpenedTooltip>
+	<TabRegisterOpenedTooltip>When checked, patrons can make orders while a shift is active.</TabRegisterOpenedTooltip>
 	<TabRegisterGuests>Allow guests</TabRegisterGuests>
 	<TabRegisterGuestsTooltip>When checked, guests will make orders.</TabRegisterGuestsTooltip>
 	<TabRegisterColonists>Allow colonists</TabRegisterColonists>
@@ -33,6 +33,7 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	
 	<!-- Stats -->
 	<TabRegisterRadius>Radius</TabRegisterRadius>
+	<TabRegisterActiveStaff>Active staff:</TabRegisterActiveStaff>
 	<TabRegisterSeats>Seats:</TabRegisterSeats>
 	<TabRegisterPatrons>Patrons:</TabRegisterPatrons>
 	<TabRegisterTotalOrders>Total orders:</TabRegisterTotalOrders>

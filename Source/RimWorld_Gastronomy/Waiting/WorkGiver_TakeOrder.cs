@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
 using RimWorld;
@@ -17,9 +18,13 @@ namespace Gastronomy.Waiting
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
+            var restaurant = pawn.GetRestaurant();
+
+            if(!forced && !restaurant.HasToWork(pawn)) return true;
+
             if (!InteractionUtility.CanInitiateInteraction(pawn)) return true;
 
-            var list = pawn.GetRestaurant().SpawnedDiningPawns;
+            var list = restaurant.SpawnedDiningPawns;
 
             var anyPatrons = list.Any(p => {
                 var driver = p.jobs.curDriver as JobDriver_Dine;

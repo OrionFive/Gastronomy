@@ -16,9 +16,9 @@ namespace Gastronomy.Waiting
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
-            var list = pawn.GetRestaurant().diningSpots;
+            var restaurant = pawn.GetRestaurant();
 
-            return list.Count == 0;
+            return !forced && !restaurant.HasToWork(pawn);
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
