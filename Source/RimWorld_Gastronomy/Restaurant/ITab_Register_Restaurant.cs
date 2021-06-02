@@ -338,11 +338,6 @@ namespace Gastronomy.Restaurant
             if (onClicked != null && Widgets.ButtonInvisible(rect)) onClicked.Invoke();
         }
 
-        public override void TabUpdate()
-        {
-            Register.DrawGizmos();
-        }
-
         private static IEnumerable<SpecialThingFilterDef> HiddenSpecialThingFilters()
         {
             yield return SpecialThingFilterDefOf.AllowFresh;

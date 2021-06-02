@@ -107,16 +107,18 @@ namespace Gastronomy.Waiting
             void InitAction()
             {
                 toil.actor.pather.StopDead();
-                var register = toil.actor.CurJob.GetTarget(registerInd).Thing;
-                var offset = register.InteractionCell - register.Position;
-                toil.actor.rotationTracker.FaceCell(toil.actor.Position + offset);
+                if(toil.actor.CurJob?.GetTarget(registerInd).Thing is Building_CashRegister register)
+                {
+                    var offset = register.InteractionCell - register.Position;
+                    toil.actor.rotationTracker.FaceCell(toil.actor.Position + offset);
+                }
             }
 
             void TickAction()
             {
                 if (toil.actor.CurJob?.GetTarget(registerInd).Thing is Building_CashRegister register)
                 {
-                    if (!register.HasToWork(toil.actor))
+                    if (!register.HasToWork(toil.actor) || !register.standby)
                     {
                         toil.actor.jobs.curDriver.ReadyForNextToil();
                         return;
@@ -133,10 +135,18 @@ namespace Gastronomy.Waiting
                 {
                     toil.actor.jobs.CheckForJobOverride();
                 }
+
+                if (toil.actor.IsHashIntervalTick(351))
+                {
+                    if (toil.actor.Position.GetThingList(toil.actor.Map).OfType<Pawn>().Any(p => p != toil.actor))
+                    {
+                        toil.actor.jobs.curDriver.ReadyForNextToil();
+                    }
+                }
             }
         }
 
-        public static Toil FindRandomAdjacentCell(TargetIndex adjacentToInd, TargetIndex cellInd)
+        public static Toil FindRandomAdjacentCell(TargetIndex adjacentToInd, TargetIndex cellInd, int maxRadius = 4)
         {
             Toil findCell = new Toil {atomicWithPrevious = true};
             findCell.initAction = delegate {
@@ -151,10 +161,10 @@ namespace Gastronomy.Waiting
                 else
                 {
                     // Try radius 2-4
-                    for (int radius = 1; radius < 5; radius++)
+                    for (int radius = 0; radius <= maxRadius; radius++)
                     {
-                        if (CellFinder.TryFindRandomReachableCellNear(target.Cell, actor.Map, radius, TraverseParms.For(TraverseMode.NoPassClosedDoors), c => c.Standable(actor.Map) && c.GetFirstPawn(actor.Map) == null, null,
-                            out var result))
+                        bool Validator(IntVec3 c) => c.Standable(actor.Map) && c.GetFirstPawn(actor.Map) == null;
+                        if (CellFinder.TryFindRandomReachableCellNear(target.Cell, actor.Map, radius, TraverseParms.For(TraverseMode.NoPassClosedDoors), Validator, null, out var result))
                         {
                             curJob.SetTarget(cellInd, result);
                             //Log.Message($"{actor.NameShortColored} found a place to stand at {result}. radius = {radius}");
