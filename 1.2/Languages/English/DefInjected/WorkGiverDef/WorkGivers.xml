@@ -13,4 +13,8 @@
   <Gastronomy_MakeTable.verb>make table</Gastronomy_MakeTable.verb>
   <Gastronomy_MakeTable.gerund>making table</Gastronomy_MakeTable.gerund>
 
+  <Gastronomy_StandBy.label>stand by</Gastronomy_StandBy.label>
+  <Gastronomy_StandBy.verb>stand by</Gastronomy_StandBy.verb>
+  <Gastronomy_StandBy.gerund>standing by</Gastronomy_StandBy.gerund>
+
 </LanguageData>
