@@ -16,7 +16,7 @@
 		<li>
 			<packageId>Orion.CashRegister</packageId>
 			<displayName>Cash Register</displayName>
-			<!-- <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl> -->
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2506046833</steamWorkshopUrl>
 		</li>
 	</modDependencies>
 	<loadAfter>
