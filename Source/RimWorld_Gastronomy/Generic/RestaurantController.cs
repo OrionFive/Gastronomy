@@ -121,7 +121,6 @@ namespace Gastronomy
 		private void RefreshRegisters(Building building, Map map)
 		{
 			Registers = RegisterUtility.GetRegisters(map);
-			Log.Message($"Restaurant: Got {Registers.Count} registers.");
 		}
 
 		public override void MapComponentTick()
