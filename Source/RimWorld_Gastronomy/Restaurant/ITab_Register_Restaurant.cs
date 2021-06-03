@@ -29,13 +29,14 @@ namespace Gastronomy.Restaurant
         {
             get
             {
-                restaurant ??= SelThing?.GetRestaurant();
+                restaurant = SelThing?.GetRestaurant();
                 return restaurant != null;
             }
         }
 
         protected override void FillTab()
         {
+            restaurant = SelThing?.GetRestaurant();
             var rectLeft = new Rect(0f, 16, size.x/2, size.y).ContractedBy(10f);
             var rectRight = new Rect(size.x/2, 0, size.x/2, size.y).ContractedBy(10f);
 
@@ -110,7 +111,7 @@ namespace Gastronomy.Restaurant
             // Price
             var price = restaurant.guestPricePercentage <= 0? (string)"TabRegisterGuestPriceFree".Translate() : restaurant.guestPricePercentage.ToStringPercentEmptyZero();
             var label = "TabRegisterGuestPrice".Translate(price);
-            var value = Widgets.HorizontalSlider(rect, restaurant.guestPricePercentage, 0, 5, false, label);
+            var value = Widgets.HorizontalSlider(rect, restaurant.guestPricePercentage, 0, 5, false, label, null, null, 0.1f);
             TooltipHandler.TipRegionByKey(rect, "TabRegisterGuestPriceTooltip");
 
             if (value != restaurant.guestPricePercentage)
