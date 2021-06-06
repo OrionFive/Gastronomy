@@ -8,7 +8,7 @@
     <gerundLabel>waiting</gerundLabel>
     <description>Take orders and serve meals.</description>
     <verb>Wait</verb>
-    <naturalPriority>1055</naturalPriority>
+    <naturalPriority>1065</naturalPriority>
     <relevantSkills>
       <li>Social</li>
     </relevantSkills>

@@ -21,7 +21,8 @@ namespace Gastronomy.Waiting
         {
             var restaurant = pawn.GetRestaurant();
 
-            if(!forced && !restaurant.HasToWork(pawn)) return true;
+            // Serve even when shift just ended
+            if(!forced/* && !restaurant.HasToWork(pawn)*/) return true;
 
             return !restaurant.Orders.AvailableOrdersForServing.Any();
         }
