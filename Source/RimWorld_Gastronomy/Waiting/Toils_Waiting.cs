@@ -400,7 +400,7 @@ namespace Gastronomy.Waiting
                             toil.actor.CurJob.SetTarget(outputInd, cell);
                             return; // Success
                         }
-                        Log.Warning($"Failed to get make table cell from {patron.NameShortColored}. Cell {cell} was invalid. Moving = {patron.pather.MovingNow}");
+                        Log.Warning($"Failed to get make table cell from {patron.NameShortColored}. Cell was invalid (chair = {cell}, table = {diningSpot.Position}). Moving = {patron.pather.MovingNow}");
                     }
                     else Log.Warning($"Failed to get make table cell. Patron was null.");
                 }
