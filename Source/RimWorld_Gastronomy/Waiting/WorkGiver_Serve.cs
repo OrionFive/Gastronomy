@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
 using RimWorld;
@@ -22,7 +21,7 @@ namespace Gastronomy.Waiting
             var restaurant = pawn.GetRestaurant();
 
             // Serve even when shift just ended
-            if(!forced/* && !restaurant.HasToWork(pawn)*/) return true;
+            //if(!forced && !restaurant.HasToWork(pawn)) return true;
 
             return !restaurant.Orders.AvailableOrdersForServing.Any();
         }

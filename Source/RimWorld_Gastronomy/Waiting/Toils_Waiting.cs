@@ -131,12 +131,14 @@ namespace Gastronomy.Waiting
                     return;
                 }
 
-                if (toil.actor.IsHashIntervalTick(176))
+                toil.actor.GainComfortFromCellIfPossible();
+
+                if (toil.actor.IsHashIntervalTick(35))
                 {
                     toil.actor.jobs.CheckForJobOverride();
                 }
 
-                if (toil.actor.IsHashIntervalTick(351))
+                if (toil.actor.IsHashIntervalTick(113))
                 {
                     if (toil.actor.Position.GetThingList(toil.actor.Map).OfType<Pawn>().Any(p => p != toil.actor))
                     {
