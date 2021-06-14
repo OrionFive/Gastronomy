@@ -49,7 +49,7 @@ namespace Gastronomy.Dining
             return true;
         }
 
-        protected override IEnumerable<Toil> MakeNewToils()
+        public override IEnumerable<Toil> MakeNewToils()
         {
             // Declare these early - jumping points
             var waitForWaiter = Toils_Dining.WaitForWaiter(SpotIndex, WaiterIndex).FailOnRestaurantClosed().FailOnDangerous(JobUtility.MaxDangerDining);

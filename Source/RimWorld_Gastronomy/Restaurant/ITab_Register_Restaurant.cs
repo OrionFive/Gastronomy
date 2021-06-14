@@ -34,7 +34,7 @@ namespace Gastronomy.Restaurant
             }
         }
 
-        protected override void FillTab()
+        public override void FillTab()
         {
             restaurant = SelThing?.GetRestaurant();
             var rectLeft = new Rect(0f, 16, size.x/2, size.y).ContractedBy(10f);

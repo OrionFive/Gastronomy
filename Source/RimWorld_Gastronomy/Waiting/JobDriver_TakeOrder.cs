@@ -47,7 +47,7 @@ namespace Gastronomy.Waiting
         //    return "JobDineGoReport".Translate();
         //}
 
-        protected override IEnumerable<Toil> MakeNewToils()
+        public override IEnumerable<Toil> MakeNewToils()
         {
             var wait = Toils_General.Wait(50, IndexSpot).FailOnNotDiningQueued(IndexPatron);
             var end = Toils_General.Wait(5);

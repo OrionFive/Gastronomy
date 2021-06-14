@@ -3,6 +3,7 @@
   <identifier>Gastronomy</identifier>
   <version>1.2.8</version>
   <dependencies>
+	<li>brrainz.harmony</li>
     <li>UnlimitedHugs.HugsLib</li>
 	<li>Orion.CashRegister</li>
   </dependencies>

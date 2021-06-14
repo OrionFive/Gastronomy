@@ -14,7 +14,7 @@ namespace Gastronomy.Waiting
 
 		public override bool TryMakePreToilReservations(bool errorOnFailed) => true;
 
-		protected override IEnumerable<Toil> MakeNewToils()
+		public override IEnumerable<Toil> MakeNewToils()
 		{
 			var begin = Toils_General.Wait(10, IndexRegister);
 			//Toils_Waiting.GetInteractionCell(IndexRegister, IndexRegisterInteractionCell);

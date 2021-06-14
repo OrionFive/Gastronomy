@@ -24,7 +24,7 @@ namespace Gastronomy.Waiting
             return true;
         }
 
-        protected override IEnumerable<Toil> MakeNewToils()
+        public override IEnumerable<Toil> MakeNewToils()
         {
             var begin = Toils_Waiting.GetRandomDiningSpotCellForMakingTable(IndexSpot, IndexInteractionCell);
             var end = Toils_General.Wait(10, IndexSpot);
