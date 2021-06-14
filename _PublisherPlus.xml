@@ -4,6 +4,7 @@
     <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\.git</exclude>
     <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Source\.vs</exclude>
     <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Source\packages</exclude>
+    <exclude>E:\Spiele\Steam\SteamApps\common\RimWorld\Mods\Gastronomy\Source\RimWorld_Gastronomy\obj</exclude>
     <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Textures\Things Old</exclude>
     <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Textures\Things\PSDs</exclude>
   </Excluded>
