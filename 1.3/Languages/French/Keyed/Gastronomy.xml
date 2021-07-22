@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+	<!-- Settings -->
+	<ShowAlertNoDedicatedWaiter>Afficher l'avertissement "pas de serveur"</ShowAlertNoDedicatedWaiter>
+	<ShowAlertNoDedicatedWaiterDesc>Afficher un avertissement lorsque vous êtes ouvert, mais qu'aucun serveur n'est configuré pour travailler à ce moment-là.</ShowAlertNoDedicatedWaiterDesc>
+  
+	<!-- Cash register -->
+	<!-- <MustPlaceOnTable>Doit être placé sur une table.</MustPlaceOnTable> -->
+	<!-- <MustPlaceOnFreeSurface>Doit être placé sur une surface vide.</MustPlaceOnFreeSurface> -->
+	
+	<!-- Messages -->
+	<MessageIncomeToday>Votre restaurant a gagné {0} aujourd'hui.</MessageIncomeToday>
+	
+	<!-- Register tab -->
+	<!-- <TabRegisterRestaurant>Gérer</TabRegisterRestaurant> -->
+	<!-- Settings -->
+	<TabRegisterOpened>Ouvert</TabRegisterOpened>
+	<TabRegisterOpenedTooltip>Lorsque coché, les clients peuvent passer des commandes pendant les heures ouvrables.</TabRegisterOpenedTooltip>
+	<TabRegisterGuests>Autoriser les invités</TabRegisterGuests>
+	<TabRegisterGuestsTooltip>Une fois cochée, les invités passeront des commandes.</TabRegisterGuestsTooltip>
+	<TabRegisterColonists>Autoriser les colons</TabRegisterColonists>
+	<TabRegisterColonistsTooltip>Lorsque coché, les colons passeront des commandes.</TabRegisterColonistsTooltip>
+	<TabRegisterPrisoners>Autoriser les prisonniers</TabRegisterPrisoners>
+	<TabRegisterPrisonersTooltip>Lorsque coché, les prisonniers passeront des comandes.</TabRegisterPrisonersTooltip>
+	<TabRegisterGuestsHaveToPay>Les invités doivent payer</TabRegisterGuestsHaveToPay>
+	<TabRegisterGuestHaveToPayTooltip>Une fois cochée, les invités doivent payer {0} de la valeur marchande.</TabRegisterGuestHaveToPayTooltip>
+	<TabRegisterDebtTooltip>{0}: {1} (cliquez pour effacer)</TabRegisterDebtTooltip>
+	
+	<!-- Stats -->
+	<TabRegisterRadius>Rayon</TabRegisterRadius>
+	<TabRegisterActiveStaff>Employés actifs:</TabRegisterActiveStaff>
+	<TabRegisterSeats>Places:</TabRegisterSeats>
+	<TabRegisterPatrons>Clients:</TabRegisterPatrons>
+	<TabRegisterTotalOrders>Total des commandes:</TabRegisterTotalOrders>
+	<TabRegisterNeedsServing>Commandes devant être servies:</TabRegisterNeedsServing>
+	<TabRegisterNeedsCooking>Commandes devant être cuisinées:</TabRegisterNeedsCooking>
+	<TabRegisterStocked>Repas en stock:</TabRegisterStocked>
+	<TabRegisterDebts>Factures impayées:</TabRegisterDebts>
+	<TabRegisterEarnedYesterday>Gagné hier:</TabRegisterEarnedYesterday>
+	<TabRegisterEarnedToday>Gagné aujourd'hui:</TabRegisterEarnedToday>
+	
+	<!-- Dining -->
+	<CommandToggleDining>Table de restaurant</CommandToggleDining>
+	<CommandToggleDiningDesc>Lorsqu'activé, cet emplacement peut être utilisé pour commander des repas.</CommandToggleDiningDesc>
+	<CommandSetDeco>Changer de décoration</CommandSetDeco>
+	<CommandSetDecoDesc>Changer la décoration sur la table.</CommandSetDecoDesc>
+	<JobDineGoReport>Mange au restaurant.</JobDineGoReport>
+	
+	<!-- Alerts -->
+	<AlertNoRegister>Pas de caisse</AlertNoRegister>
+	<AlertNoRegisterExplanation>Pour ouvrir votre restaurant, vous avez besoin d'au moins une caisse enregistreuse. Cela peut être construit à partir de l'onglet production.</AlertNoRegisterExplanation>
+	<NoDedicatedWaiter>Pas de serveur dédié</NoDedicatedWaiter>
+	<NoDedicatedWaiterExplanation>Vous avez des tables à manger et êtes ouverts, mais il n'y a pas de serveurs dédiés pour le moment.\nAssurez-vous qu'au moins un colon est défini comme serveur et doit travailler pendant que vous êtes ouvert.\n\nVous pouvez également modifier les horaires d'ouverture en construisant une caisse enregistreuse.</NoDedicatedWaiterExplanation>
+
+</LanguageData>

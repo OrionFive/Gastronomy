@@ -16,7 +16,7 @@ namespace Gastronomy.Dining
             Log.ErrorOnce($"{nameof(Graphic_DiningSpot)} cannot draw realtime.", 94325243);
         }
 
-        public override void Print(SectionLayer layer, Thing thing)
+        public override void Print(SectionLayer layer, Thing thing, float extraRotation)
         {
             if (!(thing is DiningSpot diningSpot)) return;
 

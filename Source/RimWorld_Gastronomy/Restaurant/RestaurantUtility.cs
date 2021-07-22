@@ -89,7 +89,7 @@ namespace Gastronomy.Restaurant
         public static float GetPrice(this ThingDef mealDef, RestaurantController restaurant)
         {
             if (mealDef == null) return 0;
-            return mealDef.BaseMarketValue * 0.6f * restaurant.guestPricePercentage * (1 - Find.Storyteller.difficultyValues.tradePriceFactorLoss);
+            return mealDef.BaseMarketValue * 0.6f * restaurant.guestPricePercentage * (1 - Find.Storyteller.difficulty.tradePriceFactorLoss);
         }
 
         public static T FailOnRestaurantClosed<T>(this T f) where T : IJobEndable

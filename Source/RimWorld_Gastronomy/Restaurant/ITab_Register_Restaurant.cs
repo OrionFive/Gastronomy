@@ -17,8 +17,8 @@ namespace Gastronomy.Restaurant
         private bool showSettings = true;
         private bool showRadius = false;
         private bool showStats = true;
-        private Vector2 menuScrollPosition;
         private RestaurantController restaurant;
+        private ThingFilterUI.UIState menuFilterState = new ThingFilterUI.UIState();
 
         public ITab_Register_Restaurant() : base(new Vector2(800, 500))
         {
@@ -52,8 +52,7 @@ namespace Gastronomy.Restaurant
                 menuRect.yMax -= 36;
 
                 restaurant.Menu.GetMenuFilters(out var filter, out var parentFilter);
-                ThingFilterUI.DoThingFilterConfigWindow(menuRect, ref menuScrollPosition, filter, parentFilter, 
-                    1, null, HiddenSpecialThingFilters(), true);
+                ThingFilterUI.DoThingFilterConfigWindow(menuRect, menuFilterState, filter, parentFilter, 1, null, HiddenSpecialThingFilters(), true);
             }
         }
 

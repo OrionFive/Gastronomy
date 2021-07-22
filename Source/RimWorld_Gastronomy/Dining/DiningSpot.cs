@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Gastronomy.Restaurant;
-using Gastronomy.TableTops;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;

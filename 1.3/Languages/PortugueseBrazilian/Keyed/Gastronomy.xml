@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+	<!-- Settings -->
+	<ShowAlertNoDedicatedWaiter>Mostre aviso de 'sem garçom'</ShowAlertNoDedicatedWaiter>
+	<ShowAlertNoDedicatedWaiterDesc>Mostre um aviso quando estiver aberto, mas nenhum garçom está pronto para trabalhar naquele momento..</ShowAlertNoDedicatedWaiterDesc>
+  
+	<!-- Cash register -->
+	<!-- <MustPlaceOnTable>Deve ser colocado em uma mesa.</MustPlaceOnTable> -->
+	<!-- <MustPlaceOnFreeSurface>Deve ser colocado em superfície clara.</MustPlaceOnFreeSurface> -->
+	
+	<!-- Messages -->
+	<MessageIncomeToday>Seu restaurante ganhou {0} hoje.</MessageIncomeToday>
+	
+	<!-- Register tab -->
+	<!-- <TabRegisterRestaurant>Registro</TabRegisterRestaurant> -->
+	<!-- Settings -->
+	<TabRegisterOpened>Aberto</TabRegisterOpened>
+	<TabRegisterOpenedTooltip>Quando verificado, os clientes podem fazer pedidos durante o horário comercial.</TabRegisterOpenedTooltip>
+	<TabRegisterGuests>Permitir convidados</TabRegisterGuests>
+	<TabRegisterGuestsTooltip>Quando verificado, os hóspedes farão pedidos.</TabRegisterGuestsTooltip>
+	<TabRegisterColonists>Permitir colonos</TabRegisterColonists>
+	<TabRegisterColonistsTooltip>Quando verificado, os colonos farão pedidos.</TabRegisterColonistsTooltip>
+	<TabRegisterPrisoners>Permitir prisioneiros</TabRegisterPrisoners>
+	<TabRegisterPrisonersTooltip>Quando verificado, os prisioneiros farão pedidos.</TabRegisterPrisonersTooltip>
+	<TabRegisterGuestsHaveToPay>Os hóspedes devem pagar</TabRegisterGuestsHaveToPay>
+	<TabRegisterGuestHaveToPayTooltip>Quando verificado, os hóspedes têm que pagar {0} de valor de mercado.</TabRegisterGuestHaveToPayTooltip>
+	<TabRegisterDebtTooltip>{0}: {1} (clique para limpar)</TabRegisterDebtTooltip>
+	
+	<!-- Stats -->
+	<TabRegisterRadius>Raio</TabRegisterRadius>
+	<TabRegisterSeats>Assentos:</TabRegisterSeats>
+	<TabRegisterPatrons>Patronos:</TabRegisterPatrons>
+	<TabRegisterTotalOrders>Total de pedidos:</TabRegisterTotalOrders>
+	<TabRegisterNeedsServing>Ordens que precisam ser servidas:</TabRegisterNeedsServing>
+	<TabRegisterNeedsCooking>Ordens que precisam culinária:</TabRegisterNeedsCooking>
+	<TabRegisterStocked>Refeições estocadas:</TabRegisterStocked>
+	<TabRegisterDebts>Contas não pagas:</TabRegisterDebts>
+	<TabRegisterEarnedYesterday>Ganhou ontem:</TabRegisterEarnedYesterday>
+	<TabRegisterEarnedToday>Ganhou hoje:</TabRegisterEarnedToday>
+	
+	<!-- Dining -->
+	<CommandToggleDining>Restaurantes</CommandToggleDining>
+	<CommandToggleDiningDesc>Quando ativado, este local pode ser usado para refeições.</CommandToggleDiningDesc>
+	<CommandSetDeco>Mudar decoração</CommandSetDeco>
+	<CommandSetDecoDesc>Mude a decoração na mesa.</CommandSetDecoDesc>
+	<JobDineGoReport>Comer no restaurante.</JobDineGoReport>
+	
+	<!-- Alerts -->
+	<NoDedicatedWaiter>Nenhum garçom dedicado</NoDedicatedWaiter>
+	<NoDedicatedWaiterExplanation>Você tem mesas de jantar e está aberto, mas não há garçons dedicados agora.\nCertifique-se de que pelo menos um colono está definido como garçom e programado para trabalhar enquanto você está aberto.\n\nVocê também pode modificar os horários de funcionamento construindo uma caixa registradora.</NoDedicatedWaiterExplanation>
+
+</LanguageData>

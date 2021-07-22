@@ -203,10 +203,9 @@ namespace Gastronomy.Dining
             return new Toil {atomicWithPrevious = true, initAction = () => { pawn.GetRestaurant().Orders.OnFinishedEatingOrder(pawn); }};
         }
 
-        [Obsolete("Kept to not break saves")] // TODO: Remove for 1.3
-        public static Toil PayDebt(Pawn pawn)
-        {
-            return new Toil {atomicWithPrevious = true};
-        }
+        /// <summary>
+        /// Kept to not break saves.
+        /// </summary>
+        public static Toil Obsolete() => new Toil {atomicWithPrevious = true};
     }
 }

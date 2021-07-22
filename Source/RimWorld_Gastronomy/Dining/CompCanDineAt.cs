@@ -123,9 +123,8 @@ namespace Gastronomy.Dining
             if (allowDining) ToggleDining();
         }
 
-        public void Notify_BuildingDespawned(Building building, Map map)
+        public void Notify_BuildingDespawned(Building building)
         {
-            // Map is required separately, because building.Map is not valid for despawned objects
             // A building was despawned at my current position
             if (building != parent && allowDining)
             {

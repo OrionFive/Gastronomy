@@ -1,5 +1,4 @@
 using CashRegister;
-using Gastronomy.Restaurant;
 using HugsLib;
 using Verse;
 

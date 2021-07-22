@@ -1,5 +1,4 @@
 using HugsLib.Settings;
-using Verse;
 
 namespace Gastronomy
 {

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
 using RimWorld;
@@ -43,7 +42,7 @@ namespace Gastronomy.Waiting
             var canReserve = pawn.Map.reservationManager.CanReserve(pawn, patron, 1, -1, null, forced);
             if (!canReserve)
             {
-                var reserver = pawn.Map.reservationManager.FirstRespectedReserver(patron, pawn);
+                //var reserver = pawn.Map.reservationManager.FirstRespectedReserver(patron, pawn);
                 //Log.Message($"{pawn.NameShortColored} can't reserve {patron.NameShortColored}. Is reserved by {reserver?.NameShortColored}. ");
                 return false;
             }

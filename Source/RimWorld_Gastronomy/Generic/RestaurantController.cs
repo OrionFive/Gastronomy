@@ -6,7 +6,6 @@ using CashRegister;
 using CashRegister.TableTops;
 using Gastronomy.Dining;
 using Gastronomy.Restaurant;
-using Gastronomy.TableTops;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;

@@ -38,7 +38,7 @@ namespace Gastronomy.Dining
         private static void NotifyAffectedByDespawn(this Thing affected, Building building)
         {
             // Notify potential dining spots
-            if (CanPossiblyDineAt(affected.def)) affected.TryGetComp<CompCanDineAt>()?.Notify_BuildingDespawned(building, affected.Map);
+            if (CanPossiblyDineAt(affected.def)) affected.TryGetComp<CompCanDineAt>()?.Notify_BuildingDespawned(building);
         }
 
         public static IEnumerable<DiningSpot> GetAllDiningSpots([NotNull] Map map)

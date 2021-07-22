@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Gastronomy.TableTops;
-using RimWorld;
 using Verse;
 using Verse.AI;
 
