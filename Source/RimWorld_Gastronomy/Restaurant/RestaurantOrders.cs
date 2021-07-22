@@ -12,7 +12,7 @@ namespace Gastronomy.Restaurant
 
         [NotNull] public ReadOnlyCollection<Order> AllOrders => orders.AsReadOnly();
         [NotNull] public IEnumerable<Order> AvailableOrdersForServing => orders.Where(o => !o.delivered && Stock.GetAllStockOfDef(o.consumableDef).Count > 0);
-        [NotNull] public IEnumerable<Order> AvailableOrdersForCooking => orders.Where(o => !o.delivered && !CanBeOrdered(o.consumableDef));
+        [NotNull] public IEnumerable<Order> AvailableOrdersForCooking => orders.Where(o => !o.delivered && !CanBeOrdered(o.consumable));
         [NotNull] private RestaurantStock Stock => Restaurant.Stock;
         [NotNull] private RestaurantMenu Menu => Restaurant.Menu;
         [NotNull] private RestaurantController Restaurant { get; }
@@ -36,32 +36,35 @@ namespace Gastronomy.Restaurant
         private bool IsInvalidOrder(Order o)
         {
             if (o.delivered) return false;
-            if (o.consumable != null && o.consumable.SpawnedOrAnyParentSpawned) return false;
+            if (o.consumable == null || !o.consumable.SpawnedOrAnyParentSpawned) return false;
             if (!Menu.IsOnMenu(o.consumableDef)) return true;
             // TODO: Preference to allow ordering out of stock items
-            if (!CanBeOrdered(o.consumableDef))
-            {
-                Log.Message($"Order for {o.patron?.NameShortColored} ({o.consumableDef?.label}) had to be canceled. Not in stock.");
-                return true;
-            }
 
             if (!Restaurant.MayDineHere(o.patron))
             {
                 Log.Message($"Order for {o.patron?.NameShortColored} has been removed. May not eat here.");
                 return true;
             }
+
+            if (!IsBeingDelivered(o) && !Stock.IsAvailable(o.consumable))
+            {
+                Log.Message($"Order for {o.patron?.NameShortColored} ({o.consumableDef?.label}) had to be canceled. Not in stock.");
+                return true;
+            }
             return false;
         }
 
-        public bool CanBeOrdered(ThingDef foodDef)
+        public bool CanBeOrdered([CanBeNull] Thing consumable)
         {
+            if (consumable == null) return false;
             // Do we have any item of that type that isn't part of any order?
-            var orderedAmount = AllOrders.Where(o => o.consumableDef == foodDef).Sum(o => 1);
-            var stockedAmount = Stock.GetAllStockOfDef(foodDef).Sum(item => item.stackCount);
+            var orderedAmount = AllOrders.Where(o => o.consumable == consumable).Sum(o => 1);
+            var stockedAmount = Stock.IsAvailable(consumable) ? consumable.stackCount : 0;
+            // Log.Message($"{consumable.LabelCap} can be ordered? ordered = {orderedAmount}, stocked = {stockedAmount}");
             return stockedAmount > orderedAmount;
         }
 
-        public void CreateOrder(Pawn patron, ThingDef consumableDef)
+        public void CreateOrder(Pawn patron, Thing consumable)
         {
             //Log.Message($"{patron.NameShortColored} has ordered {consumableDef.label}.");
 
@@ -73,8 +76,8 @@ namespace Gastronomy.Restaurant
             }
 
             // Already prepared?
-            var available = Stock.GetAllStockOfDef(consumableDef).Sum(item => item.stackCount);
-            var ordered = orders.Count(o => o.consumableDef == consumableDef);
+            var available = Stock.IsAvailable(consumable);
+            var ordered = orders.Any(o => o.consumable == consumable);
 
             /*
             if (available <= ordered)
@@ -88,7 +91,7 @@ namespace Gastronomy.Restaurant
             }
             */
 
-            orders.Add(new Order {consumableDef = consumableDef, patron = patron, hasToBeMade = available <= ordered});
+            orders.Add(new Order {consumable = consumable, consumableDef = consumable.def, patron = patron, hasToBeMade = !available || ordered});
         }
 
         public void CancelOrder(Order order)

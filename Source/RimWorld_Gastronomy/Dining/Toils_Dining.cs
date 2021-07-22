@@ -117,25 +117,25 @@ namespace Gastronomy.Dining
                 var order = toil.actor.GetRestaurant().Orders.GetOrderFor(toil.actor);
                 if (order?.delivered == true && (order.consumable?.Spawned == true || order.consumable?.ParentHolder == toil.actor.inventory))
                 {
-                    var food = order.consumable;
-                    toil.actor.CurJob.SetTarget(mealInd, food);
-                    Log.Message($"{toil.actor.NameShortColored} has already received order: {food.Label}");
-                    if (toil.actor.inventory.Contains(food))
+                    var consumable = order.consumable;
+                    toil.actor.CurJob.SetTarget(mealInd, consumable);
+                    Log.Message($"{toil.actor.NameShortColored} has already received order: {consumable.Label}");
+                    if (toil.actor.inventory.Contains(consumable))
                     {
                         //Log.Message($"{toil.actor.NameShortColored} has {food.Label} in inventory.");
                         GetDriver(toil).ReadyForNextToil();
                     }
-                    else if (food.Position.AdjacentTo8Way(toil.actor.Position))
+                    else if (consumable.Position.AdjacentTo8Way(toil.actor.Position))
                     {
                         //Log.Message($"{toil.actor.NameShortColored} has {food.Label} on table.");
-                        food.DeSpawn();
+                        consumable.DeSpawn();
                         //var amount = toil.actor.inventory.innerContainer.TryAdd(order.consumable, 1, false);
                         //Log.Message($"{toil.actor.NameShortColored} received {amount} of {food.LabelShort} to his inventory.");
                         GetDriver(toil).ReadyForNextToil();
                     }
                     else
                     {
-                        Log.Message($"{toil.actor.NameShortColored}'s food is somewhere else ({food?.Position}). Will wait.");
+                        Log.Message($"{toil.actor.NameShortColored}'s food is somewhere else ({consumable?.Position}). Will wait.");
                         toil.actor.CurJob.SetTarget(mealInd, null);
                         order.delivered = false;
                         GetDriver(toil).OnStartedWaiting();

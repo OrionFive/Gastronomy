@@ -27,10 +27,10 @@ namespace Gastronomy.Dining
 
                 var diningSpot = DiningUtility.FindDiningSpotFor(eater, false);
 
-                var bestType = diningSpot?.GetRestaurant().Stock.GetBestMealTypeFor(eater, false);
+                var bestType = diningSpot?.GetRestaurant().Stock.GetBestMealFor(eater, false);
                 if (bestType == null) return true; // Run original code
 
-                foodDef = bestType;
+                foodDef = bestType.def;
                 foodSource = diningSpot;
                 //Log.Message($"{getter.NameShortColored} found diningSpot at {diningSpot.Position} with {foodDef?.label}.");
                 __result = true;

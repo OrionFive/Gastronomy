@@ -60,8 +60,8 @@ namespace Gastronomy.Waiting
                 }
 
                 var restaurant = patron.GetRestaurant();
-                var desiredFoodDef = restaurant.Stock.GetRandomMealTypeFor(patron, !patron.IsTeetotaler());
-                if (desiredFoodDef == null)
+                var desiredFood = restaurant.Stock.GetRandomMealFor(patron, !patron.IsTeetotaler());
+                if (desiredFood == null)
                 {
                     // Couldn't find anything desired on menu
                     //Log.Message($"{patron.NameShortColored} couldn't find anything on menu.");
@@ -81,9 +81,9 @@ namespace Gastronomy.Waiting
                 }
                 else
                 {
-                    restaurant.Orders.CreateOrder(patron, desiredFoodDef);
+                    restaurant.Orders.CreateOrder(patron, desiredFood);
                     
-                    var symbol = desiredFoodDef.uiIcon;
+                    var symbol = desiredFood.def.uiIcon;
                     if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
                 }
             }

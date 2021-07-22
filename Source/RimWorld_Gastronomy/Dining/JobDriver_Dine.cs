@@ -77,15 +77,15 @@ namespace Gastronomy.Dining
             yield return Toils_Dining.Obsolete();
         }
 
-        public void OnTransferredFood(Thing food, ThingOwner payTarget, out Thing paidSilver)
+        public void OnTransferredFood(Thing consumable, ThingOwner payTarget, out Thing paidSilver)
         {
             paidSilver = null;
-            var hasIt = pawn.inventory.Contains(food);
+            var hasIt = pawn.inventory.Contains(consumable);
             if (hasIt)
             {
-                //Log.Message($"{pawn.NameShortColored} has taken {food.Label} to his inventory.");
+                //Log.Message($"{pawn.NameShortColored} has taken {consumable.Label} to his inventory.");
                 pawn.PayForMeal(payTarget, out paidSilver);
-                job.SetTarget(MealIndex, food); // This triggers WaitForMeal
+                job.SetTarget(MealIndex, consumable); // This triggers WaitForMeal
                 if (pawn.IsGuest())
                 {
                     DiningUtility.GiveBoughtFoodThought(pawn);
@@ -93,7 +93,7 @@ namespace Gastronomy.Dining
             }
             else
             {
-                //Log.Warning($"{pawn.NameShortColored} doesn't have {food.Label} in his inventory.");
+                //Log.Warning($"{pawn.NameShortColored} doesn't have {consumable.Label} in his inventory.");
             }
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Gastronomy.Dining;
 using JetBrains.Annotations;
 using RimWorld;
@@ -25,7 +26,7 @@ namespace Gastronomy.Restaurant
         private class ConsumeOptimality
         {
             public Pawn pawn;
-            public ThingDef def;
+            public Thing thing;
             public float value;
         }
 
@@ -35,7 +36,7 @@ namespace Gastronomy.Restaurant
         [NotNull] private Map Map => Restaurant.map;
         [NotNull] private RestaurantMenu Menu => Restaurant.Menu;
         [NotNull] private RestaurantController Restaurant { get; }
-        [NotNull] private readonly Dictionary<ThingDef, Stock> stockCache = new Dictionary<ThingDef,Stock>();
+        [NotNull] private readonly Dictionary<ThingDef, Stock> stockCache = new Dictionary<ThingDef, Stock>();
         [NotNull] public IReadOnlyDictionary<ThingDef, Stock> AllStock => stockCache;
 
         public RestaurantStock([NotNull] RestaurantController restaurant)
@@ -47,51 +48,54 @@ namespace Gastronomy.Restaurant
 
         public bool HasAnyFoodFor([NotNull] Pawn pawn, bool allowDrug)
         {
-            //Log.Message($"{pawn.NameShortColored}: HasFoodFor: Defs: {stock.Select(item=>item.def).Count(s => WillConsume(pawn, allowDrug, s))}");
+            //Log.Message($"{pawn.NameShortColored}: HasFoodFor: Defs: {stockCache.Select(item=>item.Value).Count(stock => WillConsume(pawn, allowDrug, stock.def))}");
             return stockCache.Keys.Any(def => WillConsume(pawn, allowDrug, def));
         }
 
-        public class DefOptimality
+        public class FoodOptimality
         {
-            public ThingDef def { get; }
+            public Thing thing { get; }
             public float optimality { get; }
 
-            public DefOptimality(ThingDef def, float optimality)
+            public FoodOptimality(Thing thing, float optimality)
             {
-                this.def = def;
+                this.thing = thing;
                 this.optimality = optimality;
             }
         }
 
-        public ThingDef GetBestMealTypeFor([NotNull] Pawn pawn, bool allowDrug, bool includeEat = true, bool includeJoy = true)
+        public Thing GetBestMealFor([NotNull] Pawn pawn, bool allowDrug, bool includeEat = true, bool includeJoy = true)
         {
-            if (GetMealOptions(pawn, allowDrug, includeEat, includeJoy)
+            var options = GetMealOptions(pawn, allowDrug, includeEat, includeJoy);
+            Log.Message($"{pawn.NameShortColored}: Meal options: {options.GroupBy(o => o.thing.def).Select(o => $"{o.Key.label} ({o.FirstOrDefault()?.optimality:F2})").ToCommaList()}");
+            if (options
                 .TryMaxBy(def => def.optimality, out var best))
             {
-                //Log.Message($"{pawn.NameShortColored}: GetBestFoodFor: {best?.label}");
-                return best.def;
+                //Log.Message($"{pawn.NameShortColored}: GetBestMealFor: {best?.thing.LabelCap} with optimality {best?.optimality:F2}");
+                return best.thing;
             }
             return null;
         }
 
-        public ThingDef GetRandomMealTypeFor([NotNull] Pawn pawn, bool allowDrug, bool includeEat = true, bool includeJoy = true)
+        public Thing GetRandomMealFor([NotNull] Pawn pawn, bool allowDrug, bool includeEat = true, bool includeJoy = true)
         {
             if (GetMealOptions(pawn, allowDrug, includeEat, includeJoy)
                 .TryRandomElementByWeight(def => def.optimality, out var random))
             {
                 //Log.Message($"{pawn.NameShortColored} picked {random.def.label} with a score of {random.optimality}");
-                return random.def;
+                return random.thing;
             }
             return null;
         }
 
-        private IEnumerable<DefOptimality> GetMealOptions(Pawn pawn, bool allowDrug, bool includeEat, bool includeJoy)
+        private IEnumerable<FoodOptimality> GetMealOptions([NotNull] Pawn pawn, bool allowDrug, bool includeEat, bool includeJoy)
         {
-            return stockCache.Keys
-                .Where(def => Restaurant.Orders.CanBeOrdered(def))
-                .Where(def => WillConsume(pawn, allowDrug, def))
-                .Where(def => CanAfford(pawn, def))
-                .Select(def => new DefOptimality(def, GetMealOptimalityScore(pawn, def, includeEat, includeJoy)))
+            return stockCache.Values
+                .Where(stock => WillConsume(pawn, allowDrug, stock.def))
+                .Where(stock => CanAfford(pawn, stock.def))
+                .SelectMany(stock => stock.items)
+                .Where(consumable => Restaurant.Orders.CanBeOrdered(consumable))
+                .Select(consumable => new FoodOptimality(consumable, GetMealOptimalityScore(pawn, consumable, includeEat, includeJoy)))
                 .Where(def => def.optimality >= MinOptimality);
         }
 
@@ -102,24 +106,25 @@ namespace Gastronomy.Restaurant
             return pawn.GetSilver() >= def.GetPrice(Restaurant);
         }
 
-        private float GetMealOptimalityScore(Pawn pawn, ThingDef def, bool includeEat = true, bool includeJoy = true)
+        private float GetMealOptimalityScore([NotNull] Pawn pawn, Thing thing, bool includeEat = true, bool includeJoy = true)
         {
-            if (!IsAllowedIfDrug(pawn, def)) return 0;
+            if (thing == null) return 0;
+            if (!IsAllowedIfDrug(pawn, thing.def!)) return 0;
 
             float score = 0;
-            //var debugMessage = new StringBuilder($"{pawn.NameShortColored}: {def.LabelCap} ");
+            //var debugMessage = new StringBuilder($"{pawn.NameShortColored}: {thing.LabelCap} ");
             if (includeEat && pawn.needs.food != null)
             {
-                var optimality = GetCachedOptimality(pawn, def, eatOptimalityCache, CalcEatOptimality);
-                var factor = NutritionVsNeedFactor(pawn, def);
+                var optimality = GetCachedOptimality(pawn, thing, eatOptimalityCache, CalcEatOptimality);
+                var factor = NutritionVsNeedFactor(pawn, thing.def);
                 score += optimality * factor;
                 //debugMessage.Append($"EAT = {optimality:F0} * {factor:F2} ");
             }
 
             if (includeJoy && pawn.needs.joy != null)
             {
-                var optimality = GetCachedOptimality(pawn, def, joyOptimalityCache, CalcJoyOptimality);
-                var factor = JoyVsNeedFactor(pawn, def);
+                var optimality = GetCachedOptimality(pawn, thing, joyOptimalityCache, CalcJoyOptimality);
+                var factor = JoyVsNeedFactor(pawn, thing.def);
                 score += optimality * factor;
                 //debugMessage.Append($"JOY = {optimality:F0} * {factor:F2} ");
             }
@@ -129,13 +134,14 @@ namespace Gastronomy.Restaurant
             return score;
         }
 
-        private static float CalcEatOptimality(Pawn pawn, ThingDef def)
+        private static float CalcEatOptimality([NotNull] Pawn pawn, [NotNull]Thing thing)
         {
-            return Mathf.Max(0, FoodUtility.FoodOptimality(pawn, null, def, 0));
+            return Mathf.Max(0, FoodUtility.FoodOptimality(pawn, thing, thing.def, IntVec3Utility.ManhattanDistanceFlat(pawn.Position, thing.Position) * 0.5f));
         }
 
-        private static float CalcJoyOptimality(Pawn pawn, ThingDef def)
+        private static float CalcJoyOptimality([NotNull] Pawn pawn, [NotNull] Thing thing)
         {
+            var def = thing.def;
             var toleranceFactor = pawn.needs.joy.tolerances.JoyFactorFromTolerance(def.ingestible.JoyKind);
             var drugCategoryFactor = GetDrugCategoryFactor(def);
             return toleranceFactor * drugCategoryFactor * JoyOptimalityWeight;
@@ -152,7 +158,7 @@ namespace Gastronomy.Restaurant
             };
         }
 
-        private static bool IsAllowedIfDrug(Pawn pawn, ThingDef def)
+        private static bool IsAllowedIfDrug([NotNull] Pawn pawn, [NotNull] ThingDef def)
         {
             if (!def.IsDrug) return true;
             if (pawn.drugs == null) return true;
@@ -165,14 +171,14 @@ namespace Gastronomy.Restaurant
             return true;
         }
 
-        private static float GetCachedOptimality(Pawn pawn, ThingDef def, [NotNull] List<ConsumeOptimality> optimalityCache, [NotNull] Func<Pawn, ThingDef, float> calcFunction)
+        private static float GetCachedOptimality(Pawn pawn, [NotNull]Thing thing, [NotNull] List<ConsumeOptimality> optimalityCache, [NotNull] Func<Pawn, Thing, float> calcFunction)
         {
             // Expensive, must be cached
-            var optimality = optimalityCache.FirstOrDefault(o => o.pawn == pawn && o.def == def);
+            var optimality = optimalityCache.FirstOrDefault(o => o.pawn == pawn && o.thing == thing);
             if (optimality == null)
             {
                 // Optimality can be negative
-                optimality = new ConsumeOptimality {pawn = pawn, def = def, value = calcFunction(pawn, def)};
+                optimality = new ConsumeOptimality {pawn = pawn, thing = thing, value = calcFunction(pawn, thing)};
                 optimalityCache.Add(optimality);
             }
             // From 0 to 300-400ish
@@ -200,10 +206,10 @@ namespace Gastronomy.Restaurant
             return score;
         }
 
-        private static bool WillConsume(Pawn pawn, bool allowDrug, ThingDef s)
+        private static bool WillConsume(Pawn pawn, bool allowDrug, ThingDef def)
         {
-            var result = s != null && (allowDrug || !s.IsDrug) && pawn.WillEat(s);
-            //Log.Message($"{pawn.NameShortColored} will consume {s.label}? will eat? {pawn.WillEat(s)} result = {result}");
+            var result = def != null && (allowDrug || !def.IsDrug) && pawn.WillEat(def);
+            //Log.Message($"{pawn.NameShortColored} will consume {def.label}? will eat? {pawn.WillEat(def)} result = {result}");
             return result;
         }
 
@@ -247,8 +253,13 @@ namespace Gastronomy.Restaurant
         [NotNull]
         public IReadOnlyCollection<Thing> GetAllStockOfDef(ThingDef def)
         {
-            if (!stockCache.TryGetValue(def, out var stock)) return new Thing[0];
+            if (!stockCache.TryGetValue(def, out var stock)) return Array.Empty<Thing>();
             return stock.items;
+        }
+
+        public bool IsAvailable([NotNull] Thing consumable)
+        {
+            return stockCache.TryGetValue(consumable.def)?.items.Contains(consumable) == true;
         }
     }
 }
