@@ -21,7 +21,7 @@ namespace Gastronomy.Restaurant
         }
 
         private const float MinOptimality = 100f;
-        private const int JoyOptimalityWeight = 300;
+        private const int JoyOptimalityWeight = 400;
 
         private class ConsumeOptimality
         {
@@ -93,7 +93,7 @@ namespace Gastronomy.Restaurant
             return stockCache.Values
                 .Where(stock => WillConsume(pawn, allowDrug, stock.def))
                 .Where(stock => CanAfford(pawn, stock.def))
-                .SelectMany(stock => stock.items)
+                .Select(stock => stock.items.FirstOrDefault()) // we only check the first one (so it could be that someone gets ingredients they didn't like...)
                 .Where(consumable => Restaurant.Orders.CanBeOrdered(consumable))
                 .Select(consumable => new FoodOptimality(consumable, GetMealOptimalityScore(pawn, consumable, includeEat, includeJoy)))
                 .Where(def => def.optimality >= MinOptimality);
@@ -140,7 +140,7 @@ namespace Gastronomy.Restaurant
 
         private static float CalcEatOptimality([NotNull] Pawn pawn, [NotNull]Thing thing)
         {
-            return Mathf.Max(0, FoodUtility.FoodOptimality(pawn, thing, thing.def, IntVec3Utility.ManhattanDistanceFlat(pawn.Position, thing.Position) * 0.5f));
+            return Mathf.Max(0, FoodUtility.FoodOptimality(pawn, thing, thing.def, 25));
         }
 
         private static float CalcJoyOptimality([NotNull] Pawn pawn, [NotNull] Thing thing)
@@ -212,7 +212,10 @@ namespace Gastronomy.Restaurant
 
         private static bool WillConsume(Pawn pawn, bool allowDrug, ThingDef def)
         {
-            var result = def != null && (allowDrug || !def.IsDrug) && pawn.WillEat(def);
+            if (def == null) return false;
+            var fineAsDrug = allowDrug || !def.IsDrug;
+            var fineAsFood = def.ingestible?.preferability == FoodPreferability.Undefined || def.ingestible?.preferability == FoodPreferability.NeverForNutrition || pawn.WillEat(def);
+            var result = fineAsDrug && fineAsFood;
             //Log.Message($"{pawn.NameShortColored} will consume {def.label}? will eat = {pawn.WillEat(def)}, preferability = {def.ingestible?.preferability}, allowDrug = {allowDrug}, result = {result}");
             return result;
         }
@@ -236,7 +239,7 @@ namespace Gastronomy.Restaurant
                 stock.Value.ordered = 0;
             }
 
-            foreach (var thing in Map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource)
+            foreach (var thing in GetConsumablesOnMap()
                 .Where(t => t.def.IsIngestible && !t.def.IsCorpse && Menu.IsOnMenu(t) && !t.IsForbidden(Faction.OfPlayer)))
             {
                 if (thing?.def == null) continue;
@@ -252,6 +255,14 @@ namespace Gastronomy.Restaurant
             // Slowly empty optimality caches again
             if (eatOptimalityCache.Count > 0) eatOptimalityCache.RemoveAt(0);
             if (joyOptimalityCache.Count > 0) joyOptimalityCache.RemoveAt(0);
+        }
+
+        private IEnumerable<Thing> GetConsumablesOnMap()
+        {
+            var food = Map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource);
+            var drugs = Map.listerThings.ThingsInGroup(ThingRequestGroup.Drug);
+            if (food == null || drugs == null) return Array.Empty<Thing>();
+            return food.Union(drugs);
         }
 
         [NotNull]
