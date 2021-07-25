@@ -21,7 +21,7 @@ namespace Gastronomy
 				var allDefsListForReading = DefDatabase<ThingDef>.AllDefsListForReading;
 				foreach (var t in allDefsListForReading)
 				{
-					if (t != null && t.category == ThingCategory.Item && t.IsDrug && !___entriesInt.Exists(e=>e.drug == t))
+					if (t is {category: ThingCategory.Item} && t.IsDrug && !___entriesInt.Exists(e=>e.drug == t))
 					{
 						DrugPolicyEntry drugPolicyEntry = new DrugPolicyEntry {drug = t, allowedForAddiction = true};
 						___entriesInt.Add(drugPolicyEntry);

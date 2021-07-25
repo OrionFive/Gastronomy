@@ -67,7 +67,7 @@ namespace Gastronomy.Restaurant
         public Thing GetBestMealFor([NotNull] Pawn pawn, bool allowDrug, bool includeEat = true, bool includeJoy = true)
         {
             var options = GetMealOptions(pawn, allowDrug, includeEat, includeJoy);
-            Log.Message($"{pawn.NameShortColored}: Meal options: {options.GroupBy(o => o.thing.def).Select(o => $"{o.Key.label} ({o.FirstOrDefault()?.optimality:F2})").ToCommaList()}");
+            //Log.Message($"{pawn.NameShortColored}: Meal options: {options.GroupBy(o => o.thing.def).Select(o => $"{o.Key.label} ({o.FirstOrDefault()?.optimality:F2})").ToCommaList()}");
             if (options
                 .TryMaxBy(def => def.optimality, out var best))
             {
@@ -109,10 +109,14 @@ namespace Gastronomy.Restaurant
         private float GetMealOptimalityScore([NotNull] Pawn pawn, Thing thing, bool includeEat = true, bool includeJoy = true)
         {
             if (thing == null) return 0;
-            if (!IsAllowedIfDrug(pawn, thing.def!)) return 0;
+            if (!IsAllowedIfDrug(pawn, thing.def!))
+            {
+                //Log.Message($"{pawn.NameShortColored}: {thing.LabelCap} Not allowed (drug)");
+                return 0;
+            }
+            //var debugMessage = new StringBuilder($"{pawn.NameShortColored}: {thing.LabelCap} ");
 
             float score = 0;
-            //var debugMessage = new StringBuilder($"{pawn.NameShortColored}: {thing.LabelCap} ");
             if (includeEat && pawn.needs.food != null)
             {
                 var optimality = GetCachedOptimality(pawn, thing, eatOptimalityCache, CalcEatOptimality);
@@ -209,7 +213,7 @@ namespace Gastronomy.Restaurant
         private static bool WillConsume(Pawn pawn, bool allowDrug, ThingDef def)
         {
             var result = def != null && (allowDrug || !def.IsDrug) && pawn.WillEat(def);
-            //Log.Message($"{pawn.NameShortColored} will consume {def.label}? will eat? {pawn.WillEat(def)} result = {result}");
+            //Log.Message($"{pawn.NameShortColored} will consume {def.label}? will eat = {pawn.WillEat(def)}, preferability = {def.ingestible?.preferability}, allowDrug = {allowDrug}, result = {result}");
             return result;
         }
 
