@@ -90,7 +90,11 @@ namespace Gastronomy.Dining
                 else
                 {
                     var chair = intVec.GetEdifice(map);
-                    if (chair != null && chair.def.building.isSittable && intVec + chair.Rotation.FacingCell == position)
+                    if (chair == null) continue;
+
+                    var facingCorrectly = !chair.def.rotatable || intVec + chair.Rotation.FacingCell == position;
+
+                    if (chair.def.building.isSittable && facingCorrectly)
                     {
                         result[i] = spotStates[i];
                     }
