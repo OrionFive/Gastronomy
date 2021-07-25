@@ -95,6 +95,10 @@ namespace Gastronomy.Restaurant
                 listing.CheckboxLabeled("TabRegisterGuests".Translate(), ref restaurant.allowGuests, "TabRegisterGuestsTooltip".Translate());
                 listing.CheckboxLabeled("TabRegisterColonists".Translate(), ref restaurant.allowColonists, "TabRegisterColonistsTooltip".Translate());
                 listing.CheckboxLabeled("TabRegisterPrisoners".Translate(), ref restaurant.allowPrisoners, "TabRegisterPrisonersTooltip".Translate());
+                if (ModsConfig.IdeologyActive)
+                {
+                    listing.CheckboxLabeled("TabRegisterSlaves".Translate(), ref restaurant.allowSlaves, "TabRegisterSlavesTooltip".Translate());
+                }
 
                 DrawPrice(listing.GetRect(22));
 

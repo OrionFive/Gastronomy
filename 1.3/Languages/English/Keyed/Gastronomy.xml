@@ -26,6 +26,8 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	<TabRegisterColonistsTooltip>When checked, colonists will make orders.</TabRegisterColonistsTooltip>
 	<TabRegisterPrisoners>Allow prisoners</TabRegisterPrisoners>
 	<TabRegisterPrisonersTooltip>When checked, prisoners will make orders.</TabRegisterPrisonersTooltip>
+	<TabRegisterSlaves>Allow slaves</TabRegisterSlaves>
+	<TabRegisterSlavesTooltip>When checked, slaves will make orders.</TabRegisterSlavesTooltip>
 	<TabRegisterGuestPrice>Price for guests: {0}</TabRegisterGuestPrice>
 	<TabRegisterGuestPriceTooltip>A multiplier for the market value. You can see the individual prices when you point at stocked items. This multiplier affects the mood of patrons.</TabRegisterGuestPriceTooltip>
 	<TabRegisterGuestPriceFree>Free</TabRegisterGuestPriceFree>
