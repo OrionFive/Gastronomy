@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using Gastronomy.Restaurant;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -8,7 +11,7 @@ namespace Gastronomy.Waiting
 	{
 		protected string explanationKey;
 		private float nextCheck;
-		private bool getReport;
+		private AlertReport report;
 
 		// ReSharper disable once PublicConstructorInAbstractClass
 		public Alert_NoRegister()
@@ -18,7 +21,7 @@ namespace Gastronomy.Waiting
 			defaultPriority = AlertPriority.High;
 		}
 		public override string GetLabel() => defaultLabel;
-
+		
 		public override AlertReport GetReport()
 		{
 			if (Time.realtimeSinceStartup > nextCheck)
@@ -27,12 +30,12 @@ namespace Gastronomy.Waiting
 				CheckMaps();
 			}
 
-			return getReport;
+			return report;
 		}
 
 		private void CheckMaps()
 		{
-			getReport = false;
+			report.active = false;
 
 			foreach (var map in Find.Maps)
 			{
@@ -42,7 +45,7 @@ namespace Gastronomy.Waiting
 				if (restaurant.diningSpots.Count == 0) continue;
 				if (restaurant.Registers.Count > 0) continue;
 
-				getReport = true;
+				report = new AlertReport {active = true, culpritsThings = new List<Thing>(restaurant.diningSpots)};
 				break;
 			}
 		}
