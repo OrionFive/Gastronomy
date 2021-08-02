@@ -5,18 +5,15 @@ using System.Linq;
 using CashRegister;
 using CashRegister.TableTops;
 using Gastronomy.Dining;
-using Gastronomy.Restaurant;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
 
-// WARNING! Can't move to different namespace without breaking saves :'(
-// TODO: For 1.3, move it to Restaurant namespace
-namespace Gastronomy
+namespace Gastronomy.Restaurant
 {
 	public class RestaurantController : MapComponent
 	{
-		// TODO: For 1.3, make all these settings not part of a map component, so we can have multiple restaurants
+		// TODO: Make all these settings not part of a map component, so we can have multiple restaurants
 		public RestaurantController(Map map) : base(map) { }
 
 		[NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
@@ -121,7 +118,11 @@ namespace Gastronomy
 
 		private void RefreshRegisters(Building building, Map map)
 		{
-			Registers = RegisterUtility.GetRegisters(map);
+			// Only check for local map
+			if (map == this.map)
+			{
+				Registers = RegisterUtility.GetRegisters(map);
+			}
 		}
 
 		public override void MapComponentTick()
