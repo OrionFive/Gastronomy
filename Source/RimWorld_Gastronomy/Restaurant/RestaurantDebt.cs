@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Gastronomy.Dining;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace Gastronomy.Restaurant
 
 		public void RareTick()
 		{
-			debts.RemoveAll(o => o.amount <= 0 || !CanHaveDebt(o.patron));
+			debts.RemoveAll(o => o.amount <= 0 || !o.patron.CanHaveDebt());
 		}
 
 		private void OnNextDay()
@@ -49,18 +50,13 @@ namespace Gastronomy.Restaurant
 
 		public void Add(Thing meal, Pawn patron)
 		{
-			if (!CanHaveDebt(patron)) return;
+			if (!patron.CanHaveDebt()) return;
 
 			var debt = GetOrCreateDebt(patron);
 
 			var price = meal.def.GetPrice(Restaurant);
 			debt.amount += price;
 			incomeToday += price;
-		}
-
-		private static bool CanHaveDebt(Pawn patron)
-		{
-			return patron != null && !patron.Dead && patron.Faction?.IsPlayer == false && !patron.IsPrisoner;
 		}
 
 		private Debt GetOrCreateDebt(Pawn patron)

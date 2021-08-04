@@ -216,7 +216,7 @@ namespace Gastronomy.Waiting
                         actor.GetRestaurant().Debts.Add(food, patron);
                         actor.GetRestaurant().Orders.CompleteOrderFor(patron);
 
-                        patronDriver.OnTransferredFood(food, actor.inventory.innerContainer, out Thing silver);
+                        patronDriver.OnTransferredFood(food, actor.inventory.innerContainer, out var silver);
 
                         if (silver == null)
                         {

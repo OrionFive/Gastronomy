@@ -52,8 +52,8 @@ namespace Gastronomy.Dining
         public override IEnumerable<Toil> MakeNewToils()
         {
             // Declare these early - jumping points
-            var waitForWaiter = Toils_Dining.WaitForWaiter(SpotIndex, WaiterIndex).FailOnRestaurantClosed().FailOnDangerous(JobUtility.MaxDangerDining);
-            var waitForMeal = Toils_Dining.WaitForMeal(MealIndex, SpotIndex).FailOnDangerous(JobUtility.MaxDangerDining);
+            var waitForWaiter = Toils_Dining.WaitForWaiter(SpotIndex, WaiterIndex);
+            var waitForMeal = Toils_Dining.WaitForMeal(MealIndex, SpotIndex);
 
             this.FailOn(() => DiningSpot.Destroyed);
             yield return Toils_Dining.GoToDineSpot(pawn, SpotIndex).FailOnRestaurantClosed();
@@ -86,7 +86,7 @@ namespace Gastronomy.Dining
                 //Log.Message($"{pawn.NameShortColored} has taken {consumable.Label} to his inventory.");
                 pawn.PayForMeal(payTarget, out paidSilver);
                 job.SetTarget(MealIndex, consumable); // This triggers WaitForMeal
-                if (pawn.IsGuest())
+                if (pawn.CanHaveDebt())
                 {
                     DiningUtility.GiveBoughtFoodThought(pawn);
                 }

@@ -247,6 +247,14 @@ namespace Gastronomy.Dining
             return toil;
         }
 
+        public static bool HasToPay(this Pawn patron)
+        {
+            return patron.IsGuest();
+        }
 
+        public static bool CanHaveDebt(this Pawn patron)
+        {
+            return patron is {Dead: false, IsPrisoner: false} && patron.HasToPay();
+        }
     }
 }

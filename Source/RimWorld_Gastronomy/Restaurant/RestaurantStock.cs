@@ -102,7 +102,7 @@ namespace Gastronomy.Restaurant
         private bool CanAfford(Pawn pawn, ThingDef def)
         {
             if (Restaurant.guestPricePercentage <= 0) return true;
-            if (!pawn.IsGuest()) return true;
+            if (!pawn.CanHaveDebt()) return true;
             return pawn.GetSilver() >= def.GetPrice(Restaurant);
         }
 
