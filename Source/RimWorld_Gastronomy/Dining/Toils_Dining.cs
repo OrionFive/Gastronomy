@@ -104,6 +104,8 @@ namespace Gastronomy.Dining
             toil.FailOnDestroyedOrNull(diningSpotInd);
             toil.FailOnDurationExpired(); // Duration over? Fail job!
             toil.FailOnRestaurantClosed();
+            toil.FailOnHasShift();
+            toil.FailOnDangerous(JobUtility.MaxDangerDining);
             toil.socialMode = RandomSocialMode.Normal;
             return toil;
         }
@@ -163,6 +165,8 @@ namespace Gastronomy.Dining
             toil.defaultDuration = 3000;
             toil.WithProgressBarToilDelayReversed(chairInd, 3000, true);
             toil.defaultCompleteMode = ToilCompleteMode.Never;
+            toil.FailOnHasShift();
+            toil.FailOnDangerous(JobUtility.MaxDangerDining);
             toil.FailOnDurationExpired(); // Duration over? Fail job!
             toil.socialMode = RandomSocialMode.Normal;
             return toil;

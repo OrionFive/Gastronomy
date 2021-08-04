@@ -100,6 +100,18 @@ namespace Gastronomy.Restaurant
             return f;
         }
 
+        public static T FailOnHasShift<T>(this T f) where T : IJobEndable
+        {
+            JobCondition HasShift()
+            {
+                var pawn = f.GetActor();
+                return pawn.GetRestaurant().ActiveStaff.Contains(pawn) ? JobCondition.Incompletable : JobCondition.Ongoing;
+            }
+
+            f.AddEndCondition(HasShift);
+            return f;
+        }
+
         public static T FailOnNotDining<T>(this T f, TargetIndex patronInd) where T : IJobEndable
         {
             JobCondition PatronIsNotDining()
