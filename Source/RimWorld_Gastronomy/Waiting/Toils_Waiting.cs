@@ -82,7 +82,8 @@ namespace Gastronomy.Waiting
                 else
                 {
                     restaurant.Orders.CreateOrder(patron, desiredFood);
-                    
+                    toil.GetActor().skills.GetSkill(SkillDefOf.Social).Learn(150, false);
+
                     var symbol = desiredFood.def.uiIcon;
                     if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
                 }
@@ -282,6 +283,7 @@ namespace Gastronomy.Waiting
                 if (patron.jobs.curDriver is JobDriver_Dine patronDriver)
                 {
                     DiningUtility.GiveServiceThought(patron, toil.actor, patronDriver.HoursWaited);
+                    actor.skills.GetSkill(SkillDefOf.Social).Learn(150, false);
                 }
 
                 var symbol = food.def.uiIcon;
