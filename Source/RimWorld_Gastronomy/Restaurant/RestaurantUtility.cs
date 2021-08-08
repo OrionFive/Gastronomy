@@ -12,7 +12,7 @@ namespace Gastronomy.Restaurant
 {
     public static class RestaurantUtility
     {
-        private static Dictionary<Pair<Pawn, Region>, bool> dangerousRegionsCache = new Dictionary<Pair<Pawn, Region>, bool>();
+        private static readonly Dictionary<Pair<Pawn, Region>, bool> dangerousRegionsCache = new Dictionary<Pair<Pawn, Region>, bool>();
 
         public static void OnTick()
         {

@@ -164,6 +164,7 @@ namespace Gastronomy.Restaurant
 
 		public bool HasToWork(Pawn pawn)
 		{
+			if (!openForBusiness) return false;
 			return Registers.Any(r => r?.HasToWork(pawn) == true);
 		}
 
