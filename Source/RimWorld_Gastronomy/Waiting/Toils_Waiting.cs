@@ -82,7 +82,8 @@ namespace Gastronomy.Waiting
                 else
                 {
                     restaurant.Orders.CreateOrder(patron, desiredFood);
-                    
+                    toil.GetActor().skills.GetSkill(SkillDefOf.Social).Learn(150, false);
+
                     var symbol = desiredFood.def.uiIcon;
                     if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
                 }
@@ -236,6 +237,7 @@ namespace Gastronomy.Waiting
                             curJob.SetTarget(registerInd, register);
                             curJob.count = silver.stackCount;
                         }
+                        actor.skills.GetSkill(SkillDefOf.Social).Learn(150, false);
 
                         //Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
                     }
