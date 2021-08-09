@@ -223,7 +223,6 @@ namespace Gastronomy.Waiting
                         {
                             //Log.Message($"{actor.NameShortColored} didn't receive any silver from {patron.NameShortColored}.");
                             actor.jobs.curDriver.EndJobWith(JobCondition.Succeeded);
-                            actor.skills.GetSkill(SkillDefOf.Social).Learn(150, false);
                         }
                         else
                         {
@@ -233,13 +232,12 @@ namespace Gastronomy.Waiting
                                 // No register, just drop it
                                 actor.inventory.innerContainer.TryDrop(silver, ThingPlaceMode.Near, out silver);
                                 actor.jobs.curDriver.EndJobWith(JobCondition.Succeeded);
-                                actor.skills.GetSkill(SkillDefOf.Social).Learn(150, false);
                             }
                             curJob.SetTarget(silverInd, silver);
                             curJob.SetTarget(registerInd, register);
                             curJob.count = silver.stackCount;
-                            actor.skills.GetSkill(SkillDefOf.Social).Learn(150, false);
                         }
+                        actor.skills.GetSkill(SkillDefOf.Social).Learn(150, false);
 
                         //Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
                     }
