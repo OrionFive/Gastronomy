@@ -148,7 +148,8 @@ namespace Gastronomy.Dining
                     // Order not spawned? Already eaten it, or something happened to it
                     // Let it go.
                     Log.Warning($"{toil.actor.NameShortColored}'s food is gone. Already eaten?");
-                    GetDriver(toil).EndJobWith(JobCondition.QueuedNoLongerValid);
+                    toil.actor.GetRestaurant().Orders.CancelOrder(order);
+                    GetDriver(toil).EndJobWith(JobCondition.Incompletable);
                 }
                 GetDriver(toil).OnStartedWaiting();
             };
