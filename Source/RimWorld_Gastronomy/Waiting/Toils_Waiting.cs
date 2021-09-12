@@ -174,7 +174,8 @@ namespace Gastronomy.Waiting
                         }
                     }
 
-                    Log.Error(actor + " could not find standable cell adjacent to " + target);
+                    // This can happen if there's no space or it's crowded
+                    //Log.Error(actor + " could not find standable cell adjacent to " + target);
                     actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                 }
             };
