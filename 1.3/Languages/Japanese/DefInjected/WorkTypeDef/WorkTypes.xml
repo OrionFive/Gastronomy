@@ -5,7 +5,7 @@
   <Gastronomy_Waiting.description>オーダーを取り、食事をサーブします。</Gastronomy_Waiting.description>
   <Gastronomy_Waiting.labelShort></Gastronomy_Waiting.labelShort>
   <Gastronomy_Waiting.pawnLabel>ウェイター</Gastronomy_Waiting.pawnLabel>
-  <Gastronomy_Waiting.gerundLabel>サーブ中</Gastronomy_Waiting.gerundLabel>
+  <Gastronomy_Waiting.gerundLabel>サーブ</Gastronomy_Waiting.gerundLabel>
   <Gastronomy_Waiting.verb>サーブ</Gastronomy_Waiting.verb>
 
 </LanguageData>

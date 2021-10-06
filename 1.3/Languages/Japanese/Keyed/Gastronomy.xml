@@ -15,7 +15,7 @@
 	<MessageIncomeToday>あなたのお店は本日 {0} シルバー稼ぎました。</MessageIncomeToday>
 	
 	<!-- Register tab - can't be very long (Restaurant is already too long) -->
-	<TabRegisterRestaurant>ダイニングスポット</TabRegisterRestaurant>
+	<TabRegisterRestaurant>ダイニング</TabRegisterRestaurant>
 	
 	<!-- Settings -->
 	<TabRegisterOpened>開店</TabRegisterOpened>
