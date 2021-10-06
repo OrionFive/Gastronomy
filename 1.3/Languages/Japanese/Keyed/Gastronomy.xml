@@ -51,7 +51,7 @@
 	<CommandToggleDiningDesc>有効にすると、この場所をダイニング用に使うことができます。</CommandToggleDiningDesc>
 	<CommandSetDeco>デコレーションの変更</CommandSetDeco>
 	<CommandSetDecoDesc>テーブルのデコレーションを変更します。</CommandSetDecoDesc>
-	<JobDineGoReport>Eating at restaurant.</JobDineGoReport>
+	<JobDineGoReport>レストランで食事をしています。</JobDineGoReport>
 	
 	<!-- Alerts -->
 	<AlertNoRegister>清算レジがありません。</AlertNoRegister>
