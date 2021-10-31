@@ -10,13 +10,13 @@ namespace Gastronomy.Dining
     /// </summary>
     internal static class _TryBestFoodSourceFor_Patch
     {
-        [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor))]
+        [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor_NewTemp))]
         public class TryFindBestFoodSourceFor
         {
             [HarmonyPrefix]
             internal static bool Prefix(Pawn getter, Pawn eater, ref bool __result, ref Thing foodSource, ref ThingDef foodDef, ref bool desperate)
             {
-                if (desperate) return true; // Run original code
+                if (desperate && __result) return true; // Run original code, but only if we actually found something
 
                 if (getter != eater) return true; // Run original code
 
