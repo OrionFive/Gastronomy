@@ -1,6 +1,7 @@
 using Gastronomy.Restaurant;
 using HarmonyLib;
 using RimWorld;
+using System.Reflection;
 using Verse;
 
 namespace Gastronomy.Dining
@@ -10,9 +11,20 @@ namespace Gastronomy.Dining
     /// </summary>
     internal static class _TryBestFoodSourceFor_Patch
     {
-        [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor_NewTemp))]
+        /// <summary>
+        /// Patching _NewTemp if it exists, or original version if it doesn't, so players with older versions don't run into issues.
+        /// Also: Goddammit, Ludeon :(
+        /// </summary>
+        [HarmonyPatch]
         public class TryFindBestFoodSourceFor
         {
+            [HarmonyTargetMethod]
+            private static MethodBase TargetMethod()
+            {
+                return AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor_NewTemp)) ??
+                       AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor)); // Not obsolete until NewTemp goes away. Don't believe their lies!
+            }
+
             [HarmonyPrefix]
             internal static bool Prefix(Pawn getter, Pawn eater, ref bool __result, ref Thing foodSource, ref ThingDef foodDef, ref bool desperate)
             {
