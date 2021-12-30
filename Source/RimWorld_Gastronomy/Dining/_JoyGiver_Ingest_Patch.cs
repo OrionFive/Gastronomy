@@ -32,7 +32,7 @@ namespace Gastronomy.Dining
 
                 //Log.Message($"{pawn.NameShortColored} wants to eat at restaurant ({diningSpot.Position}).");
 
-                Job job = JobMaker.MakeJob(DiningUtility.dineDef, diningSpot);
+                Job job = JobMaker.MakeJob(InternalDefOf.Gastronomy_Dine, diningSpot);
                 __result = job;
                 return false;
             }

@@ -74,7 +74,7 @@ namespace Gastronomy.Waiting
                     for (var i = 0; i < patron.jobs.jobQueue.Count; i++)
                     {
                         // queue gets modified while we do this, so we don't use the iterator
-                        var queued = patron.jobs.jobQueue.FirstOrDefault(j => j.job?.def == DiningUtility.dineDef && !j.job.playerForced);
+                        var queued = patron.jobs.jobQueue.FirstOrDefault(j => j.job?.def == InternalDefOf.Gastronomy_Dine && !j.job.playerForced);
                         if (queued?.job == null) break;
                         patron.jobs.EndCurrentOrQueuedJob(queued.job, JobCondition.Incompletable);
                     }
