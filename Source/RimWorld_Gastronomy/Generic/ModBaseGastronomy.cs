@@ -1,4 +1,3 @@
-using CashRegister;
 using HugsLib;
 using Verse;
 
@@ -15,7 +14,7 @@ namespace Gastronomy
         {
             settings = new Settings(Settings);
 
-            if (RegisterUtility.cashRegisterDef == null)
+            if (InternalDefOf.CashRegister_CashRegister == null)
             {
                 GenUI.ErrorDialog("ErrorRequiresCashRegister".Translate());
             }

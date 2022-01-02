@@ -79,7 +79,7 @@ namespace Gastronomy.Waiting
             yield return Toils_Waiting.ClearOrder(TargetIndex.A, TargetIndex.B, TargetIndex.B, TargetIndex.C); // Got no silver or register? Job successful
             yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, TargetIndex.B);
             yield return Toils_Goto.GotoThing(TargetIndex.C, PathEndMode.Touch);
-            yield return Toils_Haul.DepositHauledThingInContainer(TargetIndex.C, TargetIndex.None).PlaySoundAtStart(RegisterUtility.kachingSoundDef);
+            yield return Toils_Haul.DepositHauledThingInContainer(TargetIndex.C, TargetIndex.None).PlaySoundAtStart(InternalDefOf.CashRegister_Register_Kaching);
 
         }
     }
