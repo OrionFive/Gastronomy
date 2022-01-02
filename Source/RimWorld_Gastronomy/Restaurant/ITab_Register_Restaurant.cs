@@ -15,7 +15,6 @@ namespace Gastronomy.Restaurant
     public class ITab_Register_Restaurant : ITab_Register
     {
         private bool showSettings = true;
-        private bool showRadius = false;
         private bool showStats = true;
         private RestaurantController restaurant;
         private ThingFilterUI.UIState menuFilterState = new ThingFilterUI.UIState();
@@ -63,14 +62,6 @@ namespace Gastronomy.Restaurant
                 var smallRect = new Rect(rect);
 
                 DrawSettings(ref smallRect);
-                rect.yMin += smallRect.height + 10;
-            }
-
-            if (showRadius)
-            {
-                var smallRect = new Rect(rect) {height = 50};
-
-                DrawRadius(smallRect);
                 rect.yMin += smallRect.height + 10;
             }
 
@@ -122,29 +113,6 @@ namespace Gastronomy.Restaurant
                 SoundDefOf.DragSlider.PlayOneShotOnCamera();
                 restaurant.guestPricePercentage = value;
             }
-        }
-
-        private void DrawRadius(Rect rect)
-        {
-            var listing = new Listing_Standard();
-            listing.Begin(rect);
-            {
-                string strRadius = "TabRegisterRadius".Translate().Truncate(rect.width * 0.6f);
-                string strRadiusValue = Register.radius >= 999f ? "Unlimited".TranslateSimple().Truncate(rect.width * 0.3f) : Register.radius.ToString("F0");
-                listing.Label(strRadius + ": " + strRadiusValue);
-                float oldValue = Register.radius;
-                Register.radius = listing.Slider(Register.radius, 3f, 100f);
-                if (Register.radius >= 100f)
-                {
-                    Register.radius = 999f;
-                }
-
-                if (Register.radius != oldValue)
-                {
-                    restaurant.RescanDiningSpots();
-                }
-            }
-            listing.End();
         }
 
         private void DrawStats(ref Rect rect)

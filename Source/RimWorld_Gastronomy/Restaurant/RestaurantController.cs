@@ -121,11 +121,28 @@ namespace Gastronomy.Restaurant
 			// Only check for local map
 			if (map == this.map)
 			{
+				// Remove old listeners
+                foreach (var register in Registers)
+                {
+                    register.onRadiusChanged.RemoveListener(OnRegisterRadiusChanged);
+                }
+
 				Registers = RegisterUtility.GetRegisters(map);
+
+				// Add new listeners
+                foreach (var register in Registers)
+                {
+                    register.onRadiusChanged.AddListener(OnRegisterRadiusChanged);
+                }
 			}
 		}
 
-		public override void MapComponentTick()
+        private void OnRegisterRadiusChanged(Building_CashRegister register)
+        {
+            RefreshRegisters(null, register.Map);
+        }
+
+        public override void MapComponentTick()
 		{
 			RestaurantUtility.OnTick();
 			// Don't tick everything at once
