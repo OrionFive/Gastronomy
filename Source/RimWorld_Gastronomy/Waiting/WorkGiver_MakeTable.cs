@@ -48,7 +48,7 @@ namespace Gastronomy.Waiting
 
             //Log.Message($"{pawn.NameShortColored} can get a make table job at {diningSpot.Position}.");
 
-            return JobMaker.MakeJob(WaitingUtility.makeTableDef, diningSpot);
+            return JobMaker.MakeJob(WaitingDefOf.Gastronomy_MakeTable, diningSpot);
         }
     }
 }

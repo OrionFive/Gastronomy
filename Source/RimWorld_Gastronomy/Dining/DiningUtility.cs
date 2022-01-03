@@ -37,7 +37,7 @@ namespace Gastronomy.Dining
 
         public static IEnumerable<DiningSpot> GetAllDiningSpots([NotNull] Map map)
         {
-            return map.listerThings.ThingsOfDef(InternalDefOf.Gastronomy_DiningSpot).OfType<DiningSpot>();
+            return map.listerThings.ThingsOfDef(DiningDefOf.Gastronomy_DiningSpot).OfType<DiningSpot>();
         }
 
         public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, bool allowDrug, Predicate<Thing> extraSpotValidator = null)
@@ -58,7 +58,7 @@ namespace Gastronomy.Dining
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && CanReserve(pawn, spot) && !spot.HostileTo(pawn)
                        && spot.CanDineHere(pawn) && !RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
             }
-            var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(InternalDefOf.Gastronomy_DiningSpot), 
+            var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(DiningDefOf.Gastronomy_DiningSpot), 
                 PathEndMode.ClosestTouch, TraverseParms.For(pawn), maxDistanceToScan, Validator, null, 0, 
                 maxRegionsToScan);
 
@@ -133,8 +133,8 @@ namespace Gastronomy.Dining
         public static void GiveBoughtFoodThought(Pawn pawn)
         {
             if (pawn.needs.mood == null) return;
-            pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDef(InternalDefOf.Gastronomy_BoughtFood);
-            pawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(InternalDefOf.Gastronomy_BoughtFood, GetBoughtFoodStage(pawn)));
+            pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDef(DiningDefOf.Gastronomy_BoughtFood);
+            pawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(DiningDefOf.Gastronomy_BoughtFood, GetBoughtFoodStage(pawn)));
         }
 
         public static void GiveServiceThought(Pawn patron, Pawn waiter, float hoursWaited)
@@ -142,13 +142,13 @@ namespace Gastronomy.Dining
             if (patron.needs.mood == null) return;
 
             int stage = GetServiceStage(patron, waiter);
-            patron.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(InternalDefOf.Gastronomy_Serviced, stage), waiter);
-            patron.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(InternalDefOf.Gastronomy_ServicedMood, stage));
+            patron.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(DiningDefOf.Gastronomy_Serviced, stage), waiter);
+            patron.needs.mood.thoughts.memories.TryGainMemory(ThoughtMaker.MakeThought(DiningDefOf.Gastronomy_ServicedMood, stage));
         }
 
         public static void GiveWaitThought(Pawn patron)
         {
-            patron.needs.mood?.thoughts.memories.TryGainMemory(InternalDefOf.Gastronomy_HadToWait);
+            patron.needs.mood?.thoughts.memories.TryGainMemory(DiningDefOf.Gastronomy_HadToWait);
         }
 
         private static int GetServiceStage(Pawn patron, Pawn waiter)

@@ -29,8 +29,8 @@ namespace Gastronomy.Restaurant
 
         public static bool HasDiningQueued(this Pawn patron)
         {
-            if (patron?.CurJobDef == InternalDefOf.Gastronomy_Dine) return true;
-            return patron?.jobs.jobQueue?.Any(j => j.job.def == InternalDefOf.Gastronomy_Dine) == true;
+            if (patron?.CurJobDef == DiningDefOf.Gastronomy_Dine) return true;
+            return patron?.jobs.jobQueue?.Any(j => j.job.def == DiningDefOf.Gastronomy_Dine) == true;
         }
 
         public static RestaurantController GetRestaurant([NotNull]this Thing thing)

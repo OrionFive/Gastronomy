@@ -20,7 +20,7 @@ namespace Gastronomy.Dining
 				if (__result?.def == JobDefOf.Ingest && __result?.targetA.HasThing == true && __result?.targetA.Thing is DiningSpot)
 				{
 					//Log.Message($"{pawn.NameShortColored} is now dining instead of ingesting.");
-					__result.def = InternalDefOf.Gastronomy_Dine;
+					__result.def = DiningDefOf.Gastronomy_Dine;
 				}
 			}
 		}

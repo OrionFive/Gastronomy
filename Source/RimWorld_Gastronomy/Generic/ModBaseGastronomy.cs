@@ -14,7 +14,7 @@ namespace Gastronomy
         {
             settings = new Settings(Settings);
 
-            if (InternalDefOf.CashRegister_CashRegister == null)
+            if (GenericDefOf.CashRegister_CashRegister == null)
             {
                 GenUI.ErrorDialog("ErrorRequiresCashRegister".Translate());
             }

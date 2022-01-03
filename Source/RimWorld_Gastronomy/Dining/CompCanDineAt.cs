@@ -111,7 +111,7 @@ namespace Gastronomy.Dining
                 var map = parent.Map;
                 if (PlaceWorker_OnTable.NotOccupied(pos, map))
                 {
-                    var diningSpot = (DiningSpot) GenSpawn.Spawn(InternalDefOf.Gastronomy_DiningSpot, pos, map);
+                    var diningSpot = (DiningSpot) GenSpawn.Spawn(DiningDefOf.Gastronomy_DiningSpot, pos, map);
                     diningSpot.DecoVariation = decoVariation;
                     diningSpots.Add(diningSpot);
                 }

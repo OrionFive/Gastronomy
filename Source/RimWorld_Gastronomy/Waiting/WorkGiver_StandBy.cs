@@ -32,7 +32,7 @@ namespace Gastronomy.Waiting
 		{
 			var register = (Building_CashRegister) t;
 
-			return JobMaker.MakeJob(WaitingUtility.standByDef, register, register.InteractionCell);
+			return JobMaker.MakeJob(WaitingDefOf.Gastronomy_StandBy, register, register.InteractionCell);
 		}
 	}
 }

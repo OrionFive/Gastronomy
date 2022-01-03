@@ -64,7 +64,7 @@ namespace Gastronomy.Waiting
             }
             //Log.Message($"{pawn.NameShortColored} can get a take order job on {patron.NameShortColored}.");
 
-            return JobMaker.MakeJob(WaitingUtility.takeOrderDef, diningSpot, patron);
+            return JobMaker.MakeJob(WaitingDefOf.Gastronomy_TakeOrder, diningSpot, patron);
         }
     }
 }

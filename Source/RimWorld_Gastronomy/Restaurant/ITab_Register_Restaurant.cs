@@ -117,8 +117,8 @@ namespace Gastronomy.Restaurant
 
         private void DrawStats(ref Rect rect)
         {
-            const int ListingItems = 11;
-            rect.height = ListingItems * 24 + 20;
+            const int listingItems = 11;
+            rect.height = listingItems * 24 + 20;
 
             Widgets.DrawBoxSolid(rect, new Color(1f, 1f, 1f, 0.08f));
             rect = rect.ContractedBy(10);
@@ -317,7 +317,7 @@ namespace Gastronomy.Restaurant
 
         public override bool CanAssignToShift(Pawn pawn)
         {
-            return pawn.workSettings.WorkIsActive(WaitingUtility.waitDef);
+            return pawn.workSettings.WorkIsActive(WaitingDefOf.Gastronomy_Waiting);
         }
     }
 }

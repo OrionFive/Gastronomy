@@ -75,7 +75,7 @@ namespace Gastronomy.Waiting
             var consumable = order.consumable;
             if(consumable == null) Log.Error($"Consumable in order for {p.NameShortColored} is suddenly null.");
 
-            return JobMaker.MakeJob(WaitingUtility.serveDef, order.patron, consumable);
+            return JobMaker.MakeJob(WaitingDefOf.Gastronomy_Serve, order.patron, consumable);
         }
     }
 }
