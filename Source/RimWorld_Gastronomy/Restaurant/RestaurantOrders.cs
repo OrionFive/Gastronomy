@@ -130,7 +130,7 @@ namespace Gastronomy.Restaurant
             if (order.consumable == null) return false;
             if (!order.consumable.SpawnedOrAnyParentSpawned) return false;
             //Log.Message($"Consumable found: {order.consumable.Label} at {order.consumable.Position}");
-            var reserver = Restaurant.map.reservationManager.FirstRespectedReserver(order.consumable, waiter ?? order.patron);
+            var reserver = Restaurant.Map.reservationManager.FirstRespectedReserver(order.consumable, waiter ?? order.patron);
             if (reserver == null) return false;
             return reserver != waiter;
         }

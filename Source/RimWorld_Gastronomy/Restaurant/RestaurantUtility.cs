@@ -35,12 +35,12 @@ namespace Gastronomy.Restaurant
 
         public static RestaurantController GetRestaurant([NotNull]this Thing thing)
         {
-            return thing.Map.GetComponent<RestaurantController>();
+            return thing.Map.GetComponent<RestaurantsComponent>().restaurants.FirstOrDefault();
         }
 
         public static RestaurantController GetRestaurant([NotNull]this Map map)
         {
-            return map.GetComponent<RestaurantController>();
+            return map.GetComponent<RestaurantsComponent>().restaurants.FirstOrDefault();
         }
 
         public static void GetRequestGroup(Thing thing)

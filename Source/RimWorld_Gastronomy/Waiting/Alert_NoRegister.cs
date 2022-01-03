@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Gastronomy.Restaurant;
 using RimWorld;
 using UnityEngine;
@@ -37,17 +36,19 @@ namespace Gastronomy.Waiting
 		{
 			report.active = false;
 
-			foreach (var map in Find.Maps)
-			{
-				if (!map.IsPlayerHome || !map.mapPawns.AnyColonistSpawned) continue;
-				var restaurant = map.GetComponent<RestaurantController>();
-				if (restaurant == null) continue;
-				if (restaurant.diningSpots.Count == 0) continue;
-				if (restaurant.Registers.Count > 0) continue;
+            foreach (var map in Find.Maps)
+            {
+                if (!map.IsPlayerHome || !map.mapPawns.AnyColonistSpawned) continue;
+                foreach (var restaurant in map.GetComponent<RestaurantsComponent>().restaurants)
+                {
+                    if (restaurant == null) continue;
+                    if (restaurant.diningSpots.Count == 0) continue;
+                    if (restaurant.Registers.Count > 0) continue;
 
-				report = new AlertReport {active = true, culpritsThings = new List<Thing>(restaurant.diningSpots)};
-				break;
-			}
-		}
+                    report = new AlertReport { active = true, culpritsThings = new List<Thing>(restaurant.diningSpots) };
+                    break;
+                }
+            }
+        }
 	}
 }

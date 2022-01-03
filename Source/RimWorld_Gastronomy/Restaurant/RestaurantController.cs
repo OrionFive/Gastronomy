@@ -11,17 +11,16 @@ using Verse;
 
 namespace Gastronomy.Restaurant
 {
-	public class RestaurantController : MapComponent
+    public class RestaurantController : IExposable
 	{
-		// TODO: Make all these settings not part of a map component, so we can have multiple restaurants
-		public RestaurantController(Map map) : base(map) { }
+        [NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
+        [NotNull] public IList<Building_CashRegister> Registers { get; private set; } = Array.Empty<Building_CashRegister>();
 
-		[NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
-		[NotNull] public IList<Building_CashRegister> Registers { get; private set; } = Array.Empty<Building_CashRegister>();
+        [NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
+        [NotNull] private readonly List<Pawn> spawnedActiveStaffResult = new List<Pawn>();
 
-		[NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
-		[NotNull] private readonly List<Pawn> spawnedActiveStaffResult = new List<Pawn>();
-		private RestaurantMenu menu;
+        public Map Map { get; }
+        private RestaurantMenu menu;
 		private RestaurantOrders orders;
 		private RestaurantDebt debts;
 		private RestaurantStock stock;
@@ -54,7 +53,7 @@ namespace Gastronomy.Restaurant
 			get
 			{
 				spawnedDiningPawnsResult.Clear();
-				spawnedDiningPawnsResult.AddRange(map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.jobs?.curDriver is JobDriver_Dine));
+				spawnedDiningPawnsResult.AddRange(Map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.jobs?.curDriver is JobDriver_Dine));
 				return spawnedDiningPawnsResult;
 			}
 		}
@@ -64,15 +63,17 @@ namespace Gastronomy.Restaurant
 			{
 				spawnedActiveStaffResult.Clear();
 				var activeShifts = Registers.SelectMany(r => r.shifts.Where(s => s.IsActive));
-				spawnedActiveStaffResult.AddRange(activeShifts.SelectMany(s => s.assigned).Where(p => p.MapHeld == map));
+				spawnedActiveStaffResult.AddRange(activeShifts.SelectMany(s => s.assigned).Where(p => p.MapHeld == Map));
 				return spawnedActiveStaffResult;
 			}
 		}
+        public RestaurantController(Map map)
+        {
+            Map = map;
+        }
 
-
-		public override void ExposeData()
+		public void ExposeData()
 		{
-			base.ExposeData();
 			Scribe_Values.Look(ref openForBusiness, "openForBusiness", true);
 			Scribe_Values.Look(ref allowGuests, "allowGuests", true);
 			Scribe_Values.Look(ref allowColonists, "allowColonists", true);
@@ -95,31 +96,29 @@ namespace Gastronomy.Restaurant
 			stock ??= new RestaurantStock(this);
 		}
 
-		public override void MapGenerated()
+		public void MapGenerated()
 		{
 			InitDeepFieldsInitial();
 		}
 
-		public override void FinalizeInit()
+		public void FinalizeInit()
 		{
-			base.FinalizeInit();
-
 			InitDeepFieldsInitial();
 			diningSpots.Clear();
-			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(map));
+			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(Map));
 			stock.RareTick();
 			orders.RareTick();
 			debts.RareTick();
 
 			TableTop_Events.onAnyBuildingSpawned.AddListener(RefreshRegisters);
 			TableTop_Events.onAnyBuildingDespawned.AddListener(RefreshRegisters);
-			RefreshRegisters(null, map);
+			RefreshRegisters(null, Map);
 		}
 
 		private void RefreshRegisters(Building building, Map map)
 		{
 			// Only check for local map
-			if (map == this.map)
+			if (map == this.Map)
 			{
 				// Remove old listeners
                 foreach (var register in Registers)
@@ -142,19 +141,18 @@ namespace Gastronomy.Restaurant
             RefreshRegisters(null, register.Map);
         }
 
-        public override void MapComponentTick()
+        public void OnTick()
 		{
-			RestaurantUtility.OnTick();
 			// Don't tick everything at once
-			if ((GenTicks.TicksGame + map.uniqueID) % 500 == 0) stock.RareTick();
-			if ((GenTicks.TicksGame + map.uniqueID) % 500 == 250) orders.RareTick();
+			if ((GenTicks.TicksGame + Map.uniqueID) % 500 == 0) stock.RareTick();
+			if ((GenTicks.TicksGame + Map.uniqueID) % 500 == 250) orders.RareTick();
 			//Log.Message($"Stock: {stock.Select(s => s.def.label).ToCommaList(true)}");
-			if ((GenTicks.TicksGame + map.uniqueID) % 500 == 300) RareTick();
+			if ((GenTicks.TicksGame + Map.uniqueID) % 500 == 300) RareTick();
 		}
 
 		private void RareTick()
 		{
-			if (GenDate.DaysPassed > day && GenLocalDate.HourInteger(map) == 0) OnNextDay(GenDate.DaysPassed);
+			if (GenDate.DaysPassed > day && GenLocalDate.HourInteger(Map) == 0) OnNextDay(GenDate.DaysPassed);
 		}
 
 		private void OnNextDay(int today)
@@ -188,7 +186,7 @@ namespace Gastronomy.Restaurant
 		public void RescanDiningSpots()
 		{
 			diningSpots.Clear();
-			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(map));
+			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(Map));
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml;
 using Gastronomy.Restaurant;
 using HarmonyLib;
 using Verse;
@@ -9,18 +10,24 @@ namespace Gastronomy.Compatibility
 	/// So save games don't break
 	/// </summary>
 	internal static class _BackCompatibilityConverter_Universal_Patch
-	{
+    {
 		[HarmonyPatch(typeof(BackCompatibilityConverter_Universal), nameof(BackCompatibilityConverter_Universal.GetBackCompatibleType))]
 		public class GetBackCompatibleType
 		{
-			internal static bool Prefix(string providedClassName, ref Type __result)
+			internal static bool Prefix(Type baseType, string providedClassName, XmlNode node, ref Type __result)
 			{
-				if (providedClassName == "Gastronomy.RestaurantController")
-				{
-					__result = typeof(RestaurantController); // Namespace changed
-					return false;
-				}
+                if (baseType == typeof(MapComponent))
+                {
+                    if (providedClassName == "Gastronomy.Restaurant.RestaurantController" || providedClassName == "Gastronomy.RestaurantController") // also old namespace
+                    {
+						// Wrap old restaurant controller in restaurants component
+                        node.InnerXml = $@"<restaurants>{node.OuterXml}</restaurants>";
+                        node.Attributes["Class"].Value = "Gastronomy.Restaurant.RestaurantsComponent";
 
+                        __result = typeof(RestaurantsComponent);
+                        return false;
+                    }
+                }
 				return true;
 			}
 		}

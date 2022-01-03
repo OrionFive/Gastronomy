@@ -36,18 +36,20 @@ namespace Gastronomy.Waiting
 		{
 			getReport = false;
 
-			foreach (var map in Find.Maps)
-			{
-				if (!map.IsPlayerHome || !map.mapPawns.AnyColonistSpawned) continue;
-				var restaurant = map.GetComponent<RestaurantController>();
-				if (restaurant == null) continue;
-				if (restaurant.diningSpots.Count == 0) continue;
-				if (restaurant.Registers.Count == 0) continue;
-				if (restaurant.Registers.Any(r => r.shifts.Any(s => s.assigned.Count > 0))) continue;
-				
-				getReport = true;
-				break;
-			}
-		}
+            foreach (var map in Find.Maps)
+            {
+                if (!map.IsPlayerHome || !map.mapPawns.AnyColonistSpawned) continue;
+                foreach (var restaurant in map.GetComponent<RestaurantsComponent>().restaurants)
+                {
+                    if (restaurant == null) continue;
+                    if (restaurant.diningSpots.Count == 0) continue;
+                    if (restaurant.Registers.Count == 0) continue;
+                    if (restaurant.Registers.Any(r => r.shifts.Any(s => s.assigned.Count > 0))) continue;
+
+                    getReport = true;
+                    break;
+                }
+            }
+        }
 	}
 }
