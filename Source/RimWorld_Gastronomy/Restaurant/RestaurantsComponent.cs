@@ -9,13 +9,11 @@ namespace Gastronomy.Restaurant
 
         public RestaurantsComponent(Map map) : base(map)
         {
-            Log.Message($"Restaurants component created.");
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
-            Log.Message($"Got map reference? {map!=null}");
             Scribe_Collections.Look(ref restaurants, "restaurants", LookMode.Deep, map);
             restaurants ??= new List<RestaurantController>();
         }
@@ -23,6 +21,7 @@ namespace Gastronomy.Restaurant
         public override void FinalizeInit()
         {
             base.FinalizeInit();
+            if (restaurants.Count == 0) restaurants.Add(new RestaurantController(map));
             foreach (var restaurant in restaurants) restaurant.FinalizeInit();
         }
 
