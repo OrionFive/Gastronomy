@@ -37,7 +37,7 @@ namespace Gastronomy.Restaurant
         public override void FillTab()
         {
             restaurant = Register.GetRestaurant();
-            restaurant ??= Register.Map.GetComponent<RestaurantsManager>().restaurants.First();
+            restaurant ??= Register.GetRestaurantsManager().restaurants.First();
             var fullRect = new Rect(0, 16, size.x, size.y - 16);
             var rectLeft = fullRect.LeftHalf().ContractedBy(10f);
             var rectRight = fullRect.RightHalf().ContractedBy(10f);
@@ -85,7 +85,7 @@ namespace Gastronomy.Restaurant
         {
             restaurant ??= Register.GetRestaurant();
 
-            var restaurants = restaurant.Map.GetComponent<RestaurantsManager>();
+            var restaurants = restaurant.GetRestaurantsManager();
             var rectSelection = rect.LeftHalf();
 
             // Select

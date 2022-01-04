@@ -12,8 +12,8 @@ using Verse;
 namespace Gastronomy.Restaurant
 {
     public class RestaurantController : IExposable
-	{
-        [NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
+    {
+        [NotNull] public readonly HashSet<DiningSpot> diningSpots = new HashSet<DiningSpot>();
         [NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
         [NotNull] private readonly List<Pawn> spawnedActiveStaffResult = new List<Pawn>();
         [NotNull] public IReadOnlyList<Building_CashRegister> Registers => registers;
@@ -116,23 +116,37 @@ namespace Gastronomy.Restaurant
 		public void FinalizeInit()
 		{
 			InitDeepFieldsInitial();
-			diningSpots.Clear();
-			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(Map));
+			RescanDiningSpots();
 			stock.RareTick();
 			orders.RareTick();
 			debts.RareTick();
 
 			TableTop_Events.onAnyBuildingSpawned.AddListener(UpdateRegisterWithBuilding);
 			TableTop_Events.onAnyBuildingDespawned.AddListener(UpdateRegisterWithBuilding);
+
+            foreach (var register in Registers)
+            {
+                register.onRadiusChanged.AddListener(OnRegisterRadiusChanged);
+            }
         }
 
         private void UpdateRegisterWithBuilding(Building building, Map map)
         {
             if (map != Map) return;
-            if (!(building is Building_CashRegister register)) return;
-            
-            if (register.Spawned) AddRegister(register);
-            else RemoveRegister(register);
+            if (building is Building_CashRegister register)
+            {
+                if (register.Spawned) AddRegister(register);
+                else RemoveRegister(register);
+            }
+
+            if (building is DiningSpot spot)
+            {
+                if (Registers.Any(r => r.GetIsInRange(building.Position)))
+                {
+                    if (spot.Spawned) diningSpots.Add(spot);
+                    else diningSpots.Remove(spot);
+                }
+            }
         }
 
         private void OnRegisterRadiusChanged(Building_CashRegister register)
@@ -186,7 +200,10 @@ namespace Gastronomy.Restaurant
 		public void RescanDiningSpots()
 		{
 			diningSpots.Clear();
-			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(Map));
+            foreach (var register in Registers)
+            {
+                foreach (var diningSpot in DiningUtility.GetAllDiningSpots(Map).Where(spot => register.GetIsInRange(spot.Position))) diningSpots.Add(diningSpot);
+            }
 		}
 
         public void CleanUpForRemoval()
@@ -201,7 +218,7 @@ namespace Gastronomy.Restaurant
 
         public void LinkRegister(Building_CashRegister register)
         {
-            foreach (var restaurant in register.Map.GetComponent<RestaurantsManager>().restaurants)
+            foreach (var restaurant in register.GetRestaurantsManager().restaurants)
             {
                 restaurant.RemoveRegister(register);
             }
@@ -226,6 +243,6 @@ namespace Gastronomy.Restaurant
                 OnRegistersChanged();
 				register.onRadiusChanged.RemoveListener(OnRegisterRadiusChanged);
             }
-        }
+		}
     }
 }

@@ -24,8 +24,8 @@ namespace Gastronomy.Restaurant
         public override void FinalizeInit()
         {
             base.FinalizeInit();
-            if (restaurants.Count == 0) AddRestaurant();
             foreach (var restaurant in restaurants) restaurant.FinalizeInit();
+            if (restaurants.Count == 0) AddRestaurant(); // AddRestaurant also calls FinalizeInit
 
             // Check unclaimed registers
             foreach (var register in map.listerBuildings.AllBuildingsColonistOfClass<Building_CashRegister>())

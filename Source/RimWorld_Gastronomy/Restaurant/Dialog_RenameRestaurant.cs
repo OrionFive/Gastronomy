@@ -21,7 +21,7 @@ namespace Gastronomy.Restaurant
         {
             var result = base.NameIsValid(name);
             if (!result.Accepted) return result;
-            if (restaurant.Map.GetComponent<RestaurantsManager>().NameIsInUse(name, restaurant))
+            if (restaurant.GetRestaurantsManager().NameIsInUse(name, restaurant))
             {
                 return "NameIsInUse".Translate();
             }

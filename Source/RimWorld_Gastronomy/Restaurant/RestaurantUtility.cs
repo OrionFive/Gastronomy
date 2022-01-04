@@ -34,14 +34,24 @@ namespace Gastronomy.Restaurant
             return patron?.jobs.jobQueue?.Any(j => j.job.def == DiningDefOf.Gastronomy_Dine) == true;
         }
 
+        public static RestaurantsManager GetRestaurantsManager(this Thing thing)
+        {
+            return thing.Map.GetComponent<RestaurantsManager>();
+        }
+
+        public static RestaurantsManager GetRestaurantsManager(this RestaurantController restaurant)
+        {
+            return restaurant.Map.GetComponent<RestaurantsManager>();
+        }
+
         public static RestaurantController GetRestaurant([NotNull]this Thing thing)
         {
-            return thing.Map.GetComponent<RestaurantsManager>().restaurants.FirstOrDefault();
+            return thing.GetRestaurantsManager().restaurants.FirstOrDefault();
         }
 
         public static RestaurantController GetRestaurant([NotNull]this Building_CashRegister register)
         {
-            return register.Map.GetComponent<RestaurantsManager>().GetLinkedRestaurant(register);
+            return register.GetRestaurantsManager().GetLinkedRestaurant(register);
         }
 
         public static void GetRequestGroup(Thing thing)
