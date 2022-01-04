@@ -14,16 +14,17 @@ namespace Gastronomy.Restaurant
     public class RestaurantController : IExposable
 	{
         [NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
-        [NotNull] public IList<Building_CashRegister> Registers { get; private set; } = new List<Building_CashRegister>();
-
         [NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
         [NotNull] private readonly List<Pawn> spawnedActiveStaffResult = new List<Pawn>();
+        [NotNull] public IReadOnlyList<Building_CashRegister> Registers => registers;
 
-        public Map Map { get; }
+		public Map Map { get; }
         private RestaurantMenu menu;
 		private RestaurantOrders orders;
 		private RestaurantDebt debts;
 		private RestaurantStock stock;
+
+        [NotNull] private List<Building_CashRegister> registers = new List<Building_CashRegister>();
 
 		private int day;
 
@@ -64,8 +65,9 @@ namespace Gastronomy.Restaurant
 			{
 				spawnedActiveStaffResult.Clear();
 				var activeShifts = Registers.SelectMany(r => r.shifts.Where(s => s.IsActive));
-				spawnedActiveStaffResult.AddRange(activeShifts.SelectMany(s => s.assigned).Where(p => p.MapHeld == Map));
-				return spawnedActiveStaffResult;
+                spawnedActiveStaffResult.AddRange(activeShifts.SelectMany(s => s.assigned).Where(p => p.MapHeld == Map));
+
+                return spawnedActiveStaffResult;
 			}
 		}
 
@@ -94,6 +96,7 @@ namespace Gastronomy.Restaurant
 			Scribe_Deep.Look(ref stock, "stock", this);
 			Scribe_Deep.Look(ref orders, "orders", this);
 			Scribe_Deep.Look(ref debts, "debts", this);
+			Scribe_Collections.Look(ref registers, "registers", LookMode.Reference);
 			InitDeepFieldsInitial();
 		}
 
@@ -128,35 +131,14 @@ namespace Gastronomy.Restaurant
             if (map != Map) return;
             if (!(building is Building_CashRegister register)) return;
             
-            if (register.Spawned) Registers.Add(register);
-            else Registers.Remove(register);
+            if (register.Spawned) AddRegister(register);
+            else RemoveRegister(register);
         }
-
-		[Obsolete]
-        private void RefreshRegisters(Building building, Map map)
-		{
-			// Only check for local map
-			if (map == this.Map)
-			{
-				// Remove old listeners
-                foreach (var register in Registers)
-                {
-                    register.onRadiusChanged.RemoveListener(OnRegisterRadiusChanged);
-                }
-
-				Registers = RegisterUtility.GetRegisters(map);
-
-				// Add new listeners
-                foreach (var register in Registers)
-                {
-                    register.onRadiusChanged.AddListener(OnRegisterRadiusChanged);
-                }
-			}
-		}
 
         private void OnRegisterRadiusChanged(Building_CashRegister register)
         {
             //RefreshRegisters(null, register.Map);
+			RescanDiningSpots();
         }
 
         public void OnTick()
@@ -210,6 +192,40 @@ namespace Gastronomy.Restaurant
         public void CleanUpForRemoval()
         {
             openForBusiness = false;
+        }
+
+        private void OnRegistersChanged()
+        {
+            RescanDiningSpots();
+        }
+
+        public void LinkRegister(Building_CashRegister register)
+        {
+            foreach (var restaurant in register.Map.GetComponent<RestaurantsManager>().restaurants)
+            {
+                restaurant.RemoveRegister(register);
+            }
+
+            AddRegister(register);
+        }
+
+        private void AddRegister(Building_CashRegister register)
+        {
+            if (!registers.Contains(register))
+            {
+                registers.Add(register);
+                OnRegistersChanged();
+                register.onRadiusChanged.AddListener(OnRegisterRadiusChanged);
+            }
+        }
+
+        public void RemoveRegister(Building_CashRegister register)
+        {
+            if (registers.Remove(register))
+            {
+                OnRegistersChanged();
+				register.onRadiusChanged.RemoveListener(OnRegisterRadiusChanged);
+            }
         }
     }
 }

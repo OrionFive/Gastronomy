@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CashRegister;
 using Gastronomy.Restaurant;
 using RimWorld;
 using UnityEngine;
@@ -43,7 +44,7 @@ namespace Gastronomy.Waiting
                 {
                     if (restaurant == null) continue;
                     if (restaurant.diningSpots.Count == 0) continue;
-                    if (restaurant.Registers.Count > 0) continue;
+                    if (((IList<Building_CashRegister>)restaurant.Registers).Count > 0) continue;
 
                     report = new AlertReport { active = true, culpritsThings = new List<Thing>(restaurant.diningSpots) };
                     break;

@@ -19,7 +19,7 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	
 	<!-- Restaurant selection -->
 	<RestaurantDefaultName>Restaurant {0}</RestaurantDefaultName>
-	<RestaurantTooltipSelect>Select a restaurant to link this register to.</RestaurantTooltipSelect>
+	<RestaurantTooltipSelect>Select which restaurant is linked to this register.</RestaurantTooltipSelect>
 	<RestaurantTooltipRename>Rename this restaurant.</RestaurantTooltipRename>
 	<RestaurantTooltipAdd>Add another restaurant.</RestaurantTooltipAdd>
 	<RestaurantTooltipRemove>Remove this restaurant.</RestaurantTooltipRemove>

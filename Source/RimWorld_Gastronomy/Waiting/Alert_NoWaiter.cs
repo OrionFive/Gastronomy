@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using CashRegister;
 using Gastronomy.Restaurant;
 using RimWorld;
 using UnityEngine;

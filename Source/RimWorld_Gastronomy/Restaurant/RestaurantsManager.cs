@@ -26,6 +26,13 @@ namespace Gastronomy.Restaurant
             base.FinalizeInit();
             if (restaurants.Count == 0) AddRestaurant();
             foreach (var restaurant in restaurants) restaurant.FinalizeInit();
+
+            // Check unclaimed registers
+            foreach (var register in map.listerBuildings.AllBuildingsColonistOfClass<Building_CashRegister>())
+            {
+                if (restaurants.Any(r => r.Registers.Contains(register))) continue;
+                restaurants[0].LinkRegister(register);
+            }
         }
 
         public override void MapGenerated()

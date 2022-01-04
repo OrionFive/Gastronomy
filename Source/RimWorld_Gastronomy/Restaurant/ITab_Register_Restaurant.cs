@@ -130,8 +130,7 @@ namespace Gastronomy.Restaurant
 
         private void SetRestaurant(RestaurantController newRestaurant)
         {
-            restaurant?.Registers.Remove(Register);
-            newRestaurant?.Registers.Add(Register);
+            newRestaurant.LinkRegister(Register);
             restaurant = newRestaurant;
         }
 

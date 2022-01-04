@@ -11,9 +11,12 @@ namespace Gastronomy.Waiting
 	{
 		public override PathEndMode PathEndMode => PathEndMode.Touch;
 
-		public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetRestaurant().Registers;
+		public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
+        {
+            return pawn.GetRestaurant().Registers;
+        }
 
-		public override bool ShouldSkip(Pawn pawn, bool forced = false)
+        public override bool ShouldSkip(Pawn pawn, bool forced = false)
 		{
 			var restaurant = pawn.GetRestaurant();
 
