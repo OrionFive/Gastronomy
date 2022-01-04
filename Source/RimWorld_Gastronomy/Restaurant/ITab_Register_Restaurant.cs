@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CashRegister;
 using Gastronomy.Waiting;
+using HugsLib.Utils;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;

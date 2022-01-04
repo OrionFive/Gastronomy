@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CashRegister;
 using Gastronomy.Dining;
 using JetBrains.Annotations;
 using RimWorld;
@@ -35,12 +36,12 @@ namespace Gastronomy.Restaurant
 
         public static RestaurantController GetRestaurant([NotNull]this Thing thing)
         {
-            return thing.Map.GetComponent<RestaurantsComponent>().restaurants.FirstOrDefault();
+            return thing.Map.GetComponent<RestaurantsManager>().restaurants.FirstOrDefault();
         }
 
-        public static RestaurantController GetRestaurant([NotNull]this Map map)
+        public static RestaurantController GetRestaurant([NotNull]this Building_CashRegister register)
         {
-            return map.GetComponent<RestaurantsComponent>().restaurants.FirstOrDefault();
+            return register.Map.GetComponent<RestaurantsManager>().GetLinkedRestaurant(register);
         }
 
         public static void GetRequestGroup(Thing thing)

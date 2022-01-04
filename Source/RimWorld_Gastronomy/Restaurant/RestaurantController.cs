@@ -14,7 +14,7 @@ namespace Gastronomy.Restaurant
     public class RestaurantController : IExposable
 	{
         [NotNull] public readonly List<DiningSpot> diningSpots = new List<DiningSpot>();
-        [NotNull] public IList<Building_CashRegister> Registers { get; private set; } = Array.Empty<Building_CashRegister>();
+        [NotNull] public IList<Building_CashRegister> Registers { get; private set; } = new List<Building_CashRegister>();
 
         [NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
         [NotNull] private readonly List<Pawn> spawnedActiveStaffResult = new List<Pawn>();
@@ -39,8 +39,9 @@ namespace Gastronomy.Restaurant
 		public bool allowSlaves = false;
 
 		public float guestPricePercentage = 1;
+        private string name;
 
-		public event Action onNextDay;
+        public event Action onNextDay;
 
 		public int Seats => diningSpots.Sum(s => s.GetMaxSeats());
 		[NotNull] public ReadOnlyCollection<Pawn> Patrons => SpawnedDiningPawns.AsReadOnly();
@@ -67,6 +68,13 @@ namespace Gastronomy.Restaurant
 				return spawnedActiveStaffResult;
 			}
 		}
+
+        public string Name
+        {
+            get => name;
+            set => name = value;
+        }
+
         public RestaurantController(Map map)
         {
             Map = map;
@@ -81,6 +89,7 @@ namespace Gastronomy.Restaurant
 			Scribe_Values.Look(ref allowSlaves, "allowSlaves", false);
 			Scribe_Values.Look(ref guestPricePercentage, "guestPricePercentage", 1);
 			Scribe_Values.Look(ref day, "day");
+			Scribe_Values.Look(ref name, "name");
 			Scribe_Deep.Look(ref menu, "menu");
 			Scribe_Deep.Look(ref stock, "stock", this);
 			Scribe_Deep.Look(ref orders, "orders", this);
@@ -110,12 +119,21 @@ namespace Gastronomy.Restaurant
 			orders.RareTick();
 			debts.RareTick();
 
-			TableTop_Events.onAnyBuildingSpawned.AddListener(RefreshRegisters);
-			TableTop_Events.onAnyBuildingDespawned.AddListener(RefreshRegisters);
-			RefreshRegisters(null, Map);
-		}
+			TableTop_Events.onAnyBuildingSpawned.AddListener(UpdateRegisterWithBuilding);
+			TableTop_Events.onAnyBuildingDespawned.AddListener(UpdateRegisterWithBuilding);
+        }
 
-		private void RefreshRegisters(Building building, Map map)
+        private void UpdateRegisterWithBuilding(Building building, Map map)
+        {
+            if (map != Map) return;
+            if (!(building is Building_CashRegister register)) return;
+            
+            if (register.Spawned) Registers.Add(register);
+            else Registers.Remove(register);
+        }
+
+		[Obsolete]
+        private void RefreshRegisters(Building building, Map map)
 		{
 			// Only check for local map
 			if (map == this.Map)
@@ -138,7 +156,7 @@ namespace Gastronomy.Restaurant
 
         private void OnRegisterRadiusChanged(Building_CashRegister register)
         {
-            RefreshRegisters(null, register.Map);
+            //RefreshRegisters(null, register.Map);
         }
 
         public void OnTick()
@@ -188,5 +206,10 @@ namespace Gastronomy.Restaurant
 			diningSpots.Clear();
 			diningSpots.AddRange(DiningUtility.GetAllDiningSpots(Map));
 		}
-	}
+
+        public void CleanUpForRemoval()
+        {
+            openForBusiness = false;
+        }
+    }
 }

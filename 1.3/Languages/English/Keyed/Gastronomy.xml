@@ -17,6 +17,8 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	<!-- Register tab - can't be very long (Restaurant is already too long) -->
 	<TabRegisterRestaurant>Dining</TabRegisterRestaurant>
 	
+	<!-- Restaurant selection -->
+	<RestaurantDefaultName>Restaurant {0}</RestaurantDefaultName>
 	<!-- Settings -->
 	<TabRegisterOpened>Opened</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>When checked, patrons can make orders while a shift is active.</TabRegisterOpenedTooltip>

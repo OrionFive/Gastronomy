@@ -39,7 +39,7 @@ namespace Gastronomy.Waiting
             foreach (var map in Find.Maps)
             {
                 if (!map.IsPlayerHome || !map.mapPawns.AnyColonistSpawned) continue;
-                foreach (var restaurant in map.GetComponent<RestaurantsComponent>().restaurants)
+                foreach (var restaurant in map.GetComponent<RestaurantsManager>().restaurants)
                 {
                     if (restaurant == null) continue;
                     if (restaurant.diningSpots.Count == 0) continue;

@@ -20,11 +20,15 @@ namespace Gastronomy.Compatibility
                 {
                     if (providedClassName == "Gastronomy.Restaurant.RestaurantController" || providedClassName == "Gastronomy.RestaurantController") // also old namespace
                     {
+						// Give restaurant a name
+                        var nameNode = node.OwnerDocument.CreateNode(XmlNodeType.Element, "name", null);
+                        nameNode.InnerText = "RestaurantDefaultName".Translate(1);
+						node.AppendChild(nameNode);
 						// Wrap old restaurant controller in restaurants component
                         node.InnerXml = $@"<restaurants>{node.OuterXml}</restaurants>";
-                        node.Attributes["Class"].Value = "Gastronomy.Restaurant.RestaurantsComponent";
+                        node.Attributes["Class"].Value = "Gastronomy.Restaurant.RestaurantsManager";
 
-                        __result = typeof(RestaurantsComponent);
+                        __result = typeof(RestaurantsManager);
                         return false;
                     }
                 }
