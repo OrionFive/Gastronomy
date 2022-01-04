@@ -19,6 +19,12 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	
 	<!-- Restaurant selection -->
 	<RestaurantDefaultName>Restaurant {0}</RestaurantDefaultName>
+	<RestaurantTooltipSelect>Select a restaurant to link this register to.</RestaurantTooltipSelect>
+	<RestaurantTooltipRename>Rename this restaurant.</RestaurantTooltipRename>
+	<RestaurantTooltipAdd>Add another restaurant.</RestaurantTooltipAdd>
+	<RestaurantTooltipRemove>Remove this restaurant.</RestaurantTooltipRemove>
+	<RestaurantDialogConfirmRemove>Are you sure you want to remove '{0}'?</RestaurantDialogConfirmRemove>
+	
 	<!-- Settings -->
 	<TabRegisterOpened>Opened</TabRegisterOpened>
 	<TabRegisterOpenedTooltip>When checked, patrons can make orders while a shift is active.</TabRegisterOpenedTooltip>

@@ -18,27 +18,29 @@ namespace Gastronomy.Restaurant
         private bool showSettings = true;
         private bool showStats = true;
         private RestaurantController restaurant;
-        private ThingFilterUI.UIState menuFilterState = new ThingFilterUI.UIState();
+        private readonly ThingFilterUI.UIState menuFilterState = new ThingFilterUI.UIState();
 
-        public ITab_Register_Restaurant() : base(new Vector2(800, 500))
+        public ITab_Register_Restaurant() : base(new Vector2(800, 504))
         {
             labelKey = "TabRegisterRestaurant";
         }
 
-        public override bool IsVisible
-        {
-            get
-            {
-                restaurant = SelThing?.GetRestaurant();
-                return restaurant != null;
-            }
-        }
+        public override bool IsVisible => true;
+        //{
+        //    get
+        //    {
+        //        restaurant = Register.GetRestaurant();
+        //        return restaurant != null;
+        //    }
+        //}
 
         public override void FillTab()
         {
-            restaurant = SelThing?.GetRestaurant();
-            var rectLeft = new Rect(0f, 16, size.x/2, size.y).ContractedBy(10f);
-            var rectRight = new Rect(size.x/2, 0, size.x/2, size.y).ContractedBy(10f);
+            restaurant = Register.GetRestaurant();
+            restaurant ??= Register.Map.GetComponent<RestaurantsManager>().restaurants.First();
+            var fullRect = new Rect(0, 16, size.x, size.y - 16);
+            var rectLeft = fullRect.LeftHalf().ContractedBy(10f);
+            var rectRight = fullRect.RightHalf().ContractedBy(10f);
 
             DrawLeft(rectLeft);
             DrawRight(rectRight);
@@ -49,7 +51,7 @@ namespace Gastronomy.Restaurant
             // Menu
             {
                 var menuRect = new Rect(rect);
-                menuRect.yMax -= 36;
+                //menuRect.yMax -= 36;
 
                 restaurant.Menu.GetMenuFilters(out var filter, out var parentFilter);
                 ThingFilterUI.DoThingFilterConfigWindow(menuRect, menuFilterState, filter, parentFilter, 1, null, HiddenSpecialThingFilters(), true);
@@ -58,6 +60,10 @@ namespace Gastronomy.Restaurant
 
         private void DrawLeft(Rect rect)
         {
+            var topBar = rect.TopPartPixels(24);
+            DrawRestaurantSelection(ref topBar);
+            rect.yMin += topBar.height;
+
             if (showSettings)
             {
                 var smallRect = new Rect(rect);
@@ -73,6 +79,60 @@ namespace Gastronomy.Restaurant
                 DrawStats(ref smallRect);
                 rect.yMin += smallRect.height + 10;
             }
+        }
+
+        private void DrawRestaurantSelection(ref Rect rect)
+        {
+            restaurant ??= Register.GetRestaurant();
+
+            var restaurants = restaurant.Map.GetComponent<RestaurantsManager>();
+            var rectSelection = rect.LeftHalf();
+
+            // Select
+            if (Widgets.ButtonText(rectSelection, restaurant.Name))
+            {
+                var list = new List<FloatMenuOption>();
+                foreach (var controllerOption in restaurants.restaurants)
+                {
+                    list.Add(new FloatMenuOption(controllerOption.Name, delegate
+                    {
+                        SetRestaurant(controllerOption);
+                    }));
+                }
+                Find.WindowStack.Add(new FloatMenu(list));
+            }
+            TooltipHandler.TipRegion(rectSelection, "RestaurantTooltipSelect".Translate());
+
+            var widgetRow = new WidgetRow(rect.xMax, rect.y, UIDirection.LeftThenDown);
+
+            // Remove
+            if (restaurants.restaurants.Count > 1)
+                if (widgetRow.ButtonIcon(TexButton.Minus, "RestaurantTooltipRemove".Translate()))
+                {
+                    Find.WindowStack.Add(new Dialog_Confirm("RestaurantDialogConfirmRemove".Translate(restaurant.Name),
+                        () =>
+                        {
+                            restaurants.DeleteRestaurant(restaurant);
+                            SetRestaurant(restaurants.restaurants.Last());
+                        }, true));
+                }
+            // Add
+            if (widgetRow.ButtonIcon(TexButton.Plus, "RestaurantTooltipAdd".Translate()))
+            {
+                SetRestaurant(restaurants.AddRestaurant());
+            }
+            // Rename
+            if (widgetRow.ButtonIcon(TexButton.Rename, "RestaurantTooltipRename".Translate()))
+            {
+                Find.WindowStack.Add(new Dialog_RenameRestaurant(restaurant));
+            }
+        }
+
+        private void SetRestaurant(RestaurantController newRestaurant)
+        {
+            restaurant?.Registers.Remove(Register);
+            newRestaurant?.Registers.Add(Register);
+            restaurant = newRestaurant;
         }
 
         private void DrawSettings(ref Rect rect)
