@@ -103,7 +103,7 @@ namespace Gastronomy.Dining
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDestroyedOrNull(diningSpotInd);
             toil.FailOnDurationExpired(); // Duration over? Fail job!
-            toil.FailOnRestaurantClosed();
+            toil.FailOnRestaurantsClosed(diningSpotInd);
             toil.FailOnHasShift();
             toil.FailOnDangerous(JobUtility.MaxDangerDining);
             toil.socialMode = RandomSocialMode.Normal;

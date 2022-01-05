@@ -12,10 +12,11 @@ namespace Gastronomy.Waiting
     {
         public override PathEndMode PathEndMode => PathEndMode.Touch;
 
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetRestaurant().diningSpots;
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetAllRestaurantsEmployed().SelectMany(r=>r.diningSpots).Distinct();
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
+            return false;
             var restaurant = pawn.GetRestaurant();
 
             return !forced && !restaurant.HasToWork(pawn);
@@ -24,6 +25,7 @@ namespace Gastronomy.Waiting
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             if (!(t is DiningSpot spot)) return false;
+            if (!spot.GetRestaurants().Any(r => r.HasToWork(pawn))) return false;
             if (RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerServing, spot.GetRegion()) && !forced) return false;
             if (spot.GetReservationSpots().Any(s => s == SpotState.Clear || s > SpotState.Ready))
             {

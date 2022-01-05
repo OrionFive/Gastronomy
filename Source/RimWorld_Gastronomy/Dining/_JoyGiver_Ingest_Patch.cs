@@ -20,7 +20,7 @@ namespace Gastronomy.Dining
             internal static bool Prefix(Pawn pawn, Predicate<Thing> extraValidator, ref Job __result)
             {
                 //Log.Message($"{pawn.NameShortColored} is looking for restaurant (as joy job).");
-                if (pawn.GetAllRestaurants().Any(r=>r.HasToWork(pawn))) return true;
+                if (pawn.GetAllRestaurantsEmployed().Any()) return true;
 
                 bool allowDrug = !pawn.IsTeetotaler();
                 var diningSpots = DiningUtility.FindDiningSpotsFor(pawn, allowDrug, extraValidator).ToArray();

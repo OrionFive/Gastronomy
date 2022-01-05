@@ -11,7 +11,7 @@ using Verse;
 
 namespace Gastronomy.Restaurant
 {
-    public class RestaurantController : IExposable, ILoadReferenceable
+    public class RestaurantController : IExposable
     {
         [NotNull] public readonly HashSet<DiningSpot> diningSpots = new HashSet<DiningSpot>();
         [NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
@@ -41,7 +41,6 @@ namespace Gastronomy.Restaurant
 
 		public float guestPricePercentage = 1;
         private string name;
-        private int id;
 
         public event Action onNextDay;
 
@@ -85,7 +84,6 @@ namespace Gastronomy.Restaurant
 
 		public void ExposeData()
 		{
-            Scribe_Values.Look(ref id, "ID", 0);
 			Scribe_Values.Look(ref openForBusiness, "openForBusiness", true);
 			Scribe_Values.Look(ref allowGuests, "allowGuests", true);
 			Scribe_Values.Look(ref allowColonists, "allowColonists", true);
@@ -246,7 +244,5 @@ namespace Gastronomy.Restaurant
 				register.onRadiusChanged.RemoveListener(OnRegisterRadiusChanged);
             }
 		}
-
-        public string GetUniqueLoadID() => "Restaurant_" + id;
     }
 }

@@ -33,8 +33,8 @@ namespace Gastronomy.Dining
 
                 if (getter != eater) return true; // Run original code
 
-                // Only if pawn doesn't have to work
-                if (eater.GetAllRestaurants().Any(r => r.HasToWork(eater))) return true;
+                // Only if pawn doesn't have to work himself
+                if (eater.GetAllRestaurantsEmployed().Any()) return true;
 
                 if (!getter.IsAbleToDine()) return true;
 

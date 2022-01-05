@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using CashRegister;
 using Gastronomy.Restaurant;
 using RimWorld;
@@ -13,17 +14,10 @@ namespace Gastronomy.Waiting
 
 		public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
-            return pawn.GetRestaurant().Registers;
+            return pawn.GetAllRestaurants().SelectMany(r=>r.Registers).Distinct();
         }
 
-        public override bool ShouldSkip(Pawn pawn, bool forced = false)
-		{
-			var restaurant = pawn.GetRestaurant();
-
-			return !forced && !restaurant.HasToWork(pawn);
-		}
-
-		public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
+        public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
 		{
 			if (!(t is Building_CashRegister register)) return false;
 			if (!register.HasToWork(pawn) || !register.standby) return false;

@@ -14,10 +14,11 @@ namespace Gastronomy.Waiting
 
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetRestaurant().SpawnedDiningPawns;
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetAllRestaurantsEmployed().SelectMany(r=>r.SpawnedDiningPawns).Distinct();
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
+            return false;
             var restaurant = pawn.GetRestaurant();
 
             // Serve even when shift just ended
@@ -35,8 +36,8 @@ namespace Gastronomy.Waiting
             var driver = patron.GetDriver<JobDriver_Dine>();
             if (driver == null || driver.wantsToOrder) return false;
 
-            var restaurant = pawn.GetRestaurant();
-            var order = restaurant.Orders.GetOrderFor(patron);
+            var restaurants = pawn.GetAllRestaurantsEmployed();
+            var (restaurant, order) = restaurants.Select(r => (r, order: r.Orders.GetOrderFor(patron))).FirstOrDefault(o => o.order != null);
 
             if (order == null) return false;
             if (order.delivered) return false;
@@ -69,11 +70,12 @@ namespace Gastronomy.Waiting
 
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
-            if (!(t is Pawn p)) return null;
+            if (!(t is Pawn patron)) return null;
 
-            var order = pawn.GetRestaurant().Orders.GetOrderFor(p);
+            var restaurants = pawn.GetAllRestaurantsEmployed();
+            var order = restaurants.Select(r => r.Orders.GetOrderFor(patron)).First(o => o != null);
             var consumable = order.consumable;
-            if(consumable == null) Log.Error($"Consumable in order for {p.NameShortColored} is suddenly null.");
+            if(consumable == null) Log.Error($"Consumable in order for {patron.NameShortColored} is suddenly null.");
 
             return JobMaker.MakeJob(WaitingDefOf.Gastronomy_Serve, order.patron, consumable);
         }

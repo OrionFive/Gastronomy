@@ -57,7 +57,7 @@ namespace Gastronomy.Dining
             var waitForMeal = Toils_Dining.WaitForMeal(MealIndex, SpotIndex);
 
             this.FailOn(() => DiningSpot.Destroyed);
-            yield return Toils_Dining.GoToDineSpot(pawn, SpotIndex).FailOnRestaurantClosed();
+            yield return Toils_Dining.GoToDineSpot(pawn, SpotIndex).FailOnRestaurantsClosed(SpotIndex);
             yield return Toils_Dining.TurnToEatSurface(SpotIndex);
             // Order broken? Jump straight to waiter
             yield return Toils_Jump.JumpIf(waitForWaiter, () => !pawn.GetRestaurant().Orders.CheckOrderOfWaitingPawn(pawn));

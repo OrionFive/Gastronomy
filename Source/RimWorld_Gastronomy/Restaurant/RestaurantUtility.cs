@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CashRegister;
 using Gastronomy.Dining;
+using Gastronomy.Waiting;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
@@ -44,6 +45,11 @@ namespace Gastronomy.Restaurant
             return thing.Map.GetComponent<RestaurantsManager>().restaurants;
         }
 
+        public static IEnumerable<RestaurantController> GetAllRestaurantsEmployed(this Pawn pawn)
+        {
+            return pawn.Map.GetComponent<RestaurantsManager>().restaurants.Where(r=>r.HasToWork(pawn));
+        }
+
         public static RestaurantsManager GetRestaurantsManager(this RestaurantController restaurant)
         {
             return restaurant.Map.GetComponent<RestaurantsManager>();
@@ -52,7 +58,29 @@ namespace Gastronomy.Restaurant
         public static RestaurantController GetRestaurant([NotNull]this Pawn pawn)
         {
             // This depends on a lot of cases... could be a waiter or a patron, etc. oof.
-            return pawn.GetAllRestaurants().FirstOrDefault();
+            var driver = pawn.jobs.curDriver;
+            if(driver == null) Log.Error($"{pawn.Name.ToStringShort} doesn't have a driver but tries to GetRestaurant.");
+            else
+                switch (driver)
+                {
+                    case JobDriver_EmptyRegister jobDriverEmptyRegister:
+                        break;
+                    case JobDriver_Dine jobDriverDine:
+                        var diningSpot = jobDriverDine.DiningSpot;
+                        var order = diningSpot?.GetRestaurants().Select(r => r.Orders.GetOrderFor(pawn))
+                            .FirstOrDefault(o => o != null);
+                        break;
+                    case JobDriver_MakeTable jobDriverMakeTable:
+                        break;
+                    case JobDriver_Serve jobDriverServe:
+                        break;
+                    case JobDriver_StandBy jobDriverStandBy:
+                        throw new Exception("Pawn should get all restaurants");
+                        return pawn.GetAllRestaurantsEmployed().FirstOrDefault();
+                    case JobDriver_TakeOrder jobDriverTakeOrder:
+                        break;
+                }
+            return null;
         }
 
         [Obsolete("Replace with proper way to get the right restaurant.")]
@@ -121,9 +149,17 @@ namespace Gastronomy.Restaurant
             return mealDef.BaseMarketValue * 0.6f * restaurant.guestPricePercentage * (1 - Find.Storyteller.difficulty.tradePriceFactorLoss);
         }
 
-        public static T FailOnRestaurantClosed<T>(this T f) where T : IJobEndable
+        public static T FailOnRestaurantsClosed<T>(this T f, TargetIndex spotInd) where T : IJobEndable
         {
-            JobCondition OnRestaurantClosed() => f.GetActor().GetRestaurant().IsOpenedRightNow ? JobCondition.Ongoing : JobCondition.Incompletable;
+            JobCondition OnRestaurantClosed()
+            {
+                var target = f.GetActor().CurJob.GetTarget(spotInd);
+                var spot = target.IsValid ? target.Thing as DiningSpot : null;
+                if (spot == null) return JobCondition.Errored;
+                return spot.GetRestaurants().Any(r=>r.IsOpenedRightNow)
+                    ? JobCondition.Ongoing
+                    : JobCondition.Incompletable;
+            }
 
             f.AddEndCondition(OnRestaurantClosed);
             return f;
