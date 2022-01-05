@@ -11,6 +11,7 @@ namespace Gastronomy.Dining
     {
         public bool wantsToOrder;
         private int startedWaitingTick;
+
         public DiningSpot DiningSpot => job.GetTarget(SpotIndex).Thing as DiningSpot;
         public Pawn Waiter => job.GetTarget(WaiterIndex).Pawn;
         public Thing Meal => job.GetTarget(MealIndex).Thing;

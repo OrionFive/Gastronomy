@@ -21,7 +21,6 @@ namespace Gastronomy.Dining
     {
         public const string jobReportString = "DiningJobReportString";
 
-        private RestaurantController restaurant;
         private List<SpotState> spotStates = Enumerable.Repeat(SpotState.Clear, 4).ToList();
         private int decoVariation;
 
@@ -49,7 +48,6 @@ namespace Gastronomy.Dining
         public override void PostMapInit()
         {
             base.PostMapInit();
-            restaurant = this.GetRestaurant();
             UpdateMesh();
         }
 
@@ -60,14 +58,18 @@ namespace Gastronomy.Dining
             if (!respawningAfterLoad)
             {
                 DiningUtility.OnDiningSpotCreated(this);
-                restaurant = this.GetRestaurant();
             }
         }
 
         public int GetMaxReservations() => GetReservationSpots().Count(s => s >= SpotState.Clear);
         public int GetMaxSeats() => GetReservationSpots().Count(s => s != SpotState.Blocked);
 
-        public bool CanDineHere(Pawn pawn) => restaurant.IsOpenedRightNow && restaurant.MayDineHere(pawn);
+        public bool CanDineHere(Pawn pawn) => GetRestaurants().Any(restaurant => restaurant.IsOpenedRightNow && restaurant.MayDineHere(pawn));
+
+        public IEnumerable<RestaurantController> GetRestaurants()
+        {
+            return this.GetRestaurantsManager().restaurants.Where(r => r.diningSpots.Contains(this));
+        }
 
         /// <summary>
         /// [0] = up, [1] = right, [2] = down, [3] = left

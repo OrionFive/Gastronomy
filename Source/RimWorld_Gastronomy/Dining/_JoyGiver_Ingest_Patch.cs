@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Gastronomy.Restaurant;
 using HarmonyLib;
 using RimWorld;
@@ -18,21 +19,19 @@ namespace Gastronomy.Dining
             [HarmonyPrefix]
             internal static bool Prefix(Pawn pawn, Predicate<Thing> extraValidator, ref Job __result)
             {
-                var restaurant = pawn.GetRestaurant();
                 //Log.Message($"{pawn.NameShortColored} is looking for restaurant (as joy job).");
-                if (pawn.GetRestaurant().HasToWork(pawn)) return true;
+                if (pawn.GetAllRestaurants().Any(r=>r.HasToWork(pawn))) return true;
 
                 bool allowDrug = !pawn.IsTeetotaler();
-                var diningSpot = DiningUtility.FindDiningSpotFor(pawn, allowDrug, extraValidator);
+                var diningSpots = DiningUtility.FindDiningSpotsFor(pawn, allowDrug, extraValidator).ToArray();
 
-                if ( diningSpot == null) return true; // Run regular code
                 // There is something edible, but is it good enough or like... a corpse?
-                var bestConsumable = restaurant.Stock.GetBestMealFor(pawn, allowDrug, false);
+                var bestConsumable = RestaurantStock.GetBestMealFor(diningSpots.SelectMany(d => d.GetRestaurants()).Distinct(), pawn, out var restaurant, allowDrug, false);
                 if (bestConsumable == null) return true; // Run regular code
 
                 //Log.Message($"{pawn.NameShortColored} wants to eat at restaurant ({diningSpot.Position}).");
 
-                Job job = JobMaker.MakeJob(DiningDefOf.Gastronomy_Dine, diningSpot);
+                Job job = JobMaker.MakeJob(DiningDefOf.Gastronomy_Dine, diningSpots.FirstOrDefault(s => restaurant.diningSpots.Contains(s))); // TODO: Could check for closest, but eh, expensive
                 __result = job;
                 return false;
             }

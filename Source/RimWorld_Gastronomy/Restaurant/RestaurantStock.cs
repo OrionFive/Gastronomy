@@ -54,14 +54,31 @@ namespace Gastronomy.Restaurant
 
         public class FoodOptimality
         {
-            public Thing thing { get; }
-            public float optimality { get; }
+            public Thing Thing { get; }
+            public float Optimality { get; }
+            public RestaurantController Restaurant { get; }
 
-            public FoodOptimality(Thing thing, float optimality)
+            public FoodOptimality(RestaurantController restaurant, Thing thing, float optimality)
             {
-                this.thing = thing;
-                this.optimality = optimality;
+                Thing = thing;
+                Optimality = optimality;
+                Restaurant = restaurant;
             }
+        }
+
+        public static Thing GetBestMealFor(IEnumerable<RestaurantController> restaurants, [NotNull] Pawn pawn, out RestaurantController restaurant, bool allowDrug, bool includeEat = true, bool includeJoy = true)
+        {
+            restaurant = null;
+            if (restaurants == null) return null;
+            var options = restaurants.SelectMany(controller => controller.Stock.GetMealOptions(pawn, allowDrug, includeEat, includeJoy));
+
+            //Log.Message($"{pawn.NameShortColored}: Meal options: {options.GroupBy(o => o.thing.def).Select(o => $"{o.Key.label} ({o.FirstOrDefault()?.optimality:F2})").ToCommaList()}");
+            if (options.TryMaxBy(def => def.Optimality, out var best))
+            {
+                restaurant = best.Restaurant;
+                return best.Thing;
+            }
+            return null;
         }
 
         public Thing GetBestMealFor([NotNull] Pawn pawn, bool allowDrug, bool includeEat = true, bool includeJoy = true)
@@ -69,21 +86,20 @@ namespace Gastronomy.Restaurant
             var options = GetMealOptions(pawn, allowDrug, includeEat, includeJoy);
             //Log.Message($"{pawn.NameShortColored}: Meal options: {options.GroupBy(o => o.thing.def).Select(o => $"{o.Key.label} ({o.FirstOrDefault()?.optimality:F2})").ToCommaList()}");
             if (options
-                .TryMaxBy(def => def.optimality, out var best))
+                .TryMaxBy(def => def.Optimality, out var best))
             {
                 //Log.Message($"{pawn.NameShortColored}: GetBestMealFor: {best?.thing.LabelCap} with optimality {best?.optimality:F2}");
-                return best.thing;
+                return best.Thing;
             }
             return null;
         }
 
         public Thing GetRandomMealFor([NotNull] Pawn pawn, bool allowDrug, bool includeEat = true, bool includeJoy = true)
         {
-            if (GetMealOptions(pawn, allowDrug, includeEat, includeJoy)
-                .TryRandomElementByWeight(def => def.optimality, out var random))
+            if (GetMealOptions(pawn, allowDrug, includeEat, includeJoy).TryRandomElementByWeight(def => def.Optimality, out var random))
             {
                 //Log.Message($"{pawn.NameShortColored} picked {random.def.label} with a score of {random.optimality}");
-                return random.thing;
+                return random.Thing;
             }
             return null;
         }
@@ -95,8 +111,8 @@ namespace Gastronomy.Restaurant
                 .Where(stock => CanAfford(pawn, stock.def))
                 .Select(stock => stock.items.FirstOrDefault()) // we only check the first one (so it could be that someone gets ingredients they didn't like...)
                 .Where(consumable => Restaurant.Orders.CanBeOrdered(consumable))
-                .Select(consumable => new FoodOptimality(consumable, GetMealOptimalityScore(pawn, consumable, includeEat, includeJoy)))
-                .Where(def => def.optimality >= MinOptimality);
+                .Select(consumable => new FoodOptimality(Restaurant, consumable, GetMealOptimalityScore(pawn, consumable, includeEat, includeJoy)))
+                .Where(def => def.Optimality >= MinOptimality);
         }
 
         private bool CanAfford(Pawn pawn, ThingDef def)

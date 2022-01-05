@@ -40,29 +40,20 @@ namespace Gastronomy.Dining
             return map.listerThings.ThingsOfDef(DiningDefOf.Gastronomy_DiningSpot).OfType<DiningSpot>();
         }
 
-        public static DiningSpot FindDiningSpotFor([NotNull] Pawn pawn, bool allowDrug, Predicate<Thing> extraSpotValidator = null)
+        public static IEnumerable<DiningSpot> FindDiningSpotsFor([NotNull] Pawn pawn, bool allowDrug, Predicate<Thing> extraSpotValidator = null)
         {
-            const int maxRegionsToScan = 1000;
-            const int maxDistanceToScan = 1000; // TODO: Make mod option?
-
-            var restaurant = pawn.GetRestaurant();
-            if (restaurant == null) return null;
-            if (!restaurant.Stock.HasAnyFoodFor(pawn, allowDrug)) return null;
-
-            bool Validator(Thing thing)
+            // TODO: There should be some kind of caching for this, probably
+            var restaurants = pawn.GetAllRestaurants().Where(controller => controller.Stock.HasAnyFoodFor(pawn, allowDrug));
+            
+            bool Validator(DiningSpot spot)
             {
-                var spot = (DiningSpot) thing;
                 //Log.Message($"Validating spot for {pawn.NameShortColored}: social = {spot.IsSociallyProper(pawn)}, political = {spot.IsPoliticallyProper(pawn)}, " 
                 //            + $"canReserve = {CanReserve(pawn, spot)}, canDineHere = {spot.CanDineHere(pawn)}, isDangerous = {RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion())}," 
                 //            + $"extraValidator = { extraSpotValidator == null || extraSpotValidator.Invoke(spot)}");
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && CanReserve(pawn, spot) && !spot.HostileTo(pawn)
                        && spot.CanDineHere(pawn) && !RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
             }
-            var diningSpot = (DiningSpot) GenClosest.ClosestThingReachable(pawn.Position, pawn.Map, ThingRequest.ForDef(DiningDefOf.Gastronomy_DiningSpot), 
-                PathEndMode.ClosestTouch, TraverseParms.For(pawn), maxDistanceToScan, Validator, null, 0, 
-                maxRegionsToScan);
-
-            return diningSpot;
+            return restaurants.SelectMany(r => r.diningSpots).Distinct().Where(Validator).Where(s=> pawn.CanReach(s, PathEndMode.ClosestTouch, JobUtility.MaxDangerDining));
         }
 
         private static bool CanReserve(Pawn pawn, DiningSpot spot)
@@ -117,17 +108,17 @@ namespace Gastronomy.Dining
         {
             paidSilver = null;
 
-            var debt = pawn.GetRestaurant().Debts.GetDebt(pawn);
+            var debt = pawn.GetAllRestaurants().Select(r => new { restaurant = r, debt = r.Debts.GetDebt(pawn) }).FirstOrDefault(d => d.debt != null);
             if (debt == null) return;
 
-            var debtAmount = Mathf.FloorToInt(debt.amount);
+            var debtAmount = Mathf.FloorToInt(debt.debt.amount);
             if (debtAmount < 0) return;
             var cash = pawn.inventory.innerContainer.FirstOrDefault(t => t?.def == ThingDefOf.Silver);
             if (cash == null) return;
 
             var payAmount = Mathf.Min(cash.stackCount, debtAmount);
             var paid = pawn.inventory.innerContainer.TryTransferToContainer(cash, payTarget, payAmount, out paidSilver, false);
-            pawn.GetRestaurant().Debts.PayDebt(pawn, paid);
+            debt.restaurant.Debts.PayDebt(pawn, paid);
         }
 
         public static void GiveBoughtFoodThought(Pawn pawn)
@@ -173,6 +164,7 @@ namespace Gastronomy.Dining
         private static int GetBoughtFoodStage(Pawn pawn)
         {
             var restaurant = pawn.GetRestaurant();
+            if (restaurant == null) return 0;
             if (restaurant.guestPricePercentage <= 0) return 0;
             int stage = PriceTypeUtlity.ClosestPriceType(restaurant.guestPricePercentage) switch {
                 PriceType.Undefined => 0,
@@ -190,12 +182,10 @@ namespace Gastronomy.Dining
 
         public static void OnDiningSpotCreated([NotNull]DiningSpot diningSpot)
         {
-            diningSpot.GetRestaurant().diningSpots.Add(diningSpot);
         }
 
         public static void OnDiningSpotRemoved([NotNull]DiningSpot diningSpot)
         {
-            diningSpot.GetRestaurant().diningSpots.Remove(diningSpot);
         }
 
         // Copied from ToilEffects, had to remove Faction check

@@ -39,14 +39,32 @@ namespace Gastronomy.Restaurant
             return thing.Map.GetComponent<RestaurantsManager>();
         }
 
+        public static List<RestaurantController> GetAllRestaurants(this Thing thing)
+        {
+            return thing.Map.GetComponent<RestaurantsManager>().restaurants;
+        }
+
         public static RestaurantsManager GetRestaurantsManager(this RestaurantController restaurant)
         {
             return restaurant.Map.GetComponent<RestaurantsManager>();
         }
 
+        public static RestaurantController GetRestaurant([NotNull]this Pawn pawn)
+        {
+            // This depends on a lot of cases... could be a waiter or a patron, etc. oof.
+            return pawn.GetAllRestaurants().FirstOrDefault();
+        }
+
+        [Obsolete("Replace with proper way to get the right restaurant.")]
         public static RestaurantController GetRestaurant([NotNull]this Thing thing)
         {
-            return thing.GetRestaurantsManager().restaurants.FirstOrDefault();
+            return thing.GetAllRestaurants().FirstOrDefault();
+        }
+
+        [Obsolete("Dining spots can have multiple restaurants.")]
+        public static RestaurantController GetRestaurant([NotNull]this DiningSpot spot)
+        {
+            throw new Exception();
         }
 
         public static RestaurantController GetRestaurant([NotNull]this Building_CashRegister register)

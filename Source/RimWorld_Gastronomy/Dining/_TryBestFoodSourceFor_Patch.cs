@@ -1,3 +1,4 @@
+using System.Linq;
 using Gastronomy.Restaurant;
 using HarmonyLib;
 using RimWorld;
@@ -33,18 +34,17 @@ namespace Gastronomy.Dining
                 if (getter != eater) return true; // Run original code
 
                 // Only if pawn doesn't have to work
-                if (eater.GetRestaurant().HasToWork(eater)) return true;
+                if (eater.GetAllRestaurants().Any(r => r.HasToWork(eater))) return true;
 
                 if (!getter.IsAbleToDine()) return true;
 
-                var diningSpot = DiningUtility.FindDiningSpotFor(eater, false);
+                var diningSpots = DiningUtility.FindDiningSpotsFor(eater, false).ToArray();
 
-                var bestType = diningSpot?.GetRestaurant().Stock.GetBestMealFor(eater, false);
+                var bestType = RestaurantStock.GetBestMealFor(diningSpots.SelectMany(d => d.GetRestaurants()).Distinct(), eater, out var restaurant, false);
                 if (bestType == null) return true; // Run original code
 
                 foodDef = bestType.def;
-                foodSource = diningSpot;
-                //Log.Message($"{getter.NameShortColored} found diningSpot at {diningSpot.Position} with {foodDef?.label}.");
+                foodSource = diningSpots.FirstOrDefault(s => restaurant.diningSpots.Contains(s)); // TODO: Could check for closest, but eh, expensive
                 __result = true;
                 return false; // Don't run original code
             }
