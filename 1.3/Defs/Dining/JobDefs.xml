@@ -4,7 +4,6 @@
   <JobDef>
     <defName>Gastronomy_Dine</defName>
     <driverClass>Gastronomy.Dining.JobDriver_Dine</driverClass>
-    <reportString>eating at restaurant.</reportString>
     <casualInterruptible>false</casualInterruptible>
     <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
   </JobDef>

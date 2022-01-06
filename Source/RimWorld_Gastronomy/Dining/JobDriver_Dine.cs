@@ -20,11 +20,10 @@ namespace Gastronomy.Dining
         private const TargetIndex WaiterIndex = TargetIndex.B;
         private const TargetIndex MealIndex = TargetIndex.C;
 
-        //public override string GetReport()
-        //{
-        //    //if (job?.plantDefToSow == null) return base.GetReport();
-        //    return "JobDineGoReport".Translate();
-        //}
+        public override string GetReport()
+        {
+            return restaurant != null ? "JobDineGoReportSpecific".Translate(restaurant.Name) : "JobDineGoReport".Translate();
+        }
 
         private float ChewDurationMultiplier => 1f / pawn.GetStatValue(StatDefOf.EatingSpeed);
 

@@ -18,7 +18,7 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	<TabRegisterRestaurant>Dining</TabRegisterRestaurant>
 	
 	<!-- Restaurant selection -->
-	<RestaurantDefaultName>Restaurant {0}</RestaurantDefaultName>
+	<RestaurantDefaultName>restaurant {0}</RestaurantDefaultName>
 	<RestaurantTooltipSelect>Select which restaurant is linked to this register.</RestaurantTooltipSelect>
 	<RestaurantTooltipRename>Rename this restaurant.</RestaurantTooltipRename>
 	<RestaurantTooltipAdd>Add another restaurant.</RestaurantTooltipAdd>
@@ -59,6 +59,7 @@ If you add the 'Cash Register' mod, Gastronomy will continue working as before.
 	<CommandToggleDiningDesc>When enabled, this location can be used for dining.</CommandToggleDiningDesc>
 	<CommandSetDeco>Change Decoration</CommandSetDeco>
 	<CommandSetDecoDesc>Change the decoration on the table.</CommandSetDecoDesc>
+	<JobDineGoReportSpecific>Eating at {0}.</JobDineGoReportSpecific>
 	<JobDineGoReport>Eating at restaurant.</JobDineGoReport>
 	
 	<!-- Alerts -->
