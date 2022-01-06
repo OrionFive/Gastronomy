@@ -24,6 +24,7 @@ namespace Gastronomy.Dining
 
         public override string GetReport()
         {
+            if (restaurantIndex >= 0) restaurant ??= pawn.GetAllRestaurants()[restaurantIndex];
             return restaurant != null ? "JobDineGoReportSpecific".Translate(restaurant.Name) : "JobDineGoReport".Translate();
         }
 
@@ -36,14 +37,6 @@ namespace Gastronomy.Dining
             Scribe_Values.Look(ref restaurantIndex, "restaurantIndex");
             Scribe_Values.Look(ref wantsToOrder, "wantsToOrder");
             Scribe_Values.Look(ref startedWaitingTick, "startedWaitingTick");
-            try
-            {
-                if (Scribe.mode == LoadSaveMode.PostLoadInit) restaurant = pawn.GetAllRestaurants()[restaurantIndex];
-            }
-            catch
-            {
-                restaurant = pawn.GetAllRestaurants()[0];
-            }
         }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
