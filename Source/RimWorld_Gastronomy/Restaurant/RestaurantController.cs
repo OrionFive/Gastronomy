@@ -177,16 +177,10 @@ namespace Gastronomy.Restaurant
 
 		public bool MayDineHere(Pawn pawn)
 		{
-			//var isPrisoner = pawn.IsPrisoner;
-			var isGuest = pawn.IsGuest();
-			var isColonist = pawn.IsColonist;
-			var isPrisoner = pawn.IsPrisoner;
-			var isSlave = pawn.IsSlave;
-
-			if (!allowColonists && isColonist) return false;
-			if (!allowGuests && isGuest) return false;
-			if (!allowPrisoners && isPrisoner) return false;
-			if (!allowSlaves && isSlave) return false;
+            if (!allowColonists && pawn.IsColonist) return false;
+			if (!allowGuests && pawn.IsGuest()) return false;
+			if (!allowPrisoners && pawn.IsPrisoner) return false;
+			if (!allowSlaves && pawn.IsSlave) return false;
 			
 			return true;
 		}

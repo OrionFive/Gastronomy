@@ -89,12 +89,12 @@ namespace Gastronomy.Restaurant
             var rectSelection = rect.LeftHalf();
 
             // Select
-            if (Widgets.ButtonText(rectSelection, restaurant.Name))
+            if (Widgets.ButtonText(rectSelection, restaurant.Name.CapitalizeFirst()))
             {
                 var list = new List<FloatMenuOption>();
                 foreach (var controllerOption in restaurants.restaurants)
                 {
-                    list.Add(new FloatMenuOption(controllerOption.Name, delegate
+                    list.Add(new FloatMenuOption(controllerOption.Name.CapitalizeFirst(), delegate
                     {
                         SetRestaurant(controllerOption);
                     }));

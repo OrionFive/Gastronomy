@@ -20,6 +20,8 @@ namespace Gastronomy.Dining
                 {
                     if (t.def.building == null || !t.def.building.isSittable) return false;
 
+                    if (!t.Position.AdjacentToCardinal(diningSpot.Position)) return false;
+
                     if (t.IsForbidden(pawn)) return false;
 
                     if (!actor.CanReserve(t)) return false;
@@ -115,13 +117,14 @@ namespace Gastronomy.Dining
         public static Toil WaitForMeal(TargetIndex mealInd, TargetIndex chairInd)
         {
             var toil = new Toil();
-            toil.initAction = () => {
-                var order = toil.actor.GetRestaurant().Orders.GetOrderFor(toil.actor);
+            toil.initAction = () =>
+            {
+                var order = toil.actor.FindValidOrder();
                 if (order?.delivered == true && (order.consumable?.Spawned == true || order.consumable?.ParentHolder == toil.actor.inventory))
                 {
                     var consumable = order.consumable;
                     toil.actor.CurJob.SetTarget(mealInd, consumable);
-                    Log.Message($"{toil.actor.NameShortColored} has already received order: {consumable.Label}");
+                    Log.Message($"{toil.actor.NameShortColored} has already received order: {consumable?.Label}");
                     if (toil.actor.inventory.Contains(consumable))
                     {
                         //Log.Message($"{toil.actor.NameShortColored} has {food.Label} in inventory.");
@@ -148,7 +151,7 @@ namespace Gastronomy.Dining
                     // Order not spawned? Already eaten it, or something happened to it
                     // Let it go.
                     Log.Warning($"{toil.actor.NameShortColored}'s food is gone. Already eaten?");
-                    toil.actor.GetRestaurant().Orders.CancelOrder(order);
+                    order.restaurant.Orders.CancelOrder(order);
                     GetDriver(toil).EndJobWith(JobCondition.Incompletable);
                 }
                 GetDriver(toil).OnStartedWaiting();
@@ -205,7 +208,7 @@ namespace Gastronomy.Dining
 
         public static Toil OnCompletedMeal(Pawn pawn)
         {
-            return new Toil {atomicWithPrevious = true, initAction = () => { pawn.GetRestaurant().Orders.OnFinishedEatingOrder(pawn); }};
+            return new Toil {atomicWithPrevious = true, initAction = () => { pawn.FindValidOrder()?.restaurant.Orders.OnFinishedEatingOrder(pawn); }};
         }
 
         /// <summary>

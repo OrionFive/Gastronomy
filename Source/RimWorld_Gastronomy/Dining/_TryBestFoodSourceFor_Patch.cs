@@ -38,13 +38,16 @@ namespace Gastronomy.Dining
 
                 if (!getter.IsAbleToDine()) return true;
 
+                // Caravans can't eat, since indoor locations are forbidden to them
                 var diningSpots = DiningUtility.FindDiningSpotsFor(eater, false).ToArray();
+                //Log.Message($"{getter.NameShortColored} is about to eat. Found {diningSpots.Length} dining spots.");
 
                 var bestType = RestaurantStock.GetBestMealFor(diningSpots.SelectMany(d => d.GetRestaurants()).Distinct(), eater, out var restaurant, false);
                 if (bestType == null) return true; // Run original code
 
                 foodDef = bestType.def;
                 foodSource = diningSpots.FirstOrDefault(s => restaurant.diningSpots.Contains(s)); // TODO: Could check for closest, but eh, expensive
+                //Log.Message($"{getter.NameShortColored} found diningSpot at {foodSource?.Position} with {foodDef?.label}.");
                 __result = true;
                 return false; // Don't run original code
             }

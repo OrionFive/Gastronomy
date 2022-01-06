@@ -80,7 +80,7 @@ namespace Gastronomy.Restaurant
 
         public bool NameIsInUse(string name, RestaurantController restaurant)
         {
-            return restaurants.Any(controller => controller != restaurant && controller.Name == name);
+            return restaurants.Any(controller => controller != restaurant && controller.Name.EqualsIgnoreCase(name));
         }
     }
 }

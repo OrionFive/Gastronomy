@@ -43,17 +43,22 @@ namespace Gastronomy.Dining
         public static IEnumerable<DiningSpot> FindDiningSpotsFor([NotNull] Pawn pawn, bool allowDrug, Predicate<Thing> extraSpotValidator = null)
         {
             // TODO: There should be some kind of caching for this, probably
-            var restaurants = pawn.GetAllRestaurants().Where(controller => controller.Stock.HasAnyFoodFor(pawn, allowDrug));
+            var restaurants = pawn.GetAllRestaurants(); //.Where(controller => controller.Stock.HasAnyFoodFor(pawn, allowDrug));
             
             bool Validator(DiningSpot spot)
             {
-                //Log.Message($"Validating spot for {pawn.NameShortColored}: social = {spot.IsSociallyProper(pawn)}, political = {spot.IsPoliticallyProper(pawn)}, " 
-                //            + $"canReserve = {CanReserve(pawn, spot)}, canDineHere = {spot.CanDineHere(pawn)}, isDangerous = {RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion())}," 
-                //            + $"extraValidator = { extraSpotValidator == null || extraSpotValidator.Invoke(spot)}");
-                return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && spot.IsPoliticallyProper(pawn) && CanReserve(pawn, spot) && !spot.HostileTo(pawn)
-                       && spot.CanDineHere(pawn) && !RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot));
+                //Log.Message($"Validating spot for {pawn.NameShortColored}: forbidden = {spot.IsForbidden(pawn)}, social = {spot.IsSociallyProper(pawn)}, political = {IsPoliticallyProper(pawn, spot)}, "
+                //            + $"canReserve = {CanReserve(pawn, spot)}, canDineHere = {spot.CanDineHere(pawn)}, open = {spot.GetRestaurants().Any(r => r.IsOpenedRightNow)}, isDangerous = {RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion())},"
+                //            + $"extraValidator = {extraSpotValidator == null || extraSpotValidator.Invoke(spot)}, canReach = {pawn.CanReach(spot, PathEndMode.ClosestTouch, JobUtility.MaxDangerDining)}");
+                return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && IsPoliticallyProper(pawn, spot) && CanReserve(pawn, spot)
+                       && spot.CanDineHere(pawn) && !RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot)) && pawn.CanReach(spot, PathEndMode.ClosestTouch, JobUtility.MaxDangerDining);
             }
-            return restaurants.SelectMany(r => r.diningSpots).Distinct().Where(Validator).Where(s=> pawn.CanReach(s, PathEndMode.ClosestTouch, JobUtility.MaxDangerDining));
+            return restaurants.SelectMany(r => r.diningSpots).Distinct().Where(Validator);
+        }
+
+        private static bool IsPoliticallyProper(Pawn pawn, DiningSpot spot)
+        {
+            return !spot.HostileTo(pawn);
         }
 
         private static bool CanReserve(Pawn pawn, DiningSpot spot)
@@ -163,7 +168,9 @@ namespace Gastronomy.Dining
 
         private static int GetBoughtFoodStage(Pawn pawn)
         {
-            var restaurant = pawn.GetRestaurant();
+            var order = RestaurantUtility.FindValidOrder(pawn);
+            var restaurant = order?.restaurant;
+
             if (restaurant == null) return 0;
             if (restaurant.guestPricePercentage <= 0) return 0;
             int stage = PriceTypeUtlity.ClosestPriceType(restaurant.guestPricePercentage) switch {

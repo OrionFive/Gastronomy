@@ -22,14 +22,14 @@ namespace Gastronomy.Waiting
             var patronJob = patron.GetDriver<JobDriver_Dine>();
             var diningSpot = patronJob?.DiningSpot;
 
-            var order = patron?.GetRestaurant().Orders.GetOrderFor(patron);
+            var order = patron?.FindValidOrder();
             if (order == null)
             {
                 Log.Message($"{patron.NameShortColored} has no existing order.");
                 return false;
             }
 
-            if (patron.GetRestaurant().Orders.IsBeingDelivered(order, pawn))
+            if (order.restaurant.Orders.IsBeingDelivered(order, pawn))
             {
                 var waiter = patron.Map.reservationManager.FirstRespectedReserver(order.consumable, pawn);
                 Log.Message($"{pawn.NameShortColored}: Order for {patron.NameShortColored} is already being delivered by {waiter?.NameShortColored}.");

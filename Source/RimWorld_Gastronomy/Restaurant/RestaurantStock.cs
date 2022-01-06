@@ -20,7 +20,7 @@ namespace Gastronomy.Restaurant
             [NotNull] public readonly List<Thing> items = new List<Thing>();
         }
 
-        private const float MinOptimality = 100f;
+        private const float MinOptimality = 50;
         private const int JoyOptimalityWeight = 400;
 
         private class ConsumeOptimality
@@ -81,24 +81,15 @@ namespace Gastronomy.Restaurant
             return null;
         }
 
-        public Thing GetBestMealFor([NotNull] Pawn pawn, bool allowDrug, bool includeEat = true, bool includeJoy = true)
+        public static Thing GetRandomMealFor(IEnumerable<RestaurantController> restaurants, [NotNull] Pawn pawn, out RestaurantController restaurant, bool allowDrug, bool includeEat = true, bool includeJoy = true)
         {
-            var options = GetMealOptions(pawn, allowDrug, includeEat, includeJoy);
-            //Log.Message($"{pawn.NameShortColored}: Meal options: {options.GroupBy(o => o.thing.def).Select(o => $"{o.Key.label} ({o.FirstOrDefault()?.optimality:F2})").ToCommaList()}");
-            if (options
-                .TryMaxBy(def => def.Optimality, out var best))
-            {
-                //Log.Message($"{pawn.NameShortColored}: GetBestMealFor: {best?.thing.LabelCap} with optimality {best?.optimality:F2}");
-                return best.Thing;
-            }
-            return null;
-        }
+            restaurant = null;
+            if (restaurants == null) return null;
+            var options = restaurants.SelectMany(controller => controller.Stock.GetMealOptions(pawn, allowDrug, includeEat, includeJoy));
 
-        public Thing GetRandomMealFor([NotNull] Pawn pawn, bool allowDrug, bool includeEat = true, bool includeJoy = true)
-        {
-            if (GetMealOptions(pawn, allowDrug, includeEat, includeJoy).TryRandomElementByWeight(def => def.Optimality, out var random))
+            if (options.TryRandomElementByWeight(def => def.Optimality, out var random))
             {
-                //Log.Message($"{pawn.NameShortColored} picked {random.def.label} with a score of {random.optimality}");
+                restaurant = random.Restaurant;
                 return random.Thing;
             }
             return null;

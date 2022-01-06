@@ -83,18 +83,6 @@ namespace Gastronomy.Restaurant
             return null;
         }
 
-        [Obsolete("Replace with proper way to get the right restaurant.")]
-        public static RestaurantController GetRestaurant([NotNull]this Thing thing)
-        {
-            return thing.GetAllRestaurants().FirstOrDefault();
-        }
-
-        [Obsolete("Dining spots can have multiple restaurants.")]
-        public static RestaurantController GetRestaurant([NotNull]this DiningSpot spot)
-        {
-            throw new Exception();
-        }
-
         public static RestaurantController GetRestaurant([NotNull]this Building_CashRegister register)
         {
             return register.GetRestaurantsManager().GetLinkedRestaurant(register);
@@ -170,7 +158,7 @@ namespace Gastronomy.Restaurant
             JobCondition HasShift()
             {
                 var pawn = f.GetActor();
-                return pawn.GetRestaurant().ActiveStaff.Contains(pawn) ? JobCondition.Incompletable : JobCondition.Ongoing;
+                return pawn.GetAllRestaurantsEmployed().Any(r=>r.ActiveStaff.Contains(pawn)) ? JobCondition.Incompletable : JobCondition.Ongoing;
             }
 
             f.AddEndCondition(HasShift);
@@ -204,5 +192,19 @@ namespace Gastronomy.Restaurant
             f.AddEndCondition(PatronHasNoDiningInQueue);
             return f;
         }
+
+        /// <summary>
+        /// Find a valid order at any restaurant
+        /// </summary>
+        [CanBeNull]
+        public static Order FindValidOrder(this Pawn patron)
+        {
+            if(patron == null)
+            {
+                Log.Warning("Patron not set.");
+                return null;
+            }
+
+            return patron.GetAllRestaurants().Select(r => r.Orders.GetOrderFor(patron)).FirstOrDefault(o => o != null); }
     }
 }

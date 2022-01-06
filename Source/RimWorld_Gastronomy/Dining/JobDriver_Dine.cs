@@ -11,6 +11,8 @@ namespace Gastronomy.Dining
     {
         public bool wantsToOrder;
         private int startedWaitingTick;
+        private int restaurantIndex;
+        private RestaurantController restaurant;
 
         public DiningSpot DiningSpot => job.GetTarget(SpotIndex).Thing as DiningSpot;
         public Pawn Waiter => job.GetTarget(WaiterIndex).Pawn;
@@ -30,8 +32,18 @@ namespace Gastronomy.Dining
         public override void ExposeData()
         {
             base.ExposeData();
+            if (Scribe.mode == LoadSaveMode.Saving) restaurantIndex = pawn.GetAllRestaurants().IndexOf(restaurant);
+            Scribe_Values.Look(ref restaurantIndex, "restaurantIndex");
             Scribe_Values.Look(ref wantsToOrder, "wantsToOrder");
             Scribe_Values.Look(ref startedWaitingTick, "startedWaitingTick");
+            try
+            {
+                if (Scribe.mode == LoadSaveMode.PostLoadInit) restaurant = pawn.GetAllRestaurants()[restaurantIndex];
+            }
+            catch
+            {
+                restaurant = pawn.GetAllRestaurants()[0];
+            }
         }
 
         public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -58,10 +70,14 @@ namespace Gastronomy.Dining
             this.FailOn(() => DiningSpot.Destroyed);
             yield return Toils_Dining.GoToDineSpot(pawn, SpotIndex).FailOnRestaurantsClosed(SpotIndex);
             yield return Toils_Dining.TurnToEatSurface(SpotIndex);
-            // Order broken? Jump straight to waiter
-            yield return Toils_Jump.JumpIf(waitForWaiter, () => !pawn.GetRestaurant().Orders.CheckOrderOfWaitingPawn(pawn));
-            // Already has ordered? Jump to waiting for meal
-            yield return Toils_Jump.JumpIf(waitForMeal, () => pawn.GetRestaurant().Orders.GetOrderFor(pawn) != null);
+            // Already has ordered? Jump to waiting for meal; Also set restaurant
+            yield return Toils_Jump.JumpIf(waitForMeal, () =>
+            {
+                var order = pawn.FindValidOrder();
+                restaurant = order?.restaurant;
+                return order != null;
+            });
+            yield return Toils_Dining.Obsolete();
             yield return waitForWaiter;
             yield return waitForMeal;
             yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, MealIndex);

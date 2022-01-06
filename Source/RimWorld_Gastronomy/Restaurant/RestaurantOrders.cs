@@ -24,7 +24,7 @@ namespace Gastronomy.Restaurant
 
         public void ExposeData()
         {
-            Scribe_Collections.Look(ref orders, "orders", LookMode.Deep);
+            Scribe_Collections.Look(ref orders, "orders", LookMode.Deep, Restaurant);
             orders ??= new List<Order>();
         }
 
@@ -91,9 +91,9 @@ namespace Gastronomy.Restaurant
             }
             */
 
-            orders.Add(new Order {consumable = consumable, consumableDef = consumable.def, patron = patron, hasToBeMade = !available || ordered});
+            orders.Add(new Order(Restaurant) {consumable = consumable, consumableDef = consumable.def, patron = patron, hasToBeMade = !available || ordered});
         }
-
+        
         public void CancelOrder(Order order)
         {
             orders.Remove(order);

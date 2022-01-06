@@ -53,14 +53,14 @@ namespace Gastronomy.Waiting
 
             void CreateOrder()
             {
-                if (!(toil.GetActor().CurJob.GetTarget(patronInd).Thing is Pawn patron))
+                if (!(toil.actor.CurJob.GetTarget(patronInd).Thing is Pawn patron))
                 {
-                    toil.GetActor().jobs.EndCurrentJob(JobCondition.Errored);
+                    toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
                     return;
                 }
 
-                var restaurant = patron.GetRestaurant();
-                var desiredFood = restaurant.Stock.GetRandomMealFor(patron, !patron.IsTeetotaler());
+                var restaurants = toil.actor.GetAllRestaurantsEmployed();
+                var desiredFood = RestaurantStock.GetRandomMealFor(restaurants, patron, out var restaurant, !patron.IsTeetotaler());
                 if (desiredFood == null)
                 {
                     // Couldn't find anything desired on menu
@@ -82,7 +82,7 @@ namespace Gastronomy.Waiting
                 else
                 {
                     restaurant.Orders.CreateOrder(patron, desiredFood);
-                    toil.GetActor().skills.GetSkill(SkillDefOf.Social).Learn(150, false);
+                    toil.GetActor().skills.GetSkill(SkillDefOf.Social).Learn(150);
 
                     var symbol = desiredFood.def.uiIcon;
                     if (symbol != null) TryCreateBubble(patron, toil.actor, symbol);
@@ -215,8 +215,16 @@ namespace Gastronomy.Waiting
                     if (transferred)
                     {
                         patron.Map.reservationManager.Release(food, actor, actor.CurJob);
-                        actor.GetRestaurant().Debts.Add(food, patron);
-                        actor.GetRestaurant().Orders.CompleteOrderFor(patron);
+                        var order = patron.FindValidOrder();
+                        if (order == null)
+                        {
+                            Log.Error($"{actor.NameShortColored} failed to find an order for {patron.Name.ToStringShort}.");
+                            actor.jobs.curDriver.EndJobWith(JobCondition.Errored);
+                            return;
+                        }
+                        var restaurant = order.restaurant;
+                        restaurant.Debts.Add(food, patron);
+                        restaurant.Orders.CompleteOrderFor(patron);
 
                         patronDriver.OnTransferredFood(food, actor.inventory.innerContainer, out var silver);
 
@@ -244,7 +252,7 @@ namespace Gastronomy.Waiting
                     }
                     else
                     {
-                        Log.Error($"{actor.NameShortColored} failed to transfer {food.Label} to {patron.NameShortColored}.");
+                        Log.Error($"{actor.NameShortColored} failed to transfer {food.Label} to {patron.Name.ToStringShort}.");
                         actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                     }
                 }
@@ -363,7 +371,8 @@ namespace Gastronomy.Waiting
                     else
                     {
                         //Log.Message($"{toil.actor.NameShortColored} updated the consumable {toil.actor.GetRestaurant().GetOrderFor(patron).consumable.Label} to {consumable.Label}.");
-                        toil.actor.GetRestaurant().Orders.GetOrderFor(patron).consumable = consumable;
+                        var order = patron.FindValidOrder();
+                        if (order != null) order.consumable = consumable;
                     }
                 }
             };
@@ -387,7 +396,7 @@ namespace Gastronomy.Waiting
             return toil;
         }
 
-        public static Toil GetSpecificDiningSpotCellForMakingTable(TargetIndex diningSpotInd, TargetIndex patronInd, TargetIndex outputInd)
+        public static Toil GetSpecificDiningSpotCellForMakingTable(TargetIndex diningSpotInd, TargetIndex patronInd, TargetIndex chairInd)
         {
             var toil = new Toil {atomicWithPrevious = true};
             toil.initAction = () => {
@@ -399,9 +408,9 @@ namespace Gastronomy.Waiting
                         var cell = patron.pather.MovingNow ? patron.pather.Destination.Cell : patron.Position;
                         if (diningSpot.IsValidDineCell(cell))
                         {
-                            cell = toil.actor.pather.MovingNow ? toil.actor.pather.Destination.Cell : toil.actor.Position;
+                            //cell = toil.actor.pather.MovingNow ? toil.actor.pather.Destination.Cell : toil.actor.Position;
                             //Log.Message($"Got make table cell from {patron.NameShortColored}. Cell should be {cell}.");
-                            toil.actor.CurJob.SetTarget(outputInd, cell);
+                            toil.actor.CurJob.SetTarget(chairInd, cell);
                             return; // Success
                         }
                         Log.Warning($"Failed to get make table cell from {patron.NameShortColored}. Cell was invalid (chair = {cell}, table = {diningSpot.Position}). Moving = {patron.pather.MovingNow}");

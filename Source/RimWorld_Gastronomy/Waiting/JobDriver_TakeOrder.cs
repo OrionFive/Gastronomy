@@ -41,12 +41,6 @@ namespace Gastronomy.Waiting
             return true;
         }
 
-        //public override string GetReport()
-        //{
-        //    //if (job?.plantDefToSow == null) return base.GetReport();
-        //    return "JobDineGoReport".Translate();
-        //}
-
         public override IEnumerable<Toil> MakeNewToils()
         {
             var wait = Toils_General.Wait(50, IndexSpot).FailOnNotDiningQueued(IndexPatron);
@@ -64,7 +58,7 @@ namespace Gastronomy.Waiting
             yield return Toils_Waiting.TakeOrder(IndexPatron);
             yield return Toils_Interpersonal.SetLastInteractTime(IndexPatron);
             yield return Toils_Jump.JumpIf(end, () => DiningSpot?.IsSpotReady(ChairPos) == true);
-            yield return Toils_Goto.GotoCell(IndexSpot, PathEndMode.ClosestTouch);
+            yield return Toils_Goto.GotoCell(IndexSpot, PathEndMode.Touch);
             yield return Toils_Waiting.MakeTableReady(IndexSpot, IndexChairPos);
             yield return end;
         }
