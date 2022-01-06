@@ -15,14 +15,24 @@ namespace Gastronomy.Restaurant
 
         public Order(RestaurantController restaurant)
         {
-            this.restaurant = restaurant;
+            Restaurant = restaurant;
+        }
+
+        public RestaurantController Restaurant
+        {
+            get
+            {
+                if (restaurantIndex >= 0) restaurant ??= consumable?.GetAllRestaurants()[restaurantIndex];
+                return restaurant;
+            }
+            set => restaurant = value;
         }
 
         public void ExposeData()
         {
             if (Scribe.mode == LoadSaveMode.Saving)
             {
-                restaurantIndex = consumable.GetAllRestaurants().IndexOf(restaurant);
+                restaurantIndex = consumable.GetAllRestaurants().IndexOf(Restaurant);
             }
             Scribe_References.Look(ref patron, "patron");
             Scribe_Defs.Look(ref consumableDef, "consumableDef");
@@ -30,18 +40,6 @@ namespace Gastronomy.Restaurant
             Scribe_Values.Look(ref hasToBeMade, "hasToBeMade");
             Scribe_Values.Look(ref delivered, "delivered");
             Scribe_Values.Look(ref restaurantIndex, "restaurantIndex");
-
-            if (Scribe.mode == LoadSaveMode.PostLoadInit)
-            {
-                try
-                {
-                    restaurant = consumable.GetAllRestaurants()[restaurantIndex];
-                }
-                catch
-                {
-                    Log.Message($"Couldn't resolve restaurant for order of {consumableDef?.label} by {patron?.Name.ToStringShort}.");
-                }
-            }
         }
     }
 }

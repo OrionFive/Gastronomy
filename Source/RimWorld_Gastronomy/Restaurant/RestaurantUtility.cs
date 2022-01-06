@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CashRegister;
 using Gastronomy.Dining;
-using Gastronomy.Waiting;
 using JetBrains.Annotations;
 using RimWorld;
 using Verse;
@@ -15,6 +14,7 @@ namespace Gastronomy.Restaurant
     public static class RestaurantUtility
     {
         private static readonly Dictionary<Pair<Pawn, Region>, bool> dangerousRegionsCache = new Dictionary<Pair<Pawn, Region>, bool>();
+        private static int lastTick;
 
         public static void OnTick()
         {
@@ -26,8 +26,6 @@ namespace Gastronomy.Restaurant
                     lastTick = GenTicks.TicksGame;
                 }
         }
-
-        private static int lastTick;
 
         public static bool HasDiningQueued(this Pawn patron)
         {
@@ -53,34 +51,6 @@ namespace Gastronomy.Restaurant
         public static RestaurantsManager GetRestaurantsManager(this RestaurantController restaurant)
         {
             return restaurant.Map.GetComponent<RestaurantsManager>();
-        }
-
-        public static RestaurantController GetRestaurant([NotNull]this Pawn pawn)
-        {
-            // This depends on a lot of cases... could be a waiter or a patron, etc. oof.
-            var driver = pawn.jobs.curDriver;
-            if(driver == null) Log.Error($"{pawn.Name.ToStringShort} doesn't have a driver but tries to GetRestaurant.");
-            else
-                switch (driver)
-                {
-                    case JobDriver_EmptyRegister jobDriverEmptyRegister:
-                        break;
-                    case JobDriver_Dine jobDriverDine:
-                        var diningSpot = jobDriverDine.DiningSpot;
-                        var order = diningSpot?.GetRestaurants().Select(r => r.Orders.GetOrderFor(pawn))
-                            .FirstOrDefault(o => o != null);
-                        break;
-                    case JobDriver_MakeTable jobDriverMakeTable:
-                        break;
-                    case JobDriver_Serve jobDriverServe:
-                        break;
-                    case JobDriver_StandBy jobDriverStandBy:
-                        throw new Exception("Pawn should get all restaurants");
-                        return pawn.GetAllRestaurantsEmployed().FirstOrDefault();
-                    case JobDriver_TakeOrder jobDriverTakeOrder:
-                        break;
-                }
-            return null;
         }
 
         public static RestaurantController GetRestaurant([NotNull]this Building_CashRegister register)

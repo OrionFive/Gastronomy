@@ -67,7 +67,7 @@ namespace Gastronomy.Dining
             yield return Toils_Jump.JumpIf(waitForMeal, () =>
             {
                 var order = pawn.FindValidOrder();
-                restaurant = order?.restaurant;
+                restaurant = order?.Restaurant;
                 return order != null;
             });
             yield return Toils_Dining.Obsolete();

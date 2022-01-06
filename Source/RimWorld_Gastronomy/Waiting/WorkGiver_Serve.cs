@@ -19,12 +19,12 @@ namespace Gastronomy.Waiting
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
             return false;
-            var restaurant = pawn.GetRestaurant();
-
-            // Serve even when shift just ended
-            //if(!forced && !restaurant.HasToWork(pawn)) return true;
-
-            return !restaurant.Orders.AvailableOrdersForServing.Any();
+            //var restaurant = pawn.GetRestaurant();
+            //
+            //// Serve even when shift just ended
+            ////if(!forced && !restaurant.HasToWork(pawn)) return true;
+            //
+            //return !restaurant.Orders.AvailableOrdersForServing.Any();
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)

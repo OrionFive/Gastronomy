@@ -151,7 +151,7 @@ namespace Gastronomy.Dining
                     // Order not spawned? Already eaten it, or something happened to it
                     // Let it go.
                     Log.Warning($"{toil.actor.NameShortColored}'s food is gone. Already eaten?");
-                    order.restaurant.Orders.CancelOrder(order);
+                    order.Restaurant.Orders.CancelOrder(order);
                     GetDriver(toil).EndJobWith(JobCondition.Incompletable);
                 }
                 GetDriver(toil).OnStartedWaiting();
@@ -208,7 +208,7 @@ namespace Gastronomy.Dining
 
         public static Toil OnCompletedMeal(Pawn pawn)
         {
-            return new Toil {atomicWithPrevious = true, initAction = () => { pawn.FindValidOrder()?.restaurant.Orders.OnFinishedEatingOrder(pawn); }};
+            return new Toil {atomicWithPrevious = true, initAction = () => { pawn.FindValidOrder()?.Restaurant.Orders.OnFinishedEatingOrder(pawn); }};
         }
 
         /// <summary>

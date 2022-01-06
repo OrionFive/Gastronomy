@@ -168,8 +168,8 @@ namespace Gastronomy.Dining
 
         private static int GetBoughtFoodStage(Pawn pawn)
         {
-            var order = RestaurantUtility.FindValidOrder(pawn);
-            var restaurant = order?.restaurant;
+            var order = pawn.FindValidOrder();
+            var restaurant = order?.Restaurant;
 
             if (restaurant == null) return 0;
             if (restaurant.guestPricePercentage <= 0) return 0;

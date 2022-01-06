@@ -29,7 +29,7 @@ namespace Gastronomy.Waiting
                 return false;
             }
 
-            if (order.restaurant.Orders.IsBeingDelivered(order, pawn))
+            if (order.Restaurant.Orders.IsBeingDelivered(order, pawn))
             {
                 var waiter = patron.Map.reservationManager.FirstRespectedReserver(order.consumable, pawn);
                 Log.Message($"{pawn.NameShortColored}: Order for {patron.NameShortColored} is already being delivered by {waiter?.NameShortColored}.");

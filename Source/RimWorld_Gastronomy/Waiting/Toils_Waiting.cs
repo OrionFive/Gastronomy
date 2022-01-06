@@ -222,7 +222,7 @@ namespace Gastronomy.Waiting
                             actor.jobs.curDriver.EndJobWith(JobCondition.Errored);
                             return;
                         }
-                        var restaurant = order.restaurant;
+                        var restaurant = order.Restaurant;
                         restaurant.Debts.Add(food, patron);
                         restaurant.Orders.CompleteOrderFor(patron);
 
