@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Gastronomy.Dining;
 using JetBrains.Annotations;
 using RimWorld;
@@ -239,6 +238,11 @@ namespace Gastronomy.Restaurant
 
         public void RareTick()
         {
+            RefreshStock();
+        }
+
+        public void RefreshStock()
+        {
             // Refresh entire stock
             foreach (var stock in stockCache)
             {
@@ -246,22 +250,26 @@ namespace Gastronomy.Restaurant
                 stock.Value.ordered = 0;
             }
 
+            FindStockItems();
+
+            // Slowly empty optimality caches again
+            if (eatOptimalityCache.Count > 0) eatOptimalityCache.RemoveAt(0);
+            if (joyOptimalityCache.Count > 0) joyOptimalityCache.RemoveAt(0);
+        }
+
+        private void FindStockItems()
+        {
             foreach (var thing in GetConsumablesOnMap()
-                .Where(t => t.def.IsIngestible && !t.def.IsCorpse && Menu.IsOnMenu(t) && !t.IsForbidden(Faction.OfPlayer)))
+                .Where(t => t.def is { IsIngestible: true, IsCorpse: false } && Menu.IsOnMenu(t) && !t.IsForbidden(Faction.OfPlayer) && Restaurant.GetIsInRange(t.Position)))
             {
-                if (thing?.def == null) continue;
                 if (!stockCache.TryGetValue(thing.def, out var stock))
                 {
-                    stock = new Stock {def = thing.def};
+                    stock = new Stock { def = thing.def };
                     stockCache.Add(thing.def, stock);
                 }
 
                 stock.items.Add(thing);
             }
-
-            // Slowly empty optimality caches again
-            if (eatOptimalityCache.Count > 0) eatOptimalityCache.RemoveAt(0);
-            if (joyOptimalityCache.Count > 0) joyOptimalityCache.RemoveAt(0);
         }
 
         private IEnumerable<Thing> GetConsumablesOnMap()

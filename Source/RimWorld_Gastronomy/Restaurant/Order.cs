@@ -32,7 +32,7 @@ namespace Gastronomy.Restaurant
         {
             if (Scribe.mode == LoadSaveMode.Saving)
             {
-                restaurantIndex = consumable.GetAllRestaurants().IndexOf(Restaurant);
+                restaurantIndex = patron.GetAllRestaurants().IndexOf(Restaurant);
             }
             Scribe_References.Look(ref patron, "patron");
             Scribe_Defs.Look(ref consumableDef, "consumableDef");

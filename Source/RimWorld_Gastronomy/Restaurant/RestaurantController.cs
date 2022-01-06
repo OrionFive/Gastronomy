@@ -77,6 +77,11 @@ namespace Gastronomy.Restaurant
             set => name = value;
         }
 
+        public bool GetIsInRange(IntVec3 position)
+        {
+            return Registers.Any(r => r.GetIsInRange(position));
+        }
+
         public RestaurantController(Map map)
         {
             Map = map;
@@ -153,6 +158,7 @@ namespace Gastronomy.Restaurant
         {
             //RefreshRegisters(null, register.Map);
 			RescanDiningSpots();
+			Stock.RefreshStock();
         }
 
         public void OnTick()
