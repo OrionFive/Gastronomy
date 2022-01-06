@@ -11,7 +11,7 @@ namespace Gastronomy.Restaurant
         public bool hasToBeMade;
         public bool delivered;
         private int restaurantIndex;
-        public RestaurantController restaurant;
+        private RestaurantController restaurant;
 
         public Order(RestaurantController restaurant)
         {

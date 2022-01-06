@@ -37,10 +37,13 @@ namespace Gastronomy.Waiting
             if (driver == null || driver.wantsToOrder) return false;
 
             var restaurants = pawn.GetAllRestaurantsEmployed();
-            var (restaurant, order) = restaurants.Select(r => (r, order: r.Orders.GetOrderFor(patron))).FirstOrDefault(o => o.order != null);
+            var order = restaurants.Select(r => r.Orders.GetOrderFor(patron)).FirstOrDefault(o => o != null);
 
             if (order == null) return false;
             if (order.delivered) return false;
+
+            var restaurant = order.Restaurant;
+            if (restaurant == null) return false;
 
             if (restaurant.Orders.IsBeingDelivered(order)) return false;
 
