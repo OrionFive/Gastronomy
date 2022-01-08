@@ -47,7 +47,7 @@ namespace Gastronomy.Dining
                 var diningSpots = DiningUtility.FindDiningSpotsFor(eater, false).ToArray();
                 //Log.Message($"{getter.NameShortColored} is about to eat. Found {diningSpots.Length} dining spots.");
 
-                var bestType = RestaurantStock.GetBestMealFor(diningSpots.SelectMany(d => d.GetRestaurants()).Distinct(), eater, out var restaurant, false);
+                var bestType = RestaurantStock.GetBestMealFor(diningSpots.SelectMany(d => d.GetRestaurantsServing()).Distinct(), eater, out var restaurant, false);
                 if (bestType == null) return true; // Run original code
 
                 foodDef = bestType.def;

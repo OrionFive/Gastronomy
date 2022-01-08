@@ -33,7 +33,7 @@ namespace Gastronomy.Restaurant
             return patron?.jobs.jobQueue?.Any(j => j.job.def == DiningDefOf.Gastronomy_Dine) == true;
         }
 
-        public static RestaurantsManager GetRestaurantsManager(this Thing thing)
+        private static RestaurantsManager GetRestaurantsManager(this Thing thing)
         {
             return thing.Map.GetComponent<RestaurantsManager>();
         }
@@ -114,7 +114,7 @@ namespace Gastronomy.Restaurant
                 var target = f.GetActor().CurJob.GetTarget(spotInd);
                 var spot = target.IsValid ? target.Thing as DiningSpot : null;
                 if (spot == null) return JobCondition.Errored;
-                return spot.GetRestaurants().Any(r=>r.IsOpenedRightNow)
+                return spot.GetRestaurantsServing().Any(r => r.IsOpenedRightNow)
                     ? JobCondition.Ongoing
                     : JobCondition.Incompletable;
             }
@@ -176,5 +176,10 @@ namespace Gastronomy.Restaurant
             }
 
             return patron.GetAllRestaurants().Select(r => r.Orders.GetOrderFor(patron)).FirstOrDefault(o => o != null); }
+
+        public static IEnumerable<RestaurantController> GetRestaurantsServing(this DiningSpot diningSpot)
+        {
+            return diningSpot.GetRestaurantsManager().restaurants.Where(r => r.diningSpots.Contains(diningSpot));
+        }
     }
 }

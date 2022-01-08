@@ -26,7 +26,7 @@ namespace Gastronomy.Dining
                 var diningSpots = DiningUtility.FindDiningSpotsFor(pawn, allowDrug, extraValidator).ToArray();
 
                 // There is something edible, but is it good enough or like... a corpse?
-                var bestConsumable = RestaurantStock.GetBestMealFor(diningSpots.SelectMany(d => d.GetRestaurants()).Distinct(), pawn, out var restaurant, allowDrug, false);
+                var bestConsumable = RestaurantStock.GetBestMealFor(diningSpots.SelectMany(d => d.GetRestaurantsServing()).Distinct(), pawn, out var restaurant, allowDrug, false);
                 if (bestConsumable == null) return true; // Run regular code
 
                 //Log.Message($"{pawn.NameShortColored} wants to eat at restaurant ({diningSpot.Position}).");

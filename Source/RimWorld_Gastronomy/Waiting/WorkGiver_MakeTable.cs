@@ -25,7 +25,7 @@ namespace Gastronomy.Waiting
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             if (!(t is DiningSpot spot)) return false;
-            if (!spot.GetRestaurants().Any(r => r.HasToWork(pawn))) return false;
+            if (!spot.GetRestaurantsServing().Any(r => r.HasToWork(pawn))) return false;
             if (RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerServing, spot.GetRegion()) && !forced) return false;
             if (spot.GetReservationSpots().Any(s => s == SpotState.Clear || s > SpotState.Ready))
             {

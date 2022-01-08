@@ -64,12 +64,7 @@ namespace Gastronomy.Dining
         public int GetMaxReservations() => GetReservationSpots().Count(s => s >= SpotState.Clear);
         public int GetMaxSeats() => GetReservationSpots().Count(s => s != SpotState.Blocked);
 
-        public bool CanDineHere(Pawn pawn) => GetRestaurants().Any(restaurant => restaurant.IsOpenedRightNow && restaurant.MayDineHere(pawn));
-
-        public IEnumerable<RestaurantController> GetRestaurants()
-        {
-            return this.GetRestaurantsManager().restaurants.Where(r => r.diningSpots.Contains(this));
-        }
+        public bool CanDineHere(Pawn pawn) => this.GetRestaurantsServing().Any(restaurant => restaurant.IsOpenedRightNow && restaurant.MayDineHere(pawn));
 
         /// <summary>
         /// [0] = up, [1] = right, [2] = down, [3] = left
