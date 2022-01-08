@@ -13,6 +13,11 @@ namespace Gastronomy.Dining
     internal static class _TryBestFoodSourceFor_Patch
     {
         /// <summary>
+        /// This is for GetFood_Patch, so we can see what restaurant was found for the dining spot. Very hacky, but should work.
+        /// </summary>
+        internal static RestaurantController LastRestaurantResult { get; private set; } 
+
+        /// <summary>
         /// Patching _NewTemp if it exists, or original version if it doesn't, so players with older versions don't run into issues.
         /// Also: Goddammit, Ludeon :(
         /// </summary>
@@ -47,6 +52,7 @@ namespace Gastronomy.Dining
 
                 foodDef = bestType.def;
                 foodSource = diningSpots.FirstOrDefault(s => restaurant.diningSpots.Contains(s)); // TODO: Could check for closest, but eh, expensive
+                LastRestaurantResult = restaurant;
                 //Log.Message($"{getter.NameShortColored} found diningSpot at {foodSource?.Position} with {foodDef?.label}.");
                 __result = true;
                 return false; // Don't run original code

@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using CashRegister;
 using Gastronomy.Restaurant;
 using RimWorld;
 using UnityEngine;
@@ -17,15 +20,19 @@ namespace Gastronomy.Dining
         public DiningSpot DiningSpot => job.GetTarget(SpotIndex).Thing as DiningSpot;
         public Pawn Waiter => job.GetTarget(WaiterIndex).Pawn;
         public Thing Meal => job.GetTarget(MealIndex).Thing;
+        public Building_CashRegister Register => job.GetTarget(RegisterIndex).Thing as Building_CashRegister;
 
         private const TargetIndex SpotIndex = TargetIndex.A;
         private const TargetIndex WaiterIndex = TargetIndex.B;
         private const TargetIndex MealIndex = TargetIndex.C;
+        private const TargetIndex RegisterIndex = TargetIndex.C;
+
+        // BUG: TargetC becomes null once job starts and the check if the person should be served fails...!
 
         public override string GetReport()
         {
             if (restaurantIndex >= 0) restaurant ??= pawn.GetAllRestaurants()[restaurantIndex];
-            return restaurant != null ? "JobDineGoReportSpecific".Translate(restaurant.Name) : "JobDineGoReport".Translate();
+            return restaurant != null ? "JobDineGoReportSpecific".Translate(restaurant.Name) + $"\n{(job.targetC.IsValid ? job.targetC.Label:"-")}" : "JobDineGoReport".Translate();
         }
 
         private float ChewDurationMultiplier => 1f / pawn.GetStatValue(StatDefOf.EatingSpeed);
@@ -59,6 +66,7 @@ namespace Gastronomy.Dining
             // Declare these early - jumping points
             var waitForWaiter = Toils_Dining.WaitForWaiter(SpotIndex, WaiterIndex);
             var waitForMeal = Toils_Dining.WaitForMeal(MealIndex, SpotIndex);
+            restaurant = Register?.GetRestaurant();
 
             this.FailOn(() => DiningSpot.Destroyed);
             yield return Toils_Dining.GoToDineSpot(pawn, SpotIndex).FailOnRestaurantsClosed(SpotIndex);
@@ -67,6 +75,7 @@ namespace Gastronomy.Dining
             yield return Toils_Jump.JumpIf(waitForMeal, () =>
             {
                 var order = pawn.FindValidOrder();
+                pawn.CurJob.SetTarget(RegisterIndex, order?.Restaurant.Registers.FirstOrDefault());
                 restaurant = order?.Restaurant;
                 return order != null;
             });
@@ -141,6 +150,15 @@ namespace Gastronomy.Dining
             }
 
             return false;
+        }
+
+        [Obsolete]
+        public bool MayTakeOrder(Pawn waiter)
+        {
+            var controller = Register?.GetRestaurant();
+            Log.Message($"{waiter.NameShortColored} ({waiter.GetAllRestaurantsEmployed().Select(r=>r.Name).ToCommaList()}) considers serving {pawn.NameShortColored} who wants to eat at {controller?.Name}. Allowed? {waiter.GetAllRestaurantsEmployed().Contains(controller)}");
+            // Only accept a waiter who serves the restaurant we want to order at; otherwise leads to lots of failed orders
+            return waiter.GetAllRestaurantsEmployed().Contains(controller);
         }
     }
 }

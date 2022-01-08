@@ -55,7 +55,7 @@ namespace Gastronomy.Restaurant
 			get
 			{
 				spawnedDiningPawnsResult.Clear();
-				spawnedDiningPawnsResult.AddRange(Map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.jobs?.curDriver is JobDriver_Dine));
+                spawnedDiningPawnsResult.AddRange(Map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.jobs?.curDriver is JobDriver_Dine dining && Registers.Contains(dining.TargetC.Thing)));
 				return spawnedDiningPawnsResult;
 			}
 		}

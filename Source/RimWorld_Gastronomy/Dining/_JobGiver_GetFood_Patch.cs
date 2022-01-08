@@ -1,5 +1,7 @@
+using System.Linq;
 using HarmonyLib;
 using RimWorld;
+using Verse;
 using Verse.AI;
 
 namespace Gastronomy.Dining
@@ -13,7 +15,7 @@ namespace Gastronomy.Dining
 		public class TryGiveJob
 		{
 			[HarmonyPostfix]
-			internal static void Postfix(ref Job __result)
+			internal static void Postfix(ref Job __result, Pawn pawn)
 			{
 				if (__result == null) return;
 				//Log.Message($"{pawn.NameShortColored} got job {__result.def.label} on {__result.targetA.Thing.Label}.");
@@ -21,7 +23,8 @@ namespace Gastronomy.Dining
 				{
 					//Log.Message($"{pawn.NameShortColored} is now dining instead of ingesting.");
 					__result.def = DiningDefOf.Gastronomy_Dine;
-				}
+                    __result.SetTarget(TargetIndex.C, _TryBestFoodSourceFor_Patch.LastRestaurantResult.Registers.FirstOrDefault());
+                }
 			}
 		}
 	}

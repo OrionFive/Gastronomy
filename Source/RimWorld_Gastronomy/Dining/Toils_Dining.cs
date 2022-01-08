@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Gastronomy.Restaurant;
 using RimWorld;
 using Verse;
@@ -36,8 +37,11 @@ namespace Gastronomy.Dining
                     return true;
                 }
 
-                var chair = GenClosest.ClosestThingReachable(diningSpot.Position, diningSpot.Map, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(actor), 2, BaseChairValidator);
-                if (chair == null)
+                var chairs = new List<Building>(4);
+                diningSpot.GetReservationSpots(chairs);
+                chairs.RemoveAll(c => !BaseChairValidator(c));
+                //GenClosest.ClosestThingReachable(diningSpot.Position, diningSpot.Map, ThingRequest.ForGroup(ThingRequestGroup.BuildingArtificial), PathEndMode.OnCell, TraverseParms.For(actor), 2, BaseChairValidator);
+                if (chairs.Count == 0)
                 {
                     Log.Message($"{pawn.NameShortColored} could not find a chair around {diningSpot.Position}.");
                     if (diningSpot.MayDineStanding)
@@ -52,9 +56,9 @@ namespace Gastronomy.Dining
                         }
                     }
                 }
-
-                if (chair != null)
+                else
                 {
+                    var chair = chairs.RandomElement();
                     targetPosition = chair.Position;
                     actor.Reserve(chair, actor.CurJob);
                 }

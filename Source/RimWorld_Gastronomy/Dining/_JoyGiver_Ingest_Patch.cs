@@ -31,7 +31,7 @@ namespace Gastronomy.Dining
 
                 //Log.Message($"{pawn.NameShortColored} wants to eat at restaurant ({diningSpot.Position}).");
 
-                Job job = JobMaker.MakeJob(DiningDefOf.Gastronomy_Dine, diningSpots.FirstOrDefault(s => restaurant.diningSpots.Contains(s))); // TODO: Could check for closest, but eh, expensive
+                Job job = JobMaker.MakeJob(DiningDefOf.Gastronomy_Dine, diningSpots.FirstOrDefault(s => restaurant.diningSpots.Contains(s)), null, restaurant.Registers[0]); // TODO: Could check for closest, but eh, expensive
                 __result = job;
                 return false;
             }

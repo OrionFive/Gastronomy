@@ -73,11 +73,13 @@ namespace Gastronomy.Dining
 
         /// <summary>
         /// [0] = up, [1] = right, [2] = down, [3] = left
+        /// chairs gets filled with unblocked chairs.
         /// </summary>
         [NotNull]
-        public SpotState[] GetReservationSpots()
+        public SpotState[] GetReservationSpots(List<Building> chairs = null)
         {
             spotStates ??= new List<SpotState>(4) {SpotState.Clear, SpotState.Clear, SpotState.Clear, SpotState.Clear};
+            chairs?.Clear();
             var position = Position;
             var map = Map;
             var result = new SpotState[4];
@@ -99,6 +101,7 @@ namespace Gastronomy.Dining
                     if (chair.def.building.isSittable && facingCorrectly)
                     {
                         result[i] = spotStates[i];
+                        chairs?.Add(chair);
                     }
                 }
 

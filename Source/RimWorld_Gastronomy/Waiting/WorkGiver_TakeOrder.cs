@@ -39,7 +39,10 @@ namespace Gastronomy.Waiting
             var driver = patron.GetDriver<JobDriver_Dine>();
             if (driver == null || !driver.wantsToOrder) return false;
 
-            if (!pawn.GetAllRestaurantsEmployed().Any(r => r.diningSpots.Contains(driver.DiningSpot))) return false;
+            if (!pawn.GetAllRestaurantsEmployed().Any(r => r.SpawnedDiningPawns.Contains(patron))) 
+            {
+                return false;
+            }
 
             var canReserve = pawn.Map.reservationManager.CanReserve(pawn, patron, 1, -1, null, forced);
             if (!canReserve)
