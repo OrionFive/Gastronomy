@@ -48,7 +48,7 @@ namespace Gastronomy.Waiting
                 return false;
             }
 
-            if (food.ParentHolder != null)
+            if (food.ParentHolder != food.Map)
             {
                 Log.Warning($"{pawn.NameShortColored} FAILED to serve {food.Label} to {patron.NameShortColored}, because it is inside {(food.ParentHolder is Thing parentThing ? parentThing.Label : food.ParentHolder.ToString())}");
                 return false;

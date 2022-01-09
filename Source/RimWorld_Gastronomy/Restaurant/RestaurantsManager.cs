@@ -85,7 +85,7 @@ namespace Gastronomy.Restaurant
             {
                 if (current == controller)
                 {
-                    Log.Warning($"{patron.NameShortColored} tried to register dining at {controller.Name}, but is already registered.");
+                    //Log.Message($"{patron.NameShortColored} tried to register dining at {controller.Name}, but is already registered.");
                 }
                 else if (controller == null)
                 {
