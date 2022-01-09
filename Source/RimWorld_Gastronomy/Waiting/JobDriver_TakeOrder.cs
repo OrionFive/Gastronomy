@@ -48,13 +48,13 @@ namespace Gastronomy.Waiting
 
             this.FailOnNotDiningQueued(IndexPatron); // Careful never to use B for something else
 
-            yield return Toils_Waiting.FindRandomAdjacentCell(IndexSpot, IndexStanding).FailOnRestaurantsClosed(IndexSpot); // A is first the dining spot, then where we'll stand
+            yield return Toils_Waiting.FindRandomAdjacentCell(IndexSpot, IndexStanding); // A is first the dining spot, then where we'll stand
             yield return Toils_Goto.GotoCell(IndexStanding, PathEndMode.OnCell);
             yield return Toils_Interpersonal.WaitToBeAbleToInteract(pawn);
             yield return wait;
             yield return Toils_Jump.JumpIf(wait, () => !(Patron?.jobs.curDriver is JobDriver_Dine)); // Not dining right now
             yield return Toils_Waiting.GetDiningSpot(IndexPatron, IndexSpot); // A is dining spot again now
-            yield return Toils_Waiting.GetSpecificDiningSpotCellForMakingTable(IndexSpot, IndexPatron, IndexChairPos).FailOnRestaurantsClosed(IndexSpot);
+            yield return Toils_Waiting.GetSpecificDiningSpotCellForMakingTable(IndexSpot, IndexPatron, IndexChairPos);
             yield return Toils_Waiting.TakeOrder(IndexPatron);
             yield return Toils_Interpersonal.SetLastInteractTime(IndexPatron);
             yield return Toils_Jump.JumpIf(end, () => DiningSpot?.IsSpotReady(ChairPos) == true);

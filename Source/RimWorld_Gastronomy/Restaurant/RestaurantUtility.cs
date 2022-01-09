@@ -33,7 +33,7 @@ namespace Gastronomy.Restaurant
             return patron?.jobs.jobQueue?.Any(j => j.job.def == DiningDefOf.Gastronomy_Dine) == true;
         }
 
-        private static RestaurantsManager GetRestaurantsManager(this Thing thing)
+        public static RestaurantsManager GetRestaurantsManager(this Thing thing)
         {
             return thing.Map.GetComponent<RestaurantsManager>();
         }
@@ -41,6 +41,11 @@ namespace Gastronomy.Restaurant
         public static List<RestaurantController> GetAllRestaurants(this Thing thing)
         {
             return thing.Map.GetComponent<RestaurantsManager>().restaurants;
+        }
+
+        public static RestaurantController GetRestaurantDining(this Pawn patron)
+        {
+            return patron.Map.GetComponent<RestaurantsManager>().GetRestaurantDining(patron);
         }
 
         public static IEnumerable<RestaurantController> GetAllRestaurantsEmployed(this Pawn pawn)
@@ -107,14 +112,13 @@ namespace Gastronomy.Restaurant
             return mealDef.BaseMarketValue * 0.6f * restaurant.guestPricePercentage * (1 - Find.Storyteller.difficulty.tradePriceFactorLoss);
         }
 
-        public static T FailOnRestaurantsClosed<T>(this T f, TargetIndex spotInd) where T : IJobEndable
+        public static T FailOnMyRestaurantClosedForDining<T>(this T f) where T : IJobEndable
         {
             JobCondition OnRestaurantClosed()
             {
-                var target = f.GetActor().CurJob.GetTarget(spotInd);
-                var spot = target.IsValid ? target.Thing as DiningSpot : null;
-                if (spot == null) return JobCondition.Errored;
-                return spot.GetRestaurantsServing().Any(r => r.IsOpenedRightNow)
+                var patron = f.GetActor();
+                var restaurant = patron.GetRestaurantsManager().GetRestaurantDining(patron);
+                return restaurant?.IsOpenedRightNow == true
                     ? JobCondition.Ongoing
                     : JobCondition.Incompletable;
             }
@@ -180,6 +184,11 @@ namespace Gastronomy.Restaurant
         public static IEnumerable<RestaurantController> GetRestaurantsServing(this DiningSpot diningSpot)
         {
             return diningSpot.GetRestaurantsManager().restaurants.Where(r => r.diningSpots.Contains(diningSpot));
+        }
+
+        public static Order WaiterGetOrderFor(Pawn waiter, Pawn patron)
+        {
+            return waiter.GetAllRestaurantsEmployed().Select(r => r.Orders.GetOrderFor(patron)).FirstOrDefault(o => o != null);
         }
     }
 }

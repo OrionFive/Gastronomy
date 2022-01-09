@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using CashRegister;
 using Gastronomy.Restaurant;
 using RimWorld;
@@ -14,25 +12,19 @@ namespace Gastronomy.Dining
     {
         public bool wantsToOrder;
         private int startedWaitingTick;
-        private int restaurantIndex;
-        private RestaurantController restaurant;
 
         public DiningSpot DiningSpot => job.GetTarget(SpotIndex).Thing as DiningSpot;
         public Pawn Waiter => job.GetTarget(WaiterIndex).Pawn;
         public Thing Meal => job.GetTarget(MealIndex).Thing;
-        public Building_CashRegister Register => job.GetTarget(RegisterIndex).Thing as Building_CashRegister;
 
         private const TargetIndex SpotIndex = TargetIndex.A;
         private const TargetIndex WaiterIndex = TargetIndex.B;
         private const TargetIndex MealIndex = TargetIndex.C;
-        private const TargetIndex RegisterIndex = TargetIndex.C;
-
-        // BUG: TargetC becomes null once job starts and the check if the person should be served fails...!
 
         public override string GetReport()
         {
-            if (restaurantIndex >= 0) restaurant ??= pawn.GetAllRestaurants()[restaurantIndex];
-            return restaurant != null ? "JobDineGoReportSpecific".Translate(restaurant.Name) + $"\n{(job.targetC.IsValid ? job.targetC.Label:"-")}" : "JobDineGoReport".Translate();
+            var restaurant = pawn.GetRestaurantsManager().GetRestaurantDining(pawn);
+            return restaurant != null ? "JobDineGoReportSpecific".Translate(restaurant.Name) : "JobDineGoReport".Translate();
         }
 
         private float ChewDurationMultiplier => 1f / pawn.GetStatValue(StatDefOf.EatingSpeed);
@@ -40,8 +32,6 @@ namespace Gastronomy.Dining
         public override void ExposeData()
         {
             base.ExposeData();
-            if (Scribe.mode == LoadSaveMode.Saving) restaurantIndex = pawn.GetAllRestaurants().IndexOf(restaurant);
-            Scribe_Values.Look(ref restaurantIndex, "restaurantIndex");
             Scribe_Values.Look(ref wantsToOrder, "wantsToOrder");
             Scribe_Values.Look(ref startedWaitingTick, "startedWaitingTick");
         }
@@ -66,23 +56,26 @@ namespace Gastronomy.Dining
             // Declare these early - jumping points
             var waitForWaiter = Toils_Dining.WaitForWaiter(SpotIndex, WaiterIndex);
             var waitForMeal = Toils_Dining.WaitForMeal(MealIndex, SpotIndex);
-            restaurant = Register?.GetRestaurant();
 
             this.FailOn(() => DiningSpot.Destroyed);
-            yield return Toils_Dining.GoToDineSpot(pawn, SpotIndex).FailOnRestaurantsClosed(SpotIndex);
+            yield return Toils_Dining.GoToDineSpot(pawn, SpotIndex).FailOnMyRestaurantClosedForDining();
             yield return Toils_Dining.TurnToEatSurface(SpotIndex);
             // Already has ordered? Jump to waiting for meal; Also set restaurant
             yield return Toils_Jump.JumpIf(waitForMeal, () =>
             {
                 var order = pawn.FindValidOrder();
-                pawn.CurJob.SetTarget(RegisterIndex, order?.Restaurant.Registers.FirstOrDefault());
-                restaurant = order?.Restaurant;
+                var restaurant = pawn.GetRestaurantsManager().GetRestaurantDining(pawn);
+                if (order != null && order.Restaurant != restaurant)
+                {
+                    Log.Warning($"{pawn.NameShortColored} is registered at {restaurant?.Name} but their order is at {order?.Restaurant?.Name}. Switching...");
+                    pawn.GetRestaurantsManager().RegisterDiningAt(pawn, order.Restaurant);
+                }
                 return order != null;
             });
             yield return Toils_Dining.Obsolete();
             yield return waitForWaiter;
             yield return waitForMeal;
-            yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, MealIndex);
+            yield return Toils_Misc.TakeItemFromInventoryToCarrier(pawn, MealIndex).FailOnDestroyedOrNull(MealIndex);
             //yield return Toils_Reserve.Reserve(MealIndex, 1, 1);
             yield return Toils_Dining.TurnToEatSurface(SpotIndex, MealIndex);
             yield return Toils_Dining.WaitDuringDinner(SpotIndex, 100, 250);
@@ -91,8 +84,8 @@ namespace Gastronomy.Dining
             yield return Toils_Dining.OnCompletedMeal(pawn);
             yield return Toils_Dining.MakeTableMessy(SpotIndex, () => pawn.Position);
             yield return Toils_Jump.JumpIf(waitForWaiter, () => pawn.needs.food.CurLevelPercentage < 0.9f);
+            yield return Toils_General.DoAtomic(() => pawn.GetRestaurantsManager().RegisterDiningAt(pawn, null));
             yield return Toils_Dining.WaitDuringDinner(SpotIndex, 100, 250);
-            yield return Toils_Dining.Obsolete();
         }
 
         public void OnTransferredFood(Thing consumable, ThingOwner payTarget, out Thing paidSilver)
@@ -150,15 +143,6 @@ namespace Gastronomy.Dining
             }
 
             return false;
-        }
-
-        [Obsolete]
-        public bool MayTakeOrder(Pawn waiter)
-        {
-            var controller = Register?.GetRestaurant();
-            Log.Message($"{waiter.NameShortColored} ({waiter.GetAllRestaurantsEmployed().Select(r=>r.Name).ToCommaList()}) considers serving {pawn.NameShortColored} who wants to eat at {controller?.Name}. Allowed? {waiter.GetAllRestaurantsEmployed().Contains(controller)}");
-            // Only accept a waiter who serves the restaurant we want to order at; otherwise leads to lots of failed orders
-            return waiter.GetAllRestaurantsEmployed().Contains(controller);
         }
     }
 }

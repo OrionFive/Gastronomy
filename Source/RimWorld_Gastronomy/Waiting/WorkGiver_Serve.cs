@@ -14,7 +14,7 @@ namespace Gastronomy.Waiting
 
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetAllRestaurantsEmployed().SelectMany(r=>r.SpawnedDiningPawns).Distinct();
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetAllRestaurantsEmployed().SelectMany(r=>r.SpawnedDiningPawns).Distinct().ToArray();
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
@@ -36,8 +36,7 @@ namespace Gastronomy.Waiting
             var driver = patron.GetDriver<JobDriver_Dine>();
             if (driver == null || driver.wantsToOrder) return false;
 
-            var restaurants = pawn.GetAllRestaurantsEmployed();
-            var order = restaurants.Select(r => r.Orders.GetOrderFor(patron)).FirstOrDefault(o => o != null);
+            var order = RestaurantUtility.WaiterGetOrderFor(pawn, patron);
 
             if (order == null) return false;
             if (order.delivered) return false;
@@ -46,6 +45,7 @@ namespace Gastronomy.Waiting
             if (restaurant == null) return false;
 
             if (restaurant.Orders.IsBeingDelivered(order)) return false;
+
 
             if (!patron.Spawned || patron.Dead)
             {
@@ -57,11 +57,11 @@ namespace Gastronomy.Waiting
             //Log.Message($"{pawn.NameShortColored} is trying to serve {patron.NameShortColored} a {order.consumableDef.label}.");
             var consumable = restaurant.Stock.GetServableThing(order, pawn);
 
-            if (consumable == null)
-            {
-                Log.Message($"Nothing found that matches order.");
-                return false;
-            }
+            // This can happen if everything is claimed or it's dangerous
+            if (consumable == null) return false;
+
+            // Stack already in use by someone?
+            if (pawn.Map.reservationManager.FirstRespectedReserver(consumable, pawn) != null) return false;
 
             if (RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerServing, patron.GetRegion()) && !forced) return false;
             if (RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerServing, consumable.GetRegion()) && !forced) return false;
@@ -75,12 +75,19 @@ namespace Gastronomy.Waiting
         {
             if (!(t is Pawn patron)) return null;
 
-            var restaurants = pawn.GetAllRestaurantsEmployed();
-            var order = restaurants.Select(r => r.Orders.GetOrderFor(patron)).First(o => o != null);
-            var consumable = order.consumable;
-            if(consumable == null) Log.Error($"Consumable in order for {patron.NameShortColored} is suddenly null.");
+            var order = RestaurantUtility.WaiterGetOrderFor(pawn, patron);
+            if(order == null) Log.Error($"{patron?.Name.ToStringShort} doesn't have an order, even though {pawn?.Name.ToStringShort} thinks they should have.");
+            else
+            {
+                var consumable = order.consumable;
+                if (consumable == null) Log.Error($"Consumable in order for {patron.NameShortColored} is suddenly null.");
+                else
+                {
+                    return JobMaker.MakeJob(WaitingDefOf.Gastronomy_Serve, order.patron, consumable);
+                }
+            }
 
-            return JobMaker.MakeJob(WaitingDefOf.Gastronomy_Serve, order.patron, consumable);
+            return null;
         }
     }
 }

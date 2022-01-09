@@ -14,7 +14,7 @@ namespace Gastronomy.Waiting
 
 		public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn)
         {
-            return pawn.GetAllRestaurants().SelectMany(r=>r.Registers).Distinct();
+            return pawn.GetAllRestaurants().SelectMany(r => r.Registers).Distinct().ToArray();
         }
 
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false)

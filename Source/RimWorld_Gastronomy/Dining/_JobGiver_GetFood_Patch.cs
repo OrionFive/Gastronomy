@@ -1,4 +1,5 @@
 using System.Linq;
+using Gastronomy.Restaurant;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -23,7 +24,7 @@ namespace Gastronomy.Dining
 				{
 					//Log.Message($"{pawn.NameShortColored} is now dining instead of ingesting.");
 					__result.def = DiningDefOf.Gastronomy_Dine;
-                    __result.SetTarget(TargetIndex.C, _TryBestFoodSourceFor_Patch.LastRestaurantResult.Registers.FirstOrDefault());
+                    pawn.GetRestaurantsManager().RegisterDiningAt(pawn, _TryBestFoodSourceFor_Patch.LastRestaurantResult);
                 }
 			}
 		}

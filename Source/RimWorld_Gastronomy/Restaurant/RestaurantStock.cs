@@ -75,6 +75,7 @@ namespace Gastronomy.Restaurant
             if (options.TryMaxBy(def => def.Optimality, out var best))
             {
                 restaurant = best.Restaurant;
+                //Log.Message($"{pawn.NameShortColored}: GetBestMealFor: {best.Thing.LabelCap} with optimality {best.Optimality:F2} at {restaurant?.Name}.");
                 return best.Thing;
             }
             return null;
@@ -89,6 +90,7 @@ namespace Gastronomy.Restaurant
             if (options.TryRandomElementByWeight(def => def.Optimality, out var random))
             {
                 restaurant = random.Restaurant;
+                //Log.Message($"{pawn.NameShortColored} picked {random.Thing.Label} with a score of {random.Optimality} at {restaurant?.Name}.\nOptions were:\n{options.Select(o=>$"- {o.Thing.LabelCap} ({o.Optimality:F0}) at {o.Restaurant.Name}").ToLineList()}");
                 return random.Thing;
             }
             return null;

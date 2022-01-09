@@ -14,7 +14,7 @@ namespace Gastronomy.Waiting
 
         public override ThingRequest PotentialWorkThingRequest => ThingRequest.ForGroup(ThingRequestGroup.Pawn);
 
-        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetAllRestaurantsEmployed().SelectMany(r=>r.SpawnedDiningPawns).Distinct();
+        public override IEnumerable<Thing> PotentialWorkThingsGlobal(Pawn pawn) => pawn.GetAllRestaurantsEmployed().SelectMany(r=>r.SpawnedDiningPawns).Distinct().ToArray();
 
         public override bool ShouldSkip(Pawn pawn, bool forced = false)
         {
@@ -41,6 +41,7 @@ namespace Gastronomy.Waiting
 
             if (!pawn.GetAllRestaurantsEmployed().Any(r => r.SpawnedDiningPawns.Contains(patron))) 
             {
+                //Log.Message($"{pawn.NameShortColored} ({pawn.GetAllRestaurantsEmployed().Select(r => r.Name).ToCommaList()}) considers serving {patron.NameShortColored}. Allowed? False");
                 return false;
             }
 

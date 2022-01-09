@@ -29,9 +29,9 @@ namespace Gastronomy.Dining
                 var bestConsumable = RestaurantStock.GetBestMealFor(diningSpots.SelectMany(d => d.GetRestaurantsServing()).Distinct(), pawn, out var restaurant, allowDrug, false);
                 if (bestConsumable == null) return true; // Run regular code
 
-                //Log.Message($"{pawn.NameShortColored} wants to eat at restaurant ({diningSpot.Position}).");
-
-                Job job = JobMaker.MakeJob(DiningDefOf.Gastronomy_Dine, diningSpots.FirstOrDefault(s => restaurant.diningSpots.Contains(s)), null, restaurant.Registers[0]); // TODO: Could check for closest, but eh, expensive
+                //Log.Message($"{pawn.NameShortColored} wants to eat at restaurant ({diningSpot.Position}).")
+                pawn.GetRestaurantsManager().RegisterDiningAt(pawn, restaurant);
+                Job job = JobMaker.MakeJob(DiningDefOf.Gastronomy_Dine, diningSpots.FirstOrDefault(s => restaurant.diningSpots.Contains(s))); // TODO: Could check for closest, but eh, expensive
                 __result = job;
                 return false;
             }

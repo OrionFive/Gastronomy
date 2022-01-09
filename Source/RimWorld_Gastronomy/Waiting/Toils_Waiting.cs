@@ -227,6 +227,7 @@ namespace Gastronomy.Waiting
                         restaurant.Orders.CompleteOrderFor(patron);
 
                         patronDriver.OnTransferredFood(food, actor.inventory.innerContainer, out var silver);
+                        actor.skills.GetSkill(SkillDefOf.Social).Learn(150);
 
                         if (silver == null)
                         {
@@ -235,18 +236,20 @@ namespace Gastronomy.Waiting
                         }
                         else
                         {
-                            var register = actor.GetClosestRegister();
+                            var register = restaurant.Registers.GetClosestRegister(actor, 50);
                             if (register == null)
                             {
                                 // No register, just drop it
                                 actor.inventory.innerContainer.TryDrop(silver, ThingPlaceMode.Near, out silver);
                                 actor.jobs.curDriver.EndJobWith(JobCondition.Succeeded);
                             }
-                            curJob.SetTarget(silverInd, silver);
-                            curJob.SetTarget(registerInd, register);
-                            curJob.count = silver.stackCount;
+                            else
+                            {
+                                curJob.SetTarget(silverInd, silver);
+                                curJob.SetTarget(registerInd, register);
+                                curJob.count = silver.stackCount;
+                            }
                         }
-                        actor.skills.GetSkill(SkillDefOf.Social).Learn(150, false);
 
                         //Log.Message($"{actor.NameShortColored} has completed order for {patron.NameShortColored} with {food.Label}.");
                     }
@@ -255,6 +258,11 @@ namespace Gastronomy.Waiting
                         Log.Error($"{actor.NameShortColored} failed to transfer {food.Label} to {patron.Name.ToStringShort}.");
                         actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                     }
+                }
+                else
+                {
+                    Log.Message($"{actor.NameShortColored} failed to clear order, because {patron.NameShortColored} is not dining (anymore).");
+                    actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                 }
             }
         }

@@ -9,6 +9,7 @@ namespace Gastronomy.Restaurant
     public class RestaurantsManager : MapComponent
     {
         public List<RestaurantController> restaurants = new List<RestaurantController>();
+        private readonly Dictionary<Pawn, RestaurantController> diningAt = new Dictionary<Pawn, RestaurantController>();
 
         public RestaurantsManager(Map map) : base(map)
         {
@@ -76,6 +77,45 @@ namespace Gastronomy.Restaurant
         {
             restaurant?.CleanUpForRemoval();
             restaurants.Remove(restaurant);
+        }
+
+        public void RegisterDiningAt(Pawn patron, RestaurantController controller)
+        {
+            if (diningAt.TryGetValue(patron, out var current))
+            {
+                if (current == controller)
+                {
+                    Log.Warning($"{patron.NameShortColored} tried to register dining at {controller.Name}, but is already registered.");
+                }
+                else if (controller == null)
+                {
+                    diningAt.Remove(patron);
+                    //Log.Message($"{patron.NameShortColored} has unregistered from dining at {current.Name}.");
+                }
+                else
+                {
+                    diningAt.Remove(patron);
+                    Log.Message($"{patron.NameShortColored} has switched from dining at {current.Name} to {controller.Name}.");
+                    diningAt.Add(patron, controller);
+                }
+            }
+            else
+            {
+                if (controller != null)
+                {
+                    //Log.Message($"{patron.NameShortColored} is now registered as dining at {controller.Name}.");
+                    diningAt.Add(patron, controller);
+                }
+                else
+                {
+                    Log.Warning($"{patron.NameShortColored} tried to unregister dining, but wasn't registered.");
+                }
+            }
+        }
+
+        public RestaurantController GetRestaurantDining(Pawn patron)
+        {
+            return diningAt.TryGetValue(patron, out var controller) ? controller : null;
         }
 
         public bool NameIsInUse(string name, RestaurantController restaurant)

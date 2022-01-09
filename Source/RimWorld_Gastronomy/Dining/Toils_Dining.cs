@@ -109,7 +109,7 @@ namespace Gastronomy.Dining
             toil.defaultCompleteMode = ToilCompleteMode.Never;
             toil.FailOnDestroyedOrNull(diningSpotInd);
             toil.FailOnDurationExpired(); // Duration over? Fail job!
-            toil.FailOnRestaurantsClosed(diningSpotInd);
+            toil.FailOnMyRestaurantClosedForDining();
             toil.FailOnHasShift();
             toil.FailOnDangerous(JobUtility.MaxDangerDining);
             toil.socialMode = RandomSocialMode.Normal;
@@ -212,7 +212,10 @@ namespace Gastronomy.Dining
 
         public static Toil OnCompletedMeal(Pawn pawn)
         {
-            return new Toil {atomicWithPrevious = true, initAction = () => { pawn.FindValidOrder()?.Restaurant.Orders.OnFinishedEatingOrder(pawn); }};
+            return new Toil {atomicWithPrevious = true, initAction = () =>
+            {
+                pawn.FindValidOrder()?.Restaurant.Orders.OnFinishedEatingOrder(pawn);
+            }};
         }
 
         /// <summary>

@@ -43,15 +43,17 @@ namespace Gastronomy.Dining
         public static IEnumerable<DiningSpot> FindDiningSpotsFor([NotNull] Pawn pawn, bool allowDrug, Predicate<Thing> extraSpotValidator = null)
         {
             // TODO: There should be some kind of caching for this, probably
-            var restaurants = pawn.GetAllRestaurants(); //.Where(controller => controller.Stock.HasAnyFoodFor(pawn, allowDrug));
+            var restaurants = pawn.GetAllRestaurants().Where(r=>r.CanDineHere(pawn));
             
+            //Log.Message($"{pawn.NameShortColored} is looking for dining spots in {restaurants.Select(r=>r.Name).ToCommaList()}...");
+
             bool Validator(DiningSpot spot)
             {
                 //Log.Message($"Validating spot for {pawn.NameShortColored}: forbidden = {spot.IsForbidden(pawn)}, social = {spot.IsSociallyProper(pawn)}, political = {IsPoliticallyProper(pawn, spot)}, "
                 //            + $"canReserve = {CanReserve(pawn, spot)}, canDineHere = {spot.CanDineHere(pawn)}, open = {spot.GetRestaurantsServing().Any(r => r.IsOpenedRightNow)}, isDangerous = {RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion())},"
                 //            + $"extraValidator = {extraSpotValidator == null || extraSpotValidator.Invoke(spot)}, canReach = {pawn.CanReach(spot, PathEndMode.ClosestTouch, JobUtility.MaxDangerDining)}");
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && IsPoliticallyProper(pawn, spot) && CanReserve(pawn, spot)
-                       && spot.CanDineHere(pawn) && !RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot)) && pawn.CanReach(spot, PathEndMode.ClosestTouch, JobUtility.MaxDangerDining);
+                       && !RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot)) && pawn.CanReach(spot, PathEndMode.ClosestTouch, JobUtility.MaxDangerDining);
             }
             return restaurants.SelectMany(r => r.diningSpots).Distinct().Where(Validator);
         }

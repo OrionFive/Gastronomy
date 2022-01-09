@@ -55,7 +55,7 @@ namespace Gastronomy.Restaurant
 			get
 			{
 				spawnedDiningPawnsResult.Clear();
-                spawnedDiningPawnsResult.AddRange(Map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.jobs?.curDriver is JobDriver_Dine dining && Registers.Contains(dining.TargetC.Thing)));
+                spawnedDiningPawnsResult.AddRange(Map.mapPawns.AllPawnsSpawned.Where(pawn => pawn.jobs?.curDriver is JobDriver_Dine && pawn.GetRestaurantsManager().GetRestaurantDining(pawn) == this));
 				return spawnedDiningPawnsResult;
 			}
 		}
@@ -244,5 +244,11 @@ namespace Gastronomy.Restaurant
 				register.onRadiusChanged.RemoveListener(OnRegisterRadiusChanged);
             }
 		}
+
+        public bool CanDineHere(Pawn pawn)
+        {
+            return IsOpenedRightNow && MayDineHere(pawn);
+        }
+
     }
 }

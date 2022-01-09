@@ -22,7 +22,7 @@ namespace Gastronomy.Waiting
             var patronJob = patron.GetDriver<JobDriver_Dine>();
             var diningSpot = patronJob?.DiningSpot;
 
-            var order = patron?.FindValidOrder();
+            var order = RestaurantUtility.WaiterGetOrderFor(pawn, patron);
             if (order == null)
             {
                 Log.Message($"{patron.NameShortColored} has no existing order.");
@@ -38,13 +38,25 @@ namespace Gastronomy.Waiting
 
             if (diningSpot == null)
             {
-                Log.Message($"{pawn.NameShortColored} couldn't serve {patron?.NameShortColored}: patronJob = {patron.jobs.curDriver?.GetType().Name}");
+                Log.Warning($"{pawn.NameShortColored} FAILED to serve {patron?.NameShortColored}, because no dining spot is set. patronJob = {patron?.jobs.curDriver?.GetType().Name}");
+                return false;
+            }
+
+            if (food == null)
+            {
+                Log.Warning($"{pawn.NameShortColored} FAILED to serve {patron.NameShortColored}, because food is not set.");
+                return false;
+            }
+
+            if (food.ParentHolder != null)
+            {
+                Log.Warning($"{pawn.NameShortColored} FAILED to serve {food.Label} to {patron.NameShortColored}, because it is inside {(food.ParentHolder is Thing parentThing ? parentThing.Label : food.ParentHolder.ToString())}");
                 return false;
             }
 
             if (!pawn.Reserve(food, job, food.stackCount, 1, null, errorOnFailed))
             {
-                Log.Message($"{pawn.NameShortColored} FAILED to reserve food {food?.Label}.");
+                Log.Message($"{pawn.NameShortColored} FAILED to reserve food {food.Label}.");
                 return false;
             }
 
