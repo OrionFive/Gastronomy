@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
+<Gastronomy_StandBy.label>attendre les commandes</Gastronomy_StandBy.label>
+<Gastronomy_StandBy.verb>attendre</Gastronomy_StandBy.verb>
+<Gastronomy_StandBy.gerund>attends</Gastronomy_StandBy.gerund>
+
+
 <!-- EN: take orders -->
 <Gastronomy_TakeOrder.label>prendre les commandes</Gastronomy_TakeOrder.label>
 <!-- EN: take order -->
