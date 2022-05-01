@@ -1,11 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Configuration>
   <Excluded>
-    <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\.git</exclude>
-    <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Source\.vs</exclude>
-    <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Source\packages</exclude>
-    <exclude>E:\Spiele\Steam\SteamApps\common\RimWorld\Mods\Gastronomy\Source\RimWorld_Gastronomy\obj</exclude>
-    <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Textures\Things Old</exclude>
-    <exclude>E:\Spiele\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Textures\Things\PSDs</exclude>
+    <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Gastronomy\.git</exclude>
+    <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Source\.editorconfig</exclude>
+    <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Source\.vs</exclude>
+    <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Source\RimWorld_Gastronomy\obj</exclude>
+    <exclude>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Gastronomy\Textures\Things Old</exclude>
   </Excluded>
 </Configuration>
