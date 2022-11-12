@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Manifest>
   <identifier>Gastronomy</identifier>
-  <version>1.3.1.0</version>
+  <version>1.4.0.1</version>
   <dependencies>
 	<li>brrainz.harmony</li>
     <li>UnlimitedHugs.HugsLib</li>
@@ -19,5 +19,5 @@
   <!-- </suggests> -->
   <showCrossPromotions>true</showCrossPromotions>
   <manifestUri>https://raw.githubusercontent.com/OrionFive/Gastronomy/master/About/Manifest.xml</manifestUri>
-  <downloadUri>https://github.com/OrionFive/Gastronomy/releases</downloadUri>
+  <downloadUri>https://github.com/OrionFive/Gastronomy/tags</downloadUri>
 </Manifest>
