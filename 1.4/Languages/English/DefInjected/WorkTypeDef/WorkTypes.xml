@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_Waiting.label>Wait</Gastronomy_Waiting.label>
+  <Gastronomy_Waiting.description>Take orders and serve meals.</Gastronomy_Waiting.description>
+  <Gastronomy_Waiting.labelShort>Wait</Gastronomy_Waiting.labelShort>
+  <Gastronomy_Waiting.pawnLabel>Waiter</Gastronomy_Waiting.pawnLabel>
+  <Gastronomy_Waiting.gerundLabel>waiting</Gastronomy_Waiting.gerundLabel>
+  <Gastronomy_Waiting.verb>Wait</Gastronomy_Waiting.verb>
+
+</LanguageData>

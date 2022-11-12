@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+	<!-- Errors -->
+	<ErrorRequiresCashRegister>Gastronomia agora requer o mod 'Cash Register' carregado.
+
+Tive que criar o mod para poder trabalhar em um novo recurso. Me desculpe pela inconveniência.
+
+Se você adicionar o mod "Cash Register", Gastronomia voltará a funcionar como antes.
+
+
+-- Saudações, Orion</ErrorRequiresCashRegister>
+  
+	<!-- Messages -->
+	<MessageIncomeToday>Seu restaurante ganhou {0} hoje.</MessageIncomeToday>
+	
+	<!-- Register tab - can't be very long (Restaurant is already too long) -->
+	<TabRegisterRestaurant>Local</TabRegisterRestaurant>
+	
+	<!-- Restaurant selection -->
+	<RestaurantDefaultName>restaurante {0}</RestaurantDefaultName>
+	<RestaurantTooltipSelect>Selecione qual restaurante está vinculado a esta caixa registradora.</RestaurantTooltipSelect>
+	<RestaurantTooltipRename>Renomear este restaurante.</RestaurantTooltipRename>
+	<RestaurantTooltipAdd>Adicionar outro restaurante.</RestaurantTooltipAdd>
+	<RestaurantTooltipRemove>Remover este restaurante.</RestaurantTooltipRemove>
+	<RestaurantDialogConfirmRemove>Você tem certeza que quer remover '{0}'?</RestaurantDialogConfirmRemove>
+	
+	<!-- Settings -->
+	<TabRegisterOpened>Aberto</TabRegisterOpened>
+	<TabRegisterOpenedTooltip>Quando verificado, clientes podem fazer pedidos enquanto um turno está ativo.</TabRegisterOpenedTooltip>
+	<TabRegisterGuests>Permitir hóspedes</TabRegisterGuests>
+	<TabRegisterGuestsTooltip>Quando verificado, os hóspedes farão pedidos.</TabRegisterGuestsTooltip>
+	<TabRegisterColonists>Permitir colonos</TabRegisterColonists>
+	<TabRegisterColonistsTooltip>Quando verificado, os colonos farão pedidos.</TabRegisterColonistsTooltip>
+	<TabRegisterPrisoners>Permitir prisioneiros</TabRegisterPrisoners>
+	<TabRegisterPrisonersTooltip>Quando verificado, os prisioneiros farão pedidos.</TabRegisterPrisonersTooltip>
+	<TabRegisterSlaves>Permitir escravos</TabRegisterSlaves>
+	<TabRegisterSlavesTooltip>Quando verificado, os escravos farão pedidos.</TabRegisterSlavesTooltip>
+	<TabRegisterGuestPrice>Preço para hóspedes: {0}</TabRegisterGuestPrice>
+	<TabRegisterGuestPriceTooltip>Um multiplicador para o valor de mercado. Você pode ver o preço individual quando você apontar para itens estocados. Este multiplicador afeta o humor dos clientes.</TabRegisterGuestPriceTooltip>
+	<TabRegisterGuestPriceFree>Gratuito</TabRegisterGuestPriceFree>
+	<TabRegisterDebtTooltip>{0}: {1} (clique para limpar)</TabRegisterDebtTooltip>
+	
+	<!-- Stats -->
+	<TabRegisterRadius>Raio</TabRegisterRadius>
+	<TabRegisterActiveStaff>Equipe ativa:</TabRegisterActiveStaff>
+	<TabRegisterSeats>Assentos:</TabRegisterSeats>
+	<TabRegisterPatrons>Patronos:</TabRegisterPatrons>
+	<TabRegisterTotalOrders>Total de pedidos:</TabRegisterTotalOrders>
+	<TabRegisterNeedsServing>Pedidos que precisam ser servidos:</TabRegisterNeedsServing>
+	<TabRegisterNeedsCooking>Pedidos que precisam culinária:</TabRegisterNeedsCooking>
+	<TabRegisterStocked>Refeições estocadas:</TabRegisterStocked>
+	<TabRegisterDebts>Contas não pagas:</TabRegisterDebts>
+	<TabRegisterEarnedYesterday>Ganhou ontem:</TabRegisterEarnedYesterday>
+	<TabRegisterEarnedToday>Ganhou hoje:</TabRegisterEarnedToday>
+	
+	<!-- Dining -->
+	<CommandToggleDining>Restaurante</CommandToggleDining>
+	<CommandToggleDiningDesc>Quando ativado, este local pode ser usado para refeições.</CommandToggleDiningDesc>
+	<CommandSetDeco>Mudar decoração</CommandSetDeco>
+	<CommandSetDecoDesc>Mude a decoração na mesa.</CommandSetDecoDesc>
+	<JobDineGoReportSpecific>Comendo em {0}.</JobDineGoReportSpecific>
+	<JobDineGoReport>Comer no restaurante.</JobDineGoReport>
+	
+	<!-- Alerts -->
+	<AlertNoRegister>Sem caixa</AlertNoRegister>
+	<AlertNoRegisterExplanation>Para abrir seu restaurante, você precisa de pelo menos uma caixa registradora. Ela pode ser construída pela aba de produção.</AlertNoRegisterExplanation>
+	<AlertNoWaiter>Sem garçom</AlertNoWaiter>
+	<AlertNoWaiterExplanation>Para operar seu restaurante. você precisa configurar ao menos um turno em uma caixa registradora e designar um garçom disponível.</AlertNoWaiterExplanation>
+
+</LanguageData>

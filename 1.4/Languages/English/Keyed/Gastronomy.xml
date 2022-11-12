@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+	<!-- Errors -->
+	<ErrorRequiresCashRegister>Gastronomy now requires the 'Cash Register' mod to be loaded.
+
+I had to create it in order to be able to work on a new feature. Sorry about this inconvenience.
+
+If you add the 'Cash Register' mod, Gastronomy will continue working as before.
+
+
+-- Regards, Orion</ErrorRequiresCashRegister>
+  
+	<!-- Messages -->
+	<MessageIncomeToday>Your restaurant has earned {0} today.</MessageIncomeToday>
+	
+	<!-- Register tab - can't be very long (Restaurant is already too long) -->
+	<TabRegisterRestaurant>Dining</TabRegisterRestaurant>
+	
+	<!-- Restaurant selection -->
+	<RestaurantDefaultName>restaurant {0}</RestaurantDefaultName>
+	<RestaurantTooltipSelect>Select which restaurant is linked to this register.</RestaurantTooltipSelect>
+	<RestaurantTooltipRename>Rename this restaurant.</RestaurantTooltipRename>
+	<RestaurantTooltipAdd>Add another restaurant.</RestaurantTooltipAdd>
+	<RestaurantTooltipRemove>Remove this restaurant.</RestaurantTooltipRemove>
+	<RestaurantDialogConfirmRemove>Are you sure you want to remove '{0}'?</RestaurantDialogConfirmRemove>
+	
+	<!-- Settings -->
+	<TabRegisterOpened>Opened</TabRegisterOpened>
+	<TabRegisterOpenedTooltip>When checked, patrons can make orders while a shift is active.</TabRegisterOpenedTooltip>
+	<TabRegisterGuests>Allow guests</TabRegisterGuests>
+	<TabRegisterGuestsTooltip>When checked, guests will make orders.</TabRegisterGuestsTooltip>
+	<TabRegisterColonists>Allow colonists</TabRegisterColonists>
+	<TabRegisterColonistsTooltip>When checked, colonists will make orders.</TabRegisterColonistsTooltip>
+	<TabRegisterPrisoners>Allow prisoners</TabRegisterPrisoners>
+	<TabRegisterPrisonersTooltip>When checked, prisoners will make orders.</TabRegisterPrisonersTooltip>
+	<TabRegisterSlaves>Allow slaves</TabRegisterSlaves>
+	<TabRegisterSlavesTooltip>When checked, slaves will make orders.</TabRegisterSlavesTooltip>
+	<TabRegisterGuestPrice>Price for guests: {0}</TabRegisterGuestPrice>
+	<TabRegisterGuestPriceTooltip>A multiplier for the market value. You can see the individual prices when you point at stocked items. This multiplier affects the mood of patrons.</TabRegisterGuestPriceTooltip>
+	<TabRegisterGuestPriceFree>Free</TabRegisterGuestPriceFree>
+	<TabRegisterDebtTooltip>{0}: {1} (click to clear)</TabRegisterDebtTooltip>
+	
+	<!-- Stats -->
+	<TabRegisterRadius>Radius</TabRegisterRadius>
+	<TabRegisterActiveStaff>Active staff:</TabRegisterActiveStaff>
+	<TabRegisterSeats>Seats:</TabRegisterSeats>
+	<TabRegisterPatrons>Patrons:</TabRegisterPatrons>
+	<TabRegisterTotalOrders>Total orders:</TabRegisterTotalOrders>
+	<TabRegisterNeedsServing>Orders need serving:</TabRegisterNeedsServing>
+	<TabRegisterNeedsCooking>Orders need cooking:</TabRegisterNeedsCooking>
+	<TabRegisterStocked>Stocked meals:</TabRegisterStocked>
+	<TabRegisterDebts>Unpaid bills:</TabRegisterDebts>
+	<TabRegisterEarnedYesterday>Earned yesterday:</TabRegisterEarnedYesterday>
+	<TabRegisterEarnedToday>Earned today:</TabRegisterEarnedToday>
+	
+	<!-- Dining -->
+	<CommandToggleDining>Dining</CommandToggleDining>
+	<CommandToggleDiningDesc>When enabled, this location can be used for dining.</CommandToggleDiningDesc>
+	<CommandSetDeco>Change Decoration</CommandSetDeco>
+	<CommandSetDecoDesc>Change the decoration on the table.</CommandSetDecoDesc>
+	<JobDineGoReportSpecific>Eating at {0}.</JobDineGoReportSpecific>
+	<JobDineGoReport>Eating at restaurant.</JobDineGoReport>
+	
+	<!-- Alerts -->
+	<AlertNoRegister>No register</AlertNoRegister>
+	<AlertNoRegisterExplanation>To open your restaurant, you need at least one register. This can be built from the production tab.</AlertNoRegisterExplanation>
+	<AlertNoWaiter>No waiter</AlertNoWaiter>
+	<AlertNoWaiterExplanation>To operate your restaurant, you need to set up at least one shift at a register and assign a capable waiter.</AlertNoWaiterExplanation>
+
+</LanguageData>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_Serviced.stages.0.label>serviço péssimo</Gastronomy_Serviced.stages.0.label>
+  <Gastronomy_Serviced.stages.1.label>serviço ruim</Gastronomy_Serviced.stages.1.label>
+  <Gastronomy_Serviced.stages.2.label>serviço decente</Gastronomy_Serviced.stages.2.label>
+  <Gastronomy_Serviced.stages.3.label>serviço bom</Gastronomy_Serviced.stages.3.label>
+  <Gastronomy_Serviced.stages.4.label>serviço excelente</Gastronomy_Serviced.stages.4.label>
+  
+  <Gastronomy_HadToWait.stages.0.label>tive que esperar pela comida</Gastronomy_HadToWait.stages.0.label>
+  <Gastronomy_HadToWait.stages.0.description>Tive que esperar muito tempo no restaurante.</Gastronomy_HadToWait.stages.0.description>
+
+  <Gastronomy_ServicedMood.stages.0.label>foi servido péssimo</Gastronomy_ServicedMood.stages.0.label>
+  <Gastronomy_ServicedMood.stages.0.description>Fui tratado de maneira péssima.</Gastronomy_ServicedMood.stages.0.description>
+  <Gastronomy_ServicedMood.stages.1.label>foi servido mal</Gastronomy_ServicedMood.stages.1.label>
+  <Gastronomy_ServicedMood.stages.1.description>Fui tratado mal.</Gastronomy_ServicedMood.stages.1.description>
+  <Gastronomy_ServicedMood.stages.2.label>foi servido decentemente</Gastronomy_ServicedMood.stages.2.label>
+  <Gastronomy_ServicedMood.stages.2.description>Fui tratado decentemente.</Gastronomy_ServicedMood.stages.2.description>
+  <Gastronomy_ServicedMood.stages.3.label>foi servido bem</Gastronomy_ServicedMood.stages.3.label>
+  <Gastronomy_ServicedMood.stages.3.description>Fui tratado bem.</Gastronomy_ServicedMood.stages.3.description>
+  <Gastronomy_ServicedMood.stages.4.label>foi servido excelentemente</Gastronomy_ServicedMood.stages.4.label>
+  <Gastronomy_ServicedMood.stages.4.description>Fui servido de maneira excepcional.</Gastronomy_ServicedMood.stages.4.description>
+  
+  <Gastronomy_BoughtFood.stages.0.label>recebeu comida de graça</Gastronomy_BoughtFood.stages.0.label>
+  <Gastronomy_BoughtFood.stages.0.description>A comida é gratuita!</Gastronomy_BoughtFood.stages.0.description>
+  <Gastronomy_BoughtFood.stages.1.label>recebeu comida bem barata</Gastronomy_BoughtFood.stages.1.label>
+  <Gastronomy_BoughtFood.stages.1.description>A comida é bem barata.</Gastronomy_BoughtFood.stages.1.description>
+  <Gastronomy_BoughtFood.stages.2.label>recebeu comida barata</Gastronomy_BoughtFood.stages.2.label>
+  <Gastronomy_BoughtFood.stages.2.description>A comida foi barata.</Gastronomy_BoughtFood.stages.2.description>
+  <Gastronomy_BoughtFood.stages.3.label>recebeu comida</Gastronomy_BoughtFood.stages.3.label>
+  <Gastronomy_BoughtFood.stages.3.description>A comida é acessível.</Gastronomy_BoughtFood.stages.3.description>
+  <Gastronomy_BoughtFood.stages.4.label>recebeu comida cara</Gastronomy_BoughtFood.stages.4.label>
+  <Gastronomy_BoughtFood.stages.4.description>A comida é cara.</Gastronomy_BoughtFood.stages.4.description>
+  <Gastronomy_BoughtFood.stages.5.label>recebeu comida muito cara</Gastronomy_BoughtFood.stages.5.label>
+  <Gastronomy_BoughtFood.stages.5.description>A comida é muito cara.</Gastronomy_BoughtFood.stages.5.description>
+
+</LanguageData>

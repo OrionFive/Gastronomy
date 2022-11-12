@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <ThoughtDef>
+	<defName>Gastronomy_Serviced</defName>
+    <showBubble>true</showBubble>
+	<durationDays>5</durationDays>
+	<stackLimit>50</stackLimit>
+    <stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
+    <thoughtClass>Thought_MemorySocial</thoughtClass>
+	<stackedEffectMultiplier>0.75</stackedEffectMultiplier>
+	<stages>
+	  <li>
+		<label>awful service</label>
+        <baseOpinionOffset>-6</baseOpinionOffset>
+	  </li>
+	  <li>
+		<label>bad service</label>
+        <baseOpinionOffset>-3</baseOpinionOffset>
+	  </li>
+	  <li>
+		<label>decent service</label>
+        <baseOpinionOffset>1</baseOpinionOffset>
+	  </li>
+	  <li>
+		<label>good service</label>
+        <baseOpinionOffset>3</baseOpinionOffset>
+	  </li>
+	  <li>
+		<label>excellent service</label>
+        <baseOpinionOffset>6</baseOpinionOffset>
+	  </li>
+	</stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+	<defName>Gastronomy_HadToWait</defName>
+    <showBubble>true</showBubble>
+	<durationDays>2</durationDays>
+	<stackLimit>5</stackLimit>
+	<stackedEffectMultiplier>1.2</stackedEffectMultiplier>
+	<stages>
+	  <li>
+		<label>had to wait for food</label>
+ 		<description>I had to wait long at the restaurant.</description>
+		<baseMoodEffect>-1</baseMoodEffect>
+	  </li>
+	</stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+	<defName>Gastronomy_ServicedMood</defName>
+	<durationDays>1</durationDays>
+	<stackLimit>5</stackLimit>
+	<stackedEffectMultiplier>0.5</stackedEffectMultiplier>
+	<stages>
+	  <li>
+		<label>had awful service</label>
+		<description>I've been treated awfully.</description>
+		<baseMoodEffect>-2</baseMoodEffect>
+	  </li>
+	  <li>
+		<label>had bad service</label>
+		<description>I've been treated poorly.</description>
+		<baseMoodEffect>-1</baseMoodEffect>
+	  </li>
+	  <li>
+		<label>had decent service</label>
+		<description>I've been treated decently.</description>
+		<baseMoodEffect>1</baseMoodEffect>
+	  </li>
+	  <li>
+		<label>had good service</label>
+		<description>I've been treated well.</description>
+		<baseMoodEffect>2</baseMoodEffect>
+	  </li>
+	  <li>
+		<label>had excellent service</label>
+		<description>I've been treated exceptionally well.</description>
+		<baseMoodEffect>3</baseMoodEffect>
+	  </li>
+	</stages>
+  </ThoughtDef>
+
+  <ThoughtDef>
+    <defName>Gastronomy_BoughtFood</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <nullifyingTraits>
+      <li>Ascetic</li>
+    </nullifyingTraits>
+    <stages>
+      <li>
+        <label>received free food</label>
+        <description>The food is free!</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+	  <li>
+        <label>received very cheap food</label>
+        <description>The food is very cheap.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+	  <li>
+        <label>received cheap food</label>
+        <description>The food is cheap.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+	  <li>
+        <label>received food</label>
+        <description>The food is affordable.</description>
+        <baseMoodEffect>1</baseMoodEffect>
+      </li>
+	  <li>
+        <label>received expensive food</label>
+        <description>The food is expensive.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+	  <li>
+        <label>received very expensive food</label>
+        <description>The food is very expensive.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+	  
+    </stages>
+  </ThoughtDef>
+
+</Defs>

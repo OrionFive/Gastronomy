@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_Waiting.label>Servir</Gastronomy_Waiting.label>
+  <Gastronomy_Waiting.description>Anotar pedidos e servir refeições.</Gastronomy_Waiting.description>
+  <Gastronomy_Waiting.labelShort>Servir</Gastronomy_Waiting.labelShort>
+  <Gastronomy_Waiting.pawnLabel>Garçom</Gastronomy_Waiting.pawnLabel>
+  <Gastronomy_Waiting.gerundLabel>servindo</Gastronomy_Waiting.gerundLabel>
+  <Gastronomy_Waiting.verb>Servir</Gastronomy_Waiting.verb>
+
+</LanguageData>

@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+	<!-- Errors -->
+	<ErrorRequiresCashRegister>Gastronomyでは、「Cash Register」MODの読み込みが必要になりました。
+
+新機能に取り組むために作成する必要がありました。ご不便をおかけして申し訳ありません。
+
+「Cash Register」MODを追加すると、Gastronomyは以前のように動作します。
+
+
+-- Regards, Orion</ErrorRequiresCashRegister>
+  
+	<!-- Messages -->
+	<MessageIncomeToday>あなたのお店は本日 {0} シルバー稼ぎました。</MessageIncomeToday>
+	
+	<!-- Register tab - can't be very long (Restaurant is already too long) -->
+	<TabRegisterRestaurant>ダイニング</TabRegisterRestaurant>
+	
+	<!-- Settings -->
+	<TabRegisterOpened>開店</TabRegisterOpened>
+	<TabRegisterOpenedTooltip>チェックを入れると、シフトが有効な間、お客さまは注文をすることができます。</TabRegisterOpenedTooltip>
+	<TabRegisterGuests>訪問者の許可</TabRegisterGuests>
+	<TabRegisterGuestsTooltip>チェックを入れると、訪問者は注文をします。</TabRegisterGuestsTooltip>
+	<TabRegisterColonists>入植者の許可</TabRegisterColonists>
+	<TabRegisterColonistsTooltip>チェックを入れると、入植者は注文をします。</TabRegisterColonistsTooltip>
+	<TabRegisterPrisoners>囚人の許可</TabRegisterPrisoners>
+	<TabRegisterPrisonersTooltip>チェックを入れると、囚人は注文をします。</TabRegisterPrisonersTooltip>
+	<TabRegisterSlaves>奴隷の許可</TabRegisterSlaves>
+	<TabRegisterSlavesTooltip>チェックを入れると、奴隷は注文をします。</TabRegisterSlavesTooltip>
+	<TabRegisterGuestPrice>価格: {0}</TabRegisterGuestPrice>
+	<TabRegisterGuestPriceTooltip>時価に対する倍率です。ストックされた商品にポイントすると個々の価格がわかります。この倍率はお客さんの気分にも影響します。</TabRegisterGuestPriceTooltip>
+	<TabRegisterGuestPriceFree>無料</TabRegisterGuestPriceFree>
+	<TabRegisterDebtTooltip>{0}: {1} (クリックでクリア)</TabRegisterDebtTooltip>
+	
+	<!-- Stats -->
+	<TabRegisterRadius>範囲</TabRegisterRadius>
+	<TabRegisterActiveStaff>アクティブなスタッフ:</TabRegisterActiveStaff>
+	<TabRegisterSeats>客席:</TabRegisterSeats>
+	<TabRegisterPatrons>パトロン:</TabRegisterPatrons>
+	<TabRegisterTotalOrders>総受注量:</TabRegisterTotalOrders>
+	<TabRegisterNeedsServing>サーブが必要なオーダー:</TabRegisterNeedsServing>
+	<TabRegisterNeedsCooking>調理が必要なオーダー:</TabRegisterNeedsCooking>
+	<TabRegisterStocked>ストック:</TabRegisterStocked>
+	<TabRegisterDebts>未払い:</TabRegisterDebts>
+	<TabRegisterEarnedYesterday>昨日の売上:</TabRegisterEarnedYesterday>
+	<TabRegisterEarnedToday>本日の売上:</TabRegisterEarnedToday>
+	
+	<!-- Dining -->
+	<CommandToggleDining>ダイニング</CommandToggleDining>
+	<CommandToggleDiningDesc>有効にすると、この場所をダイニング用に使うことができます。</CommandToggleDiningDesc>
+	<CommandSetDeco>デコレーションの変更</CommandSetDeco>
+	<CommandSetDecoDesc>テーブルのデコレーションを変更します。</CommandSetDecoDesc>
+	<JobDineGoReport>レストランで食事をしています。</JobDineGoReport>
+	
+	<!-- Alerts -->
+	<AlertNoRegister>清算レジがありません。</AlertNoRegister>
+	<AlertNoRegisterExplanation>開店するためには、少なくとも一つの清算レジが必要です。製造タブから清算レジを置いてください。</AlertNoRegisterExplanation>
+	<AlertNoWaiter>ウェイターがいません。</AlertNoWaiter>
+	<AlertNoWaiterExplanation>レストランを運営するためには、シフトを組み適切なウエイターを配置する必要があります。</AlertNoWaiterExplanation>
+
+</LanguageData>
