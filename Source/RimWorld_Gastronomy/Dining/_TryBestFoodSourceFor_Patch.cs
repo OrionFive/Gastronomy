@@ -27,8 +27,7 @@ namespace Gastronomy.Dining
             [HarmonyTargetMethod]
             private static MethodBase TargetMethod()
             {
-                return AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor_NewTemp)) ??
-                       AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor)); // Not obsolete until NewTemp goes away. Don't believe their lies!
+                return AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor));
             }
 
             [HarmonyPrefix]

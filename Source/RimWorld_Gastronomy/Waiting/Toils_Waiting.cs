@@ -21,7 +21,7 @@ namespace Gastronomy.Waiting
             toil.defaultDuration = 500;
             toil.WithProgressBarToilDelay(patronInd, true);
             toil.activeSkill = () => SkillDefOf.Social;
-            toil.FailOnDownedOrDead(patronInd);
+            toil.FailOnDowned(patronInd);
             //toil.FailOnMentalState(patronInd);
             toil.tickAction = TickAction;
 

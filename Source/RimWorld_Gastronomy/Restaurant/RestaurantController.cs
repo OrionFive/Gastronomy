@@ -198,11 +198,16 @@ namespace Gastronomy.Restaurant
 		}
 
 		public void RescanDiningSpots()
-		{
+        {
+            var count = diningSpots.Count;
 			diningSpots.Clear();
             foreach (var register in Registers)
             {
-                foreach (var diningSpot in DiningUtility.GetAllDiningSpots(Map).Where(spot => register.GetIsInRange(spot.Position))) diningSpots.Add(diningSpot);
+                foreach (var diningSpot in DiningUtility.GetAllDiningSpots(Map).Where(spot => register.GetIsInRange(spot.Position)))
+                {
+					if(!diningSpot.Spawned || diningSpot.Destroyed) Log.Warning("Scan returned destroyed dining spot.");
+					else diningSpots.Add(diningSpot);
+                }
             }
 		}
 
@@ -214,6 +219,11 @@ namespace Gastronomy.Restaurant
         private void OnRegistersChanged()
         {
             RescanDiningSpots();
+        }
+
+        public void OnDiningSpotsChanged()
+        {
+			RescanDiningSpots();
         }
 
         public void LinkRegister(Building_CashRegister register)

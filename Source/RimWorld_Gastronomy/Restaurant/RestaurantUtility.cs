@@ -35,27 +35,32 @@ namespace Gastronomy.Restaurant
 
         public static RestaurantsManager GetRestaurantsManager(this Thing thing)
         {
-            return thing.Map.GetComponent<RestaurantsManager>();
+            return GetRestaurantsManager(thing.Map);
+        }
+
+        public static RestaurantsManager GetRestaurantsManager(this Map map)
+        {
+            return map?.GetComponent<RestaurantsManager>();
         }
 
         public static List<RestaurantController> GetAllRestaurants(this Thing thing)
         {
-            return thing.Map.GetComponent<RestaurantsManager>().restaurants;
+            return GetRestaurantsManager(thing.Map).restaurants;
         }
 
         public static RestaurantController GetRestaurantDining(this Pawn patron)
         {
-            return patron.Map.GetComponent<RestaurantsManager>().GetRestaurantDining(patron);
+            return GetRestaurantsManager(patron.Map).GetRestaurantDining(patron);
         }
 
         public static IEnumerable<RestaurantController> GetAllRestaurantsEmployed(this Pawn pawn)
         {
-            return pawn.Map.GetComponent<RestaurantsManager>().restaurants.Where(r=>r.HasToWork(pawn));
+            return GetRestaurantsManager(pawn.Map).restaurants.Where(r => r.HasToWork(pawn));
         }
 
         public static RestaurantsManager GetRestaurantsManager(this RestaurantController restaurant)
         {
-            return restaurant.Map.GetComponent<RestaurantsManager>();
+            return GetRestaurantsManager(restaurant.Map);
         }
 
         public static RestaurantController GetRestaurant([NotNull]this Building_CashRegister register)

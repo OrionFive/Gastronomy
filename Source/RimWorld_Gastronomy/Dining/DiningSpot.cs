@@ -4,6 +4,7 @@ using System.Linq;
 using Gastronomy.Restaurant;
 using JetBrains.Annotations;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace Gastronomy.Dining
@@ -86,6 +87,12 @@ namespace Gastronomy.Dining
                 }
                 else
                 {
+                    if (!Spawned || Destroyed)
+                    {
+                        DiningUtility.OnDiningSpotRemoved(MapHeld);
+                        return Array.Empty<SpotState>();
+                    }
+                    if (map == null) Log.WarningOnce($"Trying to get chair at {intVec} on null map", 4643474);
                     var chair = intVec.GetEdifice(map);
                     if (chair == null) continue;
 
@@ -104,16 +111,18 @@ namespace Gastronomy.Dining
             return result;
         }
 
+        [UsedImplicitly]
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
-            DiningUtility.OnDiningSpotRemoved(this);
             base.DeSpawn(mode);
         }
 
         [UsedImplicitly]
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
+            var map = MapHeld;
             base.Destroy(mode);
+            DiningUtility.OnDiningSpotRemoved(map);
         }
 
         private void UpdateMesh()

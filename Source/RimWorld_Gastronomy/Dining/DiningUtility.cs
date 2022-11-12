@@ -191,10 +191,18 @@ namespace Gastronomy.Dining
 
         public static void OnDiningSpotCreated([NotNull]DiningSpot diningSpot)
         {
+            foreach (var restaurant in diningSpot.GetAllRestaurants())
+            {
+                restaurant.OnDiningSpotsChanged();
+            }
         }
 
-        public static void OnDiningSpotRemoved([NotNull]DiningSpot diningSpot)
+        public static void OnDiningSpotRemoved([NotNull]Map map)
         {
+            foreach (var restaurant in map.GetRestaurantsManager().restaurants)
+            {
+                restaurant.OnDiningSpotsChanged();
+            }
         }
 
         // Copied from ToilEffects, had to remove Faction check
