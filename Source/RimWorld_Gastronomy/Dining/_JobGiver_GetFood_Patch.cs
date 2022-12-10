@@ -18,6 +18,7 @@ namespace Gastronomy.Dining
 			[HarmonyPostfix]
 			internal static void Postfix(ref Job __result, Pawn pawn)
 			{
+				//Log.Message($"{pawn.NameShortColored} got no job for ingesting.");
 				if (__result == null) return;
 				//Log.Message($"{pawn.NameShortColored} got job {__result.def.label} on {__result.targetA.Thing.Label}.");
 				if (__result?.def == JobDefOf.Ingest && __result?.targetA.HasThing == true && __result?.targetA.Thing is DiningSpot)

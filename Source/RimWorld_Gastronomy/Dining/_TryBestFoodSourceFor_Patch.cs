@@ -27,7 +27,7 @@ namespace Gastronomy.Dining
             [HarmonyTargetMethod]
             private static MethodBase TargetMethod()
             {
-                return AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor));
+                return AccessTools.Method(typeof(FoodUtility), nameof(FoodUtility.TryFindBestFoodSourceFor_NewTemp)); // This NewTemp bullshit again!!!!
             }
 
             [HarmonyPrefix]
@@ -46,7 +46,7 @@ namespace Gastronomy.Dining
 
                 // Caravans can't eat, since indoor locations are forbidden to them
                 var diningSpots = DiningUtility.FindDiningSpotsFor(eater, false).ToArray();
-                //Log.Message($"{getter.NameShortColored} is about to eat. Found {diningSpots.Length} dining spots.");
+                //Log.Message($"{getter.NameShortColored} is looking for food (check stack trace for reason). Found {diningSpots.Length} dining spots.");
 
                 var bestType = RestaurantStock.GetBestMealFor(diningSpots.SelectMany(d => d.GetRestaurantsServing()).Distinct(), eater, out var restaurant, false);
                 if (bestType == null) return true; // Run original code
@@ -54,7 +54,7 @@ namespace Gastronomy.Dining
                 foodDef = bestType.def;
                 foodSource = diningSpots.FirstOrDefault(s => restaurant.diningSpots.Contains(s)); // TODO: Could check for closest, but eh, expensive
                 LastRestaurantResult = restaurant;
-                //Log.Message($"{getter.NameShortColored} found diningSpot at {foodSource?.Position} with {foodDef?.label}.");
+                //Log.Message($"{getter.NameShortColored} found diningSpot at {foodSource?.Position} with {foodDef?.label}, (nutrition = {FoodUtility.GetNutrition(eater, foodSource, foodDef)}, parent = {foodSource?.ParentHolder}).");
                 __result = true;
                 return false; // Don't run original code
             }

@@ -71,7 +71,7 @@ namespace Gastronomy.Restaurant
             if (restaurants == null) return null;
             var options = restaurants.SelectMany(controller => controller.Stock.GetMealOptions(pawn, allowDrug, includeEat, includeJoy));
 
-            //Log.Message($"{pawn.NameShortColored}: Meal options: {options.GroupBy(o => o.thing.def).Select(o => $"{o.Key.label} ({o.FirstOrDefault()?.optimality:F2})").ToCommaList()}");
+            //Log.Message($"{pawn.NameShortColored}: Meal options: {options.GroupBy(o => o.Thing.def).Select(o => $"{o.Key.label} ({o.FirstOrDefault()?.Optimality:F2})").ToCommaList()}");
             if (options.TryMaxBy(def => def.Optimality, out var best))
             {
                 restaurant = best.Restaurant;
@@ -222,9 +222,9 @@ namespace Gastronomy.Restaurant
         {
             if (def == null) return false;
             var fineAsDrug = allowDrug || !def.IsDrug;
-            var fineAsFood = def.ingestible?.preferability == FoodPreferability.Undefined || def.ingestible?.preferability == FoodPreferability.NeverForNutrition || pawn.WillEat(def);
+            var fineAsFood = def.ingestible?.preferability == FoodPreferability.Undefined || def.ingestible?.preferability == FoodPreferability.NeverForNutrition || pawn.WillEat_NewTemp(def);
             var result = fineAsDrug && fineAsFood;
-            //Log.Message($"{pawn.NameShortColored} will consume {def.label}? will eat = {pawn.WillEat(def)}, preferability = {def.ingestible?.preferability}, allowDrug = {allowDrug}, result = {result}");
+            //Log.Message($"{pawn.NameShortColored} will consume {def.label}? will eat = {pawn.WillEat_NewTemp(def)}, preferability = {def.ingestible?.preferability}, allowDrug = {allowDrug}, result = {result}");
             return result;
         }
 

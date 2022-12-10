@@ -50,7 +50,7 @@ namespace Gastronomy.Dining
             bool Validator(DiningSpot spot)
             {
                 //Log.Message($"Validating spot for {pawn.NameShortColored}: forbidden = {spot.IsForbidden(pawn)}, social = {spot.IsSociallyProper(pawn)}, political = {IsPoliticallyProper(pawn, spot)}, "
-                //            + $"canReserve = {CanReserve(pawn, spot)}, canDineHere = {spot.CanDineHere(pawn)}, open = {spot.GetRestaurantsServing().Any(r => r.IsOpenedRightNow)}, isDangerous = {RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion())},"
+                //            + $"canReserve = {CanReserve(pawn, spot)}, canDineHere = {spot.GetRestaurantsServing().Any(r => r.CanDineHere(pawn))}, open = {spot.GetRestaurantsServing().Any(r => r.IsOpenedRightNow)}, isDangerous = {RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion())},"
                 //            + $"extraValidator = {extraSpotValidator == null || extraSpotValidator.Invoke(spot)}, canReach = {pawn.CanReach(spot, PathEndMode.ClosestTouch, JobUtility.MaxDangerDining)}");
                 return !spot.IsForbidden(pawn) && spot.IsSociallyProper(pawn) && IsPoliticallyProper(pawn, spot) && CanReserve(pawn, spot)
                        && !RestaurantUtility.IsRegionDangerous(pawn, JobUtility.MaxDangerDining, spot.GetRegion()) && (extraSpotValidator == null || extraSpotValidator.Invoke(spot)) && pawn.CanReach(spot, PathEndMode.ClosestTouch, JobUtility.MaxDangerDining);
