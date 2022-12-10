@@ -37,6 +37,8 @@ namespace Gastronomy.Dining
 
                 if (getter != eater) return true; // Run original code
 
+                if (eater.NonHumanlikeOrWildMan()) return true;
+
                 // Only if pawn doesn't have to work himself
                 if (eater.GetAllRestaurantsEmployed().Any()) return true;
 
