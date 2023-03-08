@@ -279,9 +279,11 @@ namespace Gastronomy.Restaurant
             var rectIcon  = rect.RightHalf();
             //rectIcon.xMin += countSize.x;
             var iconSize = rectIcon.width = rectIcon.height = countSize.y;
-            
+
+            var itemsDrawn = stock.Take(16).ToList(); // Max 16 items, or multiple rows are needed (which push other text out of view)
+
             var iconCols = Mathf.FloorToInt(rect.width / iconSize);
-            var iconRows = Mathf.CeilToInt((float) stock.Count / iconCols);
+            var iconRows = Mathf.CeilToInt((float)itemsDrawn.Count / iconCols);
             var height = iconRows * iconSize;
 
             var rectIcons = listing.GetRect(height);
@@ -290,14 +292,14 @@ namespace Gastronomy.Restaurant
 
             // Icons for each type of stock
             int col = 0;
-            foreach (var group in stock.Values)
+            foreach (var group in itemsDrawn)
             {
-                if (group.def == null) continue;
-                if (group.items.Count == 0) continue;
+                if (group.Value.def == null) continue;
+                if (group.Value.items.Count == 0) continue;
 
                 // Icon
-                var value = group.def.GetPrice(restaurant).ToStringMoney();
-                DrawDefIcon(rectIcon, group.def, $"{group.items.Sum(item => item.stackCount)}x {group.def.LabelCap} ({value})");
+                var value = group.Value.def.GetPrice(restaurant).ToStringMoney();
+                DrawDefIcon(rectIcon, group.Value.def, $"{group.Value.items.Sum(item => item.stackCount)}x {group.Value.def.LabelCap} ({value})");
                 rectIcon.x += iconSize;
 
                 col++;
