@@ -45,6 +45,7 @@ namespace Gastronomy.Waiting
                 {
                     if (restaurant == null) continue;
                     if (restaurant.diningSpots.Count == 0) continue;
+                    if (!restaurant.IsOpenedRightNow) continue;
                     if (restaurant.Registers.Count == 0) continue;
                     if (restaurant.Registers.Any(r => r.shifts.Any(s => s.assigned.Count > 0))) continue;
 
