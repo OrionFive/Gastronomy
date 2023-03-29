@@ -32,7 +32,7 @@ namespace Gastronomy.Restaurant
 
 		private bool AnyRegisterOpen => Registers.Any(r => r?.IsActive == true);
 
-		public bool openForBusiness = true;
+		public bool openForBusiness = false;
 
 		public bool allowGuests = true;
 		public bool allowColonists = true;
@@ -89,7 +89,7 @@ namespace Gastronomy.Restaurant
 
 		public void ExposeData()
 		{
-			Scribe_Values.Look(ref openForBusiness, "openForBusiness", true);
+			Scribe_Values.Look(ref openForBusiness, "openForBusiness", false);
 			Scribe_Values.Look(ref allowGuests, "allowGuests", true);
 			Scribe_Values.Look(ref allowColonists, "allowColonists", true);
 			Scribe_Values.Look(ref allowPrisoners, "allowPrisoners", false);
