@@ -261,8 +261,8 @@ namespace Gastronomy.Restaurant
 
         private void FindStockItems()
         {
-            foreach (var thing in GetConsumablesOnMap()
-                .Where(t => t.def is { IsIngestible: true, IsCorpse: false } && Menu.IsOnMenu(t) && !t.IsForbidden(Faction.OfPlayer) && Restaurant.GetIsInRange(t.Position)))
+            foreach (var thing in GetConsumablesInRange()
+                .Where(t => t.def is { IsIngestible: true, IsCorpse: false } && Menu.IsOnMenu(t) && !t.IsForbidden(Faction.OfPlayer)))
             {
                 if (!stockCache.TryGetValue(thing.def, out var stock))
                 {
@@ -274,12 +274,27 @@ namespace Gastronomy.Restaurant
             }
         }
 
-        private IEnumerable<Thing> GetConsumablesOnMap()
+        private IEnumerable<Thing> GetConsumablesInRange()
         {
-            var food = Map.listerThings.ThingsInGroup(ThingRequestGroup.FoodSource);
-            var drugs = Map.listerThings.ThingsInGroup(ThingRequestGroup.Drug);
-            if (food == null || drugs == null) return Array.Empty<Thing>();
-            return food.Union(drugs);
+            HashSet<Thing> yieldedThings = new HashSet<Thing>();
+            List<IntVec3> fields = new List<IntVec3>();
+            foreach (var buildingCashRegister in Restaurant.Registers)
+            {
+                fields.AddRange(buildingCashRegister.Fields);
+            }
+            foreach (IntVec3 cell in fields)
+            {
+                List<Thing> thingList = cell.GetThingList(Map);
+                for (int i = 0; i < thingList.Count; i++)
+                {
+                    Thing t = thingList[i];
+                    if (t.def.category == ThingCategory.Item && t.def.ingestible != null && !yieldedThings.Contains(t))
+                    {
+                        yieldedThings.Add(t);
+                        yield return t;
+                    }
+                }
+            }
         }
 
         [NotNull]
