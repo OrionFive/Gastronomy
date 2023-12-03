@@ -276,25 +276,21 @@ namespace Gastronomy.Restaurant
 
         private IEnumerable<Thing> GetConsumablesInRange()
         {
-            HashSet<Thing> yieldedThings = new HashSet<Thing>();
-            List<IntVec3> fields = new List<IntVec3>();
-            foreach (var buildingCashRegister in Restaurant.Registers)
+            var yieldedThings = new HashSet<Thing>();
+            var fields = new List<IntVec3>();
+            foreach (var buildingCashRegister in Restaurant.Registers) fields.AddRange(buildingCashRegister.Fields);
+            foreach (var cell in fields)
             {
-                fields.AddRange(buildingCashRegister.Fields);
-            }
-            foreach (IntVec3 cell in fields)
-            {
-                List<Thing> thingList = cell.GetThingList(Map);
-                for (int i = 0; i < thingList.Count; i++)
+                var thingList = cell.GetThingList(Map);
+                foreach (var t in thingList)
                 {
-                    Thing t = thingList[i];
-                    if (t.def.category == ThingCategory.Item && t.def.ingestible != null && !yieldedThings.Contains(t))
-                    {
-                        yieldedThings.Add(t);
-                        yield return t;
-                    }
+                    if (t.def.ingestible == null || t.def.category != ThingCategory.Item) continue;
+
+                    yieldedThings.Add(t);
                 }
             }
+
+            return yieldedThings;
         }
 
         [NotNull]
