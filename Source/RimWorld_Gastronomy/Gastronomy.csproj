@@ -33,11 +33,10 @@
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="*" />
     <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="*" ExcludeAssets="runtime" />
   </ItemGroup>
-  
 
   <ItemGroup>
     <Reference Include="CashRegister">
-      <HintPath>..\..\1.3\Assemblies\CashRegister.dll</HintPath>
+      <HintPath>..\..\1.4\Assemblies\CashRegister.dll</HintPath>
     </Reference>
   </ItemGroup>
     
