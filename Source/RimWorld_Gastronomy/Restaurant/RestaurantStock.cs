@@ -78,6 +78,7 @@ namespace Gastronomy.Restaurant
                 //Log.Message($"{pawn.NameShortColored}: GetBestMealFor: {best.Thing.LabelCap} with optimality {best.Optimality:F2} at {restaurant?.Name}.");
                 return best.Thing;
             }
+
             return null;
         }
 
@@ -93,6 +94,7 @@ namespace Gastronomy.Restaurant
                 //Log.Message($"{pawn.NameShortColored} picked {random.Thing.Label} with a score of {random.Optimality} at {restaurant?.Name}.\nOptions were:\n{options.Select(o=>$"- {o.Thing.LabelCap} ({o.Optimality:F0}) at {o.Restaurant.Name}").ToLineList()}");
                 return random.Thing;
             }
+
             return null;
         }
 
@@ -146,7 +148,7 @@ namespace Gastronomy.Restaurant
             return score;
         }
 
-        private static float CalcEatOptimality([NotNull] Pawn pawn, [NotNull]Thing thing)
+        private static float CalcEatOptimality([NotNull] Pawn pawn, [NotNull] Thing thing)
         {
             return Mathf.Max(0, FoodUtility.FoodOptimality(pawn, thing, thing.def, 25));
         }
@@ -183,16 +185,17 @@ namespace Gastronomy.Restaurant
             return true;
         }
 
-        private static float GetCachedOptimality(Pawn pawn, [NotNull]Thing thing, [NotNull] List<ConsumeOptimality> optimalityCache, [NotNull] Func<Pawn, Thing, float> calcFunction)
+        private static float GetCachedOptimality(Pawn pawn, [NotNull] Thing thing, [NotNull] List<ConsumeOptimality> optimalityCache, [NotNull] Func<Pawn, Thing, float> calcFunction)
         {
             // Expensive, must be cached
             var optimality = optimalityCache.FirstOrDefault(o => o.pawn == pawn && o.thing == thing);
             if (optimality == null)
             {
                 // Optimality can be negative
-                optimality = new ConsumeOptimality {pawn = pawn, thing = thing, value = calcFunction(pawn, thing)};
+                optimality = new ConsumeOptimality { pawn = pawn, thing = thing, value = calcFunction(pawn, thing) };
                 optimalityCache.Add(optimality);
             }
+
             // From 0 to 300-400ish
             return optimality.value;
         }
