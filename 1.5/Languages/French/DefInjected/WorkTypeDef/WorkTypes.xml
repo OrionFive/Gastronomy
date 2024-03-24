@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+<!-- EN: Wait -->
+<Gastronomy_Waiting.label>Serveur</Gastronomy_Waiting.label>
+<!-- EN: Take order and serve meals. -->
+<Gastronomy_Waiting.description>Prendre les commandes et servir les repas.</Gastronomy_Waiting.description>
+<!-- EN: Wait -->
+<Gastronomy_Waiting.labelShort>Serveur</Gastronomy_Waiting.labelShort>
+<!-- EN: Waiter -->
+<Gastronomy_Waiting.pawnLabel>Serveur</Gastronomy_Waiting.pawnLabel>
+<!-- EN: waiting -->
+<Gastronomy_Waiting.gerundLabel>sers</Gastronomy_Waiting.gerundLabel>
+<!-- EN: Wait -->
+<Gastronomy_Waiting.verb>servir</Gastronomy_Waiting.verb>
+
+
+</LanguageData>

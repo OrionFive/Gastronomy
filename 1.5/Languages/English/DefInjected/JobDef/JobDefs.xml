@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <Gastronomy_TakeOrder.reportString>taking order from TargetB.</Gastronomy_TakeOrder.reportString>
+  <Gastronomy_Serve.reportString>serving TargetB to TargetA.</Gastronomy_Serve.reportString>
+  <Gastronomy_MakeTable.reportString>preparing table.</Gastronomy_MakeTable.reportString>
+  <Gastronomy_StandBy.reportString>waiting for restaurant work.</Gastronomy_StandBy.reportString>
+</LanguageData>

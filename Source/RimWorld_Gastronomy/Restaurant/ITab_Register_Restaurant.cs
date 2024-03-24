@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using CashRegister;
 using Gastronomy.Waiting;
-using HugsLib.Utils;
 using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
@@ -114,7 +113,7 @@ namespace Gastronomy.Restaurant
                         {
                             restaurants.DeleteRestaurant(restaurant);
                             SetRestaurant(restaurants.restaurants.Last());
-                        }, true));
+                        }));
                 }
             // Add
             if (widgetRow.ButtonIcon(TexButton.Plus, "RestaurantTooltipAdd".Translate()))

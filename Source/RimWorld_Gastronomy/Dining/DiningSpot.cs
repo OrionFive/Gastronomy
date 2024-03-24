@@ -129,7 +129,7 @@ namespace Gastronomy.Dining
         {
             if (Spawned)
             {
-                Map.mapDrawer.MapMeshDirty(Position, MapMeshFlag.Things, false, false);
+                Map.mapDrawer.MapMeshDirty(Position, MapMeshFlagDefOf.Things.mask, false, false);
             }
         }
 

@@ -6,7 +6,7 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <PlatformTarget>x64</PlatformTarget>
-    <OutputPath>..\..\1.4\Assemblies\</OutputPath>
+    <OutputPath>..\..\1.5\Assemblies\</OutputPath>
     <Optimize>true</Optimize>
     <DebugType>none</DebugType>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Krafs.Rimworld.Ref" Version="*" GeneratePathProperty="true" />
+	<PackageReference Include="Krafs.Rimworld.Ref" Version="*-*" GeneratePathProperty="true" />
     <PackageReference Include="Lib.Harmony" Version="*" ExcludeAssets="runtime" />
     <PackageReference Include="TaskPubliciser" Version="1.0.3" />
     <PackageReference Include="RimWorld.MultiplayerAPI" Version="*" ExcludeAssets="runtime" />
@@ -35,9 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="CashRegister">
-      <HintPath>..\..\1.4\Assemblies\CashRegister.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\..\..\CashRegister\Source\RimWorld_CashRegister\CashRegister.csproj" />
   </ItemGroup>
     
   <Target Name="MyCode" BeforeTargets="UpdateReferences">

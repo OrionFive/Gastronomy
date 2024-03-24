@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_Serviced.stages.0.label>service horrible</Gastronomy_Serviced.stages.0.label>
+  <Gastronomy_Serviced.stages.1.label>mauvais service</Gastronomy_Serviced.stages.1.label>
+  <Gastronomy_Serviced.stages.2.label>service décent</Gastronomy_Serviced.stages.2.label>
+  <Gastronomy_Serviced.stages.3.label>bon service</Gastronomy_Serviced.stages.3.label>
+  <Gastronomy_Serviced.stages.4.label>excellent service</Gastronomy_Serviced.stages.4.label>
+
+  <Gastronomy_HadToWait.stages.0.label>a attendu au restaurant</Gastronomy_HadToWait.stages.0.label>
+  <Gastronomy_HadToWait.stages.0.description>J'ai dû attendre longtemps pour avoir mon plat.</Gastronomy_HadToWait.stages.0.description>
+
+  <Gastronomy_ServicedMood.stages.0.label>service horrible</Gastronomy_ServicedMood.stages.0.label>
+  <Gastronomy_ServicedMood.stages.0.description>Le service était horrible.</Gastronomy_ServicedMood.stages.0.description>
+  <Gastronomy_ServicedMood.stages.1.label>mauvais service</Gastronomy_ServicedMood.stages.1.label>
+  <Gastronomy_ServicedMood.stages.1.description>Le service était mauvais.</Gastronomy_ServicedMood.stages.1.description>
+  <Gastronomy_ServicedMood.stages.2.label>service décent</Gastronomy_ServicedMood.stages.2.label>
+  <Gastronomy_ServicedMood.stages.2.description>Le service était décent.</Gastronomy_ServicedMood.stages.2.description>
+  <Gastronomy_ServicedMood.stages.3.label>bon service</Gastronomy_ServicedMood.stages.3.label>
+  <Gastronomy_ServicedMood.stages.3.description>Le service était bon.</Gastronomy_ServicedMood.stages.3.description>
+  <Gastronomy_ServicedMood.stages.4.label>service exceptionnel</Gastronomy_ServicedMood.stages.4.label>
+  <Gastronomy_ServicedMood.stages.4.description>Le service était exceptionnel.</Gastronomy_ServicedMood.stages.4.description>
+  
+  <Gastronomy_BoughtFood.stages.0.label>nourriture gratuite</Gastronomy_BoughtFood.stages.0.label>
+  <Gastronomy_BoughtFood.stages.0.description>La nourriture était gratuite !</Gastronomy_BoughtFood.stages.0.description>
+  <Gastronomy_BoughtFood.stages.1.label>nourriture très peu chère</Gastronomy_BoughtFood.stages.1.label>
+  <Gastronomy_BoughtFood.stages.1.description>La nourriture était très peu chère !</Gastronomy_BoughtFood.stages.1.description>
+  <Gastronomy_BoughtFood.stages.2.label>nourriture peu chère</Gastronomy_BoughtFood.stages.2.label>
+  <Gastronomy_BoughtFood.stages.2.description>La nourriture était peu chère.</Gastronomy_BoughtFood.stages.2.description>
+  <Gastronomy_BoughtFood.stages.3.label>nourriture abordable</Gastronomy_BoughtFood.stages.3.label>
+  <Gastronomy_BoughtFood.stages.3.description>Le prix de la nourriture était abordable.</Gastronomy_BoughtFood.stages.3.description>
+  <Gastronomy_BoughtFood.stages.4.label>nourriture chère</Gastronomy_BoughtFood.stages.4.label>
+  <Gastronomy_BoughtFood.stages.4.description>La nourriture était chère.</Gastronomy_BoughtFood.stages.4.description>
+  <Gastronomy_BoughtFood.stages.5.label>nourriture très chère</Gastronomy_BoughtFood.stages.5.label>
+  <Gastronomy_BoughtFood.stages.5.description>La nourriture était très chère.</Gastronomy_BoughtFood.stages.5.description>
+
+</LanguageData>

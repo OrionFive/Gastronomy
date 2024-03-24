@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_TakeOrder.label>オーダーを取る</Gastronomy_TakeOrder.label>
+  <Gastronomy_TakeOrder.verb>オーダーを取る</Gastronomy_TakeOrder.verb>
+  <Gastronomy_TakeOrder.gerund>にオーダーを取っています</Gastronomy_TakeOrder.gerund>
+
+  <Gastronomy_Serve.label>サーブ</Gastronomy_Serve.label>
+  <Gastronomy_Serve.verb>サーブ</Gastronomy_Serve.verb>
+  <Gastronomy_Serve.gerund>にサーブ中</Gastronomy_Serve.gerund>
+
+  <Gastronomy_MakeTable.label>テーブルセッティング</Gastronomy_MakeTable.label>
+  <Gastronomy_MakeTable.verb>テーブルセッティング</Gastronomy_MakeTable.verb>
+  <Gastronomy_MakeTable.gerund>でテーブルセッティング中</Gastronomy_MakeTable.gerund>
+
+  <Gastronomy_StandBy.label>待機</Gastronomy_StandBy.label>
+  <Gastronomy_StandBy.verb>待機</Gastronomy_StandBy.verb>
+  <Gastronomy_StandBy.gerund>で待機中</Gastronomy_StandBy.gerund>
+
+</LanguageData>

@@ -117,7 +117,7 @@ namespace Gastronomy.Dining
 
 
         // Mostly copied from JobDriver_Ingest
-        public override bool ModifyCarriedThingDrawPos(ref Vector3 drawPos, ref bool behind, ref bool flip)
+        public override bool ModifyCarriedThingDrawPos(ref Vector3 drawPos, ref bool flip)
         {
             var placeCell = job.GetTarget(SpotIndex).Cell;
             if (pawn.pather.Moving) return false;
@@ -126,7 +126,6 @@ namespace Gastronomy.Dining
             if (placeCell.IsValid && placeCell.AdjacentToCardinal(pawn.Position) && placeCell.HasEatSurface(pawn.Map) && carriedThing.def.ingestible.ingestHoldUsesTable)
             {
                 drawPos = new Vector3((placeCell.x + pawn.Position.x) * 0.5f + 0.5f, drawPos.y, (placeCell.z + pawn.Position.z) * 0.5f + 0.5f);
-                behind = pawn.Rotation != Rot4.South;
                 return true;
             }
 
@@ -136,7 +135,6 @@ namespace Gastronomy.Dining
                 if (holdOffset != null)
                 {
                     drawPos += holdOffset.offset;
-                    behind = holdOffset.behind;
                     flip = holdOffset.flip;
                     return true;
                 }

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+<Gastronomy_StandBy.label>attendre les commandes</Gastronomy_StandBy.label>
+<Gastronomy_StandBy.verb>attendre</Gastronomy_StandBy.verb>
+<Gastronomy_StandBy.gerund>attends</Gastronomy_StandBy.gerund>
+
+
+<!-- EN: take orders -->
+<Gastronomy_TakeOrder.label>prendre les commandes</Gastronomy_TakeOrder.label>
+<!-- EN: take order -->
+<Gastronomy_TakeOrder.verb>prendre une commande</Gastronomy_TakeOrder.verb>
+<!-- EN: taking order -->
+<Gastronomy_TakeOrder.gerund>prends une commande</Gastronomy_TakeOrder.gerund>
+
+<!-- EN: serve -->
+<Gastronomy_Serve.label>servir</Gastronomy_Serve.label>
+<!-- EN: serve -->
+<Gastronomy_Serve.verb>servir</Gastronomy_Serve.verb>
+<!-- EN: serving -->
+<Gastronomy_Serve.gerund>sers</Gastronomy_Serve.gerund>
+
+<!-- EN: make tables -->
+<Gastronomy_MakeTable.label>dresser les tables</Gastronomy_MakeTable.label>
+<!-- EN: make table -->
+<Gastronomy_MakeTable.verb>dresser la table</Gastronomy_MakeTable.verb>
+<!-- EN: making table -->
+<Gastronomy_MakeTable.gerund>dresse la table</Gastronomy_MakeTable.gerund>
+
+
+</LanguageData>
