@@ -28,48 +28,23 @@
   <ItemGroup>
 	<PackageReference Include="Krafs.Rimworld.Ref" Version="*-*" GeneratePathProperty="true" />
     <PackageReference Include="Lib.Harmony" Version="*" ExcludeAssets="runtime" />
-    <PackageReference Include="TaskPubliciser" Version="1.0.3" />
+    <PackageReference Include="Krafs.Publicizer" Version="*" ExcludeAssets="runtime" />
     <PackageReference Include="RimWorld.MultiplayerAPI" Version="*" ExcludeAssets="runtime" />
     <PackageReference Include="Microsoft.NETCore.Platforms" Version="*" />
     <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="*" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CashRegister\Source\RimWorld_CashRegister\CashRegister.csproj" />
+    <Reference Include="CashRegister">
+      <HintPath>..\..\1.5\Assemblies\CashRegister.dll</HintPath>
+    </Reference>
   </ItemGroup>
     
-  <Target Name="MyCode" BeforeTargets="UpdateReferences">
-    <!-- Set our variables -->
-    <PropertyGroup>
-      <AssemblyCSharp>$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll</AssemblyCSharp>
-      <PubliciseOutputPath>$(PkgKrafs_Rimworld_Ref)\ref\net472\</PubliciseOutputPath>
-      <AssemblyCSharp_Publicised>$(PubliciseOutputPath)Assembly-CSharp_publicised.dll</AssemblyCSharp_Publicised>
-    </PropertyGroup>
-
-    <!-- Publicise the dlls (if required) -->
-    <Message Importance="High" Text="Publicising Rimworld Assembly ..." />
-    <Publicise TargetAssemblyPath="$(AssemblyCSharp)" OutputPath="$(PubliciseOutputPath)" Condition="Exists('$(AssemblyCSharp)')" />
-
-    <!-- Add references to the new publicised dlls -->
-    <Message Importance="High" Text="Replacing reference to un-publicised assemblies with publicised equivalents ..." />
-
-    <ItemGroup>
-      <Reference Include="$(AssemblyCSharp_Publicised)">
-        <SpecificVersion>false</SpecificVersion>
-        <HintPath>$(AssemblyCSharp_Publicised)</HintPath>
-        <Implicit>true</Implicit>
-        <Private>false</Private>
-      </Reference>
-    </ItemGroup>
-  </Target>
-
-  <Target Name="UpdateReferences" AfterTargets="ResolveLockFileReferences">
-    <Message Importance="High" Text="Remove References ..." />
-
-    <ItemGroup>
-      <Reference Remove="$(PkgKrafs_Rimworld_Ref)\ref\net472\Assembly-CSharp.dll" />
-    </ItemGroup>
-  </Target>
-
+  <ItemGroup>
+	<Publicize Include="Assembly-CSharp" />
+  </ItemGroup>
+  <PropertyGroup>
+	<PublicizerClearCacheOnClean>true</PublicizerClearCacheOnClean>
+  </PropertyGroup>
 
 </Project>
