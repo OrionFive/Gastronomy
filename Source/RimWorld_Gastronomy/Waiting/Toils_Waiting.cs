@@ -166,7 +166,7 @@ namespace Gastronomy.Waiting
                     for (int radius = 0; radius <= maxRadius; radius++)
                     {
                         bool Validator(IntVec3 c) => c.Standable(actor.Map) && c.GetFirstPawn(actor.Map) == null;
-                        if (CellFinder.TryFindRandomReachableCellNear(target.Cell, actor.Map, radius, TraverseParms.For(TraverseMode.NoPassClosedDoors), Validator, null, out var result))
+                        if (CellFinder.TryFindRandomReachableNearbyCell(actor.Position, actor.Map, radius, TraverseParms.For(TraverseMode.NoPassClosedDoors), Validator, null, out var result))
                         {
                             curJob.SetTarget(cellInd, result);
                             //Log.Message($"{actor.NameShortColored} found a place to stand at {result}. radius = {radius}");

@@ -11,7 +11,7 @@ using Verse;
 
 namespace Gastronomy.Restaurant
 {
-    public class RestaurantController : IExposable
+    public class RestaurantController : IExposable, IRenameable
     {
         [NotNull] public readonly HashSet<DiningSpot> diningSpots = new HashSet<DiningSpot>();
         [NotNull] private readonly List<Pawn> spawnedDiningPawnsResult = new List<Pawn>();
@@ -23,6 +23,21 @@ namespace Gastronomy.Restaurant
 		private RestaurantOrders orders;
 		private RestaurantDebt debts;
 		private RestaurantStock stock;
+		public string RenamableLabel
+		{
+			get
+			{
+				return name ?? BaseLabel;
+			}
+			set
+			{
+				name = value;
+			}
+		}
+
+		public string BaseLabel => "RestaurantDefaultName";
+
+		public string InspectLabel => RenamableLabel;
 
         [NotNull] private List<Building_CashRegister> registers = new List<Building_CashRegister>();
 

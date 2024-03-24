@@ -222,7 +222,7 @@ namespace Gastronomy.Restaurant
         {
             if (def == null) return false;
             var fineAsDrug = allowDrug || !def.IsDrug;
-            var fineAsFood = def.ingestible?.preferability == FoodPreferability.Undefined || def.ingestible?.preferability == FoodPreferability.NeverForNutrition || pawn.WillEat_NewTemp(def);
+            var fineAsFood = def.ingestible?.preferability == FoodPreferability.Undefined || def.ingestible?.preferability == FoodPreferability.NeverForNutrition || pawn.WillEat(def);
             var result = fineAsDrug && fineAsFood;
             //Log.Message($"{pawn.NameShortColored} will consume {def.label}? will eat = {pawn.WillEat_NewTemp(def)}, preferability = {def.ingestible?.preferability}, allowDrug = {allowDrug}, result = {result}");
             return result;

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+	<!-- Errors -->
+	<ErrorRequiresCashRegister>La gastronomie nécessite désormais le chargement du mod 'Cash Register'.
+
+Je devais le créer afin de pouvoir travailler sur une nouvelle fonctionnalité. Désolé pour ce désagrément.
+
+Si vous ajoutez le mod 'Cash Register', Gastronomie continuera à fonctionner comme avant.
+
+
+-- Cordialement Orion</ErrorRequiresCashRegister>
+
+	<!-- Messages -->
+	<MessageIncomeToday>Votre restaurant a gagné {0} aujourd'hui.</MessageIncomeToday>
+	
+	<!-- Register tab -->
+	<TabRegisterRestaurant>Gérer</TabRegisterRestaurant>
+
+	<!-- Restaurant selection -->
+	<RestaurantDefaultName>restaurant {0}</RestaurantDefaultName>
+	<RestaurantTooltipSelect>Sélectionnez quel restaurant est lié à cette caisse enregistreuse.</RestaurantTooltipSelect>
+	<RestaurantTooltipRename>Renommer ce restaurant.</RestaurantTooltipRename>
+	<RestaurantTooltipAdd>Ajouter un autre restaurant.</RestaurantTooltipAdd>
+	<RestaurantTooltipRemove>Supprimer ce restaurant.</RestaurantTooltipRemove>
+	<RestaurantDialogConfirmRemove>Êtes-vous sûr de vouloir supprimer '{0}'?</RestaurantDialogConfirmRemove>
+	
+	<!-- Settings -->
+	<TabRegisterOpened>Ouvert</TabRegisterOpened>
+	<TabRegisterOpenedTooltip>Lorsque coché, les clients peuvent passer des commandes pendant les heures ouvrables.</TabRegisterOpenedTooltip>
+	<TabRegisterGuests>Autoriser les invités</TabRegisterGuests>
+	<TabRegisterGuestsTooltip>Une fois cochée, les invités passeront des commandes.</TabRegisterGuestsTooltip>
+	<TabRegisterColonists>Autoriser les colons</TabRegisterColonists>
+	<TabRegisterColonistsTooltip>Lorsque coché, les colons passeront des commandes.</TabRegisterColonistsTooltip>
+	<TabRegisterPrisoners>Autoriser les prisonniers</TabRegisterPrisoners>
+	<TabRegisterPrisonersTooltip>Lorsque coché, les prisonniers passeront des comandes.</TabRegisterPrisonersTooltip>
+	<TabRegisterSlaves>Autoriser les esclaves</TabRegisterSlaves>
+	<TabRegisterSlavesTooltip>Lorsque coché, les esclaves passeront des comandes.</TabRegisterSlavesTooltip>
+	<TabRegisterGuestPrice>Prix pour les invités: {0}</TabRegisterGuestPrice>
+	<TabRegisterGuestPriceTooltip>Un multiplicateur pour la valeur marchande. Vous pouvez voir les prix individuels lorsque vous survolez les articles stockés. Ce multiplicateur affecte l'humeur des clients.</TabRegisterGuestPriceTooltip>
+	<TabRegisterGuestPriceFree>Gratuit</TabRegisterGuestPriceFree>
+	<TabRegisterDebtTooltip>{0}: {1} (cliquer pour effacer)</TabRegisterDebtTooltip>
+	
+	<!-- Stats -->
+	<TabRegisterRadius>Rayon</TabRegisterRadius>
+	<TabRegisterActiveStaff>Employés actifs:</TabRegisterActiveStaff>
+	<TabRegisterSeats>Places:</TabRegisterSeats>
+	<TabRegisterPatrons>Clients:</TabRegisterPatrons>
+	<TabRegisterTotalOrders>Total des commandes:</TabRegisterTotalOrders>
+	<TabRegisterNeedsServing>Commandes devant être servies:</TabRegisterNeedsServing>
+	<TabRegisterNeedsCooking>Commandes devant être cuisinées:</TabRegisterNeedsCooking>
+	<TabRegisterStocked>Repas en stock:</TabRegisterStocked>
+	<TabRegisterDebts>Factures impayées:</TabRegisterDebts>
+	<TabRegisterEarnedYesterday>Gagné hier:</TabRegisterEarnedYesterday>
+	<TabRegisterEarnedToday>Gagné aujourd'hui:</TabRegisterEarnedToday>
+	
+	<!-- Dining -->
+	<CommandToggleDining>Table de restaurant</CommandToggleDining>
+	<CommandToggleDiningDesc>Lorsqu'activé, cet emplacement peut être utilisé pour commander des repas.</CommandToggleDiningDesc>
+	<CommandSetDeco>Changer de décoration</CommandSetDeco>
+	<CommandSetDecoDesc>Changer la décoration sur la table.</CommandSetDecoDesc>
+	<JobDineGoReportSpecific>Mange à {0}.</JobDineGoReportSpecific>
+	<JobDineGoReport>Mange au restaurant.</JobDineGoReport>
+	
+	<!-- Alerts -->
+	<AlertNoRegister>Pas de caisse enregistreuse</AlertNoRegister>
+	<AlertNoRegisterExplanation>Pour ouvrir votre restaurant, vous avez besoin d'au moins une caisse enregistreuse. Cela peut être construit à partir de l'onglet production.</AlertNoRegisterExplanation>
+	<AlertNoWaiter>Pas de serveur</AlertNoWaiter>
+	<AlertNoWaiterExplanation>Pour exploiter votre restaurant, vous devez mettre en place des horaires d'ouverture dans une caisse enregistreuse et affecter un serveur compétent.</AlertNoWaiterExplanation>
+
+</LanguageData>

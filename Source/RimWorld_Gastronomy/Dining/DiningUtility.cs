@@ -153,7 +153,7 @@ namespace Gastronomy.Dining
         {
             float score = 1 * waiter.GetStatValue(StatDefOf.SocialImpact);
             score += waiter.story.traits.DegreeOfTrait(TraitDefOf.Industriousness) * 0.25f;
-            score += waiter.story.traits.DegreeOfTrait(TraitDefOf.Beauty) * 0.25f;
+            score += waiter.story.traits.DegreeOfTrait(DefDatabase<TraitDef>.GetNamed("Beauty")) * 0.25f;
             score += waiter.story.traits.HasTrait(TraitDefOf.Kind) ? 0.25f : 0;
             score += patron.story.traits.HasTrait(TraitDefOf.Kind) ? 0.15f : 0;
             score += waiter.story.traits.HasTrait(TraitDefOf.Abrasive) ? -0.2f : 0;

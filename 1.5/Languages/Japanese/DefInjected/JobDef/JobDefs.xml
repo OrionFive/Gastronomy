@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <Gastronomy_Dine.reportString>レストランで食事をしています。</Gastronomy_Dine.reportString>
+  <Gastronomy_TakeOrder.reportString>TargetB から注文を取っています。</Gastronomy_TakeOrder.reportString>
+  <Gastronomy_Serve.reportString>TargetB を TargetA にサーブしています。</Gastronomy_Serve.reportString>
+  <Gastronomy_MakeTable.reportString>テーブルの準備中。</Gastronomy_MakeTable.reportString>
+  <Gastronomy_StandBy.reportString>レストランでの仕事の待機中。</Gastronomy_StandBy.reportString>
+</LanguageData>

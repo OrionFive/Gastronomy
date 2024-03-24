@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_Serviced.stages.0.label>ひどいサービス</Gastronomy_Serviced.stages.0.label>
+  <Gastronomy_Serviced.stages.1.label>粗末なサービス</Gastronomy_Serviced.stages.1.label>
+  <Gastronomy_Serviced.stages.2.label>きちんとしたサービス</Gastronomy_Serviced.stages.2.label>
+  <Gastronomy_Serviced.stages.3.label>丁寧なサービス</Gastronomy_Serviced.stages.3.label>
+  <Gastronomy_Serviced.stages.4.label>素晴らしいサービス</Gastronomy_Serviced.stages.4.label>
+
+  <Gastronomy_ServicedMood.stages.0.label>ひどいサービスを受けた。</Gastronomy_ServicedMood.stages.0.label>
+  <Gastronomy_ServicedMood.stages.0.description>私はひどい扱いを受けた。</Gastronomy_ServicedMood.stages.0.description>
+  <Gastronomy_ServicedMood.stages.1.label>粗末なサービスを受けた。</Gastronomy_ServicedMood.stages.1.label>
+  <Gastronomy_ServicedMood.stages.1.description>私は粗末な扱いを受けた。</Gastronomy_ServicedMood.stages.1.description>
+  <Gastronomy_ServicedMood.stages.2.label>きちんとしたサービスを受けた。</Gastronomy_ServicedMood.stages.2.label>
+  <Gastronomy_ServicedMood.stages.2.description>私はきちんとした扱いを受けた。</Gastronomy_ServicedMood.stages.2.description>
+  <Gastronomy_ServicedMood.stages.3.label>丁寧なサービスを受けた。</Gastronomy_ServicedMood.stages.3.label>
+  <Gastronomy_ServicedMood.stages.3.description>私は丁寧な扱いを受けた。</Gastronomy_ServicedMood.stages.3.description>
+  <Gastronomy_ServicedMood.stages.4.label>素晴らしいサービスを受けた。</Gastronomy_ServicedMood.stages.4.label>
+  <Gastronomy_ServicedMood.stages.4.description>私は特別な扱いを受けた。</Gastronomy_ServicedMood.stages.4.description>
+  
+  <Gastronomy_BoughtFood.stages.0.label>無料で食べ物をもらいました。</Gastronomy_BoughtFood.stages.0.label>
+  <Gastronomy_BoughtFood.stages.0.description>無料で食べられた。</Gastronomy_BoughtFood.stages.0.description>
+  <Gastronomy_BoughtFood.stages.1.label>超低価格なメニューを食べた。</Gastronomy_BoughtFood.stages.1.label>
+  <Gastronomy_BoughtFood.stages.1.description>超低価格なメニューが食べられた。</Gastronomy_BoughtFood.stages.1.description>
+  <Gastronomy_BoughtFood.stages.2.label>低価格なメニューを食べた。</Gastronomy_BoughtFood.stages.2.label>
+  <Gastronomy_BoughtFood.stages.2.description>低価格なメニューが食べられた。</Gastronomy_BoughtFood.stages.2.description>
+  <Gastronomy_BoughtFood.stages.3.label>手頃なメニューを食べた。</Gastronomy_BoughtFood.stages.3.label>
+  <Gastronomy_BoughtFood.stages.3.description>手頃なメニューが食べられた。</Gastronomy_BoughtFood.stages.3.description>
+  <Gastronomy_BoughtFood.stages.4.label>お高いメニューを食べた。</Gastronomy_BoughtFood.stages.4.label>
+  <Gastronomy_BoughtFood.stages.4.description>高めなメニューが食べられた。</Gastronomy_BoughtFood.stages.4.description>
+  <Gastronomy_BoughtFood.stages.5.label>特別なメニューを食べた。</Gastronomy_BoughtFood.stages.5.label>
+  <Gastronomy_BoughtFood.stages.5.description>特別なメニューが食べられた。</Gastronomy_BoughtFood.stages.5.description>
+
+</LanguageData>

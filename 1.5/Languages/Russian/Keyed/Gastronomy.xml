@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+	<!-- Settings -->
+	<ShowAlertNoDedicatedWaiter>Показать предупреждение при отсутствии официанта</ShowAlertNoDedicatedWaiter>
+	<ShowAlertNoDedicatedWaiterDesc>Показывать предупреждение, если нет доступных рабочих в часы работы ресторана</ShowAlertNoDedicatedWaiterDesc>
+  
+	<!-- Cash register -->
+	<!-- <MustPlaceOnTable>Должен быть размещён на столе</MustPlaceOnTable> -->
+	<!-- <MustPlaceOnFreeSurface>Должен быть размещен на свободной поверхности</MustPlaceOnFreeSurface> -->
+	
+	<!-- Messages -->
+	<MessageIncomeToday>Доход ресторана за сегодня: {0}.</MessageIncomeToday>
+	
+	<!-- Register tab -->
+	<!-- <TabRegisterRestaurant>Настройки</TabRegisterRestaurant> -->
+	<!-- Settings -->
+	<TabRegisterOpened>Открыто</TabRegisterOpened>
+	<TabRegisterOpenedTooltip>Если включено, посетители смогут делать заказы в рабочее время.</TabRegisterOpenedTooltip>
+	<TabRegisterGuests>Обслуживать гостей</TabRegisterGuests>
+	<TabRegisterGuestsTooltip>Если включено, гости смогут делать заказы.</TabRegisterGuestsTooltip>
+	<TabRegisterColonists>Обслуживать колонистов.</TabRegisterColonists>
+	<TabRegisterColonistsTooltip>Если включено, колонисты смогут делать заказы.</TabRegisterColonistsTooltip>
+	<TabRegisterPrisoners>Обслуживать пленников</TabRegisterPrisoners>
+	<TabRegisterPrisonersTooltip>Если включено, пленники смогут делать заказы.</TabRegisterPrisonersTooltip>
+	<TabRegisterGuestsHaveToPay>Требовать оплату с гостей</TabRegisterGuestsHaveToPay>
+	<TabRegisterGuestHaveToPayTooltip>Если включено, гости должны будут заплатить за заказ {0} от его рыночной стоимости.</TabRegisterGuestHaveToPayTooltip>
+	<TabRegisterDebtTooltip>{0}: {1} (нажмите для сброса)</TabRegisterDebtTooltip>
+	
+	<!-- Stats -->
+	<TabRegisterRadius>Радиус</TabRegisterRadius>
+	<TabRegisterSeats>Мест:</TabRegisterSeats>
+	<TabRegisterPatrons>Посетители:</TabRegisterPatrons>
+	<TabRegisterTotalOrders>Всего заказов:</TabRegisterTotalOrders>
+	<TabRegisterNeedsServing>Ожидают подачи:</TabRegisterNeedsServing>
+	<TabRegisterNeedsCooking>Ожидают приготовления:</TabRegisterNeedsCooking>
+	<TabRegisterStocked>Готовые блюда:</TabRegisterStocked>
+	<TabRegisterDebts>Неоплаченные счета:</TabRegisterDebts>
+	<TabRegisterEarnedYesterday>Заработано вчера:</TabRegisterEarnedYesterday>
+	<TabRegisterEarnedToday>Заработано сегодня:</TabRegisterEarnedToday>
+	
+	<!-- Dining -->
+	<CommandToggleDining>Ресторан</CommandToggleDining>
+	<CommandToggleDiningDesc>Если включено, посетители будут использовать это место для заказа еды.</CommandToggleDiningDesc>
+	<CommandSetDeco>Оформление</CommandSetDeco>
+	<CommandSetDecoDesc>Изменить внешний вид оформления стола.</CommandSetDecoDesc>
+	<JobDineGoReport>Ест в ресторане.</JobDineGoReport>
+	
+	<!-- Alerts -->
+	<NoDedicatedWaiter>Нет доступных официантов</NoDedicatedWaiter>
+	<NoDedicatedWaiterExplanation>У вас есть столы для ресторана и они накрыты, но отсутствуют официанты.\nУбедитесь, что хотя бы один колонист назначен на работу официантом и может работать в рабочие часы ресторана.\n\nВы также можете изменить рабочие часы ресторана построив кассовый аппарат.</NoDedicatedWaiterExplanation>
+
+</LanguageData>
