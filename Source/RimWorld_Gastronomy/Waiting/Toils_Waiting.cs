@@ -107,7 +107,7 @@ namespace Gastronomy.Waiting
             void InitAction()
             {
                 toil.actor.pather.StopDead();
-                if(toil.actor.CurJob?.GetTarget(registerInd).Thing is Building_CashRegister register)
+                if (toil.actor.CurJob?.GetTarget(registerInd).Thing is Building_CashRegister register)
                 {
                     var offset = register.InteractionCell - register.Position;
                     toil.actor.rotationTracker.FaceCell(toil.actor.Position + offset);
@@ -126,7 +126,7 @@ namespace Gastronomy.Waiting
                 }
                 else
                 {
-                    Log.Message($"Waiting - register disappeared.");
+                    Log.Message("Waiting - register disappeared.");
                     toil.actor.jobs.curDriver.ReadyForNextToil();
                     return;
                 }
@@ -150,11 +150,12 @@ namespace Gastronomy.Waiting
 
         public static Toil FindRandomAdjacentCell(TargetIndex adjacentToInd, TargetIndex cellInd, int maxRadius = 4)
         {
-            Toil findCell = new Toil {atomicWithPrevious = true};
-            findCell.initAction = delegate {
-                Pawn actor = findCell.actor;
-                Job curJob = actor.CurJob;
-                LocalTargetInfo target = curJob.GetTarget(adjacentToInd);
+            var findCell = new Toil { atomicWithPrevious = true };
+            findCell.initAction = delegate
+            {
+                var actor = findCell.actor;
+                var curJob = actor.CurJob;
+                var target = curJob.GetTarget(adjacentToInd);
                 if (target.HasThing && (!target.Thing.Spawned || target.Thing.Map != actor.Map))
                 {
                     Log.Error(actor + " could not find standable cell adjacent to " + target + " because this thing is either unspawned or spawned somewhere else.");
@@ -163,9 +164,13 @@ namespace Gastronomy.Waiting
                 else
                 {
                     // Try radius 2-4
-                    for (int radius = 0; radius <= maxRadius; radius++)
+                    for (var radius = 0; radius <= maxRadius; radius++)
                     {
-                        bool Validator(IntVec3 c) => c.Standable(actor.Map) && c.GetFirstPawn(actor.Map) == null;
+                        bool Validator(IntVec3 c)
+                        {
+                            return c.Standable(actor.Map) && c.GetFirstPawn(actor.Map) == null;
+                        }
+
                         if (CellFinder.TryFindRandomReachableNearbyCell(actor.Position, actor.Map, radius, TraverseParms.For(TraverseMode.NoPassClosedDoors), Validator, null, out var result))
                         {
                             curJob.SetTarget(cellInd, result);
@@ -184,13 +189,13 @@ namespace Gastronomy.Waiting
 
         public static Toil ClearOrder(TargetIndex patronInd, TargetIndex foodInd, TargetIndex silverInd, TargetIndex registerInd)
         {
-            var toil = new Toil {atomicWithPrevious = true};
+            var toil = new Toil { atomicWithPrevious = true };
             toil.initAction = InitAction;
             return toil;
 
             void InitAction()
             {
-                Pawn actor = toil.actor;
+                var actor = toil.actor;
                 var curJob = actor.CurJob;
                 var targetPatron = curJob.GetTarget(patronInd);
                 var targetFood = curJob.GetTarget(foodInd);
@@ -198,14 +203,14 @@ namespace Gastronomy.Waiting
                 var patron = targetPatron.Pawn;
                 if (!targetPatron.HasThing || patron == null)
                 {
-                    Log.Error($"Can't clear order. No patron.");
+                    Log.Error("Can't clear order. No patron.");
                     return;
                 }
 
                 var food = targetFood.Thing;
                 if (!targetFood.HasThing || food == null)
                 {
-                    Log.Error($"Can't clear order. No food.");
+                    Log.Error("Can't clear order. No food.");
                     return;
                 }
 
@@ -222,6 +227,7 @@ namespace Gastronomy.Waiting
                             actor.jobs.curDriver.EndJobWith(JobCondition.Errored);
                             return;
                         }
+
                         var restaurant = order.Restaurant;
                         restaurant.Debts.Add(food, patron);
                         restaurant.Orders.CompleteOrderFor(patron);
@@ -279,22 +285,22 @@ namespace Gastronomy.Waiting
 
             void InitAction()
             {
-                Pawn actor = toil.actor;
-                Job curJob = actor.CurJob;
-                LocalTargetInfo targetPatron = curJob.GetTarget(patronInd);
-                LocalTargetInfo targetFood = curJob.GetTarget(foodInd);
+                var actor = toil.actor;
+                var curJob = actor.CurJob;
+                var targetPatron = curJob.GetTarget(patronInd);
+                var targetFood = curJob.GetTarget(foodInd);
 
                 var patron = targetPatron.Pawn;
                 if (!targetPatron.HasThing || patron == null)
                 {
-                    Log.Warning($"Can't announce serving. No patron.");
+                    Log.Warning("Can't announce serving. No patron.");
                     return;
                 }
 
                 var food = targetFood.Thing;
                 if (!targetFood.HasThing || food == null)
                 {
-                    Log.Warning($"Can't announce serving. No food.");
+                    Log.Warning("Can't announce serving. No food.");
                     return;
                 }
 
@@ -315,12 +321,13 @@ namespace Gastronomy.Waiting
 
         public static Toil GetDiningSpot(TargetIndex patronInd, TargetIndex diningSpotInd)
         {
-            Toil toil = new Toil {atomicWithPrevious = true};
-            toil.initAction = () => {
+            var toil = new Toil { atomicWithPrevious = true };
+            toil.initAction = () =>
+            {
                 var patron = toil.actor.CurJob?.GetTarget(patronInd).Pawn;
                 if (patron == null)
                 {
-                    Log.Warning($"Couldn't get patron.");
+                    Log.Warning("Couldn't get patron.");
                     toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
                 }
                 else
@@ -342,13 +349,17 @@ namespace Gastronomy.Waiting
 
         public static Toil MakeTableReady(TargetIndex diningSpotInd, TargetIndex chairInd)
         {
-            Toil toil = new Toil {defaultCompleteMode = ToilCompleteMode.Delay, defaultDuration = 100};
+            var toil = new Toil { defaultCompleteMode = ToilCompleteMode.Delay, defaultDuration = 100 };
             toil.WithProgressBarToilDelay(diningSpotInd, true);
-            toil.AddFinishAction(() => {
+            toil.AddFinishAction(() =>
+            {
                 var target = toil.actor.CurJob.GetTarget(chairInd);
                 IntVec3 chairPos;
 
-                if (target.IsValid) chairPos = target.Cell;
+                if (target.IsValid)
+                {
+                    chairPos = target.Cell;
+                }
                 else
                 {
                     toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
@@ -368,14 +379,21 @@ namespace Gastronomy.Waiting
 
         public static Toil UpdateOrderConsumableTo(TargetIndex patronInd, TargetIndex consumableInd)
         {
-            Toil toil = new Toil {atomicWithPrevious = true};
-            toil.initAction = () => {
+            var toil = new Toil { atomicWithPrevious = true };
+            toil.initAction = () =>
+            {
                 var patron = toil.actor.CurJob?.GetTarget(patronInd).Pawn;
-                if (patron == null) toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                if (patron == null)
+                {
+                    toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                }
                 else
                 {
                     var consumable = toil.actor.CurJob.GetTarget(consumableInd).Thing;
-                    if (consumable == null) toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                    if (consumable == null)
+                    {
+                        toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
+                    }
                     else
                     {
                         //Log.Message($"{toil.actor.NameShortColored} updated the consumable {toil.actor.GetRestaurant().GetOrderFor(patron).consumable.Label} to {consumable.Label}.");
@@ -389,8 +407,9 @@ namespace Gastronomy.Waiting
 
         public static Toil GetRandomDiningSpotCellForMakingTable(TargetIndex diningSpotInd, TargetIndex outputInd)
         {
-            Toil toil = new Toil {atomicWithPrevious = true};
-            toil.initAction = () => {
+            var toil = new Toil { atomicWithPrevious = true };
+            toil.initAction = () =>
+            {
                 if (toil.actor.CurJob?.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
                 {
                     var cell = diningSpot.GetUnmadeSpotCells().InRandomOrder().FirstOrFallback(LocalTargetInfo.Invalid);
@@ -406,8 +425,9 @@ namespace Gastronomy.Waiting
 
         public static Toil GetSpecificDiningSpotCellForMakingTable(TargetIndex diningSpotInd, TargetIndex patronInd, TargetIndex chairInd)
         {
-            var toil = new Toil {atomicWithPrevious = true};
-            toil.initAction = () => {
+            var toil = new Toil { atomicWithPrevious = true };
+            toil.initAction = () =>
+            {
                 if (toil.actor.CurJob?.GetTarget(diningSpotInd).Thing is DiningSpot diningSpot)
                 {
                     var patron = toil.actor.CurJob?.GetTarget(patronInd).Pawn;
@@ -421,10 +441,15 @@ namespace Gastronomy.Waiting
                             toil.actor.CurJob.SetTarget(chairInd, cell);
                             return; // Success
                         }
+
                         Log.Warning($"Failed to get make table cell from {patron.NameShortColored}. Cell was invalid (chair = {cell}, table = {diningSpot.Position}). Moving = {patron.pather.MovingNow}");
                     }
-                    else Log.Warning($"Failed to get make table cell. Patron was null.");
+                    else
+                    {
+                        Log.Warning("Failed to get make table cell. Patron was null.");
+                    }
                 }
+
                 toil.actor.jobs.EndCurrentJob(JobCondition.Errored);
             };
             return toil;
@@ -438,12 +463,10 @@ namespace Gastronomy.Waiting
 
         public static Toil GetInteractionCell(TargetIndex registerInd, TargetIndex cellInd)
         {
-            var toil = new Toil {atomicWithPrevious = true};
-            toil.initAction = () => {
-                if (toil.actor.CurJob?.GetTarget(registerInd).Thing is Building_CashRegister register)
-                {
-                    toil.actor.CurJob.SetTarget(cellInd, register.InteractionCell);
-                }
+            var toil = new Toil { atomicWithPrevious = true };
+            toil.initAction = () =>
+            {
+                if (toil.actor.CurJob?.GetTarget(registerInd).Thing is Building_CashRegister register) toil.actor.CurJob.SetTarget(cellInd, register.InteractionCell);
             };
             return toil;
         }
