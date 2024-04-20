@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+  
+	<!-- Errors -->
+	<ErrorRequiresCashRegister>Gastronomy now requires the 'Cash Register' mod to be loaded.
+
+I had to create it in order to be able to work on a new feature. Sorry about this inconvenience.
+
+If you add the 'Cash Register' mod, Gastronomy will continue working as before.
+
+
+-- Regards, Orion</ErrorRequiresCashRegister>
+  
+	<!-- Messages -->
+	<MessageIncomeToday>Twoja restauracja zarobiła dziś {0}.</MessageIncomeToday>
+	
+	<!-- Register tab - can't be very long (Restaurant is already too long) -->
+	<TabRegisterRestaurant>Melina</TabRegisterRestaurant>
+	
+	<!-- Restaurant selection -->
+	<RestaurantDefaultName>restauracja {0}</RestaurantDefaultName>
+	<RestaurantTooltipSelect>Wybierz, która restauracja jest powiązana z tą kasą.</RestaurantTooltipSelect>
+	<RestaurantTooltipRename>Zmień nazwę tej restauracji.</RestaurantTooltipRename>
+	<RestaurantTooltipAdd>Dodaj kolejną restaurację.</RestaurantTooltipAdd>
+	<RestaurantTooltipRemove>Usuń tę restaurację.</RestaurantTooltipRemove>
+	<RestaurantDialogConfirmRemove>Czy na pewno chcesz usunąć '{0}'?</RestaurantDialogConfirmRemove>
+	
+	<!-- Settings -->
+	<TabRegisterOpened>Otwarte</TabRegisterOpened>
+	<TabRegisterOpenedTooltip>Gdy zaznaczone, klienci mogą składać zamówienia podczas trwającej zmiany.</TabRegisterOpenedTooltip>
+	<TabRegisterGuests>Dopuszczaj gości</TabRegisterGuests>
+	<TabRegisterGuestsTooltip>Gdy zaznaczone, goście będą składać zamówienia.</TabRegisterGuestsTooltip>
+	<TabRegisterColonists>Dopuszczaj kolonistów</TabRegisterColonists>
+	<TabRegisterColonistsTooltip>Gdy zaznaczone, koloniści będą składać zamówienia.</TabRegisterColonistsTooltip>
+	<TabRegisterPrisoners>Dopuszczaj więźniów</TabRegisterPrisoners>
+	<TabRegisterPrisonersTooltip>Gdy zaznaczone, więźniowie będą składać zamówienia.</TabRegisterPrisonersTooltip>
+	<TabRegisterSlaves>Dopuszczaj niewolników</TabRegisterSlaves>
+	<TabRegisterSlavesTooltip>Gdy zaznaczone, niewolnicy będą składać zamówienia.</TabRegisterSlavesTooltip>
+	<TabRegisterGuestPrice>Cena dla gości: {0}</TabRegisterGuestPrice>
+	<TabRegisterGuestPriceTooltip>Mnożnik wartości rynkowej. Możesz zobaczyć indywidualne ceny, gdy wskażesz zapasy. Ten mnożnik wpływa na nastrój klientów.</TabRegisterGuestPriceTooltip>
+	<TabRegisterGuestPriceFree>Za darmo</TabRegisterGuestPriceFree>
+	<TabRegisterDebtTooltip>{0}: {1} (kliknij, aby usunąć)</TabRegisterDebtTooltip>
+	
+	<!-- Stats -->
+	<TabRegisterRadius>Promień</TabRegisterRadius>
+	<TabRegisterActiveStaff>Aktywny personel:</TabRegisterActiveStaff>
+	<TabRegisterSeats>Miejsca:</TabRegisterSeats>
+	<TabRegisterPatrons>Klienci:</TabRegisterPatrons>
+	<TabRegisterTotalOrders>Wszystkie zamówienia:</TabRegisterTotalOrders>
+	<TabRegisterNeedsServing>Zamówienia do podania:</TabRegisterNeedsServing>
+	<TabRegisterNeedsCooking>Zamówienia do przygotowania:</TabRegisterNeedsCooking>
+	<TabRegisterStocked>Posiłki na stanie:</TabRegisterStocked>
+	<TabRegisterDebts>Nieopłacone rachunki:</TabRegisterDebts>
+	<TabRegisterEarnedYesterday>Zarobiono wczoraj:</TabRegisterEarnedYesterday>
+	<TabRegisterEarnedToday>Zarobiono dziś:</TabRegisterEarnedToday>
+	
+	<!-- Dining -->
+	<CommandToggleDining>Otwarte na jadalnię</CommandToggleDining>
+	<CommandToggleDiningDesc>Gdy włączone, to miejsce może być używane jako jadalnia.</CommandToggleDiningDesc>
+	<CommandSetDeco>Zmień dekoracje</CommandSetDeco>
+	<CommandSetDecoDesc>Zmień dekoracje na stole.</CommandSetDecoDesc>
+	<JobDineGoReportSpecific>Jedzenie w {0}.</JobDineGoReportSpecific>
+	<JobDineGoReport>Jedzenie w restauracji.</JobDineGoReport>
+	
+	<!-- Alerts -->
+	<AlertNoRegister>Brak kasy</AlertNoRegister>
+	<AlertNoRegisterExplanation>Aby otworzyć swoją restaurację, potrzebujesz przynajmniej jednej kasy. Można ją zbudować z zakładki produkcji.</AlertNoRegisterExplanation>
+	<AlertNoWaiter>Brak kelnera</AlertNoWaiter>
+	<AlertNoWaiterExplanation>Aby obsłużyć swoją restaurację, musisz przypisać przynajmniej jedną zmianę w kasie i wyznaczyć zdolnego kelnera.</AlertNoWaiterExplanation>
+
+</LanguageData>

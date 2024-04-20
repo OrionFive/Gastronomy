@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_Waiting.label>Czekaj</Gastronomy_Waiting.label>
+  <Gastronomy_Waiting.description>Przyjmowanie zamówień i podawanie posiłków.</Gastronomy_Waiting.description>
+  <Gastronomy_Waiting.labelShort>Czekaj</Gastronomy_Waiting.labelShort>
+  <Gastronomy_Waiting.pawnLabel>Kelner</Gastronomy_Waiting.pawnLabel>
+  <Gastronomy_Waiting.gerundLabel>czekanie</Gastronomy_Waiting.gerundLabel>
+  <Gastronomy_Waiting.verb>Czekaj</Gastronomy_Waiting.verb>
+
+</LanguageData>

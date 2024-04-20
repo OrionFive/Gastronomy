@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Gastronomy_Serviced.stages.0.label>okropna obsługa</Gastronomy_Serviced.stages.0.label>
+  <Gastronomy_Serviced.stages.1.label>zła obsługa</Gastronomy_Serviced.stages.1.label>
+  <Gastronomy_Serviced.stages.2.label>przyzwoita obsługa</Gastronomy_Serviced.stages.2.label>
+  <Gastronomy_Serviced.stages.3.label>dobra obsługa</Gastronomy_Serviced.stages.3.label>
+  <Gastronomy_Serviced.stages.4.label>doskonała obsługa</Gastronomy_Serviced.stages.4.label>
+
+  <Gastronomy_ServicedMood.stages.0.label>doświadczyłem okropnej obsługi</Gastronomy_ServicedMood.stages.0.label>
+  <Gastronomy_ServicedMood.stages.0.description>Zostałem potraktowany okropnie.</Gastronomy_ServicedMood.stages.0.description>
+  <Gastronomy_ServicedMood.stages.1.label>doświadczyłem złej obsługi</Gastronomy_ServicedMood.stages.1.label>
+  <Gastronomy_ServicedMood.stages.1.description>Zostałem potraktowany źle.</Gastronomy_ServicedMood.stages.1.description>
+  <Gastronomy_ServicedMood.stages.2.label>doświadczyłem przyzwoitej obsługi</Gastronomy_ServicedMood.stages.2.label>
+  <Gastronomy_ServicedMood.stages.2.description>Zostałem potraktowany przyzwoicie.</Gastronomy_ServicedMood.stages.2.description>
+  <Gastronomy_ServicedMood.stages.3.label>doświadczyłem dobrej obsługi</Gastronomy_ServicedMood.stages.3.label>
+  <Gastronomy_ServicedMood.stages.3.description>Zostałem potraktowany dobrze.</Gastronomy_ServicedMood.stages.3.description>
+  <Gastronomy_ServicedMood.stages.4.label>doświadczyłem doskonałej obsługi</Gastronomy_ServicedMood.stages.4.label>
+  <Gastronomy_ServicedMood.stages.4.description>Zostałem potraktowany wyjątkowo dobrze.</Gastronomy_ServicedMood.stages.4.description>
+
+  <Gastronomy_BoughtFood.stages.0.label>otrzymałem darmowe jedzenie</Gastronomy_BoughtFood.stages.0.label>
+  <Gastronomy_BoughtFood.stages.0.description>Jedzenie jest za darmo!</Gastronomy_BoughtFood.stages.0.description>
+  <Gastronomy_BoughtFood.stages.1.label>otrzymałem bardzo tanie jedzenie</Gastronomy_BoughtFood.stages.1.label>
+  <Gastronomy_BoughtFood.stages.1.description>Jedzenie jest bardzo tanie.</Gastronomy_BoughtFood.stages.1.description>
+  <Gastronomy_BoughtFood.stages.2.label>otrzymałem tanie jedzenie</Gastronomy_BoughtFood.stages.2.label>
+  <Gastronomy_BoughtFood.stages.2.description>Jedzenie jest tanie.</Gastronomy_BoughtFood.stages.2.description>
+  <Gastronomy_BoughtFood.stages.3.label>otrzymałem jedzenie</Gastronomy_BoughtFood.stages.3.label>
+  <Gastronomy_BoughtFood.stages.3.description>Jedzenie jest w przystępnej cenie.</Gastronomy_BoughtFood.stages.3.description>
+  <Gastronomy_BoughtFood.stages.4.label>otrzymałem drogie jedzenie</Gastronomy_BoughtFood.stages.4.label>
+  <Gastronomy_BoughtFood.stages.4.description>Jedzenie jest drogie.</Gastronomy_BoughtFood.stages.4.description>
+  <Gastronomy_BoughtFood.stages.5.label>otrzymałem bardzo drogie jedzenie</Gastronomy_BoughtFood.stages.5.label>
+  <Gastronomy_BoughtFood.stages.5.description>Jedzenie jest bardzo drogie.</Gastronomy_BoughtFood.stages.5.description>
+
+</LanguageData>
