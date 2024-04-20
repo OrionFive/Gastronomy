@@ -174,13 +174,13 @@ namespace Gastronomy.Waiting
                         if (CellFinder.TryFindRandomReachableNearbyCell(actor.Position, actor.Map, radius, TraverseParms.For(TraverseMode.NoPassClosedDoors), Validator, null, out var result))
                         {
                             curJob.SetTarget(cellInd, result);
-                            //Log.Message($"{actor.NameShortColored} found a place to stand at {result}. radius = {radius}");
+                            Log.Message($"{actor.NameShortColored} found a place to stand at {result}. radius = {radius}");
                             return;
                         }
                     }
 
                     // This can happen if there's no space or it's crowded
-                    //Log.Error(actor + " could not find standable cell adjacent to " + target);
+                    Log.Error(actor + " could not find standable cell adjacent to " + target);
                     actor.jobs.curDriver.EndJobWith(JobCondition.Incompletable);
                 }
             };
