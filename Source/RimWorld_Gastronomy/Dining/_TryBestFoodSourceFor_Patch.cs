@@ -15,11 +15,11 @@ namespace Gastronomy.Dining
         /// <summary>
         /// This is for GetFood_Patch, so we can see what restaurant was found for the dining spot. Very hacky, but should work.
         /// </summary>
-        internal static RestaurantController LastRestaurantResult { get; private set; } 
+        internal static RestaurantController LastRestaurantResult { get; private set; }
 
         /// <summary>
         /// Patching _NewTemp if it exists, or original version if it doesn't, so players with older versions don't run into issues.
-        /// Also: Goddammit, Ludeon :(
+        ///     Also: Goddammit, Ludeon :(
         /// </summary>
         [HarmonyPatch]
         public class TryFindBestFoodSourceFor

@@ -260,5 +260,23 @@ public static class DiningUtility
     {
         return patron is { Dead: false, IsPrisoner: false } && patron.HasToPay();
     }
+
+    public static bool IsChairAdjacent(IntVec3 position, Map map)
+    {
+        for (var i = 0; i < 4; i++)
+        {
+            var intVec = position + new Rot4(i).FacingCell;
+            var things = intVec.GetThingList(map);
+            foreach (var thing in things)
+            {
+                // Check if it's a sittable thing
+                if (thing.def.building is not { isSittable: true }) continue;
+                // Check if it's facing correctly
+                if (thing.def.rotatable && intVec + thing.Rotation.FacingCell != position) continue;
+                return true;
+            }
+        }
+
+        return false;
     }
 }

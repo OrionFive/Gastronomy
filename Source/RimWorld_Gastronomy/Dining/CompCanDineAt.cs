@@ -110,14 +110,14 @@ public class CompCanDineAt : ThingComp
             if (diningSpots.Any(s => s.Position == pos)) continue;
 
             var map = parent.Map;
-                if (PlaceWorker_OnTable.NotOccupied(pos, map))
-                {
+            if (!PlaceWorker_OnTable.NotOccupied(pos, map)) continue;
+            if (!DiningUtility.IsChairAdjacent(pos, parent.Map)) continue;
+
             var diningSpot = (DiningSpot)GenSpawn.Spawn(DiningDefOf.Gastronomy_DiningSpot, pos, map);
             diningSpot.DecoVariation = decoVariation;
             diningSpots.Add(diningSpot);
         }
     }
-        }
 
     public override void PostDeSpawn(Map map)
     {
@@ -132,5 +132,29 @@ public class CompCanDineAt : ThingComp
             TrySpawnDiningSpots();
         }
     }
+
+    private void RefreshAllSpots()
+    {
+        // TODO: Find a cheap way to update spots so when chairs are placed or removed, the spots are updated
+        if (!allowDining) return;
+        CheckIfMoreOrLessSpotsAreNeeded();
+    }
+
+    private void CheckIfMoreOrLessSpotsAreNeeded()
+    {
+        var anyChanges = false;
+        foreach (var diningSpot in diningSpots)
+        {
+            var pos = diningSpot.Position;
+            if (PlaceWorker_OnTable.NotOccupied(pos, parent.Map)) continue;
+            if (DiningUtility.IsChairAdjacent(pos, parent.Map)) continue;
+
+            // Not valid anymore >> remove
+            diningSpot.Destroy();
+            anyChanges = true;
+        }
+
+        if (anyChanges) diningSpots.RemoveAll(d => d.DestroyedOrNull());
+        TrySpawnDiningSpots();
     }
 }
