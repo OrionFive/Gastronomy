@@ -5,131 +5,132 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Gastronomy.Dining
+namespace Gastronomy.Dining;
+
+public class CompCanDineAt : ThingComp
 {
-    public class CompCanDineAt : ThingComp
+    private bool allowDining;
+    private int decoVariation; // Stored so when turning dining on and off it's remembered
+    private List<DiningSpot> diningSpots = new();
+
+    public CompProperties_CanDineAt Props => props as CompProperties_CanDineAt;
+
+    public bool CanDineAt => allowDining;
+
+    private int DecoVariation => diningSpots.FirstOrDefault()?.DecoVariation ?? 0;
+
+    public override void PostExposeData()
     {
-        private bool allowDining;
-        private List<DiningSpot> diningSpots = new List<DiningSpot>();
-        private int decoVariation; // Stored so when turning dining on and off it's remembered
+        base.PostExposeData();
+        Scribe_Values.Look(ref allowDining, "switchOn");
+        Scribe_Values.Look(ref decoVariation, "decoVariation");
+        Scribe_Collections.Look(ref diningSpots, "diningSpots", LookMode.Reference);
+    }
 
-        public CompProperties_CanDineAt Props => props as CompProperties_CanDineAt;
+    public override void Initialize(CompProperties props)
+    {
+        base.Initialize(props);
+        DiningUtility.RegisterDiningSpotHolder(parent);
+    }
 
-        public bool CanDineAt => allowDining;
-
-        public override void PostExposeData()
+    public override IEnumerable<Gizmo> CompGetGizmosExtra()
+    {
+        foreach (var item in base.CompGetGizmosExtra())
         {
-            base.PostExposeData();
-            Scribe_Values.Look(ref allowDining, "switchOn");
-            Scribe_Values.Look(ref decoVariation, "decoVariation");
-            Scribe_Collections.Look(ref diningSpots, "diningSpots", LookMode.Reference);
+            yield return item;
         }
 
-        public override void Initialize(CompProperties props)
+        if (parent.Faction == Faction.OfPlayer)
         {
-            base.Initialize(props);
-            DiningUtility.RegisterDiningSpotHolder(parent);
+            var command_Toggle = new Command_Toggle
+            {
+                hotKey = KeyBindingDefOf.Command_TogglePower,
+                icon = ContentFinder<Texture2D>.Get("UI/Commands/ToggleDining"),
+                defaultLabel = "CommandToggleDining".Translate(),
+                defaultDesc = "CommandToggleDiningDesc".Translate(),
+                isActive = () => allowDining,
+                toggleAction = ToggleDining
+            };
+            yield return command_Toggle;
         }
 
-        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        if (allowDining)
         {
-            foreach (Gizmo item in base.CompGetGizmosExtra())
+            var command_SetDeco = new Command_Action
             {
-                yield return item;
-            }
+                hotKey = KeyBindingDefOf.Misc2,
+                icon = ContentFinder<Texture2D>.Get($"Things/DiningSpot/Center{DecoVariation}"),
+                defaultLabel = "CommandSetDeco".Translate(),
+                defaultDesc = "CommandSetDecoDesc".Translate(),
+                action = ChangeDeco
+            };
+            yield return command_SetDeco;
+        }
+    }
 
-            if (parent.Faction == Faction.OfPlayer)
-            {
-                var command_Toggle = new Command_Toggle
-                {
-                    hotKey = KeyBindingDefOf.Command_TogglePower,
-                    icon = ContentFinder<Texture2D>.Get("UI/Commands/ToggleDining"),
-                    defaultLabel = "CommandToggleDining".Translate(),
-                    defaultDesc = "CommandToggleDiningDesc".Translate(),
-                    isActive = () => allowDining,
-                    toggleAction = ToggleDining
-                };
-                yield return command_Toggle;
-            }
+    private void ChangeDeco()
+    {
+        decoVariation = (decoVariation + 1) % Graphic_DiningSpot.DecoVariations;
 
-            if (allowDining)
-            {
-                var command_SetDeco = new Command_Action
-                {
-                    hotKey = KeyBindingDefOf.Misc2,
-                    icon = ContentFinder<Texture2D>.Get($"Things/DiningSpot/Center{DecoVariation}"),
-                    defaultLabel = "CommandSetDeco".Translate(),
-                    defaultDesc = "CommandSetDecoDesc".Translate(),
-                    action = ChangeDeco
-                };
-                yield return command_SetDeco;
-            }
+        foreach (var diningSpot in diningSpots)
+        {
+            diningSpot.DecoVariation = decoVariation;
+        }
+    }
+
+    private void ToggleDining()
+    {
+        allowDining = !allowDining;
+        if (allowDining)
+        {
+            TrySpawnDiningSpots();
+        }
+        else
+        {
+            TryRemoveDiningSpots();
+        }
+    }
+
+    private void TryRemoveDiningSpots()
+    {
+        foreach (var diningSpot in diningSpots)
+        {
+            if (diningSpot.Destroyed) continue;
+            diningSpot?.Destroy();
         }
 
-        private int DecoVariation => diningSpots.FirstOrDefault()?.DecoVariation ?? 0;
+        diningSpots.Clear();
+    }
 
-        private void ChangeDeco()
+    private void TrySpawnDiningSpots()
+    {
+        foreach (var pos in parent.OccupiedRect())
         {
-            decoVariation = (decoVariation + 1) % Graphic_DiningSpot.DecoVariations;
+            // In case there already are dining spots
+            if (diningSpots.Any(s => s.Position == pos)) continue;
 
-            foreach (var diningSpot in diningSpots)
-            {
-                diningSpot.DecoVariation = decoVariation;
-            }
-        }
-
-        private void ToggleDining()
-        {
-            allowDining = !allowDining;
-            if (allowDining)
-            {
-                TrySpawnDiningSpots();
-            }
-            else
-            {
-                TryRemoveDiningSpots();
-            }
-        }
-
-        private void TryRemoveDiningSpots()
-        {
-            foreach (var diningSpot in diningSpots)
-            {
-                if (diningSpot.Destroyed) continue;
-                diningSpot?.Destroy();
-            }
-            diningSpots.Clear();
-        }
-
-        private void TrySpawnDiningSpots()
-        {
-            foreach (var pos in parent.OccupiedRect())
-            {
-                // In case there already are dining spots
-                if (diningSpots.Any(s => s.Position == pos)) continue;
-
-                var map = parent.Map;
+            var map = parent.Map;
                 if (PlaceWorker_OnTable.NotOccupied(pos, map))
                 {
-                    var diningSpot = (DiningSpot) GenSpawn.Spawn(DiningDefOf.Gastronomy_DiningSpot, pos, map);
-                    diningSpot.DecoVariation = decoVariation;
-                    diningSpots.Add(diningSpot);
-                }
-            }
+            var diningSpot = (DiningSpot)GenSpawn.Spawn(DiningDefOf.Gastronomy_DiningSpot, pos, map);
+            diningSpot.DecoVariation = decoVariation;
+            diningSpots.Add(diningSpot);
+        }
+    }
         }
 
-        public override void PostDeSpawn(Map map)
-        {
-            if (allowDining) ToggleDining();
-        }
+    public override void PostDeSpawn(Map map)
+    {
+        if (allowDining) ToggleDining();
+    }
 
-        public void Notify_BuildingDespawned(Building building)
+    public void Notify_BuildingDespawned(Building building)
+    {
+        // A building was despawned at my current position
+        if (building != parent && allowDining)
         {
-            // A building was despawned at my current position
-            if (building != parent && allowDining)
-            {
-                TrySpawnDiningSpots();
-            }
+            TrySpawnDiningSpots();
         }
+    }
     }
 }

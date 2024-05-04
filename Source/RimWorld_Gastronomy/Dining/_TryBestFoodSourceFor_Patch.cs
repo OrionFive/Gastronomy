@@ -1,8 +1,8 @@
 using System.Linq;
+using System.Reflection;
 using Gastronomy.Restaurant;
 using HarmonyLib;
 using RimWorld;
-using System.Reflection;
 using Verse;
 
 namespace Gastronomy.Dining
