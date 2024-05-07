@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- EN: awful service -->
+  <Gastronomy_Serviced.stages.0.label>ужасное обслуживание</Gastronomy_Serviced.stages.0.label>
+  <!-- EN: bad service -->
+  <Gastronomy_Serviced.stages.1.label>плохое обслуживание</Gastronomy_Serviced.stages.1.label>
+  <!-- EN: decent service -->
+  <Gastronomy_Serviced.stages.2.label>приемлемое обслуживание</Gastronomy_Serviced.stages.2.label>
+  <!-- EN: good service -->
+  <Gastronomy_Serviced.stages.3.label>хорошее обслуживание</Gastronomy_Serviced.stages.3.label>
+  <!-- EN: excellent service -->
+  <Gastronomy_Serviced.stages.4.label>отличное обслуживание</Gastronomy_Serviced.stages.4.label>
+
+  <!-- EN: had to wait for food -->
+  <Gastronomy_HadToWait.stages.0.label>пришлось ждать обслуживания</Gastronomy_HadToWait.stages.0.label>
+  <!-- EN: I had to wait long at the restaurant. -->
+  <Gastronomy_HadToWait.stages.0.description>Мне пришлось долго ждать, пока меня обслужат в этом ресторане.</Gastronomy_HadToWait.stages.0.description>
+
+  <!-- EN: had awful service -->
+  <Gastronomy_ServicedMood.stages.0.label>ужасное обслуживание</Gastronomy_ServicedMood.stages.0.label>
+  <!-- EN: I've been treated awfully. -->
+  <Gastronomy_ServicedMood.stages.0.description>Обслуживание было ужасным!</Gastronomy_ServicedMood.stages.0.description>
+
+  <!-- EN: had bad service -->
+  <Gastronomy_ServicedMood.stages.1.label>плохое обслуживание</Gastronomy_ServicedMood.stages.1.label>
+  <!-- EN: I've been treated poorly. -->
+  <Gastronomy_ServicedMood.stages.1.description>Меня плохо обслужили.</Gastronomy_ServicedMood.stages.1.description>
+
+  <!-- EN: had decent service -->
+  <Gastronomy_ServicedMood.stages.2.label>приемлемое обслуживание</Gastronomy_ServicedMood.stages.2.label>
+  <!-- EN: I've been treated decently. -->
+  <Gastronomy_ServicedMood.stages.2.description>Меня обслужили достаточно хорошо.</Gastronomy_ServicedMood.stages.2.description>
+
+  <!-- EN: had good service -->
+  <Gastronomy_ServicedMood.stages.3.label>хорошее обслуживание</Gastronomy_ServicedMood.stages.3.label>
+  <!-- EN: I've been treated well. -->
+  <Gastronomy_ServicedMood.stages.3.description>Меня хорошо обслужили.</Gastronomy_ServicedMood.stages.3.description>
+
+  <!-- EN: had excellent service -->
+  <Gastronomy_ServicedMood.stages.4.label>отличное обслуживание</Gastronomy_ServicedMood.stages.4.label>
+  <!-- EN: I've been treated exceptionally well. -->
+  <Gastronomy_ServicedMood.stages.4.description>Меня прекрасно обслужили!</Gastronomy_ServicedMood.stages.4.description>
+
+  <!-- EN: received free food -->
+  <Gastronomy_BoughtFood.stages.0.label>бесплатная еда</Gastronomy_BoughtFood.stages.0.label>
+  <!-- EN: The food is free! -->
+  <Gastronomy_BoughtFood.stages.0.description>Бесплатная еда!</Gastronomy_BoughtFood.stages.0.description>
+
+  <!-- EN: received very cheap food -->
+  <Gastronomy_BoughtFood.stages.1.label>очень дешёвая еда</Gastronomy_BoughtFood.stages.1.label>
+  <!-- EN: The food is very cheap. -->
+  <Gastronomy_BoughtFood.stages.1.description>Еда тут действительно дешёвая.</Gastronomy_BoughtFood.stages.1.description>
+
+  <!-- EN: received cheap food -->
+  <Gastronomy_BoughtFood.stages.2.label>дешёвая еда</Gastronomy_BoughtFood.stages.2.label>
+  <!-- EN: The food is cheap. -->
+  <Gastronomy_BoughtFood.stages.2.description>Еда стоит недорого.</Gastronomy_BoughtFood.stages.2.description>
+  <!-- EN: received food -->
+  <Gastronomy_BoughtFood.stages.3.label>приемлемая цена</Gastronomy_BoughtFood.stages.3.label>
+  <!-- EN: The food is affordable. -->
+  <Gastronomy_BoughtFood.stages.3.description>Еда стоит приемлемо.</Gastronomy_BoughtFood.stages.3.description>
+
+  <!-- EN: received expensive food -->
+  <Gastronomy_BoughtFood.stages.4.label>дорогая еда</Gastronomy_BoughtFood.stages.4.label>
+  <!-- EN: The food is expensive. -->
+  <Gastronomy_BoughtFood.stages.4.description>Тут довольно дорогая еда.</Gastronomy_BoughtFood.stages.4.description>
+
+  <!-- EN: received very expensive food -->
+  <Gastronomy_BoughtFood.stages.5.label>очень дорогая еда</Gastronomy_BoughtFood.stages.5.label>
+  <!-- EN: The food is very expensive. -->
+  <Gastronomy_BoughtFood.stages.5.description>Это блюдо стоило больших денег.</Gastronomy_BoughtFood.stages.5.description>
+  
+</LanguageData>

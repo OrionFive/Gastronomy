@@ -1,7 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <Gastronomy_Dine.reportString>обедает в ресторане.</Gastronomy_Dine.reportString>
-  <Gastronomy_TakeOrder.reportString>принимает заказ от TargetB.</Gastronomy_TakeOrder.reportString>
-  <Gastronomy_Serve.reportString>несёт TargetB для TargetA.</Gastronomy_Serve.reportString>
-  <Gastronomy_MakeTable.reportString>накрывает на стол.</Gastronomy_MakeTable.reportString>
+
+  <!-- EN: waiting for restaurant work. -->
+  <Gastronomy_StandBy.reportString>стоит за кассой</Gastronomy_StandBy.reportString>
+  <!-- EN: taking order from TargetB. -->
+  <Gastronomy_TakeOrder.reportString>принимает заказ от TargetB</Gastronomy_TakeOrder.reportString>
+  <!-- EN: serving TargetB to TargetA. -->
+  <Gastronomy_Serve.reportString>несёт TargetB для TargetA</Gastronomy_Serve.reportString>
+  <!-- EN: preparing table. -->
+  <Gastronomy_MakeTable.reportString>накрывает на стол</Gastronomy_MakeTable.reportString>
+  <!-- EN: Doing something. -->
+  <Gastronomy_Dine.reportString>обедает в ресторане</Gastronomy_Dine.reportString>
+
 </LanguageData>
