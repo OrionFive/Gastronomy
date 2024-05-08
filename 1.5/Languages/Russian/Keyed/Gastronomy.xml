@@ -1,53 +1,119 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  
-	<!-- Settings -->
-	<ShowAlertNoDedicatedWaiter>Показать предупреждение при отсутствии официанта</ShowAlertNoDedicatedWaiter>
-	<ShowAlertNoDedicatedWaiterDesc>Показывать предупреждение, если нет доступных рабочих в часы работы ресторана</ShowAlertNoDedicatedWaiterDesc>
-  
-	<!-- Cash register -->
-	<!-- <MustPlaceOnTable>Должен быть размещён на столе</MustPlaceOnTable> -->
-	<!-- <MustPlaceOnFreeSurface>Должен быть размещен на свободной поверхности</MustPlaceOnFreeSurface> -->
-	
-	<!-- Messages -->
-	<MessageIncomeToday>Доход ресторана за сегодня: {0}.</MessageIncomeToday>
-	
-	<!-- Register tab -->
-	<!-- <TabRegisterRestaurant>Настройки</TabRegisterRestaurant> -->
-	<!-- Settings -->
-	<TabRegisterOpened>Открыто</TabRegisterOpened>
-	<TabRegisterOpenedTooltip>Если включено, посетители смогут делать заказы в рабочее время.</TabRegisterOpenedTooltip>
-	<TabRegisterGuests>Обслуживать гостей</TabRegisterGuests>
-	<TabRegisterGuestsTooltip>Если включено, гости смогут делать заказы.</TabRegisterGuestsTooltip>
-	<TabRegisterColonists>Обслуживать колонистов.</TabRegisterColonists>
-	<TabRegisterColonistsTooltip>Если включено, колонисты смогут делать заказы.</TabRegisterColonistsTooltip>
-	<TabRegisterPrisoners>Обслуживать пленников</TabRegisterPrisoners>
-	<TabRegisterPrisonersTooltip>Если включено, пленники смогут делать заказы.</TabRegisterPrisonersTooltip>
-	<TabRegisterGuestsHaveToPay>Требовать оплату с гостей</TabRegisterGuestsHaveToPay>
-	<TabRegisterGuestHaveToPayTooltip>Если включено, гости должны будут заплатить за заказ {0} от его рыночной стоимости.</TabRegisterGuestHaveToPayTooltip>
-	<TabRegisterDebtTooltip>{0}: {1} (нажмите для сброса)</TabRegisterDebtTooltip>
-	
-	<!-- Stats -->
-	<TabRegisterRadius>Радиус</TabRegisterRadius>
-	<TabRegisterSeats>Мест:</TabRegisterSeats>
-	<TabRegisterPatrons>Посетители:</TabRegisterPatrons>
-	<TabRegisterTotalOrders>Всего заказов:</TabRegisterTotalOrders>
-	<TabRegisterNeedsServing>Ожидают подачи:</TabRegisterNeedsServing>
-	<TabRegisterNeedsCooking>Ожидают приготовления:</TabRegisterNeedsCooking>
-	<TabRegisterStocked>Готовые блюда:</TabRegisterStocked>
-	<TabRegisterDebts>Неоплаченные счета:</TabRegisterDebts>
-	<TabRegisterEarnedYesterday>Заработано вчера:</TabRegisterEarnedYesterday>
-	<TabRegisterEarnedToday>Заработано сегодня:</TabRegisterEarnedToday>
-	
-	<!-- Dining -->
-	<CommandToggleDining>Ресторан</CommandToggleDining>
-	<CommandToggleDiningDesc>Если включено, посетители будут использовать это место для заказа еды.</CommandToggleDiningDesc>
-	<CommandSetDeco>Оформление</CommandSetDeco>
-	<CommandSetDecoDesc>Изменить внешний вид оформления стола.</CommandSetDecoDesc>
-	<JobDineGoReport>Ест в ресторане.</JobDineGoReport>
-	
-	<!-- Alerts -->
-	<NoDedicatedWaiter>Нет доступных официантов</NoDedicatedWaiter>
-	<NoDedicatedWaiterExplanation>У вас есть столы для ресторана и они накрыты, но отсутствуют официанты.\nУбедитесь, что хотя бы один колонист назначен на работу официантом и может работать в рабочие часы ресторана.\n\nВы также можете изменить рабочие часы ресторана построив кассовый аппарат.</NoDedicatedWaiterExplanation>
+
+  <!-- EN: Gastronomy now requires the 'Cash Register' mod to be loaded.
+
+I had to create it in order to be able to work on a new feature. Sorry about this inconvenience.
+
+If you add the 'Cash Register' mod, Gastronomy will continue working as before.
+
+
+- Regards, Orion -->
+  <ErrorRequiresCashRegister>Для работы этого мода теперь нужен мод Cash Register.
+
+Мне пришлось выделить кассовый аппарат в отдельный мод, чтобы было удобнее разрабатывать новые механики. Извиняюсь за неудобство.
+
+Если вы добавите в свой список модов Cash Register, мод Gastronomy продолжит работать как раньше.
+
+
+- С уважением, Orion.</ErrorRequiresCashRegister>
+
+  <!-- Messages -->
+  <!-- EN: Your restaurant has earned {0} today. -->
+  <MessageIncomeToday>Ваш ресторан заработал сегодня {0}.</MessageIncomeToday>
+  <!-- Register tab - can't be very long (Restaurant is already too long) -->
+  <!-- EN: Dining -->
+  <TabRegisterRestaurant>Ресторан</TabRegisterRestaurant>
+  <!-- Restaurant selection -->
+  <!-- EN: restaurant {0} -->
+  <RestaurantDefaultName>ресторан {0}</RestaurantDefaultName>
+  <!-- EN: Select which restaurant is linked to this register. -->
+  <RestaurantTooltipSelect>Выбрать какой ресторан будет привязан к этому кассовому аппарату.</RestaurantTooltipSelect>
+  <!-- EN: Rename this restaurant. -->
+  <RestaurantTooltipRename>Переименовать этот ресторан.</RestaurantTooltipRename>
+  <!-- EN: Add another restaurant. -->
+  <RestaurantTooltipAdd>Добавить ещё один ресторан.</RestaurantTooltipAdd>
+  <!-- EN: Remove this restaurant. -->
+  <RestaurantTooltipRemove>Удалить этот ресторан.</RestaurantTooltipRemove>
+  <!-- EN: Are you sure you want to remove '{0}'? -->
+  <RestaurantDialogConfirmRemove>Вы точно хотите удалить «{0}»?</RestaurantDialogConfirmRemove>
+
+  <!-- Settings -->
+  <!-- EN: Opened -->
+  <TabRegisterOpened>Открыто</TabRegisterOpened>
+  <!-- EN: When checked, patrons can make orders while a shift is active. -->
+  <TabRegisterOpenedTooltip>Если включено, посетители смогут делать заказы во время рабочей смены.</TabRegisterOpenedTooltip>
+  <!-- EN: Allow guests -->
+  <TabRegisterGuests>Обслуживать гостей</TabRegisterGuests>
+  <!-- EN: When checked, guests will make orders. -->
+  <TabRegisterGuestsTooltip>Если включено, гости смогут делать заказы.</TabRegisterGuestsTooltip>
+  <!-- EN: Allow colonists -->
+  <TabRegisterColonists>Обслуживать поселенцев</TabRegisterColonists>
+  <!-- EN: When checked, colonists will make orders. -->
+  <TabRegisterColonistsTooltip>Если включено, поселенцы смогут делать заказы.</TabRegisterColonistsTooltip>
+  <!-- EN: Allow prisoners -->
+  <TabRegisterPrisoners>Обслуживать пленников</TabRegisterPrisoners>
+  <!-- EN: When checked, prisoners will make orders. -->
+  <TabRegisterPrisonersTooltip>Если включено, пленники смогут делать заказы.</TabRegisterPrisonersTooltip>
+  <!-- EN: Allow slaves -->
+  <TabRegisterSlaves>Обслуживать рабов</TabRegisterSlaves>
+  <!-- EN: When checked, slaves will make orders. -->
+  <TabRegisterSlavesTooltip>Если включено, рабы смогут делать заказы.</TabRegisterSlavesTooltip>
+  <!-- EN: Price for guests: {0} -->
+  <TabRegisterGuestPrice>Цена для гостей: {0}</TabRegisterGuestPrice>
+  <!-- EN: A multiplier for the market value. You can see the individual prices when you point at stocked items. This multiplier affects the mood of patrons. -->
+  <TabRegisterGuestPriceTooltip>Множитель рыночной цены. Для того, чтобы увидеть цену конкретного блюда, наведите курсор на его название в разделе «Запасы блюд». Конечная цена повлияет на настроение посетителей.</TabRegisterGuestPriceTooltip>
+  <!-- EN: Free -->
+  <TabRegisterGuestPriceFree>Бесплатно</TabRegisterGuestPriceFree>
+  <!-- EN: {0}: {1} (click to clear) -->
+  <TabRegisterDebtTooltip>{0}: {1} (нажмите для сброса)</TabRegisterDebtTooltip>
+
+  <!-- Stats -->
+  <!-- EN: Radius -->
+  <TabRegisterRadius>Радиус</TabRegisterRadius>
+  <!-- EN: Active staff: -->
+  <TabRegisterActiveStaff>Активный персонал:</TabRegisterActiveStaff>
+  <!-- EN: Seats: -->
+  <TabRegisterSeats>Мест:</TabRegisterSeats>
+  <!-- EN: Patrons: -->
+  <TabRegisterPatrons>Посетителей:</TabRegisterPatrons>
+  <!-- EN: Total orders: -->
+  <TabRegisterTotalOrders>Всего заказов:</TabRegisterTotalOrders>
+  <!-- EN: Orders need serving: -->
+  <TabRegisterNeedsServing>Ожидают подачи:</TabRegisterNeedsServing>
+  <!-- EN: Orders need cooking: -->
+  <TabRegisterNeedsCooking>Ожидают приготовления:</TabRegisterNeedsCooking>
+  <!-- EN: Stocked meals: -->
+  <TabRegisterStocked>Запасы блюд:</TabRegisterStocked>
+  <!-- EN: Unpaid bills: -->
+  <TabRegisterDebts>Неоплаченные счета:</TabRegisterDebts>
+  <!-- EN: Earned yesterday: -->
+  <TabRegisterEarnedYesterday>Заработано вчера:</TabRegisterEarnedYesterday>
+  <!-- EN: Earned today: -->
+  <TabRegisterEarnedToday>Заработано сегодня:</TabRegisterEarnedToday>
+
+  <!-- Dining -->
+  <!-- EN: Dining -->
+  <CommandToggleDining>Ресторан</CommandToggleDining>
+  <!-- EN: When enabled, this location can be used for dining. -->
+  <CommandToggleDiningDesc>Если включено, посетители будут использовать это место для заказа еды.</CommandToggleDiningDesc>
+  <!-- EN: Change Decoration -->
+  <CommandSetDeco>Оформление</CommandSetDeco>
+  <!-- EN: Change the decoration on the table. -->
+  <CommandSetDecoDesc>Изменить внешний вид оформления стола.</CommandSetDecoDesc>
+  <!-- EN: Eating at {0}. -->
+  <JobDineGoReportSpecific>Ест в «{0}»</JobDineGoReportSpecific>
+  <!-- EN: Eating at restaurant. -->
+  <JobDineGoReport>Ест в ресторане</JobDineGoReport>
+
+  <!-- Alerts -->
+  <!-- EN: No register -->
+  <AlertNoRegister>Нет кассового аппарата</AlertNoRegister>
+  <!-- EN: To open your restaurant, you need at least one register. This can be built from the production tab. -->
+  <AlertNoRegisterExplanation>Для открытия ресторана вам нужен хотя бы один кассовый аппарат. Его можно найти во вкладке «Производство».</AlertNoRegisterExplanation>
+  <!-- EN: No waiter -->
+  <AlertNoWaiter>Нет официантов</AlertNoWaiter>
+  <!-- EN: To operate your restaurant, you need to set up at least one shift at a register and assign a capable waiter. -->
+  <AlertNoWaiterExplanation>Для работы ресторана необходимо настроить хотя бы одну рабочую смену на кассе и назначить официанта.</AlertNoWaiterExplanation>
 
 </LanguageData>

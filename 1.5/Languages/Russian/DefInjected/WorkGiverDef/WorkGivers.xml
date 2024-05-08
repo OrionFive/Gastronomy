@@ -1,16 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
+  <!-- EN: stand by -->
+  <Gastronomy_StandBy.label>стоять за кассой</Gastronomy_StandBy.label>
+  <!-- EN: stand by -->
+  <Gastronomy_StandBy.verb>стоять за кассой</Gastronomy_StandBy.verb>
+  <!-- EN: standing by -->
+  <Gastronomy_StandBy.gerund>работать за</Gastronomy_StandBy.gerund>
+
+  <!-- EN: take orders -->
   <Gastronomy_TakeOrder.label>принимать заказы</Gastronomy_TakeOrder.label>
+  <!-- EN: take order -->
   <Gastronomy_TakeOrder.verb>принять заказ</Gastronomy_TakeOrder.verb>
-  <Gastronomy_TakeOrder.gerund>принимает заказ</Gastronomy_TakeOrder.gerund>
+  <!-- EN: taking order -->
+  <Gastronomy_TakeOrder.gerund>принять заказ</Gastronomy_TakeOrder.gerund>
 
+  <!-- EN: serve -->
   <Gastronomy_Serve.label>обслуживать</Gastronomy_Serve.label>
+  <!-- EN: serve -->
   <Gastronomy_Serve.verb>обслуживать</Gastronomy_Serve.verb>
-  <Gastronomy_Serve.gerund>обслуживает</Gastronomy_Serve.gerund>
+  <!-- EN: serving -->
+  <Gastronomy_Serve.gerund>обслуживать</Gastronomy_Serve.gerund>
 
-  <Gastronomy_MakeTable.label>сервирует</Gastronomy_MakeTable.label>
-  <Gastronomy_MakeTable.verb>сервирует</Gastronomy_MakeTable.verb>
-  <Gastronomy_MakeTable.gerund>сервирует</Gastronomy_MakeTable.gerund>
+  <!-- EN: make tables -->
+  <Gastronomy_MakeTable.label>накрывать на столы</Gastronomy_MakeTable.label>
+  <!-- EN: make table -->
+  <Gastronomy_MakeTable.verb>накрывать</Gastronomy_MakeTable.verb>
+  <!-- EN: making table -->
+  <Gastronomy_MakeTable.gerund>накрывать</Gastronomy_MakeTable.gerund>
 
 </LanguageData>
